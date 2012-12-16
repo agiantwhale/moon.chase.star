@@ -16,11 +16,13 @@ RenderLayer::~RenderLayer()
 {
 	//This shouldn't usually be called since Renderable will be deleted anyways.
 	//Just for tiles.
+	/*
 	for( std::list<IRenderable*>::iterator iter = begin(); iter != end(); iter++ )
 	{
 		IRenderable* renderable = (*iter);
 		delete renderable;
 	}
+	*/
 }
 
 void RenderLayer::Render( void )
@@ -36,10 +38,11 @@ void RenderLayer::Render( void )
 
 void RenderLayer::AddRenderable( IRenderable* renderable )
 {
-	this->push_back( renderable );
+	push_back( renderable );
 }
 
 void RenderLayer::RemoveRenderable( IRenderable* renderable )
 {
-	this->remove( renderable );
+	if( !empty() )
+		remove( renderable );
 }

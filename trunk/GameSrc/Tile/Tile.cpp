@@ -1,5 +1,6 @@
 #include "../Tile/Tile.hpp"
 #include "../System/ResourceManager.hpp"
+#include "../System/EventManager.hpp"
 #include "../App/Game.hpp"
 
 std::unordered_map<std::string,std::string> Tile::_tilesetMap;
@@ -10,6 +11,18 @@ Tile::Tile() :IRenderable( nullptr ), _tileTexture(nullptr)
 
 Tile::~Tile()
 {
+	delete _tileTexture;
+}
+
+bool Tile::HandleEvent( const EventData& newevent )
+{
+	if( newevent.GetEventType() == Event_Unload )
+	{
+		delete this;
+		return false;
+	}
+
+	return false;
 }
 
 void Tile::Render(void)
@@ -46,4 +59,6 @@ void Tile::Initialize( const TiXmlElement* element )
 	}
 
 	_tileTexture->display();
+
+	EventManager::GetInstance()->AddListener( this, Event_Unload );
 }

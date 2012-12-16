@@ -20,6 +20,23 @@ void EntityList::ReleaseAll(void)
 	clear();
 }
 
+void EntityList::ReleaseAllExceptHull(void)
+{
+	for( iterator iter = begin(); iter != end(); )
+	{
+		Entity *entity = (iter->second);
+		if( entity->GetEntityType() != 'HULL' )
+		{
+			delete entity;
+			iter = erase(iter);
+		}
+		else
+		{
+			iter++;
+		}
+	}
+}
+
 void EntityList::Add( Entity *entity )
 {
 	if( entity == NULL ) return;
@@ -76,6 +93,23 @@ SINGLETON_DESTRUCTOR( EntityManager )
 	ReleaseAll();
 }
 
+bool EntityManager::HandleEvent( const EventData& newevent )
+{
+	if( newevent.GetEventType() == Event_Unload )
+	{
+		ReleaseAll();
+		return false;
+	}
+
+	if( newevent.GetEventType() == Event_RestartLevel )
+	{
+		ReleaseAllExceptHull();
+		return false;
+	}
+
+	return false;
+}
+
 void EntityManager::Update(float deltaTime)
 {
 	_entityList.Update(deltaTime);
@@ -89,6 +123,11 @@ void EntityManager::PostLoad(void)
 void EntityManager::ReleaseAll(void)
 {
 	_entityList.ReleaseAll();
+}
+
+void EntityManager::ReleaseAllExceptHull(void)
+{
+	_entityList.ReleaseAllExceptHull();
 }
 
 void EntityManager::RegisterEntity( Entity* entity )

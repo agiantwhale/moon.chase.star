@@ -150,7 +150,7 @@ void PlayerEntity::BeginContact(b2Contact* contact, const b2Fixture* contactFixt
                 {
                     Fall();
                 }
-                else if( normal.x == 0.0f )
+                else if( normal.x <= 0.1f )
                 {
                     _shouldBounce = true;
                 }

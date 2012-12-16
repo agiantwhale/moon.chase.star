@@ -3,7 +3,7 @@
 
 REGISTER_ENTITY( CameraMoveEntity, "CameraMove")
 
-CameraMoveEntity::CameraMoveEntity() : BaseClass(), _triggerBody(this), _travelTime(5.0f), _destination(0.0f,0.0f), _startPosition(0.0f,0.0f), _activated(false)
+CameraMoveEntity::CameraMoveEntity() : BaseClass(), _triggerBody(this), _travelTime(5.0f), _destination(0.0f,0.0f), _startPosition(0.0f,0.0f), _activated(false), _started(false)
 {
 }
 
@@ -73,6 +73,7 @@ void CameraMoveEntity::BeginContact(b2Contact* contact, const b2Fixture* contact
     if(!_activated && targetInterface && targetInterface->GetEntity()->GetEntityType() == 'BALL')
     {
         _activated = true;
+		_started = true;
 		/*
         _startPosition = CameraManager::GetInstance()->GetPosition();
 

@@ -6,6 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include "../Base/Singleton.hpp"
+#include "../Interface/IEventListner.hpp"
 
 template< class T >
 class ResourceManager {
@@ -64,19 +65,23 @@ public:
     }
 };
 
-class TextureManager : public Singleton<TextureManager>, public ResourceManager< sf::Texture >
+class TextureManager : public Singleton<TextureManager>, public ResourceManager< sf::Texture >, public IEventListener
 {
     DEFINE_SINGLETON(TextureManager)
 
 protected:
+	virtual const std::string& GetEventListenerName( void ) { return "TextureManager"; }
+	virtual bool HandleEvent( const EventData& newevent );
     virtual sf::Texture* Load( const std::string& strId );
 };
 
-class SoundBufferManager : public Singleton<SoundBufferManager>, public ResourceManager< sf::SoundBuffer >
+class SoundBufferManager : public Singleton<SoundBufferManager>, public ResourceManager< sf::SoundBuffer >, public IEventListener
 {
     DEFINE_SINGLETON( SoundBufferManager )
 
 protected:
+	virtual const std::string& GetEventListenerName( void ) { return "SoundBufferManager"; }
+	virtual bool HandleEvent( const EventData& newevent );
     virtual sf::SoundBuffer* Load( const std::string& strId );
 };
 

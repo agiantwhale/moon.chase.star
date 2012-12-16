@@ -24,6 +24,7 @@ void ThrowEntity::Initialize( const TiXmlElement *propertyElement )
 		sf::Sprite *throwSprite = new sf::Sprite(*textureMgr->GetResource("Resource/Ogmo/Entities/Throw.png"));
         throwSprite->setOrigin(sf::Vector2f(0.5f*THROW_SIZE*RATIO,0.5f*THROW_SIZE*RATIO));
 		_throwSprite.SetSprite( throwSprite );
+		_throwSprite.RegisterRenderable( 2 );
     }
 
     {

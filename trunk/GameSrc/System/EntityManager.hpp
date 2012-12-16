@@ -5,6 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include "../Base/Singleton.hpp"
+#include "../Interface/IEventListner.hpp"
 
 using namespace std;
 
@@ -19,40 +20,28 @@ public:
 	void Add( Entity* entity );
 	void DelayedRelease( void );
 	void ReleaseAll(void);
+	void ReleaseAllExceptHull(void);
 
 	void Update( float deltaTime );
 	void PostLoad(void);
 };
 
-class EntityManager : public Singleton<EntityManager>
+class EntityManager : public Singleton<EntityManager>, public IEventListener
 {
 	DEFINE_SINGLETON( EntityManager )
 
 public:
+	virtual const std::string& GetEventListenerName( void ) { return "EntityManager"; }
+	virtual bool HandleEvent( const EventData& newevent );
+
 	void Update(float deltaTime);
 	void PostLoad(void);
 	void ReleaseAll(void);
+	void ReleaseAllExceptHull(void);
 	void RegisterEntity( Entity* entity );
-
-	/*
-	void LoadScene( const string& sceneFileName );
-	void UnloadScene( void );
-	inline void ReloadScene(void)
-	{
-	    UnloadScene();
-	    LoadScene(_sceneFileName);
-	}
-
-	inline void SetNextScene( const std::string nextSceneFileName )
-	{
-	    _nextSceneFileName = nextSceneFileName;
-	}
-	*/
 
 private:
     EntityList _entityList;
-    //std::string _sceneFileName;
-    //std::string _nextSceneFileName;
 };
 
 class EntityFactory : public Singleton<EntityFactory>

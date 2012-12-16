@@ -10,6 +10,7 @@ enum EventType
 	Event_RestartLevel,
 	Event_NextLevel,
 	Event_GameOver,
+	Event_Unload,
 	Event_ExitGame,
 	NUM_MSG
 };

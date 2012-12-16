@@ -6,12 +6,16 @@
 #include <string>
 #include <unordered_map>
 #include "../Interface/IRenderable.hpp"
+#include "../Interface/IEventListner.hpp"
 
-class Tile : public IRenderable
+class Tile : public IRenderable, public IEventListener
 {
 public:
 	Tile();
     virtual ~Tile();
+
+	virtual const std::string& GetEventListenerName( void ) { return "Tile"; }
+	virtual bool HandleEvent( const EventData& newevent );
 
     virtual void Render(void);
 	void Initialize( const TiXmlElement* element );

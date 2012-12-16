@@ -15,6 +15,73 @@ SINGLETON_DESTRUCTOR(SceneManager)
 {
 }
 
+bool SceneManager::HandleEvent( const EventData& newevent )
+{
+	if( newevent.GetEventType() == Event_Unload )
+	{
+		UnloadScene();
+		return false;
+	}
+
+	if( newevent.GetEventType() == Event_RestartLevel )
+	{
+		RestartScene( _sceneFileName );
+		return false;
+	}
+
+	return false;
+}
+
+void SceneManager::RestartScene(const std::string& sceneFileName)
+{
+	LOG(INFO) << "Restarting scene " << sceneFileName << "...";
+
+	TiXmlDocument sceneDocument;
+
+	if( !sceneDocument.LoadFile(sceneFileName) )
+	{
+		LOG(WARNING) << "Unable to load scene " << sceneFileName << "!";
+	    return;
+	}
+	else
+	{
+	    _sceneFileName = sceneFileName;
+	}
+
+	EntityFactory* entityFcty = EntityFactory::GetInstance();
+	EntityManager* entityMgr = EntityManager::GetInstance();
+
+	TiXmlElement *levelElement = sceneDocument.FirstChildElement( "level" );
+	if( !levelElement )
+	{
+	    LOG(WARNING) << "Messed up scene structure, unable to find \"level\" element.";
+	}
+	else
+	{
+		TiXmlElement *objectsElement = levelElement->FirstChildElement( "Objects" );
+		if( objectsElement )
+		{
+			TiXmlElement *objectElement = objectsElement->FirstChildElement();
+			while( objectElement )
+			{
+				Entity *objectEntity = entityFcty->CreateEntity(objectElement->ValueStr());
+				if( objectEntity )
+				{
+				    objectEntity->Initialize( objectElement );
+					entityMgr->RegisterEntity(objectEntity);
+				}
+				objectElement = objectElement->NextSiblingElement();
+			}
+		}
+	}
+
+	entityMgr->PostLoad();
+
+	LOG(INFO) << "Load Complete.";
+
+	_sceneLoaded = true;
+}
+
 void SceneManager::LoadScene(const std::string& sceneFileName)
 {
 	LOG(INFO) << "Loading scene " << sceneFileName << "...";
@@ -108,9 +175,5 @@ void SceneManager::LoadScene(const std::string& sceneFileName)
 
 void SceneManager::UnloadScene(void)
 {
-	EntityManager::GetInstance()->ReleaseAll();
-	TextureManager::GetInstance()->ReleaseAllResources();
-	SoundBufferManager::GetInstance()->ReleaseAllResources();
-
 	_sceneLoaded = false;
 }

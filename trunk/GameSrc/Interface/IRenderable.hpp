@@ -15,6 +15,7 @@ public:
     inline void Hide(void) {_isHidden=true;}
     inline void Show(void) {_isHidden=false;}
     inline bool IsHidden(void) const {return _isHidden;}
+	inline bool IsRegistered(void) const { return _isRegistered; }
 
 	void RegisterRenderable( unsigned int renderLayer );
 	void UnregisterRenderable( void );
@@ -24,6 +25,7 @@ public:
 
 private:
 	unsigned int _renderLayer;
+	bool _isRegistered;
     bool _isHidden;
     ITransform* const _transform;
 };

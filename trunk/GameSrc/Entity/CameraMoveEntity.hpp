@@ -17,6 +17,7 @@ public:
 
 private:
     bool _activated;
+	bool _started;
 
     const float _travelTime;
     Vec2D _startPosition;

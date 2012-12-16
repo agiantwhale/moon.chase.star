@@ -9,6 +9,17 @@ SINGLETON_DESTRUCTOR( TextureManager )
 {
 }
 
+bool TextureManager::HandleEvent( const EventData& newevent )
+{
+	if( newevent.GetEventType() == Event_Unload )
+	{
+		ReleaseAllResources();
+		return false;
+	}
+
+	return false;
+}
+
 sf::Texture* TextureManager::Load( const std::string& strId ) {
     sf::Texture* texture = new sf::Texture;
     if( !texture->loadFromFile( strId ) ) {
@@ -27,6 +38,17 @@ SINGLETON_CONSTRUCTOR( SoundBufferManager )
 
 SINGLETON_DESTRUCTOR( SoundBufferManager )
 {
+}
+
+bool SoundBufferManager::HandleEvent( const EventData& newevent )
+{
+	if( newevent.GetEventType() == Event_Unload )
+	{
+		ReleaseAllResources();
+		return false;
+	}
+
+	return false;
 }
 
 sf::SoundBuffer* SoundBufferManager::Load( const std::string& strId ) {

@@ -11,7 +11,7 @@ public:
 	{}
 	virtual ~IEventListener()
 	{}
-	virtual const std::string& GetName() = 0;
+	virtual const std::string& GetEventListenerName() = 0;
 	virtual bool HandleEvent(const EventData& theevent) = 0;
 };
 

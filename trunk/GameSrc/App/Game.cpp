@@ -4,6 +4,7 @@
 #include "../System/PhysicsManager.hpp"
 #include "../System/ResourceManager.hpp"
 #include "../System/SceneManager.hpp"
+#include "../System/EventManager.hpp"
 
 #include "../Tile/Tile.hpp"
 
@@ -23,6 +24,20 @@ void Game::Initialize( void )
 	Tile::RegisterTileset("Rect", "Resource/Ogmo/Tiles/Rect.png");
 
 	LOG(INFO) << "Game initialized.";
+
+	EventManager* eventMgr = EventManager::GetInstance();
+	eventMgr->AddListener( EntityManager::GetInstance(), Event_Unload );
+	eventMgr->AddListener( GraphicsManager::GetInstance(), Event_Unload );
+	eventMgr->AddListener( TextureManager::GetInstance(), Event_Unload );
+	eventMgr->AddListener( SoundBufferManager::GetInstance(), Event_Unload );
+	eventMgr->AddListener( SceneManager::GetInstance(), Event_Unload );
+
+	eventMgr->AddListener( EntityManager::GetInstance(), Event_RestartLevel );
+	eventMgr->AddListener( SceneManager::GetInstance(), Event_RestartLevel );
+
+	//Test the eventmanager
+	//eventMgr->QueueEvent( new EventData( Event_Unload ), 5.0f );
+	eventMgr->QueueEvent( new EventData( Event_RestartLevel ), 5.0f );
 }
 
 void Game::Start( void )
@@ -59,6 +74,7 @@ void Game::Update(void)
 
 	PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
 	EntityManager::GetInstance()->Update( deltaTime );
+	EventManager::GetInstance()->Update( deltaTime );
 }
 
 void Game::Render( void )
