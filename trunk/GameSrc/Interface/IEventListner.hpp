@@ -1,0 +1,17 @@
+#ifndef IEVENTLISTNER_HPP
+#define IEVENTLISTNER_HPP
+
+#include <string>
+
+class IEventListener
+{
+public:
+	IEventListener()
+	{}
+	virtual ~IEventListener()
+	{}
+	virtual const std::string& GetName() = 0;
+	virtual bool HandleEvent(const EventData& theevent) = 0;
+};
+
+#endif

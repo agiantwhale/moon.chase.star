@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameSrc\App\Game.cpp" />
+    <ClCompile Include="GameSrc\App\main.cpp" />
+    <ClCompile Include="GameSrc\Entity\BlockEntity.cpp" />
+    <ClCompile Include="GameSrc\Entity\CameraMoveEntity.cpp" />
+    <ClCompile Include="GameSrc\Entity\Component\BodyWrapper.cpp" />
+    <ClCompile Include="GameSrc\Entity\Component\SpriteWrapper.cpp" />
+    <ClCompile Include="GameSrc\Entity\Entity.cpp" />
+    <ClCompile Include="GameSrc\Entity\HullEntity.cpp" />
+    <ClCompile Include="GameSrc\Entity\PlayerEntity.cpp" />
+    <ClCompile Include="GameSrc\Entity\ThrowEntity.cpp" />
+    <ClCompile Include="GameSrc\Interface\IEventListner.cpp" />
+    <ClCompile Include="GameSrc\Interface\IPhysics.cpp" />
+    <ClCompile Include="GameSrc\Interface\IRenderable.cpp" />
+    <ClCompile Include="GameSrc\System\Debug\PhysicsDebugDraw.cpp" />
+    <ClCompile Include="GameSrc\System\EntityManager.cpp" />
+    <ClCompile Include="GameSrc\System\EventManager.cpp" />
+    <ClCompile Include="GameSrc\System\PhysicsManager.cpp" />
+    <ClCompile Include="GameSrc\System\RenderLayer.cpp" />
+    <ClCompile Include="GameSrc\System\GraphicsManager.cpp" />
+    <ClCompile Include="GameSrc\System\ResourceManager.cpp" />
+    <ClCompile Include="GameSrc\System\SceneManager.cpp" />
+    <ClCompile Include="GameSrc\Tile\Tile.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameSrc\App\Game.hpp" />
+    <ClInclude Include="GameSrc\Entity\BlockEntity.hpp" />
+    <ClInclude Include="GameSrc\Entity\CameraMoveEntity.hpp" />
+    <ClInclude Include="GameSrc\Entity\Component\BodyWrapper.hpp" />
+    <ClInclude Include="GameSrc\Entity\Component\SpriteWrapper.hpp" />
+    <ClInclude Include="GameSrc\Entity\Entity.hpp" />
+    <ClInclude Include="GameSrc\Entity\HullEntity.hpp" />
+    <ClInclude Include="GameSrc\Entity\PlayerEntity.hpp" />
+    <ClInclude Include="GameSrc\Entity\ThrowEntity.hpp" />
+    <ClInclude Include="GameSrc\Event\EventData.hpp" />
+    <ClInclude Include="GameSrc\Event\EventsDef.h" />
+    <ClInclude Include="GameSrc\Interface\IEventListner.hpp" />
+    <ClInclude Include="GameSrc\Interface\IPhysics.hpp" />
+    <ClInclude Include="GameSrc\Interface\IRenderable.hpp" />
+    <ClInclude Include="GameSrc\Interface\ITransform.hpp" />
+    <ClInclude Include="GameSrc\System\Debug\PhysicsDebugDraw.hpp" />
+    <ClInclude Include="GameSrc\System\EntityManager.hpp" />
+    <ClInclude Include="GameSrc\System\EventManager.hpp" />
+    <ClInclude Include="GameSrc\System\PhysicsManager.hpp" />
+    <ClInclude Include="GameSrc\System\RenderLayer.hpp" />
+    <ClInclude Include="GameSrc\System\GraphicsManager.hpp" />
+    <ClInclude Include="GameSrc\System\ResourceManager.hpp" />
+    <ClInclude Include="GameSrc\System\SceneManager.hpp" />
+    <ClInclude Include="GameSrc\Tile\Tile.hpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{6A7CE584-66B1-40A3-A5FB-B6358E604FA3}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Rebounce</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>TIXML_USE_STL;_WIN32;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Rebounce\Libs\glog\include;C:\Rebounce\Libs\TinyXML\include;C:\Rebounce\Libs\SFML\include;C:\Rebounce\Libs\FastDelegate\include;C:\Rebounce\Libs\EasyLogging++\include;C:\Rebounce\Libs\Box2D\include;C:\Rebounce\Libs\Boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libglog.lib;tinyxmlSTL.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Rebounce\Libs\glog\lib\Debug;C:\Rebounce\Libs\TinyXML\lib\Debug;C:\Rebounce\Libs\Box2D\bin\Debug;C:\Rebounce\Libs\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>TIXML_USE_STL;_WIN32;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Rebounce\Libs\glog\include;C:\Rebounce\Libs\TinyXML\include;C:\Rebounce\Libs\SFML\include;C:\Rebounce\Libs\FastDelegate\include;C:\Rebounce\Libs\EasyLogging++\include;C:\Rebounce\Libs\Box2D\include;C:\Rebounce\Libs\Boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>libglog.lib;tinyxmlSTL.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Rebounce\Libs\glog\lib\Release;C:\Rebounce\Libs\TinyXML\lib\Release;C:\Rebounce\Libs\Box2D\bin\Release;C:\Rebounce\Libs\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
