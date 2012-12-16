@@ -2,6 +2,7 @@
 #define IEVENTLISTNER_HPP
 
 #include <string>
+#include "../Event/EventData.hpp"
 
 class IEventListener
 {

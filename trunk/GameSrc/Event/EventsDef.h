@@ -5,6 +5,7 @@ enum EventType
 {
 	UNDEFINED = 0,
 	Event_BallDied,
+	Event_CameraMove,
 	Event_LevelCompleted,
 	Event_RestartLevel,
 	Event_NextLevel,
