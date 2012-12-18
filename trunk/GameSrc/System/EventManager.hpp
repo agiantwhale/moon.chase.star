@@ -7,14 +7,12 @@
 
 #include "../Base/Singleton.hpp"
 #include "../Interface/IEventListner.hpp"
-
-//Forward declarations
-class EventData;
+#include "../Event/EventData.hpp"
 
 //Used internally by EventManager
 struct EventQueue
 {
-	const EventData* event;
+	EventData* event;
 	float wait;
 };
 
@@ -23,15 +21,15 @@ class EventManager : public Singleton<EventManager>
 	DEFINE_SINGLETON( EventManager )
 
 private:
-	typedef std::list<IEventListener* const> EventListenerList;
+	typedef std::list<IEventListener*> EventListenerList;
 	typedef std::unordered_map<EventType, EventListenerList*> EventListenersMap;
-	typedef std::list<const EventData*> EventsList;
+	typedef std::list<EventData*> EventsList;
 
 public:
 	void AddListener(IEventListener* const listenerptr, const EventType& eventtype);
 	void RemoveListener(IEventListener* const listenerptr, const EventType& eventtype);
 	void TriggerEvent(EventData* newevent);
-	void QueueEvent(const EventData* newevent, float waitTime = 0.0f);
+	void QueueEvent(EventData* newevent, float waitTime = 0.0f);
 	void AbortEvent(const EventType& typeToAbort, bool alloftype);
 	void Update( float dt);
 	void EmptyEventQueues();

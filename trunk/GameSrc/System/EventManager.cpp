@@ -62,7 +62,7 @@ void EventManager::TriggerEvent(EventData* newevent)
 	delete newevent;
 }
 
-void EventManager::QueueEvent(const EventData* newevent, float waitTime)
+void EventManager::QueueEvent(EventData* newevent, float waitTime)
 {
 	EventQueue eventQueue;
 	eventQueue.event = newevent;

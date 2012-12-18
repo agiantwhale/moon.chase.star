@@ -1,10 +1,11 @@
 #include <glog\logging.h>
+#include "../System/EventManager.hpp"
 #include "../Entity/CameraMoveEntity.hpp"
 #include "../Event/CameraMoveEventData.hpp"
 
 REGISTER_ENTITY( CameraMoveEntity, "CameraMove")
 
-CameraMoveEntity::CameraMoveEntity() : BaseClass(), _triggerBody(this), _travelTime(5.0f), _destination(0.0f,0.0f), _startPosition(0.0f,0.0f), _activated(false), _started(false)
+CameraMoveEntity::CameraMoveEntity() : BaseClass(), _triggerBody(this), _travelTime(5.0f), _destination(0.0f,0.0f), _activated(false), _started(false)
 {
 }
 

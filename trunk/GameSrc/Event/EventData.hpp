@@ -2,7 +2,6 @@
 #define EVENTDATA_HPP
 
 #include "../Event/EventsDef.h"
-#include "../System/EventManager.hpp"
 #include "../App/Game.hpp"
 
 class EventData
@@ -24,7 +23,7 @@ public:
 
 protected:
 	const float _createTime;	//Timestamp when event was created.
-	const float _startTime;		//Timestamp when event was started.
+	float _startTime;		//Timestamp when event was started.
 	const EventType _eventType;
 };
 
