@@ -1,5 +1,6 @@
 #include <glog\logging.h>
 #include "../Entity/CameraMoveEntity.hpp"
+#include "../Event/CameraMoveEventData.hpp"
 
 REGISTER_ENTITY( CameraMoveEntity, "CameraMove")
 
@@ -74,27 +75,8 @@ void CameraMoveEntity::BeginContact(b2Contact* contact, const b2Fixture* contact
     {
         _activated = true;
 		_started = true;
-		/*
-        _startPosition = CameraManager::GetInstance()->GetPosition();
 
-        EventManager* eventMgr = EventManager::GetInstance();
-
-        CallbackWithTimestampEvent* move = new CallbackWithTimestampEvent(BIND_MEM_CB(&CameraMoveEntity::MoveCamera,this),sf::seconds(0.0f),_travelTime);
-        eventMgr->AddEvent(move);
-
-        CallbackEvent* finalize = new CallbackEvent(BIND_MEM_CB(&CameraMoveEntity::FinalizeCamera,this),_travelTime);
-        eventMgr->AddEvent(finalize);
-		*/
+		CameraMoveEventData* eventData = new CameraMoveEventData( _travelTime, _destination, false );
+		EventManager::GetInstance()->QueueEvent( eventData );
     }
-}
-
-void CameraMoveEntity::MoveCamera(float timePassed)
-{
-    const Vec2D moveSpeed = _destination/_travelTime;
-    //CameraManager::GetInstance()->SetPosition(_startPosition+moveSpeed*(_travelTime-timePassed).asSeconds());
-}
-
-void CameraMoveEntity::FinalizeCamera(void)
-{
-    //CameraManager::GetInstance()->SetPosition(_startPosition+_destination);
 }

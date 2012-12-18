@@ -9,7 +9,7 @@
 #include "../Tile/Tile.hpp"
 
 
-SINGLETON_CONSTRUCTOR( Game ), sf::RenderWindow(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"Bounce",sf::Style::Close), _isRunning( true ), _gameClock()
+SINGLETON_CONSTRUCTOR( Game ), sf::RenderWindow(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"Bounce",sf::Style::Close), _isRunning( true ), _frameClock(), _gameClock()
 {
 }
 
@@ -20,6 +20,7 @@ SINGLETON_DESTRUCTOR( Game )
 void Game::Initialize( void )
 {
 	PhysicsManager::GetInstance()->SetUpPhysics();
+	GraphicsManager::GetInstance()->SetUpGraphics();
 
 	Tile::RegisterTileset("Rect", "Resource/Ogmo/Tiles/Rect.png");
 
@@ -34,15 +35,12 @@ void Game::Initialize( void )
 
 	eventMgr->AddListener( EntityManager::GetInstance(), Event_RestartLevel );
 	eventMgr->AddListener( SceneManager::GetInstance(), Event_RestartLevel );
-
-	//Test the eventmanager
-	//eventMgr->QueueEvent( new EventData( Event_Unload ), 5.0f );
-	eventMgr->QueueEvent( new EventData( Event_RestartLevel ), 5.0f );
 }
 
 void Game::Start( void )
 {
-    _gameClock.restart();
+    _frameClock.restart();
+	_gameClock.restart();
 
 	while(_isRunning)
 	{
@@ -70,7 +68,7 @@ bool Game::HandleEvents(void)
 
 void Game::Update(void)
 {
-	float deltaTime = _gameClock.restart().asSeconds();
+	float deltaTime = _frameClock.restart().asSeconds();
 
 	PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
 	EntityManager::GetInstance()->Update( deltaTime );
@@ -82,7 +80,7 @@ void Game::Render( void )
     clear();
 
 	GraphicsManager::GetInstance()->Render();
-	PhysicsManager::GetInstance()->Render();
+	//PhysicsManager::GetInstance()->Render();
 
 	display();
 }

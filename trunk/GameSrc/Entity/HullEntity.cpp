@@ -48,24 +48,6 @@ void HullEntity::Initialize( const TiXmlElement *propertyElement )
 
 			_hullBody.ResetTransform();
         }
-
-        /*
-        {
-            sf::Vector2f screenPosition;
-            screenPosition = TheCameraMgr.WorldToScreen(GetPosition(),screenPosition);
-            screenPosition.y = SCREENHEIGHT - screenPosition.y;
-
-            ltbl::ConvexHull* hull = new ltbl::ConvexHull;
-            hull->m_vertices.push_back(Vec2f(0.5f*sizeX,0.5f*sizeY));
-            hull->m_vertices.push_back(Vec2f(-0.5f*sizeX,0.5f*sizeY));
-            hull->m_vertices.push_back(Vec2f(-0.5f*sizeX,-0.5f*sizeY));
-            hull->m_vertices.push_back(Vec2f(0.5f*sizeX,-0.5f*sizeY));
-            hull->CalculateNormals();
-            hull->CalculateAABB();
-            hull->SetWorldCenter(Vec2f(screenPosition.x,screenPosition.y));
-            AddConvexHull(hull);
-        }
-        */
     }
     else
     {

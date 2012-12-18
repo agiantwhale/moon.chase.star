@@ -36,12 +36,12 @@ void RenderLayer::Render( void )
 	}
 }
 
-void RenderLayer::AddRenderable( IRenderable* renderable )
+void RenderLayer::AddRenderable( IRenderable* const renderable )
 {
 	push_back( renderable );
 }
 
-void RenderLayer::RemoveRenderable( IRenderable* renderable )
+void RenderLayer::RemoveRenderable( IRenderable* const renderable )
 {
 	if( !empty() )
 		remove( renderable );

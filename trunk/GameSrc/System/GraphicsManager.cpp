@@ -1,5 +1,6 @@
 #include <glog\logging.h>
 #include "../System/GraphicsManager.hpp"
+#include "../App/Game.hpp"
 
 SINGLETON_CONSTRUCTOR(GraphicsManager), _renderLayerStack()
 {
@@ -8,6 +9,10 @@ SINGLETON_CONSTRUCTOR(GraphicsManager), _renderLayerStack()
 SINGLETON_DESTRUCTOR(GraphicsManager)
 {
 	Unload();
+}
+
+void GraphicsManager::SetUpGraphics(void)
+{
 }
 
 bool GraphicsManager::HandleEvent( const EventData& newevent )

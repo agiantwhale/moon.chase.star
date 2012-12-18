@@ -4,6 +4,7 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <Light\LightManager.h>
 
 #include "../Base/Singleton.hpp"
 #include "../System/RenderLayer.hpp"
@@ -17,11 +18,13 @@ public:
 	virtual const std::string& GetEventListenerName( void ) { return "GraphicsManager"; }
 	virtual bool HandleEvent( const EventData& newevent );
 
-    void AddRenderable(IRenderable* renderable);
-    void RemoveRenderable(IRenderable* renderable);
+    void AddRenderable(IRenderable* const renderable);
+    void RemoveRenderable(IRenderable* const renderable);
 
     void Render();
 	void Unload();
+
+	void SetUpGraphics(void);
 
 private:
     typedef std::vector<RenderLayer*> RenderLayerStack;

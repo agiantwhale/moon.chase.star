@@ -19,6 +19,7 @@ public:
 	}
 
 	inline bool IsRunning( void ) const { return _isRunning; }
+	inline float GetTime(void) const { return _gameClock.getElapsedTime().asSeconds(); }
 
 private:
     bool HandleEvents(void);
@@ -26,7 +27,8 @@ private:
 	void Render(void);
 
 	bool _isRunning;
-	sf::Clock         _gameClock;
+	sf::Clock         _frameClock;
+	sf::Clock		  _gameClock;
 };
 
 #endif

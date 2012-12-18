@@ -7,7 +7,9 @@
 
 #include "../Base/Singleton.hpp"
 #include "../Interface/IEventListner.hpp"
-#include "../Event/EventData.hpp"
+
+//Forward declarations
+class EventData;
 
 //Used internally by EventManager
 struct EventQueue
@@ -28,8 +30,8 @@ private:
 public:
 	void AddListener(IEventListener* const listenerptr, const EventType& eventtype);
 	void RemoveListener(IEventListener* const listenerptr, const EventType& eventtype);
-	void TriggerEvent(const EventData* newevent);
-	void QueueEvent(const EventData* newevent, float waitTime);
+	void TriggerEvent(EventData* newevent);
+	void QueueEvent(const EventData* newevent, float waitTime = 0.0f);
 	void AbortEvent(const EventType& typeToAbort, bool alloftype);
 	void Update( float dt);
 	void EmptyEventQueues();

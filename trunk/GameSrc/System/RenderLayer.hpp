@@ -12,15 +12,15 @@ public:
 	void Transform( void ) const;
 };
 
-class RenderLayer : private std::list<IRenderable*>
+class RenderLayer : private std::list<IRenderable* const>
 {
 public:
 	RenderLayer() : _renderCamera() {}
 	~RenderLayer();
 
 	void Render( void );
-	void AddRenderable( IRenderable* renderable );
-	void RemoveRenderable( IRenderable* renderable );
+	void AddRenderable( IRenderable* const renderable );
+	void RemoveRenderable( IRenderable* const renderable );
 
 	Camera& GetCamera() { return _renderCamera; }
 	void SetCamera( const Camera& camera ) { _renderCamera = camera; }

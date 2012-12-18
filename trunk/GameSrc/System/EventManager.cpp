@@ -1,5 +1,6 @@
 #include <glog\logging.h>
 #include "../Base/Globals.hpp"
+#include "../Event/EventData.hpp"
 #include "../System/EventManager.hpp"
 
 SINGLETON_CONSTRUCTOR( EventManager )
@@ -40,13 +41,15 @@ void EventManager::RemoveListener(IEventListener* const listenerptr, const Event
 	}
 }
 
-void EventManager::TriggerEvent(const EventData* newevent)
+void EventManager::TriggerEvent(EventData* newevent)
 {
 	EventListenersMap::const_iterator iter = _eventListnersMap.find( newevent->GetEventType() );
 	if( iter == _eventListnersMap.end() )
 	{
 		return;
 	}
+
+	newevent->StartEvent();
 
 	EventListenerList* listenerList = iter->second;
 	for( EventListenerList::iterator listenerIter = listenerList->begin(); listenerIter != listenerList->end(); listenerIter++ )

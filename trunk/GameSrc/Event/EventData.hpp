@@ -2,22 +2,29 @@
 #define EVENTDATA_HPP
 
 #include "../Event/EventsDef.h"
+#include "../System/EventManager.hpp"
+#include "../App/Game.hpp"
 
 class EventData
 {
 public:
-	EventData(const EventType type, float timestamp = 0.0f ):
+	EventData(const EventType type ):
 	  _eventType(type),
-	  _eventTime(timestamp)
+	  _createTime(Game::GetInstance()->GetTime()),
+	  _startTime(0.0f)
 	{}
 	virtual ~EventData()
 	{}
 
-	const EventType& GetEventType() const { return _eventType; } 
-	float GetEventTimeStamp() const {return _eventTime; }
+	inline const EventType& GetEventType() const { return _eventType; } 
+	inline float GetEventCreateTimeStamp() const {return _createTime; }
+	inline float GetEventStartTimeStamp() const { return _startTime; }
+
+	inline void	 StartEvent(void) { _startTime = Game::GetInstance()->GetTime(); }
 
 protected:
-	const float _eventTime;
+	const float _createTime;	//Timestamp when event was created.
+	const float _startTime;		//Timestamp when event was started.
 	const EventType _eventType;
 };
 

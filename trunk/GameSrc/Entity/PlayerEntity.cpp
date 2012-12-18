@@ -3,6 +3,7 @@
 #include "../Entity/PlayerEntity.hpp"
 #include "../System/PhysicsManager.hpp"
 #include "../System/ResourceManager.hpp"
+#include "../System/EventManager.hpp"
 
 template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
@@ -66,6 +67,12 @@ void PlayerEntity::Simulate( void )
 
 void PlayerEntity::Update(float deltaTime)
 {
+	if( !_dead && GetPosition().y < -(SCREENHEIGHT * UNRATIO * 0.5f + 5.0f) )
+	{
+		_dead = true;
+		EventManager::GetInstance()->QueueEvent( new EventData( Event_RestartLevel ), 2.0f );
+	}
+
     const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
                 rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
 
@@ -150,7 +157,7 @@ void PlayerEntity::BeginContact(b2Contact* contact, const b2Fixture* contactFixt
                 {
                     Fall();
                 }
-                else if( normal.x <= 0.1f )
+                else if( slope >= 10.0f )
                 {
                     _shouldBounce = true;
                 }
