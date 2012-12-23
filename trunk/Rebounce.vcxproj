@@ -21,7 +21,6 @@
     <ClCompile Include="GameSrc\Entity\HullEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\PlayerEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\ThrowEntity.cpp" />
-    <ClCompile Include="GameSrc\Interface\ILights.cpp" />
     <ClCompile Include="GameSrc\Interface\IPhysics.cpp" />
     <ClCompile Include="GameSrc\Interface\IRenderable.cpp" />
     <ClCompile Include="GameSrc\Interface\IState.cpp" />
@@ -50,7 +49,6 @@
     <ClInclude Include="GameSrc\Event\EventData.hpp" />
     <ClInclude Include="GameSrc\Event\EventsDef.h" />
     <ClInclude Include="GameSrc\Interface\IEventListner.hpp" />
-    <ClInclude Include="GameSrc\Interface\ILights.hpp" />
     <ClInclude Include="GameSrc\Interface\IPhysics.hpp" />
     <ClInclude Include="GameSrc\Interface\IRenderable.hpp" />
     <ClInclude Include="GameSrc\Interface\IState.hpp" />
