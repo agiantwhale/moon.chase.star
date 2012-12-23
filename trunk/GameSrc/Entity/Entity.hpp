@@ -8,6 +8,7 @@
 #include "../Base/Globals.hpp"
 #include "../Base/Vec2D.hpp"
 #include "../Interface/ITransform.hpp"
+#include "../Interface/IEventListner.hpp"
 #include "../System/EntityManager.hpp"
 
 using namespace std;
@@ -20,7 +21,6 @@ class Entity : public ITransform
 public:
 	virtual void Update(float deltaTime);
 	virtual void PostLoad(void);
-
 	virtual int GetEntityType( void ) const { return 'BASE'; }
 	static int GetEntityClassType( void ) { return 'BASE'; }
 
@@ -52,7 +52,7 @@ T* entity_cast( Entity *p )
 	return NULL;
 }
 
-#define DEFINE_ENTITY( ThisName, BaseName, EntType )\
+#define DEFINE_ENTITY( ThisName, BaseName, EntType, EntName )\
 	public:\
 	enum\
 	{\

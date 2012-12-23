@@ -1,11 +1,13 @@
 #include <glog\logging.h>
 #include "../System/EventManager.hpp"
 #include "../Entity/CameraMoveEntity.hpp"
+#include "../Event/EventsDef.h"
 #include "../Event/CameraMoveEventData.hpp"
+#include "../System/GraphicsManager.hpp"
 
 REGISTER_ENTITY( CameraMoveEntity, "CameraMove")
 
-CameraMoveEntity::CameraMoveEntity() : BaseClass(), _triggerBody(this), _travelTime(5.0f), _destination(0.0f,0.0f), _activated(false), _started(false)
+CameraMoveEntity::CameraMoveEntity() : BaseClass(), _triggerBody(this), _travelTime(5.0f), _destination(0.0f,0.0f), _activated(false), _startMoving(false)
 {
 }
 
@@ -75,9 +77,38 @@ void CameraMoveEntity::BeginContact(b2Contact* contact, const b2Fixture* contact
     if(!_activated && targetInterface && targetInterface->GetEntity()->GetEntityType() == 'BALL')
     {
         _activated = true;
-		_started = true;
+		_startMoving = true;
 
-		CameraMoveEventData* eventData = new CameraMoveEventData( _travelTime, _destination, false );
+		CameraMoveEventData* eventData = new CameraMoveEventData( _destination/_travelTime, _destination, false );
 		EventManager::GetInstance()->QueueEvent( eventData );
     }
+}
+
+bool CameraMoveEntity::HandleEvent( const EventData& theevent )
+{
+	if( theevent.GetEventType() == Event_CameraMove )
+	{
+		const CameraMoveEventData& eventData = static_cast<const CameraMoveEventData&>(theevent);
+		if( eventData.IsFinal() )
+		{
+			_startMoving = false;
+		}
+	}
+
+	return false;
+}
+
+void CameraMoveEntity::Update( float deltaTime )
+{
+	if( _startMoving )
+	{
+		for( int i = 0; i <= 10; i++ )
+		{
+			RenderLayer* renderLayer = GraphicsManager::GetInstance()->GetRenderLayer(i);
+			if( renderLayer )
+			{
+				renderLayer->GetCamera().SetPosition( renderLayer->GetCamera().GetPosition() + deltaTime * _destination / _travelTime );
+			}
+		}
+	}
 }

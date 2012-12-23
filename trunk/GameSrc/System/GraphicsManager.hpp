@@ -21,6 +21,8 @@ public:
     void AddRenderable(IRenderable* const renderable);
     void RemoveRenderable(IRenderable* const renderable);
 
+	RenderLayer* GetRenderLayer( unsigned int layer );
+
     void Render();
 	void Unload();
 

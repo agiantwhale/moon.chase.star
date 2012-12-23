@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <glog\logging.h>
 #include "../App/Game.hpp"
 #include "../System/SceneManager.hpp"

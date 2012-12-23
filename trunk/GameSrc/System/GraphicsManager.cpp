@@ -71,3 +71,13 @@ void GraphicsManager::Render(void)
         renderLayer->Render();
     }
 }
+
+RenderLayer* GraphicsManager::GetRenderLayer( unsigned int layer )
+{
+	if( layer >= _renderLayerStack.size() )
+	{
+		LOG(WARNING) << "Attempted to access a non-existent layer!";
+	}
+
+	return _renderLayerStack.at( layer );
+}

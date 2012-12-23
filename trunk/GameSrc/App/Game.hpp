@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <glog\logging.h>
 
+#include "../Interface/IState.hpp"
 #include "../Base/Singleton.hpp"
 
 class Game : public Singleton<Game>, public sf::RenderWindow

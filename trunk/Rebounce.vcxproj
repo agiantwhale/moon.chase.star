@@ -24,6 +24,8 @@
     <ClCompile Include="GameSrc\Interface\ILights.cpp" />
     <ClCompile Include="GameSrc\Interface\IPhysics.cpp" />
     <ClCompile Include="GameSrc\Interface\IRenderable.cpp" />
+    <ClCompile Include="GameSrc\Interface\IState.cpp" />
+    <ClCompile Include="GameSrc\State\IntroState.cpp" />
     <ClCompile Include="GameSrc\System\Debug\PhysicsDebugDraw.cpp" />
     <ClCompile Include="GameSrc\System\EntityManager.cpp" />
     <ClCompile Include="GameSrc\System\EventManager.cpp" />
@@ -51,7 +53,10 @@
     <ClInclude Include="GameSrc\Interface\ILights.hpp" />
     <ClInclude Include="GameSrc\Interface\IPhysics.hpp" />
     <ClInclude Include="GameSrc\Interface\IRenderable.hpp" />
+    <ClInclude Include="GameSrc\Interface\IState.hpp" />
     <ClInclude Include="GameSrc\Interface\ITransform.hpp" />
+    <ClInclude Include="GameSrc\State\IntroState.hpp" />
+    <ClInclude Include="GameSrc\State\StatesDef.h" />
     <ClInclude Include="GameSrc\System\Debug\PhysicsDebugDraw.hpp" />
     <ClInclude Include="GameSrc\System\EntityManager.hpp" />
     <ClInclude Include="GameSrc\System\EventManager.hpp" />

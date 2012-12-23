@@ -3,7 +3,7 @@
 
 enum EventType
 {
-	UNDEFINED = 0,
+	Event_UNDEFINED = 0,
 	Event_BallDied,
 	Event_CameraMove,
 	Event_LevelCompleted,
@@ -12,7 +12,7 @@ enum EventType
 	Event_GameOver,
 	Event_Unload,
 	Event_ExitGame,
-	NUM_MSG
+	NUM_EVENTS
 };
 
 #endif
