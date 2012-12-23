@@ -80,7 +80,7 @@ void Game::Render( void )
     clear();
 
 	GraphicsManager::GetInstance()->Render();
-	//PhysicsManager::GetInstance()->Render();
+	PhysicsManager::GetInstance()->Render();
 
 	display();
 }

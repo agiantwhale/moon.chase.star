@@ -34,6 +34,11 @@ BodyWrapper::BodyWrapper( const BodyWrapper& wrapper, Entity* const entity ) : I
 
 BodyWrapper::~BodyWrapper()
 {
+	EventManager* const eventMgr = EventManager::GetInstance();
+	eventMgr->RemoveListener(GetEntity(),Event_Simulate);
+	eventMgr->RemoveListener(GetEntity(),Event_BeginContact);
+	eventMgr->RemoveListener(GetEntity(),Event_EndContact);
+
     DestroyBody();
 }
 
