@@ -66,6 +66,11 @@
     <ClInclude Include="GameSrc\System\SceneManager.hpp" />
     <ClInclude Include="GameSrc\Tile\Tile.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes\BGMs to check out.txt" />
+    <Text Include="Notes\dev.log" />
+    <Text Include="Notes\Gameplay ideas.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6A7CE584-66B1-40A3-A5FB-B6358E604FA3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
