@@ -121,8 +121,6 @@ bool CameraMoveEntity::HandleEvent( const EventData& theevent )
 	}
 
 	return false;
-
-	return false;
 }
 
 void CameraMoveEntity::Update( float deltaTime )
