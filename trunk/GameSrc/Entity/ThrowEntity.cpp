@@ -1,6 +1,7 @@
 #include <glog\logging.h>
 #include "../Entity/ThrowEntity.hpp"
 #include "../System/ResourceManager.hpp"
+#include "../Event/ContactEventData.h"
 
 REGISTER_ENTITY( ThrowEntity, "Throw")
 
@@ -48,25 +49,42 @@ void ThrowEntity::Initialize( const TiXmlElement *propertyElement )
 		_throwBody.CreateFixture( fixtureDefinition, "Throw" );
 
 		_throwBody.ResetTransform();
-    }
+	}
+}
 
-    /*
-    {
-            sf::Vector2f screenPosition;
-            screenPosition = TheCameraMgr.WorldToScreen(GetPosition(),screenPosition);
-            screenPosition.y = SCREENHEIGHT - screenPosition.y;
+bool ThrowEntity::HandleEvent(const EventData& theevent)
+{
+	switch (theevent.GetEventType())
+	{
+	case Event_BeginContact:
+		{
+			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.GetContact();
 
-            ltbl::ConvexHull* hull = new ltbl::ConvexHull;
-            hull->m_vertices.push_back(Vec2f(0.5f*THROW_SIZE*RATIO,0.5f*THROW_SIZE*RATIO));
-            hull->m_vertices.push_back(Vec2f(-0.5f*THROW_SIZE*RATIO,0.5f*THROW_SIZE*RATIO));
-            hull->m_vertices.push_back(Vec2f(-0.5f*THROW_SIZE*RATIO,-0.5f*THROW_SIZE*RATIO));
-            hull->m_vertices.push_back(Vec2f(0.5f*THROW_SIZE*RATIO,-0.5f*THROW_SIZE*RATIO));
-            hull->CalculateNormals();
-            hull->CalculateAABB();
-            hull->SetWorldCenter(Vec2f(screenPosition.x,screenPosition.y));
-            AddConvexHull(hull);
-    }
-    */
+			if(contactInfo->GetFixtureA()==_throwBody.LookUpFixture(("Throw")))
+			{
+				ProcessContact(contactInfo,contactInfo->GetFixtureB());
+			}
+
+			if(contactInfo->GetFixtureB()==_throwBody.LookUpFixture(("Throw")))
+			{
+				ProcessContact(contactInfo,contactInfo->GetFixtureA());
+			}
+
+			break;
+		}
+
+	case Event_Simulate:
+		{
+			Simulate();
+			break;
+		}
+
+	default:
+		break;
+	}
+
+	return false;
 }
 
 void ThrowEntity::Simulate(void)
@@ -83,7 +101,7 @@ void ThrowEntity::Simulate(void)
     }
 }
 
-void ThrowEntity::BeginContact(b2Contact* contact, const b2Fixture* contactFixture )
+void ThrowEntity::ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture )
 {
     b2WorldManifold manifold;
     contact->GetWorldManifold(&manifold);

@@ -51,3 +51,8 @@ void Entity::Update( float deltaTime )
 void Entity::PostLoad(void)
 {
 }
+
+bool Entity::HandleEvent(const EventData& theevent)
+{
+	return false;
+}

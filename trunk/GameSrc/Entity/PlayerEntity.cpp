@@ -4,6 +4,7 @@
 #include "../System/PhysicsManager.hpp"
 #include "../System/ResourceManager.hpp"
 #include "../System/EventManager.hpp"
+#include "../Event/ContactEventData.h"
 
 template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
@@ -29,7 +30,7 @@ void PlayerEntity::Kill(void)
     _dead = true;
 }
 
-void PlayerEntity::Simulate( void )
+void PlayerEntity::Control( void )
 {
     if(_dead) return;
 
@@ -118,14 +119,46 @@ void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
 
 		_ballBody.CreateFixture( fixtureDefinition, "Ball" );
 
-		_ballBody.SetSimulateCallback( BIND_MEM_CB( &PlayerEntity::Simulate, this ) );
-		_ballBody.SetBeginConactCallback( BIND_MEM_CB( &PlayerEntity::BeginContact, this ) );
-
         _ballBody.ResetTransform();
     }
 }
 
-void PlayerEntity::BeginContact(b2Contact* contact, const b2Fixture* contactFixture )
+bool PlayerEntity::HandleEvent(const EventData& theevent)
+{
+	switch (theevent.GetEventType())
+	{
+	case Event_BeginContact:
+		{
+			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.GetContact();
+
+			if(contactInfo->GetFixtureA()==_ballBody.LookUpFixture(("Ball")))
+			{
+				ProcessContact(contactInfo,contactInfo->GetFixtureB());
+			}
+
+			if(contactInfo->GetFixtureB()==_ballBody.LookUpFixture(("Ball")))
+			{
+				ProcessContact(contactInfo,contactInfo->GetFixtureA());
+			}
+
+			break;
+		}
+
+	case Event_Simulate:
+		{
+			Control();
+			break;
+		}
+
+	default:
+		break;
+	}
+
+	return false;
+}
+
+void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture )
 {
     b2WorldManifold manifold;
     contact->GetWorldManifold(&manifold);

@@ -2,6 +2,7 @@
 #include "../Entity/BlockEntity.hpp"
 #include "../System/PhysicsManager.hpp"
 #include "../System/ResourceManager.hpp"
+#include "../Event/ContactEventData.h"
 
 REGISTER_ENTITY( BlockEntity, "Block")
 
@@ -49,11 +50,43 @@ void BlockEntity::Initialize( const TiXmlElement *propertyElement )
 
 		_blockBody.CreateFixture( fixtureDefinition, "Block" );
 
-		_blockBody.SetSimulateCallback( BIND_MEM_CB( &BlockEntity::Simulate, this ) );
-		_blockBody.SetBeginConactCallback( BIND_MEM_CB( &BlockEntity::BeginContact, this ) );
-
 		_blockBody.ResetTransform();
     }
+}
+
+bool BlockEntity::HandleEvent(const EventData& theevent)
+{
+	switch (theevent.GetEventType())
+	{
+	case Event_BeginContact:
+		{
+			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.GetContact();
+
+			if(contactInfo->GetFixtureA()==_blockBody.LookUpFixture(("Block")))
+			{
+				ProcessContact(contactInfo,contactInfo->GetFixtureB());
+			}
+
+			if(contactInfo->GetFixtureB()==_blockBody.LookUpFixture(("Block")))
+			{
+				ProcessContact(contactInfo,contactInfo->GetFixtureA());
+			}
+
+			break;
+		}
+
+	case Event_Simulate:
+		{
+			Simulate();
+			break;
+		}
+
+	default:
+		break;
+	}
+
+	return false;
 }
 
 void BlockEntity::Simulate(void)
@@ -64,7 +97,7 @@ void BlockEntity::Simulate(void)
     }
 }
 
-void BlockEntity::BeginContact(b2Contact* contact, const b2Fixture* contactFixture )
+void BlockEntity::ProcessContact( const b2Contact* contact, const b2Fixture* contactFixture )
 {
     IPhysics *targetInterface = GetPhysicsInterface(contactFixture);
 

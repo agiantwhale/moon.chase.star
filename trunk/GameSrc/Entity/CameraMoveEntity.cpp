@@ -4,6 +4,7 @@
 #include "../Event/EventsDef.h"
 #include "../Event/CameraMoveEventData.hpp"
 #include "../System/GraphicsManager.hpp"
+#include "../Event/ContactEventData.h"
 
 REGISTER_ENTITY( CameraMoveEntity, "CameraMove")
 
@@ -70,7 +71,7 @@ void CameraMoveEntity::Initialize( const TiXmlElement *propertyElement )
     }
 }
 
-void CameraMoveEntity::BeginContact(b2Contact* contact, const b2Fixture* contactFixture )
+void CameraMoveEntity::ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture )
 {
     IPhysics *targetInterface = GetPhysicsInterface(contactFixture);
 
@@ -86,14 +87,40 @@ void CameraMoveEntity::BeginContact(b2Contact* contact, const b2Fixture* contact
 
 bool CameraMoveEntity::HandleEvent( const EventData& theevent )
 {
-	if( theevent.GetEventType() == Event_CameraMove )
+	switch (theevent.GetEventType())
 	{
-		const CameraMoveEventData& eventData = static_cast<const CameraMoveEventData&>(theevent);
-		if( eventData.IsFinal() )
+	case Event_BeginContact:
 		{
-			_startMoving = false;
+			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.GetContact();
+
+			if(contactInfo->GetFixtureA()==_triggerBody.LookUpFixture(("Trigger")))
+			{
+				ProcessContact(contactInfo,contactInfo->GetFixtureB());
+			}
+
+			if(contactInfo->GetFixtureB()==_triggerBody.LookUpFixture(("Trigger")))
+			{
+				ProcessContact(contactInfo,contactInfo->GetFixtureA());
+			}
+
+			break;
 		}
+
+	case Event_CameraMove:
+		{
+			const CameraMoveEventData& eventData = static_cast<const CameraMoveEventData&>(theevent);
+			if( eventData.IsFinal() )
+			{
+				_startMoving = false;
+			}
+		}
+
+	default:
+		break;
 	}
+
+	return false;
 
 	return false;
 }

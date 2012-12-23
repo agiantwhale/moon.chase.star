@@ -2,6 +2,8 @@
 #include "../App/Game.hpp"
 #include "../System/PhysicsManager.hpp"
 #include "../System/Debug/PhysicsDebugDraw.hpp"
+#include "../System/EventManager.hpp"
+#include "../Event/ContactEventData.h"
 
 SINGLETON_CONSTRUCTOR( PhysicsManager ),	_physicsWorld( NULL ),
 											_isPhysicsSetUp( false ),
@@ -81,13 +83,17 @@ void PhysicsManager::Render(void)
 
 void PhysicsManager::SingleStep( void )
 {
-    const float physicsDT = 1.0f/60.0f;
+	const float physicsDT = 1.0f/60.0f;
+	/*
 	for( PhysicsList::iterator iter = _physicsList.begin();
 		iter != _physicsList.end(); iter++ )
 	{
 		IPhysics* physics = *iter;
 		physics->Simulate();
 	}
+	*/
+
+	EventManager::GetInstance()->TriggerEvent(new EventData(Event_Simulate));
 
 	_physicsWorld->Step( physicsDT, 10, 10);
 }
@@ -115,18 +121,10 @@ void PhysicsManager::SharpStep( void )
 
 void PhysicsManager::BeginContact(b2Contact* contact)
 {
-    IPhysics *interfaceA = GetPhysicsInterface(contact->GetFixtureA());
-    IPhysics *interfaceB = GetPhysicsInterface(contact->GetFixtureB());
-
-    if(interfaceA) interfaceA->BeginContact(contact, contact->GetFixtureB());
-    if(interfaceB) interfaceB->BeginContact(contact, contact->GetFixtureA());
+	EventManager::GetInstance()->TriggerEvent(new ContactEventData(contact,Event_BeginContact));
 }
 
 void PhysicsManager::EndContact(b2Contact* contact)
 {
-    IPhysics *interfaceA = GetPhysicsInterface(contact->GetFixtureA());
-    IPhysics *interfaceB = GetPhysicsInterface(contact->GetFixtureB());
-
-    if(interfaceA) interfaceA->EndContact(contact, contact->GetFixtureB());
-    if(interfaceB) interfaceB->EndContact(contact, contact->GetFixtureA());
+    EventManager::GetInstance()->TriggerEvent(new ContactEventData(contact,Event_EndContact));
 }

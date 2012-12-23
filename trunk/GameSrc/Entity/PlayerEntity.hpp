@@ -7,7 +7,7 @@
 
 class PlayerEntity : public Entity
 {
-    DEFINE_ENTITY(PlayerEntity,Entity,'BALL')
+    DEFINE_ENTITY(PlayerEntity,Entity,'BALL',"Ball")
 
 public:
     enum PlayerState
@@ -18,8 +18,9 @@ public:
     };
 
     virtual void Initialize( const TiXmlElement *propertyElement );
-    virtual void BeginContact(b2Contact* contact, const b2Fixture* contactFixture );
-    virtual void Simulate(void);
+	virtual bool HandleEvent(const EventData& theevent);
+    virtual void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
+    virtual void Control(void);
     virtual void Update(float deltaTime);
 
     void Kill(void);

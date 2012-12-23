@@ -45,6 +45,7 @@
     <ClInclude Include="GameSrc\Entity\HullEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\PlayerEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\ThrowEntity.hpp" />
+    <ClInclude Include="GameSrc\Event\ContactEventData.h" />
     <ClInclude Include="GameSrc\Event\CameraMoveEventData.hpp" />
     <ClInclude Include="GameSrc\Event\EventData.hpp" />
     <ClInclude Include="GameSrc\Event\EventsDef.h" />

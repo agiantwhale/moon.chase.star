@@ -5,15 +5,14 @@
 #include "../Entity/Component/BodyWrapper.hpp"
 #include "../Interface/IEventListner.hpp"
 
-class CameraMoveEntity : public Entity, public IEventListener
+class CameraMoveEntity : public Entity
 {
-    DEFINE_ENTITY( CameraMoveEntity, Entity, 'CMMV')
+    DEFINE_ENTITY( CameraMoveEntity, Entity, 'CMMV',"Camera")
 
 public:
     virtual void Initialize( const TiXmlElement *propertyElement = NULL );
-    virtual void BeginContact(b2Contact* contact, const b2Fixture* contactFixture );
+	virtual void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
 	virtual bool HandleEvent( const EventData& theevent );
-	virtual const std::string& GetEventListenerName() { return "CameraMoveEntity"; }
 	virtual void Update( float deltaTime );
 
     void MoveCamera(bool finalize);

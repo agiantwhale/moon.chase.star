@@ -8,11 +8,12 @@
 
 class ThrowEntity : public Entity
 {
-    DEFINE_ENTITY( ThrowEntity, Entity, 'THRW')
+    DEFINE_ENTITY( ThrowEntity, Entity, 'THRW',"Throw")
 
 public:
     virtual void Initialize( const TiXmlElement *propertyElement = NULL );
-    virtual void BeginContact(b2Contact* contact, const b2Fixture* contactFixture );
+	virtual bool HandleEvent(const EventData& theevent);
+    virtual void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
     virtual void Simulate(void);
 
 private:

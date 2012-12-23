@@ -31,7 +31,7 @@ class EntityManager : public Singleton<EntityManager>, public IEventListener
 	DEFINE_SINGLETON( EntityManager )
 
 public:
-	virtual const std::string& GetEventListenerName( void ) { return "EntityManager"; }
+	virtual const std::string& GetEventListenerName( void ) const { return "EntityManager"; }
 	virtual bool HandleEvent( const EventData& newevent );
 
 	void Update(float deltaTime);

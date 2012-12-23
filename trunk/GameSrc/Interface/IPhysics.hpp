@@ -17,13 +17,9 @@ public:
 	IPhysics(Entity* const entity);
 	virtual ~IPhysics();
 
-	virtual void Simulate( void ) = 0;
 	virtual void UpdateTransform( void ) = 0;
 	virtual void SmoothenTransform( float remainderRatio ) = 0;
 	virtual void ResetTransform( void ) = 0;
-
-	virtual void BeginContact(b2Contact* contact, const b2Fixture* contactFixture ) = 0;
-	virtual void EndContact(b2Contact* contact, const b2Fixture* contactFixture ) = 0;
 
     inline Entity* const GetEntity(void) const {return _entity;}
 

@@ -4,6 +4,12 @@
 enum EventType
 {
 	Event_UNDEFINED = 0,
+
+	//Physics related
+	Event_BeginContact,
+	Event_EndContact,
+	Event_Simulate,
+
 	Event_BallDied,
 	Event_CameraMove,
 	Event_LevelCompleted,
