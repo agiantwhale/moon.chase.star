@@ -15,7 +15,7 @@ public:
 	virtual void Render(void);
 	virtual void Exit(void);
 
-public:
+private:
 	enum IntroStatus
 	{
 		FADE_IN,
