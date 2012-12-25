@@ -33,6 +33,8 @@ bool InGameState::Update(float deltaTime)
 	PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
 	EntityManager::GetInstance()->Update( deltaTime );
 	EventManager::GetInstance()->Update( deltaTime );
+
+	return true;
 }
 
 void InGameState::Exit()

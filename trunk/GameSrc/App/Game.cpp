@@ -44,26 +44,14 @@ void Game::Start( void )
 
 	while(_isRunning)
 	{
-		if( !HandleEvents() ) return;
 		Update();
 		Render();
 	}
 }
 
-bool Game::HandleEvents(void)
+bool Game::HandleEvent(const EventData& theevent)
 {
-    sf::Event windowEvent;
-    while(pollEvent(windowEvent))
-    {
-        if(windowEvent.type == sf::Event::Closed)
-        {
-            close();
-            _isRunning = false;
-            return false;
-        }
-    }
-
-    return true;
+	return false;
 }
 
 void Game::Update(void)

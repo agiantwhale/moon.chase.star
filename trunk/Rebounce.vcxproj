@@ -21,6 +21,7 @@
     <ClCompile Include="GameSrc\Entity\HullEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\PlayerEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\ThrowEntity.cpp" />
+    <ClCompile Include="GameSrc\Event\EventData.cpp" />
     <ClCompile Include="GameSrc\Interface\IPhysics.cpp" />
     <ClCompile Include="GameSrc\Interface\IRenderable.cpp" />
     <ClCompile Include="GameSrc\Interface\IState.cpp" />

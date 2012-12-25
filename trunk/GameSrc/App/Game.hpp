@@ -5,9 +5,10 @@
 #include <glog\logging.h>
 
 #include "../Interface/IState.hpp"
+#include "../Interface/IEventListner.hpp"
 #include "../Base/Singleton.hpp"
 
-class Game : public Singleton<Game>, public sf::RenderWindow
+class Game : public Singleton<Game>, public sf::RenderWindow, public IEventListener
 {
 	DEFINE_SINGLETON( Game )
 
@@ -23,7 +24,8 @@ public:
 	inline float GetTime(void) const { return _gameClock.getElapsedTime().asSeconds(); }
 
 private:
-    bool HandleEvents(void);
+	virtual bool HandleEvent(const EventData& theevent);
+	virtual const std::string& GetEventListenerName() const { return "GameApp"; }
     void Update(void);
 	void Render(void);
 
