@@ -118,11 +118,19 @@ void ThrowEntity::ProcessContact(const b2Contact* contact, const b2Fixture* cont
 
             if(interfaceA && interfaceA->GetEntity()->GetEntityType() == 'BALL')
             {
-                _targetEntity = entity_cast<PlayerEntity>(interfaceA->GetEntity());
+				Entity* entity = interfaceA->GetEntity();
+				if( entity->GetEntityType() == PlayerEntity::kEntity_PlayerEntity )
+				{
+					_targetEntity = static_cast<PlayerEntity*>(entity);
+				}
             }
             if(interfaceB && interfaceB->GetEntity()->GetEntityType() == 'BALL')
             {
-                _targetEntity = entity_cast<PlayerEntity>(interfaceB->GetEntity());
+				Entity* entity = interfaceB->GetEntity();
+				if( entity->GetEntityType() == PlayerEntity::kEntity_PlayerEntity )
+				{
+					_targetEntity = static_cast<PlayerEntity*>(entity);
+				}
             }
         }
     }

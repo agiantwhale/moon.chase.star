@@ -34,7 +34,7 @@ bool InGameState::Update(float deltaTime)
 	EntityManager::GetInstance()->Update( deltaTime );
 	EventManager::GetInstance()->Update( deltaTime );
 
-	return true;
+	return false;
 }
 
 void InGameState::Exit()

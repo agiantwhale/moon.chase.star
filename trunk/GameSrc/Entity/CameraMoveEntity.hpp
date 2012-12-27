@@ -7,7 +7,7 @@
 
 class CameraMoveEntity : public Entity
 {
-    DEFINE_ENTITY( CameraMoveEntity, Entity, 'CMMV',"Camera")
+    DEFINE_ENTITY( CameraMoveEntity, Entity, 'CMMV')
 
 public:
     virtual void Initialize( const TiXmlElement *propertyElement = NULL );

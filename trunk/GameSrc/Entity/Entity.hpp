@@ -23,9 +23,6 @@ public:
 	virtual void PostLoad(void);
 	virtual bool HandleEvent(const EventData& theevent);
 	virtual int GetEntityType( void ) const { return 'BASE'; }
-	static int GetEntityClassType( void ) { return 'BASE'; }
-	virtual const std::string& GetEntityName(void) const {return "Entity";}
-	virtual const std::string& GetEventListenerName() const {return GetEntityName();}
 
 	inline void Release( void ) { _released = true; }
 	inline const bool IsReleased( void ) const { return _released; }
@@ -44,18 +41,7 @@ protected:
 	friend class EntityList;
 };
 
-template< class T >
-T* entity_cast( Entity *p )
-{
-	if( p->GetEntityType() == T::GetEntityClassType() )
-	{
-		return static_cast<T*>(p);
-	}
-
-	return NULL;
-}
-
-#define DEFINE_ENTITY( ThisName, BaseName, EntType, EntName )\
+#define DEFINE_ENTITY( ThisName, BaseName, EntType )\
 	public:\
 	enum\
 	{\
@@ -65,8 +51,6 @@ T* entity_cast( Entity *p )
 	typedef ThisName ThisClass;\
 	friend class EntityBuilder<ThisName>;\
 	virtual int GetEntityType( void ) const { return EntType; }\
-	static int GetEntityClassType( void ) { return EntType; }\
-	virtual const std::string& GetEntityName(void) const {return EntName;}\
 	protected:\
 	ThisName();\
 	virtual ~ThisName( void );

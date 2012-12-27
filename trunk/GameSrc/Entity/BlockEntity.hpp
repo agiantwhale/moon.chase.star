@@ -7,7 +7,7 @@
 
 class BlockEntity : public Entity
 {
-    DEFINE_ENTITY( BlockEntity, Entity, 'BLCK',"Block")
+    DEFINE_ENTITY( BlockEntity, Entity, 'BLCK')
 
 public:
     virtual void Initialize( const TiXmlElement *propertyElement = NULL );

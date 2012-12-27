@@ -2,7 +2,7 @@
 #include "../System/GraphicsManager.hpp"
 #include "../App/Game.hpp"
 
-SINGLETON_CONSTRUCTOR(GraphicsManager), _renderLayerStack()
+SINGLETON_CONSTRUCTOR(GraphicsManager), IEventListener("GraphicsManager"), _renderLayerStack()
 {
 }
 

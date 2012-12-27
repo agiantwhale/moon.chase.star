@@ -7,7 +7,7 @@
 
 class PlayerEntity : public Entity
 {
-    DEFINE_ENTITY(PlayerEntity,Entity,'BALL',"Ball")
+    DEFINE_ENTITY(PlayerEntity,Entity,'BALL')
 
 public:
     enum PlayerState

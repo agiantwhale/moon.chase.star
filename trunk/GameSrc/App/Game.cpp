@@ -1,4 +1,6 @@
 #include "../App/Game.hpp"
+
+//Managers
 #include "../System/GraphicsManager.hpp"
 #include "../System/EntityManager.hpp"
 #include "../System/PhysicsManager.hpp"
@@ -9,7 +11,8 @@
 #include "../Tile/Tile.hpp"
 
 
-SINGLETON_CONSTRUCTOR( Game ), sf::RenderWindow(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"Bounce",sf::Style::Close), _isRunning( true ), _frameClock(), _gameClock()
+SINGLETON_CONSTRUCTOR( Game ), sf::RenderWindow(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"Bounce",sf::Style::Close), _isRunning( true ), _frameClock(), _gameClock(),
+								IEventListener("GameApp"), _currentStateType(State_UNDEFINED), _nextStateType(State_UNDEFINED), _currentState(nullptr)
 {
 }
 
@@ -54,21 +57,50 @@ bool Game::HandleEvent(const EventData& theevent)
 	return false;
 }
 
+void Game::ChangeStates(void)
+{
+	if(_shouldSwitchState)
+	{
+		_shouldSwitchState = false;
+
+		if(_nextStateType != State_UNDEFINED)
+		{
+			_currentStateType = _nextStateType;
+			_nextStateType = State_UNDEFINED;
+			StateMap::const_iterator iter = _stateMap.find(_currentStateType);
+
+			assert(iter == _stateMap.end());
+
+			_currentState->Exit();
+			_currentState = iter->second;
+			_currentState->Enter();
+		}
+	}
+}
+
 void Game::Update(void)
 {
 	float deltaTime = _frameClock.restart().asSeconds();
 
+	_shouldSwitchState = _currentState->Update(deltaTime);
+
+	/*
 	PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
 	EntityManager::GetInstance()->Update( deltaTime );
 	EventManager::GetInstance()->Update( deltaTime );
+	*/
 }
 
 void Game::Render( void )
 {
     clear();
 
+	_currentState->Render();
+
+	/*
 	GraphicsManager::GetInstance()->Render();
 	PhysicsManager::GetInstance()->Render();
+	*/
 
 	display();
 }

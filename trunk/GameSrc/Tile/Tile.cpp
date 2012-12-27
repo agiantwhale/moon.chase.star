@@ -5,7 +5,7 @@
 
 std::unordered_map<std::string,std::string> Tile::_tilesetMap;
 
-Tile::Tile() :IRenderable( nullptr ), _tileTexture(nullptr)
+Tile::Tile() :IRenderable( nullptr ), IEventListener("Tile"), _tileTexture(nullptr)
 {
 }
 

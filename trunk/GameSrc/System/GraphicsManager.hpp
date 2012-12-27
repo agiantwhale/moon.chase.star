@@ -15,7 +15,6 @@ class GraphicsManager : public Singleton<GraphicsManager>, public IEventListener
 	DEFINE_SINGLETON( GraphicsManager );
 
 public:
-	virtual const std::string& GetEventListenerName( void ) const { return "GraphicsManager"; }
 	virtual bool HandleEvent( const EventData& newevent );
 
     void AddRenderable(IRenderable* const renderable);

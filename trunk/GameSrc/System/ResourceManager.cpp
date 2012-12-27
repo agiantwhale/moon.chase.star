@@ -1,7 +1,7 @@
 #include "../App/Game.hpp"
 #include "../System/ResourceManager.hpp"
 
-SINGLETON_CONSTRUCTOR( TextureManager )
+SINGLETON_CONSTRUCTOR( TextureManager ), IEventListener("TextureManager")
 {
 }
 
@@ -32,7 +32,7 @@ sf::Texture* TextureManager::Load( const std::string& strId ) {
 }
 
 
-SINGLETON_CONSTRUCTOR( SoundBufferManager )
+SINGLETON_CONSTRUCTOR( SoundBufferManager ), IEventListener("SoundBufferManager")
 {
 }
 

@@ -27,7 +27,7 @@ void EventManager::RemoveListener(IEventListener* const listenerptr, const Event
 	EventListenersMap::const_iterator iter = _eventListnersMap.find( eventtype );
 	if( iter == _eventListnersMap.end() )
 	{
-		LOG(ERROR) << "Attempted to remove unregistered EventListener " << listenerptr->GetEventListenerName() << "!";
+		LOG(ERROR) << "Attempted to remove unregistered EventListener " << listenerptr->GetHandlerName() << "!";
 		return;
 	}
 

@@ -7,7 +7,7 @@
 #include "../Entity/Entity.hpp"
 #include "../Tile/Tile.hpp"
 
-SINGLETON_CONSTRUCTOR(SceneManager), _sceneLoaded(false), _sceneFileName()
+SINGLETON_CONSTRUCTOR(SceneManager), IEventListener("SceneManager"), _sceneLoaded(false), _sceneFileName()
 {
 }
 

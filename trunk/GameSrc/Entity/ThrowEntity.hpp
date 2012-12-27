@@ -8,7 +8,7 @@
 
 class ThrowEntity : public Entity
 {
-    DEFINE_ENTITY( ThrowEntity, Entity, 'THRW',"Throw")
+    DEFINE_ENTITY( ThrowEntity, Entity, 'THRW')
 
 public:
     virtual void Initialize( const TiXmlElement *propertyElement = NULL );

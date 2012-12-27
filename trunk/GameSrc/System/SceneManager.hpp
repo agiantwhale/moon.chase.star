@@ -13,7 +13,6 @@ class SceneManager : public Singleton<SceneManager>, public IEventListener
 	DEFINE_SINGLETON( SceneManager );
 
 public:
-	virtual const std::string& GetEventListenerName( void ) const { return "SceneManager"; }
 	virtual bool HandleEvent( const EventData& newevent );
 
 	void LoadScene( const std::string& mapName );

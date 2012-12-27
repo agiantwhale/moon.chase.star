@@ -18,6 +18,8 @@ IntroState::~IntroState()
 
 void IntroState::Enter(void)
 {
+	Game::GetInstance()->SetNextStateType(State_InGame);
+
 	_currentStatus = FADE_IN;
 	_splashTimer.restart();
 	_splashSprite = new sf::Sprite( *TextureManager::GetInstance()->GetResource( "Resource/Texture/Splash.png" ) );
@@ -44,7 +46,7 @@ bool IntroState::Update( float deltaTime )
 				_splashTimer.restart();
 			}
 
-			return true;
+			return false;
 		}
 
 	case WAIT:
@@ -55,7 +57,7 @@ bool IntroState::Update( float deltaTime )
 				_splashTimer.restart();
 			}
 
-			return true;
+			return false;
 		}
 
 	case FADE_OUT:
@@ -65,7 +67,7 @@ bool IntroState::Update( float deltaTime )
 
 			if(elapsedTime > FADE_TIME)
 			{
-				return false;
+				return true;
 			}
 
 			return true;

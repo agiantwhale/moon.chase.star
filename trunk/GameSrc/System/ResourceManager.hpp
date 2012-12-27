@@ -70,7 +70,6 @@ class TextureManager : public Singleton<TextureManager>, public ResourceManager<
     DEFINE_SINGLETON(TextureManager)
 
 protected:
-	virtual const std::string& GetEventListenerName( void ) const { return "TextureManager"; }
 	virtual bool HandleEvent( const EventData& newevent );
     virtual sf::Texture* Load( const std::string& strId );
 };
@@ -80,7 +79,6 @@ class SoundBufferManager : public Singleton<SoundBufferManager>, public Resource
     DEFINE_SINGLETON( SoundBufferManager )
 
 protected:
-	virtual const std::string& GetEventListenerName( void ) const { return "SoundBufferManager"; }
 	virtual bool HandleEvent( const EventData& newevent );
     virtual sf::SoundBuffer* Load( const std::string& strId );
 };

@@ -14,7 +14,6 @@ public:
 	Tile();
     virtual ~Tile();
 
-	virtual const std::string& GetEventListenerName( void ) const { return "Tile"; }
 	virtual bool HandleEvent( const EventData& newevent );
 
     virtual void Render(void);

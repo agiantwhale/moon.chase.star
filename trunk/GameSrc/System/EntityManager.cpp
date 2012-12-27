@@ -4,7 +4,7 @@
 #include "../System/ResourceManager.hpp"
 #include "../Entity/Entity.hpp"
 
-EntityList::EntityList() :  std::unordered_multimap<int,Entity*>()
+EntityList::EntityList() :  std::map<int,Entity*>()
 {
 	clear();
 }
@@ -84,7 +84,7 @@ void EntityList::PostLoad(void)
 	}
 }
 
-SINGLETON_CONSTRUCTOR( EntityManager ), _entityList()
+SINGLETON_CONSTRUCTOR( EntityManager ), IEventListener("EntityManager"), _entityList()
 {
 }
 

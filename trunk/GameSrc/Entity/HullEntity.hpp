@@ -6,7 +6,7 @@
 
 class HullEntity : public Entity
 {
-    DEFINE_ENTITY( HullEntity, Entity, 'HULL',"Hull")
+    DEFINE_ENTITY( HullEntity, Entity, 'HULL')
 
 public:
     virtual void Initialize( const TiXmlElement *propertyElement = NULL );

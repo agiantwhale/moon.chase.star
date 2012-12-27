@@ -3,6 +3,7 @@
 
 #include <list>
 #include <string>
+#include <map>
 #include <unordered_map>
 #include "../Base/Singleton.hpp"
 #include "../Interface/IEventListner.hpp"
@@ -12,7 +13,7 @@ using namespace std;
 class Entity;
 class IEntityBuilder;
 
-class EntityList : private std::unordered_multimap<int, Entity*>
+class EntityList : private std::map<int, Entity*>
 {
 public:
 	EntityList();
@@ -31,7 +32,6 @@ class EntityManager : public Singleton<EntityManager>, public IEventListener
 	DEFINE_SINGLETON( EntityManager )
 
 public:
-	virtual const std::string& GetEventListenerName( void ) const { return "EntityManager"; }
 	virtual bool HandleEvent( const EventData& newevent );
 
 	void Update(float deltaTime);

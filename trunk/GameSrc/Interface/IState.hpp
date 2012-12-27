@@ -1,6 +1,8 @@
 #ifndef ISTATE_HPP
 #define ISTATE_HPP
 
+#include "../State/StatesDef.h"
+
 class IState
 {
 public:
@@ -8,7 +10,7 @@ public:
 	virtual ~IState();
 
 	virtual void Enter( void );
-	//Return false when stop updating and continue.
+	//Return true when stop updating and continue.
 	virtual bool Update( float deltaTime ) = 0;
 	virtual void Render( void ) = 0;
 	virtual void Exit( void );
