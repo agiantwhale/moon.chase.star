@@ -5,6 +5,8 @@
 #include <glog\logging.h>
 #include <unordered_map>
 
+#include <Gwen/Controls/Canvas.h>
+
 #include "../Interface/IState.hpp"
 #include "../Interface/IEventListner.hpp"
 #include "../Base/Singleton.hpp"
@@ -45,6 +47,8 @@ private:
 
 	sf::Clock         _frameClock;
 	sf::Clock		  _gameClock;
+
+	Gwen::Controls::Canvas* pCanvas;
 };
 
 #endif

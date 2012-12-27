@@ -10,6 +10,11 @@
 
 #include "../Tile/Tile.hpp"
 
+#include <Gwen/Gwen.h>
+#include <Gwen/Renderers/SFML.h>
+#include <Gwen/Skins/TexturedBase.h>
+#include <Gwen/Controls/Button.h>
+
 
 SINGLETON_CONSTRUCTOR( Game ), sf::RenderWindow(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"Bounce",sf::Style::Close), _isRunning( true ), _frameClock(), _gameClock(),
 								IEventListener("GameApp"), _currentStateType(State_UNDEFINED), _nextStateType(State_UNDEFINED), _currentState(nullptr)
@@ -38,6 +43,19 @@ void Game::Initialize( void )
 
 	eventMgr->AddListener( EntityManager::GetInstance(), Event_RestartLevel );
 	eventMgr->AddListener( SceneManager::GetInstance(), Event_RestartLevel );
+
+	Gwen::Skin::TexturedBase* skin = new Gwen::Skin::TexturedBase( new Gwen::Renderer::SFML(*this) );
+	skin->Init( "DefaultSkin.png" );
+	skin->SetDefaultFont( L"OpenSans.ttf", 11 );
+
+	pCanvas = new Gwen::Controls::Canvas( skin );
+	pCanvas->SetSize( getSize().x, getSize().y );
+	pCanvas->SetDrawBackground( true );
+	pCanvas->SetBackgroundColor( Gwen::Color( 150, 170, 170, 255 ) );
+
+	Gwen::Controls::Button* pButton = new Gwen::Controls::Button( pCanvas );
+	pButton->SetBounds( 10, 10, 200, 100 );
+	pButton->SetText( "My First Button" );
 }
 
 void Game::Start( void )
@@ -82,7 +100,7 @@ void Game::Update(void)
 {
 	float deltaTime = _frameClock.restart().asSeconds();
 
-	_shouldSwitchState = _currentState->Update(deltaTime);
+	//_shouldSwitchState = _currentState->Update(deltaTime);
 
 	/*
 	PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
@@ -95,7 +113,9 @@ void Game::Render( void )
 {
     clear();
 
-	_currentState->Render();
+	pCanvas->RenderCanvas();
+
+	//_currentState->Render();
 
 	/*
 	GraphicsManager::GetInstance()->Render();

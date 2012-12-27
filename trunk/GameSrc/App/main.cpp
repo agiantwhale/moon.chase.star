@@ -8,7 +8,7 @@ int main(int argc,char *argv[])
 	google::InitGoogleLogging(argv[0]);
 	google::SetLogDestination(google::INFO, "Rebounce_Game" );
 	google::SetLogDestination(google::WARNING, "Rebounce_Game" );
-	google::SetLogDestination(google::ERROR, "Rebounce_Game" );
+	//google::SetLogDestination(google::ERROR, "Rebounce_Game" );
 	google::SetLogDestination(google::FATAL, "Rebounce_Game" );
 	google::SetLogFilenameExtension(".log");
 
