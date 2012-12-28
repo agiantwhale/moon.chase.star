@@ -2,19 +2,10 @@
 
 //Managers
 #include "../System/GraphicsManager.hpp"
-#include "../System/EntityManager.hpp"
 #include "../System/PhysicsManager.hpp"
-#include "../System/ResourceManager.hpp"
-#include "../System/SceneManager.hpp"
-#include "../System/EventManager.hpp"
+#include "../System/GUIManager.hpp"
 
 #include "../Tile/Tile.hpp"
-
-#include <Gwen/Gwen.h>
-#include <Gwen/Renderers/SFML.h>
-#include <Gwen/Skins/TexturedBase.h>
-#include <Gwen/Controls/Button.h>
-#include <Gwen/Controls/WindowControl.h>
 
 
 SINGLETON_CONSTRUCTOR( Game ), sf::RenderWindow(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"Bounce",sf::Style::Close), _isRunning( true ), _frameClock(), _gameClock(),
@@ -30,20 +21,11 @@ void Game::Initialize( void )
 {
     PhysicsManager::GetInstance()->SetUpPhysics();
     GraphicsManager::GetInstance()->SetUpGraphics();
+	GUIManager::GetInstance()->SetUpGUI();
 
     Tile::RegisterTileset("Rect", "Resource/Ogmo/Tiles/Rect.png");
 
     LOG(INFO) << "Game initialized.";
-
-    EventManager* eventMgr = EventManager::GetInstance();
-    eventMgr->AddListener( EntityManager::GetInstance(), Event_Unload );
-    eventMgr->AddListener( GraphicsManager::GetInstance(), Event_Unload );
-    eventMgr->AddListener( TextureManager::GetInstance(), Event_Unload );
-    eventMgr->AddListener( SoundBufferManager::GetInstance(), Event_Unload );
-    eventMgr->AddListener( SceneManager::GetInstance(), Event_Unload );
-
-    eventMgr->AddListener( EntityManager::GetInstance(), Event_RestartLevel );
-    eventMgr->AddListener( SceneManager::GetInstance(), Event_RestartLevel );
 }
 
 void Game::Start( void )
@@ -75,7 +57,7 @@ void Game::PollEvents(void)
             _isRunning = false;
         }
 
-        sfml.ProcessMessage(windowEvent);
+		GUIManager::GetInstance()->FeedEvent(windowEvent);
     }
 }
 
@@ -105,26 +87,15 @@ void Game::Update(void)
     float deltaTime = _frameClock.restart().asSeconds();
 
     //_shouldSwitchState = _currentState->Update(deltaTime);
-
-    /*
-    PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
-    EntityManager::GetInstance()->Update( deltaTime );
-    EventManager::GetInstance()->Update( deltaTime );
-    */
 }
 
 void Game::Render( void )
 {
     clear();
 
-    pCanvas->RenderCanvas();
-
     //_currentState->Render();
 
-    /*
-    GraphicsManager::GetInstance()->Render();
-    PhysicsManager::GetInstance()->Render();
-    */
+	GUIManager::GetInstance()->Render();
 
     display();
 }
