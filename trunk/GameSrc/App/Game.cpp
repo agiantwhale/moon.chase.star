@@ -7,6 +7,8 @@
 
 #include "../Tile/Tile.hpp"
 
+#include <boost/lexical_cast.hpp>
+
 
 SINGLETON_CONSTRUCTOR( Game ),
 	sf::RenderWindow(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"Bounce",sf::Style::Close),
@@ -64,7 +66,7 @@ void Game::PollEvents(void)
             _isRunning = false;
         }
 
-		GUIManager::GetInstance()->FeedEvent(windowEvent);
+		_currentState->HandleAppEvent(windowEvent);
     }
 }
 
@@ -93,16 +95,14 @@ void Game::Update(void)
 {
     float deltaTime = _frameClock.restart().asSeconds();
 
-    //_shouldSwitchState = _currentState->Update(deltaTime);
+    _shouldSwitchState = _currentState->Update(deltaTime);
 }
 
 void Game::Render( void )
 {
     clear();
 
-    //_currentState->Render();
-
-	GUIManager::GetInstance()->Render();
+    _currentState->Render();
 
     display();
 }

@@ -1,6 +1,7 @@
 #ifndef ISTATE_HPP
 #define ISTATE_HPP
 
+#include <SFML/Graphics.hpp>
 #include "../State/StatesDef.h"
 
 class IState
@@ -10,7 +11,7 @@ public:
     virtual ~IState();
 
     virtual void Enter( void );
-    //Return true when stop updating and continue.
+    virtual void HandleAppEvent(sf::Event& appEvent);
     virtual bool Update( float deltaTime ) = 0;
     virtual void Render( void ) = 0;
     virtual void Exit( void );
