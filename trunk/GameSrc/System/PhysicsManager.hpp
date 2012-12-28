@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class PhysicsManager : public Singleton<PhysicsManager>, public b2ContactListener
+class PhysicsManager : public Singleton<PhysicsManager>, private b2ContactListener
 {
     DEFINE_SINGLETON( PhysicsManager )
 
@@ -21,9 +21,6 @@ public:
     void FixedUpdate( float deltaTime );
     void Render( void );
 
-    virtual void BeginContact(b2Contact* contact);
-    virtual void EndContact(b2Contact* contact);
-
     inline b2World* GetWorld( void ) const
     {
         return _physicsWorld;
@@ -34,6 +31,9 @@ public:
     }
 
 private:
+	virtual void BeginContact(b2Contact* contact);
+	virtual void EndContact(b2Contact* contact);
+
     typedef std::list<IPhysics*> PhysicsList;
     PhysicsList _physicsList;
 

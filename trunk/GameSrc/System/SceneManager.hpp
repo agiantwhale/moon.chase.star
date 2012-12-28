@@ -8,13 +8,11 @@
 #include "../Base/Singleton.hpp"
 #include "../Interface/IEventListner.hpp"
 
-class SceneManager : public Singleton<SceneManager>, public IEventListener
+class SceneManager : public Singleton<SceneManager>, private IEventListener
 {
     DEFINE_SINGLETON( SceneManager );
 
 public:
-    virtual bool HandleEvent( const EventData& newevent );
-
     void LoadScene( const std::string& mapName );
     void RestartScene( const std::string& mapName );
     void UnloadScene( void );
@@ -24,6 +22,8 @@ public:
     }
 
 private:
+	virtual bool HandleEvent( const EventData& newevent );
+
     bool _sceneLoaded;
     std::string _sceneFileName;
 };

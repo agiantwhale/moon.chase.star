@@ -8,8 +8,15 @@
 #include "../Tile/Tile.hpp"
 
 
-SINGLETON_CONSTRUCTOR( Game ), sf::RenderWindow(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"Bounce",sf::Style::Close), _isRunning( true ), _frameClock(), _gameClock(),
-                       IEventListener("GameApp"), _currentStateType(State_UNDEFINED), _nextStateType(State_UNDEFINED), _currentState(nullptr)
+SINGLETON_CONSTRUCTOR( Game ),
+	sf::RenderWindow(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"Bounce",sf::Style::Close),
+	_isRunning( true ),
+	_frameClock(),
+	_gameClock(),
+	IEventListener("GameApp"),
+	_currentStateType(State_UNDEFINED),
+	_nextStateType(State_UNDEFINED),
+	_currentState(nullptr)
 {
 }
 
@@ -19,9 +26,9 @@ SINGLETON_DESTRUCTOR( Game )
 
 void Game::Initialize( void )
 {
+	GUIManager::GetInstance()->SetUpGUI();
     PhysicsManager::GetInstance()->SetUpPhysics();
     GraphicsManager::GetInstance()->SetUpGraphics();
-	GUIManager::GetInstance()->SetUpGUI();
 
     Tile::RegisterTileset("Rect", "Resource/Ogmo/Tiles/Rect.png");
 

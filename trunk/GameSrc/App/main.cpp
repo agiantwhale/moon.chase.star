@@ -11,8 +11,6 @@ int main(int argc,char *argv[])
     google::SetLogDestination(3, "Rebounce_Game" ); //FATAL
     google::SetLogFilenameExtension(".log");
 
-    LOG(INFO) << "Game started.";
-
     Game::GetInstance()->Initialize();
 
     Game::GetInstance()->Start();

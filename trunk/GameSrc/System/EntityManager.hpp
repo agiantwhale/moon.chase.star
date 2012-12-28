@@ -27,18 +27,19 @@ public:
     void PostLoad(void);
 };
 
-class EntityManager : public Singleton<EntityManager>, public IEventListener
+class EntityManager : public Singleton<EntityManager>, private IEventListener
 {
     DEFINE_SINGLETON( EntityManager )
 
 public:
-    virtual bool HandleEvent( const EventData& newevent );
-
     void Update(float deltaTime);
     void PostLoad(void);
     void ReleaseAll(void);
     void ReleaseAllExceptHull(void);
     void RegisterEntity( Entity* entity );
+
+private:
+	virtual bool HandleEvent( const EventData& newevent );
 
 private:
     EntityList _entityList;

@@ -76,7 +76,7 @@ public:
     }
 };
 
-class TextureManager : public Singleton<TextureManager>, public ResourceManager< sf::Texture >, public IEventListener
+class TextureManager : public Singleton<TextureManager>, public ResourceManager< sf::Texture >, private IEventListener
 {
     DEFINE_SINGLETON(TextureManager)
 
@@ -85,7 +85,7 @@ protected:
     virtual sf::Texture* Load( const std::string& strId );
 };
 
-class SoundBufferManager : public Singleton<SoundBufferManager>, public ResourceManager< sf::SoundBuffer >, public IEventListener
+class SoundBufferManager : public Singleton<SoundBufferManager>, public ResourceManager< sf::SoundBuffer >, private IEventListener
 {
     DEFINE_SINGLETON( SoundBufferManager )
 
