@@ -52,11 +52,12 @@ void GUIManager::SetUpGUI(void)
     _gwenInput = new Gwen::Input::SFML;
     _gwenInput->Initialize(_gwenCanvas);
 
-    //TODO: Create a debug console!
 	Gwen::Controls::WindowControl* windowControl = new Gwen::Controls::WindowControl( _gwenCanvas );
 	windowControl->SetSize(600,200);
 	windowControl->SetPos(100,50);
 	windowControl->SetClosable(false);
+	windowControl->SetName("debugLog");
+	windowControl->SetTitle(L"Debug");
 
 	_gwenOuput = new Gwen::Controls::ListBox(windowControl);
 	_gwenOuput->Dock(Gwen::Pos::Fill);
