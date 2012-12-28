@@ -7,25 +7,25 @@ IRenderable::IRenderable(ITransform* const transform) : _transform(transform), _
 
 IRenderable::IRenderable(const IRenderable& renderable, ITransform* const transform) : _transform(transform)
 {
-	this->_isHidden = renderable._isHidden;
-	this->_renderLayer = 0;
+    this->_isHidden = renderable._isHidden;
+    this->_renderLayer = 0;
 }
 
 IRenderable::~IRenderable()
 {
-	if( _isRegistered )
-		UnregisterRenderable();
+    if( _isRegistered )
+        UnregisterRenderable();
 }
 
 void IRenderable::RegisterRenderable( unsigned int renderLayer )
 {
-	_isRegistered = true;
-	_renderLayer = renderLayer;
-	GraphicsManager::GetInstance()->AddRenderable(this);
+    _isRegistered = true;
+    _renderLayer = renderLayer;
+    GraphicsManager::GetInstance()->AddRenderable(this);
 }
 
 void IRenderable::UnregisterRenderable( void )
 {
-	_isRegistered = false;
-	GraphicsManager::GetInstance()->RemoveRenderable(this);
+    _isRegistered = false;
+    GraphicsManager::GetInstance()->RemoveRenderable(this);
 }

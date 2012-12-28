@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="GameSrc\App\Game.cpp" />
     <ClCompile Include="GameSrc\App\main.cpp" />
+    <ClCompile Include="GameSrc\Base\Vec2D.cpp" />
     <ClCompile Include="GameSrc\Entity\BlockEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\CameraMoveEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\Component\BodyWrapper.cpp" />
@@ -30,6 +31,7 @@
     <ClCompile Include="GameSrc\System\Debug\PhysicsDebugDraw.cpp" />
     <ClCompile Include="GameSrc\System\EntityManager.cpp" />
     <ClCompile Include="GameSrc\System\EventManager.cpp" />
+    <ClCompile Include="GameSrc\System\GUIManager.cpp" />
     <ClCompile Include="GameSrc\System\GUIRenderer\SFML.cpp" />
     <ClCompile Include="GameSrc\System\PhysicsManager.cpp" />
     <ClCompile Include="GameSrc\System\RenderLayer.cpp" />
@@ -40,6 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp" />
+    <ClInclude Include="GameSrc\Base\Callback.hpp" />
+    <ClInclude Include="GameSrc\Base\Delegate.hpp" />
+    <ClInclude Include="GameSrc\Base\Globals.hpp" />
+    <ClInclude Include="GameSrc\Base\Singleton.hpp" />
+    <ClInclude Include="GameSrc\Base\Vec2D.hpp" />
     <ClInclude Include="GameSrc\Entity\BlockEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\CameraMoveEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\Component\BodyWrapper.hpp" />
@@ -63,6 +70,7 @@
     <ClInclude Include="GameSrc\System\Debug\PhysicsDebugDraw.hpp" />
     <ClInclude Include="GameSrc\System\EntityManager.hpp" />
     <ClInclude Include="GameSrc\System\EventManager.hpp" />
+    <ClInclude Include="GameSrc\System\GUIManager.hpp" />
     <ClInclude Include="GameSrc\System\PhysicsManager.hpp" />
     <ClInclude Include="GameSrc\System\RenderLayer.hpp" />
     <ClInclude Include="GameSrc\System\GraphicsManager.hpp" />
@@ -121,7 +129,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;gwend.lib;libglog.lib;tinyxmlSTL.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Rebounce\Libs\GWEN\lib;C:\Rebounce\Libs\glog\lib\Debug;C:\Rebounce\Libs\TinyXML\lib\Debug;C:\Rebounce\Libs\Box2D\bin\Debug;C:\Rebounce\Libs\SFML\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

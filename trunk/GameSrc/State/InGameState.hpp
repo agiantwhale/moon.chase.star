@@ -6,13 +6,13 @@
 class InGameState : public IState
 {
 public:
-	InGameState();
-	virtual ~InGameState();
+    InGameState();
+    virtual ~InGameState();
 
-	virtual void Enter(void);
-	virtual bool Update(float deltaTime);
-	virtual void Render(void);
-	virtual void Exit(void);
+    virtual void Enter(void);
+    virtual bool Update(float deltaTime);
+    virtual void Render(void);
+    virtual void Exit(void);
 };
 
 #endif

@@ -11,15 +11,15 @@ class BlockEntity : public Entity
 
 public:
     virtual void Initialize( const TiXmlElement *propertyElement = NULL );
-	virtual void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
-	virtual bool HandleEvent(const EventData& theevent);
+    virtual void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
+    virtual bool HandleEvent(const EventData& theevent);
     virtual void Simulate(void);
 
 private:
     bool _shouldFall;
 
-	BodyWrapper _blockBody;
-	SpriteWrapper _blockSprite;
+    BodyWrapper _blockBody;
+    SpriteWrapper _blockSprite;
 };
 
 #endif

@@ -37,9 +37,17 @@ public:
     ~Callback() {}
 
     Callback& operator=(NullCallback)
-        { obj = 0; func = 0; return *this; }
+    {
+        obj = 0;
+        func = 0;
+        return *this;
+    }
     Callback& operator=(const Callback& rhs)
-        { obj = rhs.obj; func = rhs.func; return *this; }
+    {
+        obj = rhs.obj;
+        func = rhs.func;
+        return *this;
+    }
 
     inline R operator()() const
     {
@@ -50,9 +58,13 @@ private:
     typedef const void* Callback::*SafeBoolType;
 public:
     inline operator SafeBoolType() const
-        { return func != 0 ? &Callback::obj : 0; }
+    {
+        return func != 0 ? &Callback::obj : 0;
+    }
     inline bool operator!() const
-        { return func == 0; }
+    {
+        return func == 0;
+    }
 
 private:
     typedef R (*FuncType)(const void*);
@@ -92,7 +104,7 @@ public:
     inline static Callback<R ()> Bind()
     {
         return Callback<R ()>
-            (&FreeCallbackFactory0::Wrapper<Func>, 0);
+               (&FreeCallbackFactory0::Wrapper<Func>, 0);
     }
 };
 
@@ -119,8 +131,8 @@ public:
     inline static Callback<R ()> Bind(T* o)
     {
         return Callback<R ()>
-            (&MemberCallbackFactory0::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&MemberCallbackFactory0::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
@@ -147,8 +159,8 @@ public:
     inline static Callback<R ()> Bind(const T* o)
     {
         return Callback<R ()>
-            (&ConstMemberCallbackFactory0::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&ConstMemberCallbackFactory0::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
@@ -175,9 +187,17 @@ public:
     ~Callback() {}
 
     Callback& operator=(NullCallback)
-        { obj = 0; func = 0; return *this; }
+    {
+        obj = 0;
+        func = 0;
+        return *this;
+    }
     Callback& operator=(const Callback& rhs)
-        { obj = rhs.obj; func = rhs.func; return *this; }
+    {
+        obj = rhs.obj;
+        func = rhs.func;
+        return *this;
+    }
 
     inline R operator()(P1 a1) const
     {
@@ -188,9 +208,13 @@ private:
     typedef const void* Callback::*SafeBoolType;
 public:
     inline operator SafeBoolType() const
-        { return func != 0 ? &Callback::obj : 0; }
+    {
+        return func != 0 ? &Callback::obj : 0;
+    }
     inline bool operator!() const
-        { return func == 0; }
+    {
+        return func == 0;
+    }
 
 private:
     typedef R (*FuncType)(const void*, P1);
@@ -230,7 +254,7 @@ public:
     inline static Callback<R (P1)> Bind()
     {
         return Callback<R (P1)>
-            (&FreeCallbackFactory1::Wrapper<Func>, 0);
+               (&FreeCallbackFactory1::Wrapper<Func>, 0);
     }
 };
 
@@ -257,8 +281,8 @@ public:
     inline static Callback<R (P1)> Bind(T* o)
     {
         return Callback<R (P1)>
-            (&MemberCallbackFactory1::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&MemberCallbackFactory1::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
@@ -285,8 +309,8 @@ public:
     inline static Callback<R (P1)> Bind(const T* o)
     {
         return Callback<R (P1)>
-            (&ConstMemberCallbackFactory1::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&ConstMemberCallbackFactory1::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
@@ -314,9 +338,17 @@ public:
     ~Callback() {}
 
     Callback& operator=(NullCallback)
-        { obj = 0; func = 0; return *this; }
+    {
+        obj = 0;
+        func = 0;
+        return *this;
+    }
     Callback& operator=(const Callback& rhs)
-        { obj = rhs.obj; func = rhs.func; return *this; }
+    {
+        obj = rhs.obj;
+        func = rhs.func;
+        return *this;
+    }
 
     inline R operator()(P1 a1, P2 a2) const
     {
@@ -327,9 +359,13 @@ private:
     typedef const void* Callback::*SafeBoolType;
 public:
     inline operator SafeBoolType() const
-        { return func != 0 ? &Callback::obj : 0; }
+    {
+        return func != 0 ? &Callback::obj : 0;
+    }
     inline bool operator!() const
-        { return func == 0; }
+    {
+        return func == 0;
+    }
 
 private:
     typedef R (*FuncType)(const void*, P1, P2);
@@ -369,7 +405,7 @@ public:
     inline static Callback<R (P1, P2)> Bind()
     {
         return Callback<R (P1, P2)>
-            (&FreeCallbackFactory2::Wrapper<Func>, 0);
+               (&FreeCallbackFactory2::Wrapper<Func>, 0);
     }
 };
 
@@ -396,8 +432,8 @@ public:
     inline static Callback<R (P1, P2)> Bind(T* o)
     {
         return Callback<R (P1, P2)>
-            (&MemberCallbackFactory2::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&MemberCallbackFactory2::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
@@ -424,8 +460,8 @@ public:
     inline static Callback<R (P1, P2)> Bind(const T* o)
     {
         return Callback<R (P1, P2)>
-            (&ConstMemberCallbackFactory2::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&ConstMemberCallbackFactory2::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
@@ -454,9 +490,17 @@ public:
     ~Callback() {}
 
     Callback& operator=(NullCallback)
-        { obj = 0; func = 0; return *this; }
+    {
+        obj = 0;
+        func = 0;
+        return *this;
+    }
     Callback& operator=(const Callback& rhs)
-        { obj = rhs.obj; func = rhs.func; return *this; }
+    {
+        obj = rhs.obj;
+        func = rhs.func;
+        return *this;
+    }
 
     inline R operator()(P1 a1, P2 a2, P3 a3) const
     {
@@ -467,9 +511,13 @@ private:
     typedef const void* Callback::*SafeBoolType;
 public:
     inline operator SafeBoolType() const
-        { return func != 0 ? &Callback::obj : 0; }
+    {
+        return func != 0 ? &Callback::obj : 0;
+    }
     inline bool operator!() const
-        { return func == 0; }
+    {
+        return func == 0;
+    }
 
 private:
     typedef R (*FuncType)(const void*, P1, P2, P3);
@@ -509,7 +557,7 @@ public:
     inline static Callback<R (P1, P2, P3)> Bind()
     {
         return Callback<R (P1, P2, P3)>
-            (&FreeCallbackFactory3::Wrapper<Func>, 0);
+               (&FreeCallbackFactory3::Wrapper<Func>, 0);
     }
 };
 
@@ -536,8 +584,8 @@ public:
     inline static Callback<R (P1, P2, P3)> Bind(T* o)
     {
         return Callback<R (P1, P2, P3)>
-            (&MemberCallbackFactory3::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&MemberCallbackFactory3::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
@@ -564,8 +612,8 @@ public:
     inline static Callback<R (P1, P2, P3)> Bind(const T* o)
     {
         return Callback<R (P1, P2, P3)>
-            (&ConstMemberCallbackFactory3::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&ConstMemberCallbackFactory3::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
@@ -579,7 +627,7 @@ GetCallbackFactory(R (T::*)(P1, P2, P3) const)
 // 4 parameter version
 
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4>
+         typename P4>
 class Callback<R (P1, P2, P3, P4)>
 {
 public:
@@ -596,9 +644,17 @@ public:
     ~Callback() {}
 
     Callback& operator=(NullCallback)
-        { obj = 0; func = 0; return *this; }
+    {
+        obj = 0;
+        func = 0;
+        return *this;
+    }
     Callback& operator=(const Callback& rhs)
-        { obj = rhs.obj; func = rhs.func; return *this; }
+    {
+        obj = rhs.obj;
+        func = rhs.func;
+        return *this;
+    }
 
     inline R operator()(P1 a1, P2 a2, P3 a3, P4 a4) const
     {
@@ -609,9 +665,13 @@ private:
     typedef const void* Callback::*SafeBoolType;
 public:
     inline operator SafeBoolType() const
-        { return func != 0 ? &Callback::obj : 0; }
+    {
+        return func != 0 ? &Callback::obj : 0;
+    }
     inline bool operator!() const
-        { return func == 0; }
+    {
+        return func == 0;
+    }
 
 private:
     typedef R (*FuncType)(const void*, P1, P2, P3, P4);
@@ -622,27 +682,27 @@ private:
     const void* obj;
 
     template<typename FR, typename FP1, typename FP2, typename FP3,
-                          typename FP4>
+             typename FP4>
     friend class FreeCallbackFactory4;
     template<typename FR, class FT, typename FP1, typename FP2, typename FP3,
-                                    typename FP4>
+             typename FP4>
     friend class MemberCallbackFactory4;
     template<typename FR, class FT, typename FP1, typename FP2, typename FP3,
-                                    typename FP4>
+             typename FP4>
     friend class ConstMemberCallbackFactory4;
 };
 
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4>
+         typename P4>
 void operator==(const Callback<R (P1, P2, P3, P4)>&,
                 const Callback<R (P1, P2, P3, P4)>&);
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4>
+         typename P4>
 void operator!=(const Callback<R (P1, P2, P3, P4)>&,
                 const Callback<R (P1, P2, P3, P4)>&);
 
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4>
+         typename P4>
 class FreeCallbackFactory4
 {
 private:
@@ -657,12 +717,12 @@ public:
     inline static Callback<R (P1, P2, P3, P4)> Bind()
     {
         return Callback<R (P1, P2, P3, P4)>
-            (&FreeCallbackFactory4::Wrapper<Func>, 0);
+               (&FreeCallbackFactory4::Wrapper<Func>, 0);
     }
 };
 
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4>
+         typename P4>
 inline FreeCallbackFactory4<R, P1, P2, P3, P4>
 GetCallbackFactory(R (*)(P1, P2, P3, P4))
 {
@@ -670,7 +730,7 @@ GetCallbackFactory(R (*)(P1, P2, P3, P4))
 }
 
 template<typename R, class T, typename P1, typename P2, typename P3,
-                              typename P4>
+         typename P4>
 class MemberCallbackFactory4
 {
 private:
@@ -686,13 +746,13 @@ public:
     inline static Callback<R (P1, P2, P3, P4)> Bind(T* o)
     {
         return Callback<R (P1, P2, P3, P4)>
-            (&MemberCallbackFactory4::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&MemberCallbackFactory4::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
 template<typename R, class T, typename P1, typename P2, typename P3,
-                              typename P4>
+         typename P4>
 inline MemberCallbackFactory4<R, T, P1, P2, P3, P4>
 GetCallbackFactory(R (T::*)(P1, P2, P3, P4))
 {
@@ -700,7 +760,7 @@ GetCallbackFactory(R (T::*)(P1, P2, P3, P4))
 }
 
 template<typename R, class T, typename P1, typename P2, typename P3,
-                              typename P4>
+         typename P4>
 class ConstMemberCallbackFactory4
 {
 private:
@@ -716,13 +776,13 @@ public:
     inline static Callback<R (P1, P2, P3, P4)> Bind(const T* o)
     {
         return Callback<R (P1, P2, P3, P4)>
-            (&ConstMemberCallbackFactory4::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&ConstMemberCallbackFactory4::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
 template<typename R, class T, typename P1, typename P2, typename P3,
-                              typename P4>
+         typename P4>
 inline ConstMemberCallbackFactory4<R, T, P1, P2, P3, P4>
 GetCallbackFactory(R (T::*)(P1, P2, P3, P4) const)
 {
@@ -732,7 +792,7 @@ GetCallbackFactory(R (T::*)(P1, P2, P3, P4) const)
 // 5 parameter version
 
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4, typename P5>
+         typename P4, typename P5>
 class Callback<R (P1, P2, P3, P4, P5)>
 {
 public:
@@ -750,9 +810,17 @@ public:
     ~Callback() {}
 
     Callback& operator=(NullCallback)
-        { obj = 0; func = 0; return *this; }
+    {
+        obj = 0;
+        func = 0;
+        return *this;
+    }
     Callback& operator=(const Callback& rhs)
-        { obj = rhs.obj; func = rhs.func; return *this; }
+    {
+        obj = rhs.obj;
+        func = rhs.func;
+        return *this;
+    }
 
     inline R operator()(P1 a1, P2 a2, P3 a3, P4 a4, P5 a5) const
     {
@@ -763,9 +831,13 @@ private:
     typedef const void* Callback::*SafeBoolType;
 public:
     inline operator SafeBoolType() const
-        { return func != 0 ? &Callback::obj : 0; }
+    {
+        return func != 0 ? &Callback::obj : 0;
+    }
     inline bool operator!() const
-        { return func == 0; }
+    {
+        return func == 0;
+    }
 
 private:
     typedef R (*FuncType)(const void*, P1, P2, P3, P4, P5);
@@ -776,27 +848,27 @@ private:
     const void* obj;
 
     template<typename FR, typename FP1, typename FP2, typename FP3,
-                          typename FP4, typename FP5>
+             typename FP4, typename FP5>
     friend class FreeCallbackFactory5;
     template<typename FR, class FT, typename FP1, typename FP2, typename FP3,
-                                    typename FP4, typename FP5>
+             typename FP4, typename FP5>
     friend class MemberCallbackFactory5;
     template<typename FR, class FT, typename FP1, typename FP2, typename FP3,
-                                    typename FP4, typename FP5>
+             typename FP4, typename FP5>
     friend class ConstMemberCallbackFactory5;
 };
 
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4, typename P5>
+         typename P4, typename P5>
 void operator==(const Callback<R (P1, P2, P3, P4, P5)>&,
                 const Callback<R (P1, P2, P3, P4, P5)>&);
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4, typename P5>
+         typename P4, typename P5>
 void operator!=(const Callback<R (P1, P2, P3, P4, P5)>&,
                 const Callback<R (P1, P2, P3, P4, P5)>&);
 
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4, typename P5>
+         typename P4, typename P5>
 class FreeCallbackFactory5
 {
 private:
@@ -811,12 +883,12 @@ public:
     inline static Callback<R (P1, P2, P3, P4, P5)> Bind()
     {
         return Callback<R (P1, P2, P3, P4, P5)>
-            (&FreeCallbackFactory5::Wrapper<Func>, 0);
+               (&FreeCallbackFactory5::Wrapper<Func>, 0);
     }
 };
 
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4, typename P5>
+         typename P4, typename P5>
 inline FreeCallbackFactory5<R, P1, P2, P3, P4, P5>
 GetCallbackFactory(R (*)(P1, P2, P3, P4, P5))
 {
@@ -824,7 +896,7 @@ GetCallbackFactory(R (*)(P1, P2, P3, P4, P5))
 }
 
 template<typename R, class T, typename P1, typename P2, typename P3,
-                              typename P4, typename P5>
+         typename P4, typename P5>
 class MemberCallbackFactory5
 {
 private:
@@ -840,13 +912,13 @@ public:
     inline static Callback<R (P1, P2, P3, P4, P5)> Bind(T* o)
     {
         return Callback<R (P1, P2, P3, P4, P5)>
-            (&MemberCallbackFactory5::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&MemberCallbackFactory5::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
 template<typename R, class T, typename P1, typename P2, typename P3,
-                              typename P4, typename P5>
+         typename P4, typename P5>
 inline MemberCallbackFactory5<R, T, P1, P2, P3, P4, P5>
 GetCallbackFactory(R (T::*)(P1, P2, P3, P4, P5))
 {
@@ -854,7 +926,7 @@ GetCallbackFactory(R (T::*)(P1, P2, P3, P4, P5))
 }
 
 template<typename R, class T, typename P1, typename P2, typename P3,
-                              typename P4, typename P5>
+         typename P4, typename P5>
 class ConstMemberCallbackFactory5
 {
 private:
@@ -870,13 +942,13 @@ public:
     inline static Callback<R (P1, P2, P3, P4, P5)> Bind(const T* o)
     {
         return Callback<R (P1, P2, P3, P4, P5)>
-            (&ConstMemberCallbackFactory5::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&ConstMemberCallbackFactory5::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
 template<typename R, class T, typename P1, typename P2, typename P3,
-                              typename P4, typename P5>
+         typename P4, typename P5>
 inline ConstMemberCallbackFactory5<R, T, P1, P2, P3, P4, P5>
 GetCallbackFactory(R (T::*)(P1, P2, P3, P4, P5) const)
 {
@@ -886,7 +958,7 @@ GetCallbackFactory(R (T::*)(P1, P2, P3, P4, P5) const)
 // 6 parameter version
 
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4, typename P5, typename P6>
+         typename P4, typename P5, typename P6>
 class Callback<R (P1, P2, P3, P4, P5, P6)>
 {
 public:
@@ -905,9 +977,17 @@ public:
     ~Callback() {}
 
     Callback& operator=(NullCallback)
-        { obj = 0; func = 0; return *this; }
+    {
+        obj = 0;
+        func = 0;
+        return *this;
+    }
     Callback& operator=(const Callback& rhs)
-        { obj = rhs.obj; func = rhs.func; return *this; }
+    {
+        obj = rhs.obj;
+        func = rhs.func;
+        return *this;
+    }
 
     inline R operator()(P1 a1, P2 a2, P3 a3, P4 a4, P5 a5, P6 a6) const
     {
@@ -918,9 +998,13 @@ private:
     typedef const void* Callback::*SafeBoolType;
 public:
     inline operator SafeBoolType() const
-        { return func != 0 ? &Callback::obj : 0; }
+    {
+        return func != 0 ? &Callback::obj : 0;
+    }
     inline bool operator!() const
-        { return func == 0; }
+    {
+        return func == 0;
+    }
 
 private:
     typedef R (*FuncType)(const void*, P1, P2, P3, P4, P5, P6);
@@ -931,27 +1015,27 @@ private:
     const void* obj;
 
     template<typename FR, typename FP1, typename FP2, typename FP3,
-                          typename FP4, typename FP5, typename FP6>
+             typename FP4, typename FP5, typename FP6>
     friend class FreeCallbackFactory6;
     template<typename FR, class FT, typename FP1, typename FP2, typename FP3,
-                                    typename FP4, typename FP5, typename FP6>
+             typename FP4, typename FP5, typename FP6>
     friend class MemberCallbackFactory6;
     template<typename FR, class FT, typename FP1, typename FP2, typename FP3,
-                                    typename FP4, typename FP5, typename FP6>
+             typename FP4, typename FP5, typename FP6>
     friend class ConstMemberCallbackFactory6;
 };
 
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4, typename P5, typename P6>
+         typename P4, typename P5, typename P6>
 void operator==(const Callback<R (P1, P2, P3, P4, P5, P6)>&,
                 const Callback<R (P1, P2, P3, P4, P5, P6)>&);
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4, typename P5, typename P6>
+         typename P4, typename P5, typename P6>
 void operator!=(const Callback<R (P1, P2, P3, P4, P5, P6)>&,
                 const Callback<R (P1, P2, P3, P4, P5, P6)>&);
 
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4, typename P5, typename P6>
+         typename P4, typename P5, typename P6>
 class FreeCallbackFactory6
 {
 private:
@@ -966,12 +1050,12 @@ public:
     inline static Callback<R (P1, P2, P3, P4, P5, P6)> Bind()
     {
         return Callback<R (P1, P2, P3, P4, P5, P6)>
-            (&FreeCallbackFactory6::Wrapper<Func>, 0);
+               (&FreeCallbackFactory6::Wrapper<Func>, 0);
     }
 };
 
 template<typename R, typename P1, typename P2, typename P3,
-                     typename P4, typename P5, typename P6>
+         typename P4, typename P5, typename P6>
 inline FreeCallbackFactory6<R, P1, P2, P3, P4, P5, P6>
 GetCallbackFactory(R (*)(P1, P2, P3, P4, P5, P6))
 {
@@ -979,7 +1063,7 @@ GetCallbackFactory(R (*)(P1, P2, P3, P4, P5, P6))
 }
 
 template<typename R, class T, typename P1, typename P2, typename P3,
-                              typename P4, typename P5, typename P6>
+         typename P4, typename P5, typename P6>
 class MemberCallbackFactory6
 {
 private:
@@ -995,13 +1079,13 @@ public:
     inline static Callback<R (P1, P2, P3, P4, P5, P6)> Bind(T* o)
     {
         return Callback<R (P1, P2, P3, P4, P5, P6)>
-            (&MemberCallbackFactory6::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&MemberCallbackFactory6::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
 template<typename R, class T, typename P1, typename P2, typename P3,
-                              typename P4, typename P5, typename P6>
+         typename P4, typename P5, typename P6>
 inline MemberCallbackFactory6<R, T, P1, P2, P3, P4, P5, P6>
 GetCallbackFactory(R (T::*)(P1, P2, P3, P4, P5, P6))
 {
@@ -1009,7 +1093,7 @@ GetCallbackFactory(R (T::*)(P1, P2, P3, P4, P5, P6))
 }
 
 template<typename R, class T, typename P1, typename P2, typename P3,
-                              typename P4, typename P5, typename P6>
+         typename P4, typename P5, typename P6>
 class ConstMemberCallbackFactory6
 {
 private:
@@ -1025,13 +1109,13 @@ public:
     inline static Callback<R (P1, P2, P3, P4, P5, P6)> Bind(const T* o)
     {
         return Callback<R (P1, P2, P3, P4, P5, P6)>
-            (&ConstMemberCallbackFactory6::Wrapper<Func>,
-            static_cast<const void*>(o));
+               (&ConstMemberCallbackFactory6::Wrapper<Func>,
+                static_cast<const void*>(o));
     }
 };
 
 template<typename R, class T, typename P1, typename P2, typename P3,
-                              typename P4, typename P5, typename P6>
+         typename P4, typename P5, typename P6>
 inline ConstMemberCallbackFactory6<R, T, P1, P2, P3, P4, P5, P6>
 GetCallbackFactory(R (T::*)(P1, P2, P3, P4, P5, P6) const)
 {

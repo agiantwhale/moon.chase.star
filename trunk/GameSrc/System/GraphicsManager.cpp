@@ -2,13 +2,15 @@
 #include "../System/GraphicsManager.hpp"
 #include "../App/Game.hpp"
 
-SINGLETON_CONSTRUCTOR(GraphicsManager), IEventListener("GraphicsManager"), _renderLayerStack()
+SINGLETON_CONSTRUCTOR(GraphicsManager),
+                      IEventListener("GraphicsManager"),
+                      _renderLayerStack()
 {
 }
 
 SINGLETON_DESTRUCTOR(GraphicsManager)
 {
-	Unload();
+    Unload();
 }
 
 void GraphicsManager::SetUpGraphics(void)
@@ -17,29 +19,29 @@ void GraphicsManager::SetUpGraphics(void)
 
 bool GraphicsManager::HandleEvent( const EventData& newevent )
 {
-	if( newevent.GetEventType() == Event_Unload )
-	{
-		Unload();
-		return false;
-	}
+    if( newevent.GetEventType() == Event_Unload )
+    {
+        Unload();
+        return false;
+    }
 
-	if( newevent.GetEventType() == Event_RestartLevel )
-	{
-		Unload();
-		return false;
-	}
+    if( newevent.GetEventType() == Event_RestartLevel )
+    {
+        Unload();
+        return false;
+    }
 
-	return false;
+    return false;
 }
 
 void GraphicsManager::Unload(void)
 {
-	for(RenderLayerStack::iterator iter = _renderLayerStack.begin(); iter != _renderLayerStack.end(); iter++)
+    for(RenderLayerStack::iterator iter = _renderLayerStack.begin(); iter != _renderLayerStack.end(); iter++)
     {
         delete (*iter);
     }
 
-	_renderLayerStack.clear();
+    _renderLayerStack.clear();
 }
 
 void GraphicsManager::AddRenderable(IRenderable* renderable)
@@ -47,37 +49,37 @@ void GraphicsManager::AddRenderable(IRenderable* renderable)
     unsigned int layer = renderable->GetRenderLayer();
     while( (layer+1) > _renderLayerStack.size() )
     {
-		_renderLayerStack.push_back(new RenderLayer);
+        _renderLayerStack.push_back(new RenderLayer);
     }
 
-	_renderLayerStack.at(layer)->AddRenderable(renderable);
+    _renderLayerStack.at(layer)->AddRenderable(renderable);
 }
 
 void GraphicsManager::RemoveRenderable(IRenderable* renderable)
 {
     unsigned int layer = renderable->GetRenderLayer();
 
-	if( layer < _renderLayerStack.size() )
-	{
-		_renderLayerStack.at(layer)->RemoveRenderable( renderable );
-	}
+    if( layer < _renderLayerStack.size() )
+    {
+        _renderLayerStack.at(layer)->RemoveRenderable( renderable );
+    }
 }
 
 void GraphicsManager::Render(void)
 {
     for(RenderLayerStack::iterator iter = _renderLayerStack.begin(); iter != _renderLayerStack.end(); iter++)
     {
-		RenderLayer* renderLayer = (*iter);
+        RenderLayer* renderLayer = (*iter);
         renderLayer->Render();
     }
 }
 
 RenderLayer* GraphicsManager::GetRenderLayer( unsigned int layer )
 {
-	if( layer >= _renderLayerStack.size() )
-	{
-		LOG(WARNING) << "Attempted to access a non-existent layer!";
-	}
+    if( layer >= _renderLayerStack.size() )
+    {
+        LOG(WARNING) << "Attempted to access a non-existent layer!";
+    }
 
-	return _renderLayerStack.at( layer );
+    return _renderLayerStack.at( layer );
 }

@@ -2,8 +2,8 @@
 #include "../Entity/Entity.hpp"
 
 Entity::Entity() :	ITransform(),
-                    _released( false ),
-                    _initialized( false )
+    _released( false ),
+    _initialized( false )
 {
 }
 
@@ -23,7 +23,7 @@ void Entity::Initialize( const TiXmlElement *propertyElement )
             propertyElement->Attribute( "x", &xValue );
             propertyElement->Attribute( "y", &yValue );
 
-			Vec2D world((xValue - SCREENWIDTH/2) * UNRATIO, (yValue - SCREENHEIGHT/2) * UNRATIO * -1);
+            Vec2D world((xValue - SCREENWIDTH/2) * UNRATIO, (yValue - SCREENHEIGHT/2) * UNRATIO * -1);
             SetPosition(world);
         }
 
@@ -37,7 +37,7 @@ void Entity::Initialize( const TiXmlElement *propertyElement )
 
         //angle
         {
-			double angleValue = GetRotation();
+            double angleValue = GetRotation();
             propertyElement->Attribute( "angle", &angleValue );
             SetRotation(angleValue);
         }
@@ -54,5 +54,5 @@ void Entity::PostLoad(void)
 
 bool Entity::HandleEvent(const EventData& theevent)
 {
-	return false;
+    return false;
 }

@@ -5,25 +5,26 @@
 
 int main(int argc,char *argv[])
 {
-	google::InitGoogleLogging(argv[0]);
-	google::SetLogDestination(google::INFO, "Rebounce_Game" );
-	google::SetLogDestination(google::WARNING, "Rebounce_Game" );
-	//google::SetLogDestination(google::ERROR, "Rebounce_Game" );
-	google::SetLogDestination(google::FATAL, "Rebounce_Game" );
-	google::SetLogFilenameExtension(".log");
+    //Add logsink to handle logging.
+    google::InitGoogleLogging(argv[0]);
+    google::SetLogDestination(0, "Rebounce_Game" ); //INFO
+    google::SetLogDestination(1, "Rebounce_Game" ); //WARNING
+    google::SetLogDestination(2, "Rebounce_Game" ); //ERROR
+    google::SetLogDestination(3, "Rebounce_Game" ); //FATAL
+    google::SetLogFilenameExtension(".log");
 
-	LOG(INFO) << "Game started.";
+    LOG(INFO) << "Game started.";
 
     Game::GetInstance()->Initialize();
 
     if( argc >= 2 )
     {
         std::string scenefile = argv[1];
-		SceneManager::GetInstance()->LoadScene( scenefile );
+        SceneManager::GetInstance()->LoadScene( scenefile );
     }
 
     Game::GetInstance()->Start();
 
-	google::ShutdownGoogleLogging();
+    google::ShutdownGoogleLogging();
     return 0;
 }

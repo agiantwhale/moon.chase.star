@@ -6,6 +6,7 @@
 #include <unordered_map>
 
 #include <Gwen/Controls/Canvas.h>
+#include <Gwen/Input/SFML.h>
 
 #include "../Interface/IState.hpp"
 #include "../Interface/IEventListner.hpp"
@@ -13,42 +14,50 @@
 
 class Game : public Singleton<Game>, public sf::RenderWindow, public IEventListener
 {
-	DEFINE_SINGLETON( Game )
+    DEFINE_SINGLETON( Game )
 
 public:
-	virtual bool HandleEvent(const EventData& theevent);
+    virtual bool HandleEvent(const EventData& theevent);
 
-	void Initialize( void );
-	void Start( void );
-	inline void Quit(void)
-	{
-	    _isRunning = false;
-	}
+    void Initialize( void );
+    void Start( void );
+    inline void Quit(void)
+    {
+        _isRunning = false;
+    }
 
-	inline bool IsRunning( void ) const { return _isRunning; }
-	inline float GetTime(void) const { return _gameClock.getElapsedTime().asSeconds(); }
+    inline bool IsRunning( void ) const
+    {
+        return _isRunning;
+    }
+    inline float GetTime(void) const
+    {
+        return _gameClock.getElapsedTime().asSeconds();
+    }
 
-	inline void SetNextStateType(StateType val) { _nextStateType = val; }
+    inline void SetNextStateType(StateType val)
+    {
+        _nextStateType = val;
+    }
 
 private:
-	typedef std::unordered_map<StateType,IState*> StateMap;
+    typedef std::unordered_map<StateType,IState*> StateMap;
 
-	void ChangeStates(void);
+    void PollEvents(void);
+    void ChangeStates(void);
     void Update(void);
-	void Render(void);
+    void Render(void);
 
-	bool _isRunning;
-	bool _shouldSwitchState;
+    bool _isRunning;
+    bool _shouldSwitchState;
 
-	StateType _currentStateType;
-	StateType _nextStateType;
-	IState* _currentState;
-	StateMap _stateMap;
+    StateType _currentStateType;
+    StateType _nextStateType;
+    IState* _currentState;
+    StateMap _stateMap;
 
-	sf::Clock         _frameClock;
-	sf::Clock		  _gameClock;
-
-	Gwen::Controls::Canvas* pCanvas;
+    sf::Clock         _frameClock;
+    sf::Clock		  _gameClock;
 };
 
 #endif

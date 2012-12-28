@@ -9,7 +9,8 @@
 #include "../Interface/IEventListner.hpp"
 
 template< class T >
-class ResourceManager {
+class ResourceManager
+{
 public:
     typedef std::pair< std::string, T* >                Resource;
     typedef std::unordered_map< std::string, T* >     ResourceMap;
@@ -17,10 +18,12 @@ public:
 private:
     ResourceMap m_resource;
 
-    T* Find( const std::string& strId ) {
+    T* Find( const std::string& strId )
+    {
         T* resource = NULL;
         typename ResourceMap::iterator it = m_resource.find( strId );
-        if( it != m_resource.end() ) {
+        if( it != m_resource.end() )
+        {
             resource = it->second;
         }
 
@@ -31,16 +34,20 @@ protected:
     virtual T* Load( const std::string& strId ) = 0;
 
 public:
-    ResourceManager() {
+    ResourceManager()
+    {
     }
 
-    virtual ~ResourceManager() {
+    virtual ~ResourceManager()
+    {
         ReleaseAllResources();
     }
 
-    T* GetResource( const std::string& strId ) {
+    T* GetResource( const std::string& strId )
+    {
         T* resource = Find( strId );
-        if( resource == NULL ) {
+        if( resource == NULL )
+        {
             resource = Load( strId );
             // If the resource loaded successfully, add it do the resource map
             if( resource != NULL )
@@ -49,16 +56,20 @@ public:
         return resource;
     }
 
-    void ReleaseResource( const std::string& strId ) {
+    void ReleaseResource( const std::string& strId )
+    {
         T* resource = Find( strId );
-        if( resource != NULL ) {
+        if( resource != NULL )
+        {
             delete resource;
             m_resource.erase( m_resource.Find( strId ) );
         }
     }
 
-    void ReleaseAllResources() {
-        while( m_resource.begin() != m_resource.end() ) {
+    void ReleaseAllResources()
+    {
+        while( m_resource.begin() != m_resource.end() )
+        {
             delete m_resource.begin()->second;
             m_resource.erase( m_resource.begin() );
         }
@@ -70,7 +81,7 @@ class TextureManager : public Singleton<TextureManager>, public ResourceManager<
     DEFINE_SINGLETON(TextureManager)
 
 protected:
-	virtual bool HandleEvent( const EventData& newevent );
+    virtual bool HandleEvent( const EventData& newevent );
     virtual sf::Texture* Load( const std::string& strId );
 };
 
@@ -79,7 +90,7 @@ class SoundBufferManager : public Singleton<SoundBufferManager>, public Resource
     DEFINE_SINGLETON( SoundBufferManager )
 
 protected:
-	virtual bool HandleEvent( const EventData& newevent );
+    virtual bool HandleEvent( const EventData& newevent );
     virtual sf::SoundBuffer* Load( const std::string& strId );
 };
 

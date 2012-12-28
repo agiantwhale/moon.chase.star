@@ -21,20 +21,20 @@ void InGameState::Enter()
 
 void InGameState::Render()
 {
-	GraphicsManager::GetInstance()->Render();
+    GraphicsManager::GetInstance()->Render();
 
 #ifdef _DEBUG
-	PhysicsManager::GetInstance()->Render();
+    PhysicsManager::GetInstance()->Render();
 #endif
 }
 
 bool InGameState::Update(float deltaTime)
 {
-	PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
-	EntityManager::GetInstance()->Update( deltaTime );
-	EventManager::GetInstance()->Update( deltaTime );
+    PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
+    EntityManager::GetInstance()->Update( deltaTime );
+    EventManager::GetInstance()->Update( deltaTime );
 
-	return false;
+    return false;
 }
 
 void InGameState::Exit()

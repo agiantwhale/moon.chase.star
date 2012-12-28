@@ -8,8 +8,8 @@ SpriteWrapper::SpriteWrapper(Entity* const entity) : IRenderable(entity), _sprit
 
 SpriteWrapper::SpriteWrapper(const SpriteWrapper& wrapper, Entity* const entity) : IRenderable( wrapper, entity )
 {
-	if( wrapper._sprite )
-		this->_sprite = new sf::Sprite(*wrapper._sprite->getTexture(), wrapper._sprite->getTextureRect());
+    if( wrapper._sprite )
+        this->_sprite = new sf::Sprite(*wrapper._sprite->getTexture(), wrapper._sprite->getTextureRect());
 }
 
 SpriteWrapper::~SpriteWrapper()
@@ -21,9 +21,9 @@ void SpriteWrapper::Render()
 {
     if(_sprite)
     {
-		Vec2D screenPosition = WorldToScreen(GetTransform()->GetPosition());
+        Vec2D screenPosition = WorldToScreen(GetTransform()->GetPosition());
         _sprite->setPosition(screenPosition);
-		_sprite->setRotation(GetTransform()->GetRotation());
+        _sprite->setRotation(GetTransform()->GetRotation());
         Game::GetInstance()->draw(*_sprite);
     }
     else

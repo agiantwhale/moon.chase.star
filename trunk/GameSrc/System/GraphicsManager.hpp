@@ -12,20 +12,20 @@
 
 class GraphicsManager : public Singleton<GraphicsManager>, public IEventListener
 {
-	DEFINE_SINGLETON( GraphicsManager );
+    DEFINE_SINGLETON( GraphicsManager );
 
 public:
-	virtual bool HandleEvent( const EventData& newevent );
+    virtual bool HandleEvent( const EventData& newevent );
 
     void AddRenderable(IRenderable* const renderable);
     void RemoveRenderable(IRenderable* const renderable);
 
-	RenderLayer* GetRenderLayer( unsigned int layer );
+    RenderLayer* GetRenderLayer( unsigned int layer );
 
     void Render();
-	void Unload();
+    void Unload();
 
-	void SetUpGraphics(void);
+    void SetUpGraphics(void);
 
 private:
     typedef std::vector<RenderLayer*> RenderLayerStack;

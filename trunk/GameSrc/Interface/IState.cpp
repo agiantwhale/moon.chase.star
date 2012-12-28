@@ -11,10 +11,10 @@ IState::~IState()
 
 void IState::Enter(void)
 {
-	_enterTime = Game::GetInstance()->GetTime();
+    _enterTime = Game::GetInstance()->GetTime();
 }
 
 void IState::Exit(void)
 {
-	_exitTime = Game::GetInstance()->GetTime();
+    _exitTime = Game::GetInstance()->GetTime();
 }

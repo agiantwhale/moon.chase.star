@@ -10,19 +10,22 @@
 
 class SceneManager : public Singleton<SceneManager>, public IEventListener
 {
-	DEFINE_SINGLETON( SceneManager );
+    DEFINE_SINGLETON( SceneManager );
 
 public:
-	virtual bool HandleEvent( const EventData& newevent );
+    virtual bool HandleEvent( const EventData& newevent );
 
-	void LoadScene( const std::string& mapName );
-	void RestartScene( const std::string& mapName );
-	void UnloadScene( void );
-	inline bool IsSceneLoaded( void ) { return _sceneLoaded; }
+    void LoadScene( const std::string& mapName );
+    void RestartScene( const std::string& mapName );
+    void UnloadScene( void );
+    inline bool IsSceneLoaded( void )
+    {
+        return _sceneLoaded;
+    }
 
 private:
-	bool _sceneLoaded;
-	std::string _sceneFileName;
+    bool _sceneLoaded;
+    std::string _sceneFileName;
 };
 
 #endif

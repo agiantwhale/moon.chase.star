@@ -19,26 +19,38 @@ class EntityList;
 class Entity : public ITransform, public IEventListener
 {
 public:
-	virtual void Update(float deltaTime);
-	virtual void PostLoad(void);
-	virtual bool HandleEvent(const EventData& theevent);
-	virtual int GetEntityType( void ) const { return 'BASE'; }
+    virtual void Update(float deltaTime);
+    virtual void PostLoad(void);
+    virtual bool HandleEvent(const EventData& theevent);
+    virtual int GetEntityType( void ) const
+    {
+        return 'BASE';
+    }
 
-	inline void Release( void ) { _released = true; }
-	inline const bool IsReleased( void ) const { return _released; }
+    inline void Release( void )
+    {
+        _released = true;
+    }
+    inline const bool IsReleased( void ) const
+    {
+        return _released;
+    }
 
-	virtual void Initialize( const TiXmlElement *propertyElement = nullptr );
-	inline const bool IsInitialized( void ) const { return _initialized; }
+    virtual void Initialize( const TiXmlElement *propertyElement = nullptr );
+    inline const bool IsInitialized( void ) const
+    {
+        return _initialized;
+    }
 
 protected:
     Entity();
-	virtual ~Entity();
+    virtual ~Entity();
 
     bool _initialized;
-	bool _released;
+    bool _released;
 
-	friend class EntityManager;
-	friend class EntityList;
+    friend class EntityManager;
+    friend class EntityList;
 };
 
 #define DEFINE_ENTITY( ThisName, BaseName, EntType )\

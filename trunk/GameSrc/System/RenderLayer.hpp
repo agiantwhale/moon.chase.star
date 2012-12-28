@@ -9,24 +9,30 @@
 class Camera : public ITransform
 {
 public:
-	void Transform( void ) const;
+    void Transform( void ) const;
 };
 
 class RenderLayer : private std::list<IRenderable* const>
 {
 public:
-	RenderLayer() : _renderCamera() {}
-	~RenderLayer();
+    RenderLayer() : _renderCamera() {}
+    ~RenderLayer();
 
-	void Render( void );
-	void AddRenderable( IRenderable* const renderable );
-	void RemoveRenderable( IRenderable* const renderable );
+    void Render( void );
+    void AddRenderable( IRenderable* const renderable );
+    void RemoveRenderable( IRenderable* const renderable );
 
-	Camera& GetCamera() { return _renderCamera; }
-	void SetCamera( const Camera& camera ) { _renderCamera = camera; }
+    Camera& GetCamera()
+    {
+        return _renderCamera;
+    }
+    void SetCamera( const Camera& camera )
+    {
+        _renderCamera = camera;
+    }
 
 private:
-	Camera _renderCamera;
+    Camera _renderCamera;
 };
 
 #endif

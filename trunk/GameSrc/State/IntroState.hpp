@@ -7,25 +7,25 @@
 class IntroState : public IState
 {
 public:
-	IntroState();
-	virtual ~IntroState();
+    IntroState();
+    virtual ~IntroState();
 
-	virtual void Enter(void);
-	virtual bool Update(float deltaTime);
-	virtual void Render(void);
-	virtual void Exit(void);
+    virtual void Enter(void);
+    virtual bool Update(float deltaTime);
+    virtual void Render(void);
+    virtual void Exit(void);
 
 private:
-	enum IntroStatus
-	{
-		FADE_IN,
-		WAIT,
-		FADE_OUT
-	};
+    enum IntroStatus
+    {
+        FADE_IN,
+        WAIT,
+        FADE_OUT
+    };
 
-	sf::Sprite *_splashSprite;
-	sf::Clock	_splashTimer;
-	IntroStatus _currentStatus;
+    sf::Sprite *_splashSprite;
+    sf::Clock	_splashTimer;
+    IntroStatus _currentStatus;
 };
 
 #endif

@@ -8,7 +8,7 @@ REGISTER_ENTITY( ThrowEntity, "Throw")
 const float THROW_SIZE = 2.0f;
 
 ThrowEntity::ThrowEntity() : BaseClass(), _throwBody(this), _throwSprite(this),
-                             _targetEntity(NULL)
+    _targetEntity(NULL)
 {
 }
 
@@ -22,20 +22,20 @@ void ThrowEntity::Initialize( const TiXmlElement *propertyElement )
 
     {
         TextureManager* textureMgr = TextureManager::GetInstance();
-		sf::Sprite *throwSprite = new sf::Sprite(*textureMgr->GetResource("Resource/Ogmo/Entities/Throw.png"));
+        sf::Sprite *throwSprite = new sf::Sprite(*textureMgr->GetResource("Resource/Ogmo/Entities/Throw.png"));
         throwSprite->setOrigin(sf::Vector2f(0.5f*THROW_SIZE*RATIO,0.5f*THROW_SIZE*RATIO));
-		_throwSprite.SetSprite( throwSprite );
-		_throwSprite.RegisterRenderable( 2 );
+        _throwSprite.SetSprite( throwSprite );
+        _throwSprite.RegisterRenderable( 2 );
     }
 
     {
         b2BodyDef bodyDefinition;
         bodyDefinition.userData = (IPhysics*)this;
         bodyDefinition.position = b2Vec2(GetPosition().x, GetPosition().y);
-		bodyDefinition.angle = GetRotation();
+        bodyDefinition.angle = GetRotation();
         bodyDefinition.type = b2_staticBody;
 
-		_throwBody.CreateBody( bodyDefinition );
+        _throwBody.CreateBody( bodyDefinition );
 
         b2PolygonShape boxShape;
         boxShape.SetAsBox( 0.5f*THROW_SIZE, 0.5f*THROW_SIZE );
@@ -46,45 +46,45 @@ void ThrowEntity::Initialize( const TiXmlElement *propertyElement )
         fixtureDefinition.friction = 0.5f;
         fixtureDefinition.restitution = 0.0f;
 
-		_throwBody.CreateFixture( fixtureDefinition, "Throw" );
+        _throwBody.CreateFixture( fixtureDefinition, "Throw" );
 
-		_throwBody.ResetTransform();
-	}
+        _throwBody.ResetTransform();
+    }
 }
 
 bool ThrowEntity::HandleEvent(const EventData& theevent)
 {
-	switch (theevent.GetEventType())
-	{
-	case Event_BeginContact:
-		{
-			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
-			const b2Contact* contactInfo = contactData.GetContact();
+    switch (theevent.GetEventType())
+    {
+    case Event_BeginContact:
+    {
+        const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
+        const b2Contact* contactInfo = contactData.GetContact();
 
-			if(contactInfo->GetFixtureA()==_throwBody.LookUpFixture(("Throw")))
-			{
-				ProcessContact(contactInfo,contactInfo->GetFixtureB());
-			}
+        if(contactInfo->GetFixtureA()==_throwBody.LookUpFixture(("Throw")))
+        {
+            ProcessContact(contactInfo,contactInfo->GetFixtureB());
+        }
 
-			if(contactInfo->GetFixtureB()==_throwBody.LookUpFixture(("Throw")))
-			{
-				ProcessContact(contactInfo,contactInfo->GetFixtureA());
-			}
+        if(contactInfo->GetFixtureB()==_throwBody.LookUpFixture(("Throw")))
+        {
+            ProcessContact(contactInfo,contactInfo->GetFixtureA());
+        }
 
-			break;
-		}
+        break;
+    }
 
-	case Event_Simulate:
-		{
-			Simulate();
-			break;
-		}
+    case Event_Simulate:
+    {
+        Simulate();
+        break;
+    }
 
-	default:
-		break;
-	}
+    default:
+        break;
+    }
 
-	return false;
+    return false;
 }
 
 void ThrowEntity::Simulate(void)
@@ -93,7 +93,7 @@ void ThrowEntity::Simulate(void)
 
     if(_targetEntity)
     {
-		b2Vec2 unit = _throwBody.GetBody()->GetWorldVector(b2Vec2(0,1.0f));
+        b2Vec2 unit = _throwBody.GetBody()->GetWorldVector(b2Vec2(0,1.0f));
         unit *= THROW_VELOCITY;
         _targetEntity->Throw(unit);
 
@@ -118,19 +118,19 @@ void ThrowEntity::ProcessContact(const b2Contact* contact, const b2Fixture* cont
 
             if(interfaceA && interfaceA->GetEntity()->GetEntityType() == 'BALL')
             {
-				Entity* entity = interfaceA->GetEntity();
-				if( entity->GetEntityType() == PlayerEntity::kEntity_PlayerEntity )
-				{
-					_targetEntity = static_cast<PlayerEntity*>(entity);
-				}
+                Entity* entity = interfaceA->GetEntity();
+                if( entity->GetEntityType() == PlayerEntity::kEntity_PlayerEntity )
+                {
+                    _targetEntity = static_cast<PlayerEntity*>(entity);
+                }
             }
             if(interfaceB && interfaceB->GetEntity()->GetEntityType() == 'BALL')
             {
-				Entity* entity = interfaceB->GetEntity();
-				if( entity->GetEntityType() == PlayerEntity::kEntity_PlayerEntity )
-				{
-					_targetEntity = static_cast<PlayerEntity*>(entity);
-				}
+                Entity* entity = interfaceB->GetEntity();
+                if( entity->GetEntityType() == PlayerEntity::kEntity_PlayerEntity )
+                {
+                    _targetEntity = static_cast<PlayerEntity*>(entity);
+                }
             }
         }
     }

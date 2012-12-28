@@ -23,7 +23,7 @@ void HullEntity::Initialize( const TiXmlElement *propertyElement )
         const float hullX = sizeX * UNRATIO;
         const float hullY = sizeY * UNRATIO;
 
-		SetPosition( GetPosition() + Vec2D(hullX*0.5f,hullY*-0.5f) );
+        SetPosition( GetPosition() + Vec2D(hullX*0.5f,hullY*-0.5f) );
 
         {
             b2BodyDef bodyDefinition;
@@ -33,20 +33,20 @@ void HullEntity::Initialize( const TiXmlElement *propertyElement )
             bodyDefinition.fixedRotation = true;
             bodyDefinition.type = b2_staticBody;
 
-			_hullBody.CreateBody( bodyDefinition );
+            _hullBody.CreateBody( bodyDefinition );
 
             b2PolygonShape boxShape;
             boxShape.SetAsBox( 0.5f * hullX, 0.5f * hullY );
 
-			b2FixtureDef fixtureDef;
-			fixtureDef.density = 1.0f;
-			fixtureDef.restitution = 0.0f;
-			fixtureDef.friction = 0.0f;
-			fixtureDef.shape = &boxShape;
+            b2FixtureDef fixtureDef;
+            fixtureDef.density = 1.0f;
+            fixtureDef.restitution = 0.0f;
+            fixtureDef.friction = 0.0f;
+            fixtureDef.shape = &boxShape;
 
-			_hullBody.CreateFixture( fixtureDef, "Hull" );
+            _hullBody.CreateFixture( fixtureDef, "Hull" );
 
-			_hullBody.ResetTransform();
+            _hullBody.ResetTransform();
         }
     }
     else

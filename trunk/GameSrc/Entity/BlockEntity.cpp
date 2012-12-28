@@ -7,7 +7,7 @@
 REGISTER_ENTITY( BlockEntity, "Block")
 
 BlockEntity::BlockEntity() : BaseClass(), _blockBody(this), _blockSprite(this),
-                             _shouldFall(false)
+    _shouldFall(false)
 {
 }
 
@@ -23,10 +23,10 @@ void BlockEntity::Initialize( const TiXmlElement *propertyElement )
 
     {
         TextureManager* texturMgr = TextureManager::GetInstance();
-		sf::Sprite* blockSprite = new sf::Sprite(*texturMgr->GetResource("Resource/Ogmo/Entities/Block.png"));
+        sf::Sprite* blockSprite = new sf::Sprite(*texturMgr->GetResource("Resource/Ogmo/Entities/Block.png"));
         blockSprite->setOrigin(sf::Vector2f(0.5f*BLOCK_SIZE*RATIO,0.5f*BLOCK_SIZE*RATIO));
-		_blockSprite.SetSprite( blockSprite );
-		_blockSprite.RegisterRenderable( 2 );
+        _blockSprite.SetSprite( blockSprite );
+        _blockSprite.RegisterRenderable( 2 );
     }
 
     {
@@ -37,7 +37,7 @@ void BlockEntity::Initialize( const TiXmlElement *propertyElement )
         bodyDefinition.type = b2_staticBody;
         bodyDefinition.gravityScale = 9.0f;
 
-		_blockBody.CreateBody( bodyDefinition );
+        _blockBody.CreateBody( bodyDefinition );
 
         b2PolygonShape boxShape;
         boxShape.SetAsBox( 0.5f*BLOCK_SIZE, 0.5f*BLOCK_SIZE );
@@ -48,52 +48,52 @@ void BlockEntity::Initialize( const TiXmlElement *propertyElement )
         fixtureDefinition.friction = 0.5f;
         fixtureDefinition.restitution = 0.0f;
 
-		_blockBody.CreateFixture( fixtureDefinition, "Block" );
+        _blockBody.CreateFixture( fixtureDefinition, "Block" );
 
-		_blockBody.ResetTransform();
+        _blockBody.ResetTransform();
     }
 }
 
 bool BlockEntity::HandleEvent(const EventData& theevent)
 {
-	switch (theevent.GetEventType())
-	{
-	case Event_BeginContact:
-		{
-			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
-			const b2Contact* contactInfo = contactData.GetContact();
+    switch (theevent.GetEventType())
+    {
+    case Event_BeginContact:
+    {
+        const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
+        const b2Contact* contactInfo = contactData.GetContact();
 
-			if(contactInfo->GetFixtureA()==_blockBody.LookUpFixture(("Block")))
-			{
-				ProcessContact(contactInfo,contactInfo->GetFixtureB());
-			}
+        if(contactInfo->GetFixtureA()==_blockBody.LookUpFixture(("Block")))
+        {
+            ProcessContact(contactInfo,contactInfo->GetFixtureB());
+        }
 
-			if(contactInfo->GetFixtureB()==_blockBody.LookUpFixture(("Block")))
-			{
-				ProcessContact(contactInfo,contactInfo->GetFixtureA());
-			}
+        if(contactInfo->GetFixtureB()==_blockBody.LookUpFixture(("Block")))
+        {
+            ProcessContact(contactInfo,contactInfo->GetFixtureA());
+        }
 
-			break;
-		}
+        break;
+    }
 
-	case Event_Simulate:
-		{
-			Simulate();
-			break;
-		}
+    case Event_Simulate:
+    {
+        Simulate();
+        break;
+    }
 
-	default:
-		break;
-	}
+    default:
+        break;
+    }
 
-	return false;
+    return false;
 }
 
 void BlockEntity::Simulate(void)
 {
     if(_shouldFall)
     {
-		_blockBody.GetBody()->SetType( b2_dynamicBody );
+        _blockBody.GetBody()->SetType( b2_dynamicBody );
     }
 }
 

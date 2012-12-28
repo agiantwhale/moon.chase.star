@@ -16,29 +16,29 @@ class IEntityBuilder;
 class EntityList : private std::map<int, Entity*>
 {
 public:
-	EntityList();
+    EntityList();
 
-	void Add( Entity* entity );
-	void DelayedRelease( void );
-	void ReleaseAll(void);
-	void ReleaseAllExceptHull(void);
+    void Add( Entity* entity );
+    void DelayedRelease( void );
+    void ReleaseAll(void);
+    void ReleaseAllExceptHull(void);
 
-	void Update( float deltaTime );
-	void PostLoad(void);
+    void Update( float deltaTime );
+    void PostLoad(void);
 };
 
 class EntityManager : public Singleton<EntityManager>, public IEventListener
 {
-	DEFINE_SINGLETON( EntityManager )
+    DEFINE_SINGLETON( EntityManager )
 
 public:
-	virtual bool HandleEvent( const EventData& newevent );
+    virtual bool HandleEvent( const EventData& newevent );
 
-	void Update(float deltaTime);
-	void PostLoad(void);
-	void ReleaseAll(void);
-	void ReleaseAllExceptHull(void);
-	void RegisterEntity( Entity* entity );
+    void Update(float deltaTime);
+    void PostLoad(void);
+    void ReleaseAll(void);
+    void ReleaseAllExceptHull(void);
+    void RegisterEntity( Entity* entity );
 
 private:
     EntityList _entityList;
@@ -46,53 +46,55 @@ private:
 
 class EntityFactory : public Singleton<EntityFactory>
 {
-	DEFINE_SINGLETON( EntityFactory )
+    DEFINE_SINGLETON( EntityFactory )
 
 public:
-	Entity *CreateEntity( const string& entityClassName );
+    Entity *CreateEntity( const string& entityClassName );
 
-	void RegisterBuilder( IEntityBuilder* builder );
-	void DeregisterBuilder( IEntityBuilder* builder );
+    void RegisterBuilder( IEntityBuilder* builder );
+    void DeregisterBuilder( IEntityBuilder* builder );
 
 private:
-	typedef std::unordered_map<string,IEntityBuilder*> BuilderMap;
+    typedef std::unordered_map<string,IEntityBuilder*> BuilderMap;
 
-	BuilderMap _builderMap;
+    BuilderMap _builderMap;
 };
 
 class IEntityBuilder
 {
 public:
-	virtual std::string GetEntityClassName( void ) = 0;
-	virtual Entity		*CreateEntity( void ) = 0;
+    virtual std::string GetEntityClassName( void ) = 0;
+    virtual Entity		*CreateEntity( void ) = 0;
 };
 
 template<typename type>
 class EntityBuilder : public IEntityBuilder
 {
 public:
-	EntityBuilder( const std::string& entityClassName ) :	IEntityBuilder(),
-                                                            _entityClassName( entityClassName )
+    EntityBuilder( const std::string& entityClassName ) :	IEntityBuilder(),
+        _entityClassName( entityClassName )
 
-	{
-		EntityFactory::GetInstance()->RegisterBuilder( this );
-	}
+    {
+        EntityFactory::GetInstance()->RegisterBuilder( this );
+    }
 
-	virtual ~EntityBuilder()
-	{
-		EntityFactory::GetInstance()->DeregisterBuilder( this );
-	}
+    virtual ~EntityBuilder()
+    {
+        EntityFactory::GetInstance()->DeregisterBuilder( this );
+    }
 
-	virtual std::string GetEntityClassName( void ) {
-		return _entityClassName;
-	}
+    virtual std::string GetEntityClassName( void )
+    {
+        return _entityClassName;
+    }
 
-	virtual Entity *CreateEntity( void ) {
-		return new type;
-	}
+    virtual Entity *CreateEntity( void )
+    {
+        return new type;
+    }
 
 private:
-	std::string _entityClassName;
+    std::string _entityClassName;
 };
 
 #define REGISTER_ENTITY( ThisName,  EntName )\

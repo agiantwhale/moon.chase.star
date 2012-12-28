@@ -14,14 +14,17 @@
 class IPhysics
 {
 public:
-	IPhysics(Entity* const entity);
-	virtual ~IPhysics();
+    IPhysics(Entity* const entity);
+    virtual ~IPhysics();
 
-	virtual void UpdateTransform( void ) = 0;
-	virtual void SmoothenTransform( float remainderRatio ) = 0;
-	virtual void ResetTransform( void ) = 0;
+    virtual void UpdateTransform( void ) = 0;
+    virtual void SmoothenTransform( float remainderRatio ) = 0;
+    virtual void ResetTransform( void ) = 0;
 
-    inline Entity* const GetEntity(void) const {return _entity;}
+    inline Entity* const GetEntity(void) const
+    {
+        return _entity;
+    }
 
 private:
     Entity* const _entity;
@@ -32,7 +35,7 @@ inline IPhysics *GetPhysicsInterface(const b2Fixture *fixture)
     void* bodyData = fixture->GetBody()->GetUserData();
     if(bodyData != nullptr)
     {
-       return static_cast<IPhysics*>(bodyData);
+        return static_cast<IPhysics*>(bodyData);
     }
 
     return nullptr;

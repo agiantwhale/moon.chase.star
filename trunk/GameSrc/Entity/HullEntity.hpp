@@ -12,7 +12,7 @@ public:
     virtual void Initialize( const TiXmlElement *propertyElement = NULL );
 
 private:
-	BodyWrapper _hullBody;
+    BodyWrapper _hullBody;
 };
 
 #endif

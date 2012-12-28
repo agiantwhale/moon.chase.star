@@ -9,40 +9,43 @@
 
 struct FixtureInfo
 {
-	b2Fixture* fixture;
-	b2FixtureDef fixtureDefinition;
+    b2Fixture* fixture;
+    b2FixtureDef fixtureDefinition;
 };
 
 class BodyWrapper : public IPhysics
 {
 public:
     BodyWrapper(Entity* const entity);
-	BodyWrapper( const BodyWrapper& wrapper, Entity* const entity );
+    BodyWrapper( const BodyWrapper& wrapper, Entity* const entity );
     virtual ~BodyWrapper();
 
-	virtual void UpdateTransform( void );
-	virtual void SmoothenTransform(float remainderRatio);
-	virtual void ResetTransform( void );
+    virtual void UpdateTransform( void );
+    virtual void SmoothenTransform(float remainderRatio);
+    virtual void ResetTransform( void );
 
-	void CreateBody( const b2BodyDef& bodyDef );
-	void CreateFixture( const b2FixtureDef& fixtureDef, const std::string& fixtureName );
-	void DestroyBody( void );
+    void CreateBody( const b2BodyDef& bodyDef );
+    void CreateFixture( const b2FixtureDef& fixtureDef, const std::string& fixtureName );
+    void DestroyBody( void );
 
-	inline b2Body* GetBody(void) const { return _body; }
-	b2Fixture* LookUpFixture( const std::string& fixtureName ) const;
+    inline b2Body* GetBody(void) const
+    {
+        return _body;
+    }
+    b2Fixture* LookUpFixture( const std::string& fixtureName ) const;
 
 private:
-	typedef std::unordered_map<std::string, FixtureInfo> FixtureMap;
+    typedef std::unordered_map<std::string, FixtureInfo> FixtureMap;
 
-	b2BodyDef _bodyDef;
+    b2BodyDef _bodyDef;
     b2Body* _body;
 
-	FixtureMap _fixtureMap;
+    FixtureMap _fixtureMap;
 
     b2Vec2 _smoothPosition;
-	b2Vec2 _previousPosition;
-	float _smoothAngle;
-	float _previousAngle;
+    b2Vec2 _previousPosition;
+    float _smoothAngle;
+    float _previousAngle;
 };
 
 #endif
