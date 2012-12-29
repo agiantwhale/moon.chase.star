@@ -1,4 +1,3 @@
-#include <glog\logging.h>
 #include "../System/EventManager.hpp"
 #include "../Entity/CameraMoveEntity.hpp"
 #include "../Event/EventsDef.h"

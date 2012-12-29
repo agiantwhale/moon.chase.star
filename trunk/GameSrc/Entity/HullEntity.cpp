@@ -1,5 +1,5 @@
-#include <glog\logging.h>
 #include "../Entity/HullEntity.hpp"
+#include <CxxTL/tri_logger.hpp>
 
 REGISTER_ENTITY( HullEntity, "Hull")
 
@@ -51,6 +51,6 @@ void HullEntity::Initialize( const TiXmlElement *propertyElement )
     }
     else
     {
-        LOG(ERROR) << "Wrong HullEntity initialization method.";
+        TRI_LOG_STR("Wrong hull entity initialization method.");
     }
 }

@@ -1,6 +1,7 @@
 #include "../Base/Globals.hpp"
 #include "../App/Game.hpp"
 #include "../System/GUIManager.hpp"
+#include "../GUI/Log.hpp"
 
 #include <Gwen/Gwen.h>
 #include <Gwen/Renderers/SFML.h>
@@ -52,21 +53,7 @@ void GUIManager::SetUpGUI(void)
     _gwenInput = new Gwen::Input::SFML;
     _gwenInput->Initialize(_gwenCanvas);
 
-	Gwen::Controls::WindowControl* windowControl = new Gwen::Controls::WindowControl( _gwenCanvas );
-	windowControl->SetSize(600,200);
-	windowControl->SetPos(100,50);
-	windowControl->SetClosable(false);
-	windowControl->SetName("debugLog");
-	windowControl->SetTitle(L"Debug");
+	//new LogWindowControl(_gwenCanvas);
 
-	_gwenOuput = new Gwen::Controls::ListBox(windowControl);
-	_gwenOuput->Dock(Gwen::Pos::Fill);
-
-	google::AddLogSink(this);
-}
-
-void GUIManager::send(google::LogSeverity severity, const char* full_filename, const char* base_filename, int line, const struct ::tm* tm_time, const char* message, size_t message_len)
-{
-    std::string logString = ToString(severity,base_filename,line,tm_time,message,message_len);
-	_gwenOuput->AddItem(logString);
+	TRI_LOG_STR("GUI initialized.");
 }

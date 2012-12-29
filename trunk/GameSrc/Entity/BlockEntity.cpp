@@ -1,4 +1,3 @@
-#include <glog\logging.h>
 #include "../Entity/BlockEntity.hpp"
 #include "../System/PhysicsManager.hpp"
 #include "../System/ResourceManager.hpp"

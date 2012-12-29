@@ -2,7 +2,7 @@
 #define GAME_H
 
 #include <SFML/Graphics.hpp>
-#include <glog\logging.h>
+#include <CxxTL/tri_logger.hpp>
 #include <unordered_map>
 
 #include <Gwen/Controls/Canvas.h>

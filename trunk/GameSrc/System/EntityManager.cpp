@@ -1,4 +1,4 @@
-#include <glog\logging.h>
+#include <CxxTL/tri_logger.hpp>
 #include "../App/Game.hpp"
 #include "../System/EntityManager.hpp"
 #include "../System/ResourceManager.hpp"
@@ -156,8 +156,9 @@ Entity *EntityFactory::CreateEntity( const string& entityClassName )
     }
     else
     {
-        LOG(WARNING) << "EntityClassName " << entityClassName << " is unregistered!";
-    }
+		TRI_LOG_STR("Entity class unregistered.");
+		TRI_LOG(entityClassName);
+	}
 
     return return_ptr;
 }
@@ -170,7 +171,8 @@ void EntityFactory::RegisterBuilder( IEntityBuilder* builder )
     }
     else
     {
-        LOG(WARNING) << "EntityBuilder " << builder->GetEntityClassName() << " is already registered.";
+		TRI_LOG_STR("Entity class is already registered.");
+		TRI_LOG(builder->GetEntityClassName());
     }
 }
 

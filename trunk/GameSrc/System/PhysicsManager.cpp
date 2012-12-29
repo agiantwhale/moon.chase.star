@@ -1,4 +1,4 @@
-#include <glog\logging.h>
+#include <CxxTL/tri_logger.hpp>
 #include "../App/Game.hpp"
 #include "../System/PhysicsManager.hpp"
 #include "../System/Debug/PhysicsDebugDraw.hpp"
@@ -6,18 +6,19 @@
 #include "../Event/ContactEventData.h"
 
 SINGLETON_CONSTRUCTOR( PhysicsManager ),
-                       _physicsWorld( NULL ),
+                       _physicsWorld( nullptr ),
                        _isPhysicsSetUp( false ),
                        _remainderDT( 0.0f ),
                        _remainderRatio( 0.0f ),
-                       _debugDraw(*Game::GetInstance())
+                       _debugDraw(nullptr)
 {
     _physicsList.clear();
-    _debugDraw.SetFlags(b2Draw::e_shapeBit);
 }
 
 SINGLETON_DESTRUCTOR( PhysicsManager )
 {
+	delete _debugDraw;
+	delete _physicsWorld;
 }
 
 void PhysicsManager::AddPhysicsWrapper( IPhysics *physics )
@@ -36,20 +37,23 @@ void PhysicsManager::RemovePhysicsWrapper( IPhysics *physics )
 
 void PhysicsManager::SetUpPhysics( void )
 {
+	_debugDraw = new DebugDraw(*Game::GetInstance());
+	_debugDraw->SetFlags(b2Draw::e_shapeBit);
+
     _physicsWorld = new b2World( b2Vec2( 0, -10 ) );
     _physicsWorld->SetContactListener(this);
-    _physicsWorld->SetDebugDraw(&_debugDraw);
+    _physicsWorld->SetDebugDraw(_debugDraw);
 
     _isPhysicsSetUp = true;
 
-    LOG(INFO) << "Physics initialized.";
+	TRI_LOG_STR("Physics initialized.");
 }
 
 void PhysicsManager::FixedUpdate( float deltaTime )
 {
     if( !_isPhysicsSetUp )
     {
-        LOG(ERROR) << "Physics isn't set up!";
+        TRI_LOG_STR("Physics isn't set up!");
         return;
     }
 

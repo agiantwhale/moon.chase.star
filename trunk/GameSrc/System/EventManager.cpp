@@ -1,4 +1,4 @@
-#include <glog\logging.h>
+#include <CxxTL/tri_logger.hpp>
 #include "../Base/Globals.hpp"
 #include "../Event/EventData.hpp"
 #include "../System/EventManager.hpp"
@@ -27,7 +27,8 @@ void EventManager::RemoveListener(IEventListener* const listenerptr, const Event
     EventListenersMap::const_iterator iter = _eventListnersMap.find( eventtype );
     if( iter == _eventListnersMap.end() )
     {
-        LOG(ERROR) << "Attempted to remove unregistered EventListener " << listenerptr->GetHandlerName() << "!";
+		TRI_LOG_STR("Attempted to remove unregistered event listener.");
+		TRI_LOG(listenerptr->GetHandlerName());
         return;
     }
 

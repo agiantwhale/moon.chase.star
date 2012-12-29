@@ -1,4 +1,3 @@
-#include <glog\logging.h>
 #include "../Entity/Entity.hpp"
 
 Entity::Entity() :	ITransform(),

@@ -28,6 +28,6 @@ void SpriteWrapper::Render()
     }
     else
     {
-        LOG(WARNING) << "Sprite component is uninitialized!";
+        TRI_LOG_STR("Sprite is uninitialized.");
     }
 }

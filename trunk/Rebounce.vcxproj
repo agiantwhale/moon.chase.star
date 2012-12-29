@@ -23,11 +23,14 @@
     <ClCompile Include="GameSrc\Entity\PlayerEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\ThrowEntity.cpp" />
     <ClCompile Include="GameSrc\Event\EventData.cpp" />
+    <ClCompile Include="GameSrc\GUI\Log.cpp" />
+    <ClCompile Include="GameSrc\GUI\MainMenu.cpp" />
     <ClCompile Include="GameSrc\Interface\IPhysics.cpp" />
     <ClCompile Include="GameSrc\Interface\IRenderable.cpp" />
     <ClCompile Include="GameSrc\Interface\IState.cpp" />
     <ClCompile Include="GameSrc\State\InGameState.cpp" />
     <ClCompile Include="GameSrc\State\IntroState.cpp" />
+    <ClCompile Include="GameSrc\State\MainMenuState.cpp" />
     <ClCompile Include="GameSrc\System\Debug\PhysicsDebugDraw.cpp" />
     <ClCompile Include="GameSrc\System\EntityManager.cpp" />
     <ClCompile Include="GameSrc\System\EventManager.cpp" />
@@ -39,6 +42,7 @@
     <ClCompile Include="GameSrc\System\ResourceManager.cpp" />
     <ClCompile Include="GameSrc\System\SceneManager.cpp" />
     <ClCompile Include="GameSrc\Tile\Tile.cpp" />
+    <ClCompile Include="Libs\CxxTL\src\tri_logger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp" />
@@ -59,6 +63,8 @@
     <ClInclude Include="GameSrc\Event\CameraMoveEventData.hpp" />
     <ClInclude Include="GameSrc\Event\EventData.hpp" />
     <ClInclude Include="GameSrc\Event\EventsDef.h" />
+    <ClInclude Include="GameSrc\GUI\Log.hpp" />
+    <ClInclude Include="GameSrc\GUI\MainMenu.hpp" />
     <ClInclude Include="GameSrc\Interface\IEventListner.hpp" />
     <ClInclude Include="GameSrc\Interface\IPhysics.hpp" />
     <ClInclude Include="GameSrc\Interface\IRenderable.hpp" />
@@ -66,6 +72,7 @@
     <ClInclude Include="GameSrc\Interface\ITransform.hpp" />
     <ClInclude Include="GameSrc\State\InGameState.hpp" />
     <ClInclude Include="GameSrc\State\IntroState.hpp" />
+    <ClInclude Include="GameSrc\State\MainMenuState.hpp" />
     <ClInclude Include="GameSrc\State\StatesDef.h" />
     <ClInclude Include="GameSrc\System\Debug\PhysicsDebugDraw.hpp" />
     <ClInclude Include="GameSrc\System\EntityManager.hpp" />
@@ -124,16 +131,20 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>TIXML_USE_STL;_WIN32;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Rebounce\Libs\GWEN\include;C:\Rebounce\Libs\Light\include;C:\Rebounce\Libs\glog\include;C:\Rebounce\Libs\TinyXML\include;C:\Rebounce\Libs\SFML\include;C:\Rebounce\Libs\FastDelegate\include;C:\Rebounce\Libs\EasyLogging++\include;C:\Rebounce\Libs\Box2D\include;C:\Rebounce\Libs\Boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>FTLOG=Game.log;TIXML_USE_STL;_WIN32;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Rebounce\Libs\GWEN\include;C:\Rebounce\Libs\Light\include;C:\Rebounce\Libs\CxxTL\include;C:\Rebounce\Libs\TinyXML\include;C:\Rebounce\Libs\SFML\include;C:\Rebounce\Libs\FastDelegate\include;C:\Rebounce\Libs\EasyLogging++\include;C:\Rebounce\Libs\Box2D\include;C:\Rebounce\Libs\Boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;gwend.lib;libglog.lib;tinyxmlSTL.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Rebounce\Libs\GWEN\lib;C:\Rebounce\Libs\glog\lib\Debug;C:\Rebounce\Libs\TinyXML\lib\Debug;C:\Rebounce\Libs\Box2D\bin\Debug;C:\Rebounce\Libs\SFML\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;gwend.lib;tinyxmlSTL.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Rebounce\Libs\GWEN\lib;C:\Rebounce\Libs\TinyXML\lib\Debug;C:\Rebounce\Libs\Box2D\bin\Debug;C:\Rebounce\Libs\SFML\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -143,18 +154,22 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>TIXML_USE_STL;_WIN32;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Rebounce\Libs\GWEN\include;C:\Rebounce\Libs\Light\include;C:\Rebounce\Libs\glog\include;C:\Rebounce\Libs\TinyXML\include;C:\Rebounce\Libs\SFML\include;C:\Rebounce\Libs\FastDelegate\include;C:\Rebounce\Libs\EasyLogging++\include;C:\Rebounce\Libs\Box2D\include;C:\Rebounce\Libs\Boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>FTLOG=Game;TIXML_USE_STL;_WIN32;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Rebounce\Libs\GWEN\include;C:\Rebounce\Libs\Light\include;C:\Rebounce\Libs\CxxTL\include;C:\Rebounce\Libs\TinyXML\include;C:\Rebounce\Libs\SFML\include;C:\Rebounce\Libs\FastDelegate\include;C:\Rebounce\Libs\EasyLogging++\include;C:\Rebounce\Libs\Box2D\include;C:\Rebounce\Libs\Boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;gwen.lib;libglog.lib;tinyxmlSTL.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Rebounce\Libs\GWEN\lib;C:\Rebounce\Libs\glog\lib\Release;C:\Rebounce\Libs\TinyXML\lib\Release;C:\Rebounce\Libs\Box2D\bin\Release;C:\Rebounce\Libs\SFML\lib\MinSizeRel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;gwen.lib;tinyxmlSTL.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Rebounce\Libs\GWEN\lib;C:\Rebounce\Libs\TinyXML\lib\Release;C:\Rebounce\Libs\Box2D\bin\Release;C:\Rebounce\Libs\SFML\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

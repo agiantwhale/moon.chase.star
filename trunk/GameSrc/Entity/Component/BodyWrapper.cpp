@@ -1,4 +1,3 @@
-#include <glog\logging.h>
 #include "../../Entity/Component/BodyWrapper.hpp"
 #include "../../System/PhysicsManager.hpp"
 #include "../../System/EventManager.hpp"
@@ -76,7 +75,8 @@ b2Fixture* BodyWrapper::LookUpFixture( const std::string& fixtureName ) const
     }
     else
     {
-        LOG(WARNING) << "Fixture with name " << fixtureName << " doesn't exists!";
+		TRI_LOG_STR("Unable to find fixture.");
+		TRI_LOG(fixtureName);
     }
 
     return nullptr;

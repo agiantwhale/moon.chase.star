@@ -26,9 +26,10 @@ sf::Texture* TextureManager::Load( const std::string& strId )
     sf::Texture* texture = new sf::Texture;
     if( !texture->loadFromFile( strId ) )
     {
-        LOG(WARNING) << "TextureManager failed to load " << strId << ".";
+		TRI_LOG_STR("Failed to load resource.");
+		TRI_LOG(strId);
         delete texture;
-        texture = NULL;
+        texture = nullptr;
     }
 
     return texture;
@@ -60,9 +61,10 @@ sf::SoundBuffer* SoundBufferManager::Load( const std::string& strId )
     sf::SoundBuffer* buffer = new sf::SoundBuffer();
     if( !buffer->loadFromFile( strId ) )
     {
-        LOG(WARNING) << "SoundBufferManager failed to load " << strId << ".";
+		TRI_LOG_STR("Failed to load resource.");
+		TRI_LOG(strId);
         delete buffer;
-        buffer = NULL;
+        buffer = nullptr;
     }
 
     return buffer;

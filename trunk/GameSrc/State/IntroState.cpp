@@ -18,11 +18,11 @@ IntroState::~IntroState()
 
 void IntroState::Enter(void)
 {
-    Game::GetInstance()->SetNextStateType(State_InGame);
+    Game::GetInstance()->SetNextStateType(State_MainMenu);
 
     _currentStatus = FADE_IN;
     _splashTimer.restart();
-    _splashSprite = new sf::Sprite( *TextureManager::GetInstance()->GetResource( "Resource/Texture/Splash.png" ) );
+    _splashSprite = new sf::Sprite( *TextureManager::GetInstance()->GetResource( "Resource/Textures/Splash.png" ) );
 
     //TODO: Initialize sprite instance here.
 }
@@ -70,7 +70,7 @@ bool IntroState::Update( float deltaTime )
             return true;
         }
 
-        return true;
+        return false;
     }
 
     default:
@@ -79,6 +79,8 @@ bool IntroState::Update( float deltaTime )
         break;
     }
     }
+
+	return false;
 }
 
 void IntroState::Render( void )

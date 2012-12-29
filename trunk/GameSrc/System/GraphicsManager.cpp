@@ -1,4 +1,4 @@
-#include <glog\logging.h>
+#include <CxxTL/tri_logger.hpp>
 #include "../System/GraphicsManager.hpp"
 #include "../App/Game.hpp"
 
@@ -15,6 +15,7 @@ SINGLETON_DESTRUCTOR(GraphicsManager)
 
 void GraphicsManager::SetUpGraphics(void)
 {
+	TRI_LOG_STR("Graphics initialized.");
 }
 
 bool GraphicsManager::HandleEvent( const EventData& newevent )
@@ -78,7 +79,7 @@ RenderLayer* GraphicsManager::GetRenderLayer( unsigned int layer )
 {
     if( layer >= _renderLayerStack.size() )
     {
-        LOG(WARNING) << "Attempted to access a non-existent layer!";
+		TRI_LOG_STR("Attempted to access a non-existent layer!");
     }
 
     return _renderLayerStack.at( layer );

@@ -37,6 +37,7 @@ private:
     typedef std::list<IPhysics*> PhysicsList;
     PhysicsList _physicsList;
 
+	DebugDraw* _debugDraw;
     b2World* _physicsWorld;
     bool _isPhysicsSetUp;
 
@@ -46,8 +47,6 @@ private:
 
     float _remainderDT;
     float _remainderRatio;
-
-    DebugDraw _debugDraw;
 };
 
 #endif

@@ -1,4 +1,3 @@
-#include <glog\logging.h>
 #include <cmath>
 #include "../Entity/PlayerEntity.hpp"
 #include "../System/PhysicsManager.hpp"

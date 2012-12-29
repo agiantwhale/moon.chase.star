@@ -1,4 +1,3 @@
-#include <glog\logging.h>
 #include "../Entity/ThrowEntity.hpp"
 #include "../System/ResourceManager.hpp"
 #include "../Event/ContactEventData.h"
