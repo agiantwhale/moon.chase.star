@@ -1,7 +1,8 @@
 #ifndef INTROSTATE_HPP
 #define INTROSTATE_HPP
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
+#include <Gwen/Controls/ImagePanel.h>
 #include "../Interface/IState.hpp"
 
 class IntroState : public IState
@@ -23,7 +24,7 @@ private:
         FADE_OUT
     };
 
-    sf::Sprite *_splashSprite;
+    Gwen::Controls::ImagePanel *_splashImage;
     sf::Clock	_splashTimer;
     IntroStatus _currentStatus;
 };

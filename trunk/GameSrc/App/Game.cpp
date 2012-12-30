@@ -81,8 +81,7 @@ void Game::PollEvents(void)
     {
         if(windowEvent.type == sf::Event::Closed)
         {
-            close();
-            _isRunning = false;
+            Quit();
         }
 
 		_currentState->HandleAppEvent(windowEvent);

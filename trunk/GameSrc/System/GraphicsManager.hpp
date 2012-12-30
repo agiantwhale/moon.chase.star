@@ -4,7 +4,6 @@
 #include <list>
 #include <vector>
 #include <string>
-#include <Light\LightManager.h>
 
 #include "../Base/Singleton.hpp"
 #include "../System/RenderLayer.hpp"

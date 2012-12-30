@@ -1,19 +1,23 @@
 #include <assert.h>
 
 #include "../State/IntroState.hpp"
+#include "../Base/Globals.hpp"
 #include "../App/Game.hpp"
 #include "../System/ResourceManager.hpp"
+#include "../System/GUIManager.hpp"
 
-IntroState::IntroState() : _splashSprite( nullptr ), _splashTimer(), _currentStatus( FADE_IN )
+IntroState::IntroState() : _splashImage( nullptr ), _splashTimer(), _currentStatus( FADE_IN )
 {
+	_splashImage = new Gwen::Controls::ImagePanel(GUIManager::GetInstance()->GetCanvas());
+	_splashImage->SetImage("Resource/Textures/Splash.png");
+	_splashImage->SetBounds(0,0,SCREENWIDTH,SCREENHEIGHT);
+	_splashImage->Hide();
 }
 
 IntroState::~IntroState()
 {
-    if( _splashSprite )
-    {
-        delete _splashSprite;
-    }
+	if( _splashImage )
+		delete _splashImage;
 }
 
 void IntroState::Enter(void)
@@ -22,9 +26,7 @@ void IntroState::Enter(void)
 
     _currentStatus = FADE_IN;
     _splashTimer.restart();
-    _splashSprite = new sf::Sprite( *TextureManager::GetInstance()->GetResource( "Resource/Textures/Splash.png" ) );
-
-    //TODO: Initialize sprite instance here.
+	_splashImage->Show();
 }
 
 bool IntroState::Update( float deltaTime )
@@ -37,8 +39,8 @@ bool IntroState::Update( float deltaTime )
     {
     case FADE_IN:
     {
-        sf::Color spriteColor(255,255,255,255 * std::min( 1.0f, elapsedTime / FADE_TIME ) );
-        _splashSprite->setColor( spriteColor );
+        Gwen::Color imageColor(255,255,255,255 * std::min( 1.0f, elapsedTime / FADE_TIME ) );
+        _splashImage->SetDrawColor(imageColor);
 
         if(elapsedTime > FADE_TIME)
         {
@@ -62,8 +64,8 @@ bool IntroState::Update( float deltaTime )
 
     case FADE_OUT:
     {
-        sf::Color spriteColor(255,255,255,255 * std::max( 0.0f, (FADE_TIME - elapsedTime) / FADE_TIME ) );
-        _splashSprite->setColor( spriteColor );
+		Gwen::Color imageColor(255,255,255,255 * std::min( 1.0f, elapsedTime / FADE_TIME ) );
+		_splashImage->SetDrawColor(imageColor);
 
         if(elapsedTime > FADE_TIME)
         {
@@ -85,14 +87,10 @@ bool IntroState::Update( float deltaTime )
 
 void IntroState::Render( void )
 {
-    if( _splashSprite )
-    {
-        Game::GetInstance()->draw( *_splashSprite );
-    }
+	GUIManager::GetInstance()->Render();
 }
 
 void IntroState::Exit(void)
 {
-    delete _splashSprite;
-    _splashSprite = nullptr;
+	_splashImage->Hide();
 }

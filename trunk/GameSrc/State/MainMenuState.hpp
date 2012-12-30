@@ -1,6 +1,7 @@
 #ifndef MAINMENUSTATE_HPP
 #define MAINMENUSTATE_HPP
 
+#include <SFML/Graphics.hpp>
 #include "../Interface/IState.hpp"
 #include "../GUI/MainMenu.hpp"
 
@@ -17,7 +18,7 @@ public:
 	virtual void Exit(void);
 
 private:
-	MainMenuWindowControl* _menuWindow;
+	MainMenuControl* _menuWindow;
 };
 
 #endif // MainMenuState_h__

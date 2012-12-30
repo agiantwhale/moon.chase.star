@@ -4,7 +4,7 @@
 MainMenuState::MainMenuState() :	IState(),
 									_menuWindow(nullptr)
 {
-	_menuWindow = new MainMenuWindowControl(GUIManager::GetInstance()->GetCanvas());
+	_menuWindow = new MainMenuControl(GUIManager::GetInstance()->GetCanvas());
 	_menuWindow->Hide();
 }
 

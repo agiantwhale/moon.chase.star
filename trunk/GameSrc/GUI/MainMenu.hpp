@@ -1,11 +1,11 @@
 #ifndef MAINMENU_HPP
 #define MAINMENU_HPP
 
-#include <Gwen/Controls/WindowControl.h>
+#include <Gwen/Controls/Base.h>
 
-class MainMenuWindowControl : public Gwen::Controls::WindowControl
+class MainMenuControl : public Gwen::Controls::Base
 {
-	GWEN_CONTROL(MainMenuWindowControl,Gwen::Controls::WindowControl);
+	GWEN_CONTROL(MainMenuControl,Gwen::Controls::Base);
 
 public:
 	void OnContinue(Gwen::Controls::Base* control);

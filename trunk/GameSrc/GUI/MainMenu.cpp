@@ -1,48 +1,53 @@
 #include <Gwen/Controls/Button.h>
-#include <Gwen/Controls/Layout/Position.h>
+#include <Gwen/Controls/ImagePanel.h>
+#include <Gwen/Controls/Label.h>
+#include <Gwen/Controls/Rectangle.h>
 #include "../GUI/MainMenu.hpp"
 #include "../Base/Globals.hpp"
+#include "../App/Game.hpp"
 
-GWEN_CONTROL_CONSTRUCTOR(MainMenuWindowControl)
+GWEN_CONTROL_CONSTRUCTOR(MainMenuControl)
 {
-	m_Title->SetText("Main Menu");
-	SetPos(SCREENWIDTH*3/4,0);
-	SetSize(SCREENWIDTH/4,SCREENHEIGHT);
+	SetBounds(0,0,SCREENWIDTH,SCREENHEIGHT);
 
-	//Gwen::Controls::Layout::Center* centerLayout = new Gwen::Controls::Layout::Center(this);
-	//centerLayout->Dock(Gwen::Pos::Fill);
+	Gwen::Controls::ImagePanel* titleImage = new Gwen::Controls::ImagePanel(this);
+	titleImage->SetImage("Resource/Textures/Title.png");
+	titleImage->SetBounds(20,50,640,400);
+
+	Gwen::Controls::Rectangle* lightRectangle = new Gwen::Controls::Rectangle(this);
+	lightRectangle->SetBounds(960,0,320,720);
+	lightRectangle->SetColor(Gwen::Color(255,255,255,60));
 
 	Gwen::Controls::Button* newGameButton = new Gwen::Controls::Button(this);
 	newGameButton->SetText("New Game");
 	newGameButton->SetSize(250,100);
-	newGameButton->SetPos(35,360);
-	newGameButton->onPress.Add(this,&MainMenuWindowControl::OnNewGame);
+	newGameButton->SetPos(960 + 35,360);
+	newGameButton->onPress.Add(this,&MainMenuControl::OnNewGame);
 
 	Gwen::Controls::Button* continueButton = new Gwen::Controls::Button(this);
 	continueButton->SetText("Continue");
 	continueButton->SetSize(250,100);
-	continueButton->SetPos(35,470);
-	continueButton->onPress.Add(this,&MainMenuWindowControl::OnContinue);
+	continueButton->SetPos(960 + 35,470);
+	continueButton->onPress.Add(this,&MainMenuControl::OnContinue);
 
 	Gwen::Controls::Button* exitButton = new Gwen::Controls::Button(this);
 	exitButton->SetText("Exit");
 	exitButton->SetSize(250,100);
-	exitButton->SetPos(35,580);
-	exitButton->onPress.Add(this,&MainMenuWindowControl::OnExit);
+	exitButton->SetPos(960 + 35,580);
+	exitButton->onPress.Add(this,&MainMenuControl::OnExit);
 }
 
-void MainMenuWindowControl::OnExit( Gwen::Controls::Base* control )
+void MainMenuControl::OnExit( Gwen::Controls::Base* control )
+{
+	Game::GetInstance()->Quit();
+}
+
+void MainMenuControl::OnNewGame( Gwen::Controls::Base* control )
 {
 
 }
 
-void MainMenuWindowControl::OnNewGame( Gwen::Controls::Base* control )
+void MainMenuControl::OnContinue( Gwen::Controls::Base* control )
 {
-
-}
-
-void MainMenuWindowControl::OnContinue( Gwen::Controls::Base* control )
-{
-
 }
 

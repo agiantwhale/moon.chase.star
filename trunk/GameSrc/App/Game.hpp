@@ -23,6 +23,7 @@ public:
     void Start( void );
     inline void Quit(void)
     {
+		close();
         _isRunning = false;
     }
 
