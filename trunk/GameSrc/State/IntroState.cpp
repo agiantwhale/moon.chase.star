@@ -64,7 +64,7 @@ bool IntroState::Update( float deltaTime )
 
     case FADE_OUT:
     {
-		Gwen::Color imageColor(255,255,255,255 * std::min( 1.0f, elapsedTime / FADE_TIME ) );
+		Gwen::Color imageColor(255,255,255,255 * std::max( 0.0f, FADE_TIME - elapsedTime / FADE_TIME ) );
 		_splashImage->SetDrawColor(imageColor);
 
         if(elapsedTime > FADE_TIME)
