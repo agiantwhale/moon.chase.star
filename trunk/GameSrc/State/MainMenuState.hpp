@@ -11,6 +11,11 @@ public:
 	MainMenuState();
 	virtual ~MainMenuState();
 
+	inline void EndState(void)
+	{
+		_endState = true;
+	}
+
 	virtual void Enter(void);
 	virtual void HandleAppEvent(sf::Event& appEvent);
 	virtual bool Update(float deltaTime);
@@ -19,6 +24,7 @@ public:
 
 private:
 	MainMenuControl* _menuWindow;
+	bool _endState;
 };
 
 #endif // MainMenuState_h__

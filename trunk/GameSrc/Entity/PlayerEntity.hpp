@@ -50,4 +50,17 @@ private:
     bool _dead;
 };
 
+class DummyBallEntity : public Entity
+{
+	DEFINE_ENTITY(DummyBallEntity,Entity,'DMMY')
+
+public:
+	virtual void Initialize( const TiXmlElement *propertyElement );
+	virtual void Update(float deltaTime);
+
+private:
+	BodyWrapper _ballBody;
+	SpriteWrapper _ballSprite;
+};
+
 #endif

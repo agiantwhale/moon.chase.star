@@ -10,6 +10,68 @@ template <typename T> int sgn(T val)
     return (T(0) < val) - (val < T(0));
 }
 
+REGISTER_ENTITY( DummyBallEntity, "Dummy")
+
+DummyBallEntity::DummyBallEntity() : Entity(), _ballBody(this), _ballSprite(this)
+{
+
+}
+
+DummyBallEntity::~DummyBallEntity()
+{
+
+}
+
+void DummyBallEntity::Initialize( const TiXmlElement *propertyElement )
+{
+	BaseClass::Initialize(propertyElement);
+
+	const float BALL_RADIUS = 0.5f;
+
+	{
+		TextureManager* textureMgr = TextureManager::GetInstance();
+		sf::Sprite* ballSprite = new sf::Sprite(*textureMgr->GetResource("Resource/Ogmo/Entities/Ball.png"));
+		ballSprite->setOrigin(sf::Vector2f(BALL_RADIUS*RATIO,BALL_RADIUS*RATIO));
+		_ballSprite.SetSprite( ballSprite );
+		_ballSprite.RegisterRenderable( 2 );
+	}
+
+	//BodyComponent
+	{
+		b2BodyDef bodyDefinition;
+		bodyDefinition.userData = (IPhysics*)this;
+		bodyDefinition.position = b2Vec2(GetPosition().x, GetPosition().y);
+		bodyDefinition.angle = 0.0f;
+		bodyDefinition.fixedRotation = true;
+		bodyDefinition.type = b2_dynamicBody;
+		bodyDefinition.gravityScale = 6.0f;
+		bodyDefinition.bullet = true;
+
+		_ballBody.CreateBody( bodyDefinition );
+
+		b2CircleShape circle;
+		circle.m_radius = BALL_RADIUS;
+
+		b2FixtureDef fixtureDefinition;
+		fixtureDefinition.restitution = 0.7f;
+		fixtureDefinition.friction = 0.1f;
+		fixtureDefinition.density = 1.0f;
+		fixtureDefinition.shape = &circle;
+
+		_ballBody.CreateFixture( fixtureDefinition, "Ball" );
+
+		_ballBody.ResetTransform();
+	}
+}
+
+void DummyBallEntity::Update( float deltaTime )
+{
+	if(GetPosition().y <= -13.0f)
+	{
+		Release();
+	}
+}
+
 const float KILL_TIME = 1.5f;
 
 REGISTER_ENTITY( PlayerEntity, "Ball" )

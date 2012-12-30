@@ -3,11 +3,15 @@
 #include <Gwen/Controls/Label.h>
 #include <Gwen/Controls/Rectangle.h>
 #include "../GUI/MainMenu.hpp"
+#include "../State/MainMenuState.hpp"
 #include "../Base/Globals.hpp"
 #include "../App/Game.hpp"
+#include "../System/SceneManager.hpp"
 
 GWEN_CONTROL_CONSTRUCTOR(MainMenuControl)
 {
+	_ownerState = nullptr;
+
 	SetBounds(0,0,SCREENWIDTH,SCREENHEIGHT);
 
 	Gwen::Controls::ImagePanel* titleImage = new Gwen::Controls::ImagePanel(this);
@@ -44,7 +48,9 @@ void MainMenuControl::OnExit( Gwen::Controls::Base* control )
 
 void MainMenuControl::OnNewGame( Gwen::Controls::Base* control )
 {
-
+	Game::GetInstance()->SetNextStateType(State_InGame);
+	SceneManager::GetInstance()->LoadScene("Resource/Ogmo/Levels/Level3.oel");
+	_ownerState->EndState();
 }
 
 void MainMenuControl::OnContinue( Gwen::Controls::Base* control )

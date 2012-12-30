@@ -2,9 +2,11 @@
 #include "../System/GUIManager.hpp"
 
 MainMenuState::MainMenuState() :	IState(),
-									_menuWindow(nullptr)
+									_menuWindow(nullptr),
+									_endState(false)
 {
 	_menuWindow = new MainMenuControl(GUIManager::GetInstance()->GetCanvas());
+	_menuWindow->SetOwnerState(this);
 	_menuWindow->Hide();
 }
 
@@ -20,7 +22,7 @@ void MainMenuState::Enter( void )
 
 bool MainMenuState::Update( float deltaTime )
 {
-	return false;
+	return _endState;
 }
 
 void MainMenuState::Render( void )

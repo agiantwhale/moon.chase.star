@@ -24,7 +24,7 @@ void InGameState::Render()
     GraphicsManager::GetInstance()->Render();
 
 #ifdef _DEBUG
-    PhysicsManager::GetInstance()->Render();
+    //PhysicsManager::GetInstance()->Render();
 #endif
 }
 

@@ -43,8 +43,8 @@ void GUIManager::SetUpGUI(void)
     _gwenRenderer = new Gwen::Renderer::SFML(*Game::GetInstance());
 
     Gwen::Skin::TexturedBase* texturedSkin = new Gwen::Skin::TexturedBase(_gwenRenderer);
-    texturedSkin->Init( "Resource/Textures/DefaultSkin.png" );
-    texturedSkin->SetDefaultFont( L"Resource/Fonts/HeumToda.ttf", 11 );
+    texturedSkin->Init( "Resource/Textures/GUISkin.png" );
+    texturedSkin->SetDefaultFont( L"Resource/Fonts/HeumToda.ttf", 20 );
 	_gwenSkin = texturedSkin;
 
     _gwenCanvas = new Gwen::Controls::Canvas( _gwenSkin );
@@ -52,8 +52,6 @@ void GUIManager::SetUpGUI(void)
 
     _gwenInput = new Gwen::Input::SFML;
     _gwenInput->Initialize(_gwenCanvas);
-
-	//new LogWindowControl(_gwenCanvas);
 
 	TRI_LOG_STR("GUI initialized.");
 }
