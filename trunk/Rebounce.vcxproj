@@ -34,6 +34,7 @@
     <ClCompile Include="GameSrc\State\IntroState.cpp" />
     <ClCompile Include="GameSrc\State\LoadingState.cpp" />
     <ClCompile Include="GameSrc\State\MainMenuState.cpp" />
+    <ClCompile Include="GameSrc\State\PauseState.cpp" />
     <ClCompile Include="GameSrc\System\Debug\PhysicsDebugDraw.cpp" />
     <ClCompile Include="GameSrc\System\EntityManager.cpp" />
     <ClCompile Include="GameSrc\System\EventManager.cpp" />
@@ -63,6 +64,7 @@
     <ClInclude Include="GameSrc\Entity\HullEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\PlayerEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\ThrowEntity.hpp" />
+    <ClInclude Include="GameSrc\Event\AppEventEventData.hpp" />
     <ClInclude Include="GameSrc\Event\ContactEventData.h" />
     <ClInclude Include="GameSrc\Event\CameraMoveEventData.hpp" />
     <ClInclude Include="GameSrc\Event\EventData.hpp" />
@@ -80,6 +82,7 @@
     <ClInclude Include="GameSrc\State\IntroState.hpp" />
     <ClInclude Include="GameSrc\State\LoadingState.hpp" />
     <ClInclude Include="GameSrc\State\MainMenuState.hpp" />
+    <ClInclude Include="GameSrc\State\PauseState.h" />
     <ClInclude Include="GameSrc\State\StatesDef.h" />
     <ClInclude Include="GameSrc\System\Debug\PhysicsDebugDraw.hpp" />
     <ClInclude Include="GameSrc\System\EntityManager.hpp" />

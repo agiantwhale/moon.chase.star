@@ -38,11 +38,6 @@ void MainMenuState::Exit( void )
 	_menuWindow->Hide();
 }
 
-void MainMenuState::HandleAppEvent( sf::Event& appEvent )
-{
-	GUIManager::GetInstance()->FeedEvent(appEvent);
-}
-
 bool MainMenuState::HandleEvent( const EventData& theevent )
 {
 	if(theevent.GetEventType() == Event_NewGame)

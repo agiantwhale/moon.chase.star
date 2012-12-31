@@ -11,7 +11,6 @@ public:
     virtual ~IState();
 
     virtual void Enter( void );
-    virtual void HandleAppEvent(sf::Event& appEvent);
     virtual bool Update( float deltaTime ) = 0;
     virtual void Render( void ) = 0;
     virtual void Exit( void );

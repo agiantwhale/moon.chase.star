@@ -32,5 +32,5 @@ void EventData::QueueEvent( float waitTime )
 
 void EventData::AbortEvent( bool allOfType /*= false*/ )
 {
-
+	EventManager::GetInstance()->AbortEvent(_eventType,allOfType);
 }

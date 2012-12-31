@@ -1,5 +1,8 @@
 #include "../App/Game.hpp"
 
+//Evnet
+#include "../Event/AppEventEventData.hpp"
+
 //Managers
 #include "../System/GraphicsManager.hpp"
 #include "../System/PhysicsManager.hpp"
@@ -80,7 +83,8 @@ void Game::PollEvents(void)
             Quit();
         }
 
-		_currentState->HandleAppEvent(windowEvent);
+		EventData* eventData = new AppEventEventData(windowEvent);
+		eventData->TriggerEvent();
     }
 }
 
@@ -121,12 +125,14 @@ void Game::Render( void )
 
     _currentState->Render();
 
+	/*
 	static int screen = 0;
 	if( sf::Keyboard::isKeyPressed(sf::Keyboard::F10) )
 	{
 		screen++;
 		capture().saveToFile("Screenie" + boost::lexical_cast<string>(screen) + ".tga");
 	}
+	*/
 
     display();
 }

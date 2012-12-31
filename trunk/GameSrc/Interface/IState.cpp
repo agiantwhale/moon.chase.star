@@ -18,8 +18,3 @@ void IState::Exit(void)
 {
     _exitTime = Game::GetInstance()->GetTime();
 }
-
-void IState::HandleAppEvent(sf::Event& appEvent)
-{
-
-}

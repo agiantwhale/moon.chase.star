@@ -5,6 +5,9 @@ enum EventType
 {
 	Event_UNDEFINED = 0,
 
+	//App related,
+	Event_AppEvent,
+
 	//Physics related
 	Event_BeginContact,
 	Event_EndContact,
