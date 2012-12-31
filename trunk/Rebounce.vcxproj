@@ -25,6 +25,7 @@
     <ClCompile Include="GameSrc\Event\EventData.cpp" />
     <ClCompile Include="GameSrc\GUI\Log.cpp" />
     <ClCompile Include="GameSrc\GUI\MainMenu.cpp" />
+    <ClCompile Include="GameSrc\GUI\PauseMenu.cpp" />
     <ClCompile Include="GameSrc\Interface\IEventListener.cpp" />
     <ClCompile Include="GameSrc\Interface\IPhysics.cpp" />
     <ClCompile Include="GameSrc\Interface\IRenderable.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="GameSrc\Event\NewGameEventData.hpp" />
     <ClInclude Include="GameSrc\GUI\Log.hpp" />
     <ClInclude Include="GameSrc\GUI\MainMenu.hpp" />
+    <ClInclude Include="GameSrc\GUI\PauseMenu.hpp" />
     <ClInclude Include="GameSrc\Interface\IEventListener.hpp" />
     <ClInclude Include="GameSrc\Interface\IPhysics.hpp" />
     <ClInclude Include="GameSrc\Interface\IRenderable.hpp" />
@@ -82,7 +84,7 @@
     <ClInclude Include="GameSrc\State\IntroState.hpp" />
     <ClInclude Include="GameSrc\State\LoadingState.hpp" />
     <ClInclude Include="GameSrc\State\MainMenuState.hpp" />
-    <ClInclude Include="GameSrc\State\PauseState.h" />
+    <ClInclude Include="GameSrc\State\PauseState.hpp" />
     <ClInclude Include="GameSrc\State\StatesDef.h" />
     <ClInclude Include="GameSrc\System\Debug\PhysicsDebugDraw.hpp" />
     <ClInclude Include="GameSrc\System\EntityManager.hpp" />

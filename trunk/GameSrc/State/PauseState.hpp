@@ -4,11 +4,11 @@
 #include "../Interface/IState.hpp"
 #include "../Interface/IEventListener.hpp"
 
-class InGameState : public IState, public IEventListener
+class PauseState : public IState, public IEventListener
 {
 public:
-	InGameState();
-	virtual ~InGameState();
+	PauseState();
+	virtual ~PauseState();
 
 	virtual bool HandleEvent(const EventData& theevent);
 
