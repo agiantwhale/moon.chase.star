@@ -10,10 +10,9 @@ BodyWrapper::BodyWrapper(Entity* const entity) : IPhysics(entity), _body(nullptr
     _smoothAngle(0.0f),
     _previousAngle(0.0f)
 {
-    EventManager* const eventMgr = EventManager::GetInstance();
-    eventMgr->AddListener(GetEntity(),Event_Simulate);
-    eventMgr->AddListener(GetEntity(),Event_BeginContact);
-    eventMgr->AddListener(GetEntity(),Event_EndContact);
+	GetEntity()->AddEventListenType(Event_Simulate);
+	GetEntity()->AddEventListenType(Event_BeginContact);
+	GetEntity()->AddEventListenType(Event_EndContact);
 }
 
 BodyWrapper::BodyWrapper( const BodyWrapper& wrapper, Entity* const entity ) : IPhysics( entity )
@@ -33,10 +32,9 @@ BodyWrapper::BodyWrapper( const BodyWrapper& wrapper, Entity* const entity ) : I
 
 BodyWrapper::~BodyWrapper()
 {
-    EventManager* const eventMgr = EventManager::GetInstance();
-    eventMgr->RemoveListener(GetEntity(),Event_Simulate);
-    eventMgr->RemoveListener(GetEntity(),Event_BeginContact);
-    eventMgr->RemoveListener(GetEntity(),Event_EndContact);
+	GetEntity()->RemoveEventListenType(Event_Simulate);
+	GetEntity()->RemoveEventListenType(Event_BeginContact);
+	GetEntity()->RemoveEventListenType(Event_EndContact);
 
     DestroyBody();
 }
@@ -88,6 +86,8 @@ void BodyWrapper::DestroyBody( void )
     {
         PhysicsManager::GetInstance()->GetWorld()->DestroyBody(_body);
     }
+
+	_body = nullptr;
 }
 
 void BodyWrapper::UpdateTransform( void )

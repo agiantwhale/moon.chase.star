@@ -42,8 +42,8 @@ void ThrowEntity::Initialize( const TiXmlElement *propertyElement )
         b2FixtureDef fixtureDefinition;
         fixtureDefinition.shape = &boxShape;
         fixtureDefinition.density = 1.0f;
-        fixtureDefinition.friction = 0.5f;
-        fixtureDefinition.restitution = 0.0f;
+        fixtureDefinition.friction = 0.0f;
+        fixtureDefinition.restitution = 0.5f;
 
         _throwBody.CreateFixture( fixtureDefinition, "Throw" );
 
@@ -110,7 +110,7 @@ void ThrowEntity::ProcessContact(const b2Contact* contact, const b2Fixture* cont
         b2Vec2 normal = manifold.normal;
         float slope = std::abs(normal.y/normal.x);
 
-        if( slope > 1.0f ) //45 degrees is acceptable.
+        if( slope >= 10.0f ) //45 degrees is acceptable.
         {
             IPhysics *interfaceA = GetPhysicsInterface(contact->GetFixtureA());
             IPhysics *interfaceB = GetPhysicsInterface(contact->GetFixtureB());

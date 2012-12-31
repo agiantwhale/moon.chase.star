@@ -1,5 +1,5 @@
-#ifndef IEVENTLISTNER_HPP
-#define IEVENTLISTNER_HPP
+#ifndef IEventListener_HPP
+#define IEventListener_HPP
 
 #include <string>
 #include "../Event/EventData.hpp"
@@ -18,6 +18,9 @@ public:
     {
         return _handlerName;
     }
+
+	void AddEventListenType(const EventType& eventType);
+	void RemoveEventListenType(const EventType& eventType);
 
 protected:
     inline void SetHandlerName(const std::string& val)

@@ -3,19 +3,16 @@
 
 #include <SFML/Graphics.hpp>
 #include "../Interface/IState.hpp"
+#include "../Interface/IEventListener.hpp"
 #include "../GUI/MainMenu.hpp"
 
-class MainMenuState : public IState
+class MainMenuState : public IState, public IEventListener
 {
 public:
 	MainMenuState();
 	virtual ~MainMenuState();
 
-	inline void EndState(void)
-	{
-		_endState = true;
-	}
-
+	virtual bool HandleEvent(const EventData& theevent);
 	virtual void Enter(void);
 	virtual void HandleAppEvent(sf::Event& appEvent);
 	virtual bool Update(float deltaTime);

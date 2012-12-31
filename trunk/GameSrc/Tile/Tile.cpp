@@ -7,6 +7,7 @@ std::unordered_map<std::string,std::string> Tile::_tilesetMap;
 
 Tile::Tile() :IRenderable( nullptr ), IEventListener("Tile"), _tileTexture(nullptr)
 {
+	AddEventListenType(Event_Unload);
 }
 
 Tile::~Tile()
@@ -19,7 +20,6 @@ bool Tile::HandleEvent( const EventData& newevent )
     if( newevent.GetEventType() == Event_Unload )
     {
         delete this;
-        return false;
     }
 
     return false;
@@ -59,6 +59,4 @@ void Tile::Initialize( const TiXmlElement* element )
     }
 
     _tileTexture->display();
-
-    EventManager::GetInstance()->AddListener( this, Event_Unload );
 }

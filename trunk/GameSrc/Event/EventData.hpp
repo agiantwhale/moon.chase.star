@@ -22,7 +22,11 @@ public:
         return _startTime;
     }
 
-    void	 StartEvent(void);
+	void TriggerEvent(void);
+	void QueueEvent(float waitTime = 0.0f);
+	void AbortEvent(bool allOfType = false);
+
+    void StartEvent(void);
 
 protected:
     const float _createTime;	//Timestamp when event was created.

@@ -1,13 +1,16 @@
 #include "MainMenuState.hpp"
+#include "../App/Game.hpp"
 #include "../System/GUIManager.hpp"
 
 MainMenuState::MainMenuState() :	IState(),
+									IEventListener("MainMenuState"),
 									_menuWindow(nullptr),
 									_endState(false)
 {
 	_menuWindow = new MainMenuControl(GUIManager::GetInstance()->GetCanvas());
-	_menuWindow->SetOwnerState(this);
 	_menuWindow->Hide();
+
+	AddEventListenType(Event_NewGame);
 }
 
 MainMenuState::~MainMenuState()
@@ -38,5 +41,16 @@ void MainMenuState::Exit( void )
 void MainMenuState::HandleAppEvent( sf::Event& appEvent )
 {
 	GUIManager::GetInstance()->FeedEvent(appEvent);
+}
+
+bool MainMenuState::HandleEvent( const EventData& theevent )
+{
+	if(theevent.GetEventType() == Event_NewGame)
+	{
+		Game::GetInstance()->SetNextStateType(State_Loading);
+		_endState = true;
+	}
+
+	return false;
 }
 

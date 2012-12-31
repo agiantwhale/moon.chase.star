@@ -40,7 +40,7 @@ void HullEntity::Initialize( const TiXmlElement *propertyElement )
 
             b2FixtureDef fixtureDef;
             fixtureDef.density = 1.0f;
-            fixtureDef.restitution = 0.0f;
+            fixtureDef.restitution = 0.5f;
             fixtureDef.friction = 0.0f;
             fixtureDef.shape = &boxShape;
 

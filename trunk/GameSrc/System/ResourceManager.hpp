@@ -6,7 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include "../Base/Singleton.hpp"
-#include "../Interface/IEventListner.hpp"
+#include "../Interface/IEventListener.hpp"
 
 template< class T >
 class ResourceManager

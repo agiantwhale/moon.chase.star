@@ -12,6 +12,7 @@ enum EventType
 
 	Event_BallDied,
 	Event_CameraMove,
+	Event_NewGame,
 	Event_LevelCompleted,
 	Event_RestartLevel,
 	Event_NextLevel,

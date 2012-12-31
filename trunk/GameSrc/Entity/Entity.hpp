@@ -8,7 +8,7 @@
 #include "../Base/Globals.hpp"
 #include "../Base/Vec2D.hpp"
 #include "../Interface/ITransform.hpp"
-#include "../Interface/IEventListner.hpp"
+#include "../Interface/IEventListener.hpp"
 #include "../System/EntityManager.hpp"
 
 using namespace std;
@@ -31,6 +31,12 @@ public:
     {
         _released = true;
     }
+
+	inline void Register(void)
+	{
+		EntityManager::GetInstance()->RegisterEntity(this);
+	}
+
     inline const bool IsReleased( void ) const
     {
         return _released;

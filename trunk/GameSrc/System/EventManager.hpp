@@ -6,7 +6,7 @@
 #include <queue>
 
 #include "../Base/Singleton.hpp"
-#include "../Interface/IEventListner.hpp"
+#include "../Interface/IEventListener.hpp"
 #include "../Event/EventData.hpp"
 
 //Used internally by EventManager
@@ -29,18 +29,7 @@ public:
     void AddListener(IEventListener* const listenerptr, const EventType& eventtype);
     void RemoveListener(IEventListener* const listenerptr, const EventType& eventtype);
     void TriggerEvent(EventData* newevent);
-    //************************************
-    // Method:    QueueEvent
-    // FullName:  EventManager::QueueEvent
-    // Access:    public
-    // Returns:   void
-    // Qualifier:
-    // Parameter: EventData * newevent
-    // Parameter: float waitTime
-    // Parameter: bool isContinuous
-    // Parameter: EventData * endEvent
-    //************************************
-    void QueueEvent(EventData* newevent, float waitTime = 0.0f, bool isContinuous = false, EventData* endEvent = nullptr);
+	void QueueEvent(EventData* newevent, float waitTime = 0.0f);;
     void AbortEvent(const EventType& typeToAbort, bool alloftype);
     void Update( float dt);
     void EmptyEventQueues();

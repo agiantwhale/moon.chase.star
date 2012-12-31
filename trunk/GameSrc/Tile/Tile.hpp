@@ -6,7 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include "../Interface/IRenderable.hpp"
-#include "../Interface/IEventListner.hpp"
+#include "../Interface/IEventListener.hpp"
 
 class Tile : public IRenderable, public IEventListener
 {

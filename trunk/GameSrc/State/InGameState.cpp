@@ -1,4 +1,5 @@
 #include "../State/InGameState.hpp"
+#include "../App/Game.hpp"
 #include "../System/GraphicsManager.hpp"
 #include "../System/EntityManager.hpp"
 #include "../System/PhysicsManager.hpp"
@@ -6,9 +7,11 @@
 #include "../System/SceneManager.hpp"
 #include "../System/EventManager.hpp"
 
-InGameState::InGameState() : IState()
+InGameState::InGameState() :	IState(),
+								IEventListener("InGameState"),
+								_endState(false)
 {
-
+	AddEventListenType(Event_RestartLevel);
 }
 
 InGameState::~InGameState()
@@ -16,7 +19,7 @@ InGameState::~InGameState()
 
 void InGameState::Enter()
 {
-
+	_endState = false;
 }
 
 void InGameState::Render()
@@ -34,9 +37,21 @@ bool InGameState::Update(float deltaTime)
     EntityManager::GetInstance()->Update( deltaTime );
     EventManager::GetInstance()->Update( deltaTime );
 
-    return false;
+    return _endState;
 }
 
 void InGameState::Exit()
 {
+	_endState = false;
+}
+
+bool InGameState::HandleEvent( const EventData& theevent )
+{
+	if(theevent.GetEventType() == Event_RestartLevel)
+	{
+		Game::GetInstance()->SetNextStateType(State_Loading);
+		_endState = true;
+	}
+
+	return false;
 }

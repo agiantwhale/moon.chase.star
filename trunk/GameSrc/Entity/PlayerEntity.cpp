@@ -133,7 +133,8 @@ void PlayerEntity::Update(float deltaTime)
     if( !_dead && GetPosition().y < -(SCREENHEIGHT * UNRATIO * 0.5f + 5.0f) )
     {
         _dead = true;
-        EventManager::GetInstance()->QueueEvent( new EventData( Event_RestartLevel ), 2.0f );
+		EventData* eventData = new EventData( Event_RestartLevel );
+		eventData->QueueEvent(0.5f);
     }
 
     const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
@@ -177,6 +178,7 @@ void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
 
         b2FixtureDef fixtureDefinition;
         fixtureDefinition.density = 1.0f;
+		fixtureDefinition.restitution = 0.5f;
         fixtureDefinition.shape = &circle;
 
         _ballBody.CreateFixture( fixtureDefinition, "Ball" );
@@ -236,7 +238,7 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
         {
         case 'THRW':
         {
-            if( slope >= 1.75f ) //45 degrees is acceptable.
+            if( slope >= 10.0f ) //45 degrees is acceptable.
             {
                 _shouldBounce = false;
             }

@@ -9,16 +9,13 @@
 #include <Gwen/Input/SFML.h>
 
 #include "../Interface/IState.hpp"
-#include "../Interface/IEventListner.hpp"
 #include "../Base/Singleton.hpp"
 
-class Game : public Singleton<Game>, public sf::RenderWindow, public IEventListener
+class Game : public Singleton<Game>, public sf::RenderWindow
 {
     DEFINE_SINGLETON( Game )
 
 public:
-    virtual bool HandleEvent(const EventData& theevent);
-
     void Initialize( void );
     void Start( void );
     inline void Quit(void)

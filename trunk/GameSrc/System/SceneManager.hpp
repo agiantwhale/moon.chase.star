@@ -6,7 +6,7 @@
 #include <string>
 
 #include "../Base/Singleton.hpp"
-#include "../Interface/IEventListner.hpp"
+#include "../Interface/IEventListener.hpp"
 
 class SceneManager : public Singleton<SceneManager>, private IEventListener
 {
@@ -14,7 +14,7 @@ class SceneManager : public Singleton<SceneManager>, private IEventListener
 
 public:
     void LoadScene( const std::string& mapName );
-    void RestartScene( const std::string& mapName );
+    void RestartScene(void);
     void UnloadScene( void );
     inline bool IsSceneLoaded( void )
     {

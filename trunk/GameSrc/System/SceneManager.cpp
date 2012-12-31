@@ -12,6 +12,7 @@ SINGLETON_CONSTRUCTOR(SceneManager),
                       _sceneLoaded(false),
                       _sceneFileName()
 {
+	AddEventListenType(Event_Unload);
 }
 
 SINGLETON_DESTRUCTOR(SceneManager)
@@ -26,34 +27,26 @@ bool SceneManager::HandleEvent( const EventData& newevent )
         return false;
     }
 
-    if( newevent.GetEventType() == Event_RestartLevel )
-    {
-        RestartScene( _sceneFileName );
-        return false;
-    }
-
     return false;
 }
 
-void SceneManager::RestartScene(const std::string& sceneFileName)
+void SceneManager::RestartScene(void)
 {
 	TRI_LOG_STR("Restarting scene.");
 
     TiXmlDocument sceneDocument;
 
-    if( !sceneDocument.LoadFile(sceneFileName) )
+    if( !sceneDocument.LoadFile(_sceneFileName) )
     {
         TRI_LOG_STR("Unable to load scene.");
-		TRI_LOG(sceneFileName);
+		TRI_LOG(_sceneFileName);
         return;
-    }
-    else
-    {
-        _sceneFileName = sceneFileName;
     }
 
     EntityFactory* entityFcty = EntityFactory::GetInstance();
     EntityManager* entityMgr = EntityManager::GetInstance();
+
+	entityMgr->ReleaseAllExceptHull();
 
     TiXmlElement *levelElement = sceneDocument.FirstChildElement( "level" );
     if( !levelElement )

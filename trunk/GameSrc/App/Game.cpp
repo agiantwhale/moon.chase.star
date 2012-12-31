@@ -12,13 +12,13 @@
 #include "../State/IntroState.hpp"
 #include "../State/MainMenuState.hpp"
 #include "../State/InGameState.hpp"
+#include "../State/LoadingState.hpp"
 
 #include <boost/lexical_cast.hpp>
 
 
 SINGLETON_CONSTRUCTOR( Game ),
 	sf::RenderWindow(),
-	IEventListener("GameApp"),
 	_isRunning( true ),
 	_frameClock(),
 	_gameClock(),
@@ -46,6 +46,7 @@ void Game::Initialize( void )
 	_stateMap.insert(std::make_pair(State_Intro,new IntroState));
 	_stateMap.insert(std::make_pair(State_MainMenu,new MainMenuState));
 	_stateMap.insert(std::make_pair(State_InGame,new InGameState));
+	_stateMap.insert(std::make_pair(State_Loading,new LoadingState));
 
 	SetNextStateType(State_Intro);
 	_shouldSwitchState = true;
@@ -67,11 +68,6 @@ void Game::Start( void )
         Update();
         Render();
     }
-}
-
-bool Game::HandleEvent(const EventData& theevent)
-{
-    return false;
 }
 
 void Game::PollEvents(void)

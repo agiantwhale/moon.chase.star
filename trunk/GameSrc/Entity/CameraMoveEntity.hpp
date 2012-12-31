@@ -3,7 +3,7 @@
 
 #include "../Entity/Entity.hpp"
 #include "../Entity/Component/BodyWrapper.hpp"
-#include "../Interface/IEventListner.hpp"
+#include "../Interface/IEventListener.hpp"
 
 class CameraMoveEntity : public Entity
 {

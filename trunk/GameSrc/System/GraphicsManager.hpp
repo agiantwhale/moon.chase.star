@@ -7,7 +7,7 @@
 
 #include "../Base/Singleton.hpp"
 #include "../System/RenderLayer.hpp"
-#include "../Interface/IEventListner.hpp"
+#include "../Interface/IEventListener.hpp"
 
 class GraphicsManager : public Singleton<GraphicsManager>, private IEventListener
 {
@@ -28,7 +28,7 @@ private:
 	virtual bool HandleEvent( const EventData& newevent );
 
     typedef std::vector<RenderLayer*> RenderLayerStack;
-    RenderLayerStack _renderLayerStack;
+	RenderLayerStack _renderLayerStack;
 };
 
 #endif
