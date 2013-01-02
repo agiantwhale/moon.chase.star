@@ -1,7 +1,7 @@
 #include "../App/Game.hpp"
 
 //Evnet
-#include "../Event/AppEventEventData.hpp"
+#include "../Event/AppEventData.hpp"
 
 //Managers
 #include "../System/GraphicsManager.hpp"
@@ -16,6 +16,7 @@
 #include "../State/MainMenuState.hpp"
 #include "../State/InGameState.hpp"
 #include "../State/LoadingState.hpp"
+#include "../State/PauseState.hpp"
 
 #include <boost/lexical_cast.hpp>
 
@@ -50,6 +51,7 @@ void Game::Initialize( void )
 	_stateMap.insert(std::make_pair(State_MainMenu,new MainMenuState));
 	_stateMap.insert(std::make_pair(State_InGame,new InGameState));
 	_stateMap.insert(std::make_pair(State_Loading,new LoadingState));
+	_stateMap.insert(std::make_pair(State_Paused,new PauseState));
 
 	SetNextStateType(State_Intro);
 	_shouldSwitchState = true;
@@ -83,7 +85,7 @@ void Game::PollEvents(void)
             Quit();
         }
 
-		EventData* eventData = new AppEventEventData(windowEvent);
+		EventData* eventData = new AppEventData(windowEvent);
 		eventData->TriggerEvent();
     }
 }

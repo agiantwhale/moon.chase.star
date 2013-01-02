@@ -88,6 +88,8 @@ SINGLETON_CONSTRUCTOR( EntityManager ),
                        IEventListener("EntityManager"),
                        _entityList()
 {
+	AddEventListenType(Event_Unload);
+	AddEventListenType(Event_RestartLevel);
 }
 
 SINGLETON_DESTRUCTOR( EntityManager )

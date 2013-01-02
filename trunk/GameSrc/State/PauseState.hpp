@@ -3,6 +3,7 @@
 
 #include "../Interface/IState.hpp"
 #include "../Interface/IEventListener.hpp"
+#include "../GUI/PauseMenu.hpp"
 
 class PauseState : public IState, public IEventListener
 {
@@ -18,6 +19,7 @@ public:
 	virtual void Exit(void);
 
 private:
+	PauseMenuControl* _pauseMenuControl;
 	bool _endState;
 };
 

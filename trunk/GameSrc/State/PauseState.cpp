@@ -2,12 +2,18 @@
 #include "../System/GUIManager.hpp"
 #include "../System/GraphicsManager.hpp"
 #include "../System/PhysicsManager.hpp"
+#include "../Event/GUIEventData.h"
+#include "../App/Game.hpp"
 
 PauseState::PauseState() :	IState(),
 							IEventListener("PauseState"),
+							_pauseMenuControl(nullptr),
 							_endState(false)
 {
+	AddEventListenType(Event_GUI);
 
+	_pauseMenuControl = new PauseMenuControl(GUIManager::GetInstance()->GetCanvas());
+	_pauseMenuControl->Hide();
 }
 
 PauseState::~PauseState()
@@ -17,12 +23,32 @@ PauseState::~PauseState()
 
 bool PauseState::HandleEvent( const EventData& theevent )
 {
+	if( theevent.GetEventType() == Event_GUI)
+	{
+		const GUIEventData& eventData = static_cast<const GUIEventData&>(theevent);
+		std::string controlName = eventData.GetControl()->GetName();
 
+		if( controlName == "ResumeButton")
+		{
+			Game::GetInstance()->SetNextStateType(State_InGame);
+			_endState = true;
+
+		}
+
+		if( controlName == "MainMenuButton")
+		{
+			Game::GetInstance()->SetNextStateType(State_Loading);
+			_endState = true;
+		}
+	}
+
+	return false;
 }
 
 void PauseState::Enter( void )
 {
 	_endState = false;
+	_pauseMenuControl->Show();
 }
 
 bool PauseState::Update( float deltaTime )
@@ -39,5 +65,6 @@ void PauseState::Render( void )
 void PauseState::Exit( void )
 {
 	_endState = false;
+	_pauseMenuControl->Hide();
 }
 

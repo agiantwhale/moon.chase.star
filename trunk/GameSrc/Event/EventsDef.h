@@ -6,7 +6,10 @@ enum EventType
 	Event_UNDEFINED = 0,
 
 	//App related,
-	Event_AppEvent,
+	Event_App,
+
+	//GUI related,
+	Event_GUI,
 
 	//Physics related
 	Event_BeginContact,

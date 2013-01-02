@@ -46,8 +46,6 @@ void SceneManager::RestartScene(void)
     EntityFactory* entityFcty = EntityFactory::GetInstance();
     EntityManager* entityMgr = EntityManager::GetInstance();
 
-	entityMgr->ReleaseAllExceptHull();
-
     TiXmlElement *levelElement = sceneDocument.FirstChildElement( "level" );
     if( !levelElement )
     {

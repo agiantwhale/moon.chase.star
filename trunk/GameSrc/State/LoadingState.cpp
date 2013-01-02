@@ -7,6 +7,8 @@
 #include "../Event/NewGameEventData.hpp"
 #include "../System/GUIManager.hpp"
 #include "../System/SceneManager.hpp"
+#include "../System/ResourceManager.hpp"
+#include "../Event/GUIEventData.h"
 
 LoadingState::LoadingState() :	IState(),
 								_sceneFileName(""),
@@ -16,6 +18,7 @@ LoadingState::LoadingState() :	IState(),
 {
 	AddEventListenType(Event_NewGame);
 	AddEventListenType(Event_RestartLevel);
+	AddEventListenType(Event_GUI);
 
 	_screenBase = new Gwen::Controls::Base(GUIManager::GetInstance()->GetCanvas());
 	_screenBase->SetBounds(0,0,SCREENWIDTH,SCREENHEIGHT);
@@ -68,6 +71,20 @@ bool LoadingState::Update( float deltaTime )
 				break;
 			}
 
+		case Load_Unload:
+			{
+				EventData* unloadEvent = new EventData(Event_Unload);
+				unloadEvent->TriggerEvent();
+
+				/*
+				Add code to load mainmenu later.
+				*/
+
+				Game::GetInstance()->SetNextStateType(State_MainMenu);
+				return true;
+				break;
+			}
+
 		default:
 			{
 				break;
@@ -93,7 +110,7 @@ void LoadingState::Exit( void )
 
 bool LoadingState::HandleEvent( const EventData& theevent )
 {
-	if(theevent.GetEventType() == Event_NewGame)
+	if(theevent.GetEventType() == Event_NewGame || theevent.GetEventType() == Event_NextLevel)
 	{
 		const NewGameEventData& eventData = static_cast<const NewGameEventData&>(theevent);
 		_sceneFileName = eventData.GetSceneFileName();
@@ -104,6 +121,17 @@ bool LoadingState::HandleEvent( const EventData& theevent )
 	if(theevent.GetEventType() == Event_RestartLevel)
 	{
 		_loadType = Load_Restart;
+	}
+
+	if(theevent.GetEventType() == Event_GUI)
+	{
+		const GUIEventData& eventData = static_cast<const GUIEventData&>(theevent);
+		std::string controlName = eventData.GetControl()->GetName();
+
+		if( controlName == "MainMenuButton")
+		{
+			_loadType = Load_Unload;
+		}
 	}
 
 	return false;

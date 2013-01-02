@@ -11,7 +11,7 @@
 
 #include <Gwen/Controls/WindowControl.h>
 #include <Gwen/Controls/ListBox.h>
-#include "../Event/AppEventEventData.hpp"
+#include "../Event/AppEventData.hpp"
 
 SINGLETON_CONSTRUCTOR(GUIManager),
 					  IEventListener("GUIManager"),
@@ -20,7 +20,7 @@ SINGLETON_CONSTRUCTOR(GUIManager),
                       _gwenSkin(nullptr),
                       _gwenInput(nullptr)
 {
-	AddEventListenType(Event_AppEvent);
+	AddEventListenType(Event_App);
 }
 
 SINGLETON_DESTRUCTOR(GUIManager)
@@ -56,9 +56,9 @@ void GUIManager::SetUpGUI(void)
 
 bool GUIManager::HandleEvent( const EventData& theevent )
 {
-	if( theevent.GetEventType() == Event_AppEvent)
+	if( theevent.GetEventType() == Event_App)
 	{
-		const AppEventEventData& eventData = static_cast<const AppEventEventData&>(theevent);
+		const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
 		_gwenInput->ProcessMessage(eventData.GetAppEvent());
 	}
 

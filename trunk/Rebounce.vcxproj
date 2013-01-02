@@ -65,11 +65,12 @@
     <ClInclude Include="GameSrc\Entity\HullEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\PlayerEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\ThrowEntity.hpp" />
-    <ClInclude Include="GameSrc\Event\AppEventEventData.hpp" />
+    <ClInclude Include="GameSrc\Event\AppEventData.hpp" />
     <ClInclude Include="GameSrc\Event\ContactEventData.h" />
     <ClInclude Include="GameSrc\Event\CameraMoveEventData.hpp" />
     <ClInclude Include="GameSrc\Event\EventData.hpp" />
     <ClInclude Include="GameSrc\Event\EventsDef.h" />
+    <ClInclude Include="GameSrc\Event\GUIEventData.h" />
     <ClInclude Include="GameSrc\Event\NewGameEventData.hpp" />
     <ClInclude Include="GameSrc\GUI\Log.hpp" />
     <ClInclude Include="GameSrc\GUI\MainMenu.hpp" />

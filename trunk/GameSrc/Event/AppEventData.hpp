@@ -1,13 +1,13 @@
-#ifndef APPEVENTEVENTDATA_HPP
-#define APPEVENTEVENTDATA_HPP
+#ifndef APPEVENTDATA_HPP
+#define APPEVENTDATA_HPP
 
 #include <SFML/Graphics.hpp>
 #include "../Event/EventData.hpp"
 
-class AppEventEventData : public EventData
+class AppEventData : public EventData
 {
 public:
-	AppEventEventData(sf::Event& appEvent) : EventData(Event_AppEvent), _appEvent(appEvent)
+	AppEventData(sf::Event& appEvent) : EventData(Event_App), _appEvent(appEvent)
 	{
 	}
 

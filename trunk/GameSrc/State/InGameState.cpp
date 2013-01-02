@@ -33,6 +33,12 @@ void InGameState::Render()
 
 bool InGameState::Update(float deltaTime)
 {
+	if( sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) )
+	{
+		Game::GetInstance()->SetNextStateType(State_Paused);
+		return true;
+	}
+
     PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
     EntityManager::GetInstance()->Update( deltaTime );
     EventManager::GetInstance()->Update( deltaTime );

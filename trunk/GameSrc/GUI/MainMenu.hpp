@@ -3,8 +3,6 @@
 
 #include <Gwen/Controls/Base.h>
 
-class MainMenuState;
-
 class MainMenuControl : public Gwen::Controls::Base
 {
 	GWEN_CONTROL(MainMenuControl,Gwen::Controls::Base);
