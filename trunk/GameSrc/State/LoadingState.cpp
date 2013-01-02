@@ -45,6 +45,8 @@ LoadingState::~LoadingState()
 
 void LoadingState::Enter( void )
 {
+	IState::Enter();
+
 	_frameDrawn = false;
 	_screenBase->Show();
 }
@@ -104,6 +106,8 @@ void LoadingState::Render( void )
 
 void LoadingState::Exit( void )
 {
+	IState::Exit();
+
 	_frameDrawn = false;
 	_screenBase->Hide();
 }

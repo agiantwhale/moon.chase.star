@@ -25,7 +25,13 @@ protected:
         return _exitTime;
     }
 
+	inline bool IsActive(void) const
+	{
+		return _active;
+	}
+
 private:
+	bool _active;
     float _enterTime;
     float _exitTime;
 };

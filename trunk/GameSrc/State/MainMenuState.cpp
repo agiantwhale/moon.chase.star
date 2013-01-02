@@ -20,6 +20,8 @@ MainMenuState::~MainMenuState()
 
 void MainMenuState::Enter( void )
 {
+	IState::Enter();
+
 	_menuWindow->Show();
 }
 
@@ -35,6 +37,8 @@ void MainMenuState::Render( void )
 
 void MainMenuState::Exit( void )
 {
+	IState::Exit();
+
 	_menuWindow->Hide();
 }
 

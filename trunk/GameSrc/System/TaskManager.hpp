@@ -6,20 +6,24 @@
 #include <queue>
 
 #include "../Base/Singleton.hpp"
-#include "../Interface/ITask.hpp"
+#include "../Interface/IEventListener.hpp"
 
-class TaskManager : public Singleton<TaskManager>
+class Task;
+
+class TaskManager : public Singleton<TaskManager>, public IEventListener
 {
     DEFINE_SINGLETON( TaskManager )
 
 private:
-    typedef std::list<ITask*> ToDoList;
+    typedef std::list<Task*> ToDoList;
 
 public:
     void Update(float dt);
-	void AddTask(ITask* task);
-	void RemoveTask(ITask* task);
+	void AddTask(Task* task);
+	void RemoveTask(Task* task);
 private:
+	virtual bool HandleEvent(const EventData& theevent);
+
     ToDoList _toDoList;
 };
 

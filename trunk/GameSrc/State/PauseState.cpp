@@ -4,6 +4,7 @@
 #include "../System/PhysicsManager.hpp"
 #include "../Event/GUIEventData.h"
 #include "../App/Game.hpp"
+#include "../Event/AppEventData.hpp"
 
 PauseState::PauseState() :	IState(),
 							IEventListener("PauseState"),
@@ -11,6 +12,7 @@ PauseState::PauseState() :	IState(),
 							_endState(false)
 {
 	AddEventListenType(Event_GUI);
+	AddEventListenType(Event_App);
 
 	_pauseMenuControl = new PauseMenuControl(GUIManager::GetInstance()->GetCanvas());
 	_pauseMenuControl->Hide();
@@ -42,11 +44,25 @@ bool PauseState::HandleEvent( const EventData& theevent )
 		}
 	}
 
+	if(theevent.GetEventType()==Event_App && IsActive())
+	{
+		const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
+
+		if(eventData.GetAppEvent().type == sf::Event::KeyPressed &&
+			eventData.GetAppEvent().key.code == sf::Keyboard::Escape )
+		{
+			Game::GetInstance()->SetNextStateType(State_InGame);
+			_endState = true;
+		}
+	}
+
 	return false;
 }
 
 void PauseState::Enter( void )
 {
+	IState::Enter();
+
 	_endState = false;
 	_pauseMenuControl->Show();
 }
@@ -64,6 +80,8 @@ void PauseState::Render( void )
 
 void PauseState::Exit( void )
 {
+	IState::Exit();
+
 	_endState = false;
 	_pauseMenuControl->Hide();
 }

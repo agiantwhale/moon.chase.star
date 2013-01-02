@@ -22,6 +22,8 @@ IntroState::~IntroState()
 
 void IntroState::Enter(void)
 {
+	IState::Enter();
+
     Game::GetInstance()->SetNextStateType(State_MainMenu);
 
     _currentStatus = FADE_IN;
@@ -92,5 +94,7 @@ void IntroState::Render( void )
 
 void IntroState::Exit(void)
 {
+	IState::Exit();
+
 	_splashImage->Hide();
 }

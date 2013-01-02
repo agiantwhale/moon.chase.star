@@ -17,7 +17,6 @@ enum EventType
 	Event_Simulate,
 
 	Event_BallDied,
-	Event_CameraMove,
 	Event_NewGame,
 	Event_LevelCompleted,
 	Event_RestartLevel,

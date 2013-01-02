@@ -1,14 +1,15 @@
 #include "../System/EventManager.hpp"
 #include "../Entity/CameraMoveEntity.hpp"
 #include "../Event/EventsDef.h"
-#include "../Event/CameraMoveEventData.hpp"
 #include "../System/GraphicsManager.hpp"
 #include "../Event/ContactEventData.h"
+#include "../Task/CameraMoveTask.hpp"
 
 REGISTER_ENTITY( CameraMoveEntity, "CameraMove")
 
-CameraMoveEntity::CameraMoveEntity() : BaseClass(), _triggerBody(this), _travelTime(5.0f), _destination(0.0f,0.0f), _activated(false), _startMoving(false)
+CameraMoveEntity::CameraMoveEntity() : BaseClass(), _triggerBody(this), _travelTime(5.0f), _activated(false), _destination()
 {
+
 }
 
 CameraMoveEntity::~CameraMoveEntity()
@@ -77,10 +78,8 @@ void CameraMoveEntity::ProcessContact(const b2Contact* contact, const b2Fixture*
     if(!_activated && targetInterface && targetInterface->GetEntity()->GetEntityType() == 'BALL')
     {
         _activated = true;
-        _startMoving = true;
 
-        CameraMoveEventData* eventData = new CameraMoveEventData( _destination/_travelTime, _destination, false );
-        EventManager::GetInstance()->QueueEvent( eventData );
+		Task* cameraTask = new CameraMoveTask(_travelTime,0,_destination/_travelTime);
     }
 }
 
@@ -106,33 +105,9 @@ bool CameraMoveEntity::HandleEvent( const EventData& theevent )
         break;
     }
 
-    case Event_CameraMove:
-    {
-        const CameraMoveEventData& eventData = static_cast<const CameraMoveEventData&>(theevent);
-        if( eventData.IsFinal() )
-        {
-            _startMoving = false;
-        }
-    }
-
     default:
         break;
     }
 
     return false;
-}
-
-void CameraMoveEntity::Update( float deltaTime )
-{
-    if( _startMoving )
-    {
-        for( int i = 0; i <= 10; i++ )
-        {
-            RenderLayer* renderLayer = GraphicsManager::GetInstance()->GetRenderLayer(i);
-            if( renderLayer )
-            {
-                renderLayer->GetCamera().SetPosition( renderLayer->GetCamera().GetPosition() + deltaTime * _destination / _travelTime );
-            }
-        }
-    }
 }

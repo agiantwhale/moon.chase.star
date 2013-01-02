@@ -6,12 +6,14 @@
 #include "../System/ResourceManager.hpp"
 #include "../System/SceneManager.hpp"
 #include "../System/EventManager.hpp"
+#include "../Event/AppEventData.hpp"
 
 InGameState::InGameState() :	IState(),
 								IEventListener("InGameState"),
 								_endState(false)
 {
 	AddEventListenType(Event_RestartLevel);
+	AddEventListenType(Event_App);
 }
 
 InGameState::~InGameState()
@@ -19,6 +21,8 @@ InGameState::~InGameState()
 
 void InGameState::Enter()
 {
+	IState::Enter();
+
 	_endState = false;
 }
 
@@ -33,12 +37,6 @@ void InGameState::Render()
 
 bool InGameState::Update(float deltaTime)
 {
-	if( sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) )
-	{
-		Game::GetInstance()->SetNextStateType(State_Paused);
-		return true;
-	}
-
     PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
     EntityManager::GetInstance()->Update( deltaTime );
     EventManager::GetInstance()->Update( deltaTime );
@@ -48,6 +46,8 @@ bool InGameState::Update(float deltaTime)
 
 void InGameState::Exit()
 {
+	IState::Exit();
+
 	_endState = false;
 }
 
@@ -57,6 +57,18 @@ bool InGameState::HandleEvent( const EventData& theevent )
 	{
 		Game::GetInstance()->SetNextStateType(State_Loading);
 		_endState = true;
+	}
+
+	if(theevent.GetEventType()==Event_App && IsActive())
+	{
+		const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
+
+		if(eventData.GetAppEvent().type == sf::Event::KeyPressed &&
+			eventData.GetAppEvent().key.code == sf::Keyboard::Escape )
+		{
+			Game::GetInstance()->SetNextStateType(State_Paused);
+			_endState = true;
+		}
 	}
 
 	return false;
