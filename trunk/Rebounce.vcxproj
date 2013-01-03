@@ -72,6 +72,7 @@
     <ClInclude Include="GameSrc\Event\EventsDef.h" />
     <ClInclude Include="GameSrc\Event\GUIEventData.h" />
     <ClInclude Include="GameSrc\Event\NewGameEventData.hpp" />
+    <ClInclude Include="GameSrc\Event\SolveEventData.h" />
     <ClInclude Include="GameSrc\GUI\Log.hpp" />
     <ClInclude Include="GameSrc\GUI\MainMenu.hpp" />
     <ClInclude Include="GameSrc\GUI\PauseMenu.hpp" />

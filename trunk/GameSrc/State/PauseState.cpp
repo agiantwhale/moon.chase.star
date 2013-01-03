@@ -48,7 +48,7 @@ bool PauseState::HandleEvent( const EventData& theevent )
 	{
 		const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
 
-		if(eventData.GetAppEvent().type == sf::Event::KeyPressed &&
+		if(eventData.GetAppEvent().type == sf::Event::KeyReleased &&
 			eventData.GetAppEvent().key.code == sf::Keyboard::Escape )
 		{
 			Game::GetInstance()->SetNextStateType(State_InGame);

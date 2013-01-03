@@ -14,6 +14,8 @@ enum EventType
 	//Physics related
 	Event_BeginContact,
 	Event_EndContact,
+	Event_PreSolve,
+	Event_PostSolve,
 	Event_Simulate,
 
 	Event_BallDied,

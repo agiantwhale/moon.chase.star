@@ -4,6 +4,7 @@
 #include "../System/Debug/PhysicsDebugDraw.hpp"
 #include "../System/EventManager.hpp"
 #include "../Event/ContactEventData.h"
+#include "../Event/SolveEventData.h"
 
 SINGLETON_CONSTRUCTOR( PhysicsManager ),
                        _physicsWorld( nullptr ),
@@ -127,10 +128,24 @@ void PhysicsManager::SharpStep( void )
 
 void PhysicsManager::BeginContact(b2Contact* contact)
 {
-    EventManager::GetInstance()->TriggerEvent(new ContactEventData(contact,Event_BeginContact));
+	EventData* eventData = new ContactEventData(contact,Event_BeginContact);
+	eventData->TriggerEvent();
 }
 
 void PhysicsManager::EndContact(b2Contact* contact)
 {
-    EventManager::GetInstance()->TriggerEvent(new ContactEventData(contact,Event_EndContact));
+	EventData* eventData = new ContactEventData(contact,Event_EndContact);
+	eventData->TriggerEvent();
+}
+
+void PhysicsManager::PreSolve( b2Contact* contact, const b2Manifold* oldManifold )
+{
+	EventData* eventData = new PreSolveEventData(contact,oldManifold);
+	eventData->TriggerEvent();
+}
+
+void PhysicsManager::PostSolve( b2Contact* contact, const b2ContactImpulse* impulse )
+{
+	EventData* eventData = new PostSolveEventData(contact,impulse);
+	eventData->TriggerEvent();
 }

@@ -6,9 +6,11 @@
 #include "../System/ResourceManager.hpp"
 #include "../Entity/Entity.hpp"
 #include "../Tile/Tile.hpp"
+#include "GraphicsManager.hpp"
 
 SINGLETON_CONSTRUCTOR(SceneManager),
                       IEventListener("SceneManager"),
+					  _levelSize(),
                       _sceneLoaded(false),
                       _sceneFileName()
 {
@@ -17,6 +19,7 @@ SINGLETON_CONSTRUCTOR(SceneManager),
 
 SINGLETON_DESTRUCTOR(SceneManager)
 {
+	RemoveEventListenType(Event_Unload);
 }
 
 bool SceneManager::HandleEvent( const EventData& newevent )
@@ -68,6 +71,15 @@ void SceneManager::RestartScene(void)
                 objectElement = objectElement->NextSiblingElement();
             }
         }
+
+		int camSlice = 0;
+		levelElement->Attribute("camSlice",&camSlice);
+		const int horiSlice = _levelSize.x / SCREENWIDTH;
+
+		for(int i = 0; i < GraphicsManager::GetInstance()->GetRenderLayerStackSize(); i++ )
+		{
+			GraphicsManager::GetInstance()->GetRenderLayer(i)->GetCamera().SetPosition(Vec2D(SCREENWIDTH*UNRATIO*(camSlice%horiSlice),-SCREENHEIGHT*UNRATIO*static_cast<int>(camSlice/horiSlice)));
+		}
     }
 
     entityMgr->PostLoad();
@@ -104,19 +116,12 @@ void SceneManager::LoadScene(const std::string& sceneFileName)
     }
     else
     {
-        /*
         //Initialize all this later, after loading all crap from the scene file.
 
         int levelWidth = 0.0f, levelHeight = 0.0f;
         levelElement->Attribute("width",&levelWidth);
         levelElement->Attribute("height",&levelHeight);
-        //TheLightMgr.Create(AABB(Vec2f(0, 0), Vec2f(levelWidth,levelHeight)),&TheApp,"Resource/Light/lightFin.png","Resource/Shaders/lightAttenuationShader.frag");
-
-        int camSlice = 0;
-        levelElement->Attribute("camSlice",&camSlice);
-        const int horiSlice = levelWidth / SCREENWIDTH;
-        //cameraMgr->SetPosition(sf::Vector2f(SCREENWIDTH*UNRATIO*(camSlice%horiSlice),-SCREENHEIGHT*UNRATIO*static_cast<int>(camSlice/horiSlice)));
-        */
+		_levelSize.Set(levelWidth,levelHeight);
 
         //Collision
         TiXmlElement *collisionElement = levelElement->FirstChildElement("Collision");
@@ -160,6 +165,15 @@ void SceneManager::LoadScene(const std::string& sceneFileName)
                 objectElement = objectElement->NextSiblingElement();
             }
         }
+
+		int camSlice = 0;
+		levelElement->Attribute("camSlice",&camSlice);
+		const int horiSlice = levelWidth / SCREENWIDTH;
+
+		for(int i = 0; i < GraphicsManager::GetInstance()->GetRenderLayerStackSize(); i++ )
+		{
+			GraphicsManager::GetInstance()->GetRenderLayer(i)->GetCamera().SetPosition(Vec2D(SCREENWIDTH*UNRATIO*(camSlice%horiSlice),-SCREENHEIGHT*UNRATIO*static_cast<int>(camSlice/horiSlice)));
+		}
     }
 
     entityMgr->PostLoad();
@@ -171,5 +185,11 @@ void SceneManager::LoadScene(const std::string& sceneFileName)
 
 void SceneManager::UnloadScene(void)
 {
+	for(std::vector<Tile*>::iterator iter = _tileStack.begin(); iter != _tileStack.end(); iter++)
+	{
+		delete (*iter);
+	}
+
+	_tileStack.clear();
     _sceneLoaded = false;
 }

@@ -1,6 +1,7 @@
 #include "../Entity/ThrowEntity.hpp"
 #include "../System/ResourceManager.hpp"
 #include "../Event/ContactEventData.h"
+#include "../Event/SolveEventData.h"
 
 REGISTER_ENTITY( ThrowEntity, "Throw")
 
@@ -90,6 +91,7 @@ void ThrowEntity::Simulate(void)
 {
     const float THROW_VELOCITY = 40.0f;
 
+	/*
     if(_targetEntity)
     {
         b2Vec2 unit = _throwBody.GetBody()->GetWorldVector(b2Vec2(0,1.0f));
@@ -98,6 +100,7 @@ void ThrowEntity::Simulate(void)
 
         _targetEntity = NULL;
     }
+	*/
 }
 
 void ThrowEntity::ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture )
@@ -112,24 +115,11 @@ void ThrowEntity::ProcessContact(const b2Contact* contact, const b2Fixture* cont
 
         if( slope >= 10.0f ) //45 degrees is acceptable.
         {
-            IPhysics *interfaceA = GetPhysicsInterface(contact->GetFixtureA());
-            IPhysics *interfaceB = GetPhysicsInterface(contact->GetFixtureB());
+            IPhysics *physicsInterface = GetPhysicsInterface(contactFixture);
 
-            if(interfaceA && interfaceA->GetEntity()->GetEntityType() == 'BALL')
+            if(physicsInterface && physicsInterface->GetEntity()->GetEntityType() == 'BALL')
             {
-                Entity* entity = interfaceA->GetEntity();
-                if( entity->GetEntityType() == PlayerEntity::kEntity_PlayerEntity )
-                {
-                    _targetEntity = static_cast<PlayerEntity*>(entity);
-                }
-            }
-            if(interfaceB && interfaceB->GetEntity()->GetEntityType() == 'BALL')
-            {
-                Entity* entity = interfaceB->GetEntity();
-                if( entity->GetEntityType() == PlayerEntity::kEntity_PlayerEntity )
-                {
-                    _targetEntity = static_cast<PlayerEntity*>(entity);
-                }
+                _targetEntity = static_cast<PlayerEntity*>(physicsInterface->GetEntity());
             }
         }
     }

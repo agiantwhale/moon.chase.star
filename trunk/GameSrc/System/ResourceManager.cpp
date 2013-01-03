@@ -4,10 +4,12 @@
 SINGLETON_CONSTRUCTOR( TextureManager ),
                        IEventListener("TextureManager")
 {
+	AddEventListenType(Event_Unload);
 }
 
 SINGLETON_DESTRUCTOR( TextureManager )
 {
+	RemoveEventListenType(Event_Unload);
 }
 
 bool TextureManager::HandleEvent( const EventData& newevent )
@@ -39,10 +41,12 @@ sf::Texture* TextureManager::Load( const std::string& strId )
 SINGLETON_CONSTRUCTOR( SoundBufferManager ),
 IEventListener("SoundBufferManager")
 {
+	AddEventListenType(Event_Unload);
 }
 
 SINGLETON_DESTRUCTOR( SoundBufferManager )
 {
+	RemoveEventListenType(Event_Unload);
 }
 
 bool SoundBufferManager::HandleEvent( const EventData& newevent )

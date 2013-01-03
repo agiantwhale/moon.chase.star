@@ -16,7 +16,6 @@ public:
 	virtual void End();
 
 private:
-	Camera* _targetCamera;
 	unsigned int _renderLayer;
 	Vec2D _initialPosition;
 	Vec2D _totalMoveAmount;

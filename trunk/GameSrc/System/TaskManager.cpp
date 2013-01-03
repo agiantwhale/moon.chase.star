@@ -10,7 +10,7 @@ SINGLETON_CONSTRUCTOR(TaskManager), IEventListener("TaskManager")
 
 SINGLETON_DESTRUCTOR(TaskManager)
 {
-
+	RemoveEventListenType(Event_Unload);
 }
 
 void TaskManager::RemoveTask( Task* task )

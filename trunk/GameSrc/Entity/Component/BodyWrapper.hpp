@@ -33,6 +33,7 @@ public:
         return _body;
     }
     b2Fixture* LookUpFixture( const std::string& fixtureName ) const;
+	bool IsContactRelated(const b2Contact* contact, const b2Fixture*& target) const;
 
 private:
     typedef std::unordered_map<std::string, FixtureInfo> FixtureMap;

@@ -25,6 +25,8 @@ SINGLETON_CONSTRUCTOR(GUIManager),
 
 SINGLETON_DESTRUCTOR(GUIManager)
 {
+	RemoveEventListenType(Event_App);
+
     delete _gwenRenderer;
     delete _gwenCanvas;
     delete _gwenSkin;
@@ -33,6 +35,8 @@ SINGLETON_DESTRUCTOR(GUIManager)
 
 void GUIManager::Render(void)
 {
+	Game::GetInstance()->setView(Game::GetInstance()->getDefaultView());
+
 	_gwenCanvas->RenderCanvas();
 }
 

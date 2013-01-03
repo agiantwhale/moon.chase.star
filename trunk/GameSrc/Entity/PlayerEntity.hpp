@@ -10,36 +10,25 @@ class PlayerEntity : public Entity
     DEFINE_ENTITY(PlayerEntity,Entity,'BALL')
 
 public:
-    enum PlayerState
-    {
-        kPlayer_Bouncing,
-        kPlayer_Moving,
-        kPlayer_Thrown
-    };
-
     virtual void Initialize( const TiXmlElement *propertyElement );
     virtual bool HandleEvent(const EventData& theevent);
-    virtual void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
-    virtual void Control(void);
     virtual void Update(float deltaTime);
 
+	void Control(void);
+	void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
+	void ProcessThrow(b2Contact* contact,const b2Fixture* target);
     void Kill(void);
-    void Fall(void)
-    {
-        _playerState = kPlayer_Moving;
-        if( kPlayer_Thrown )
-        {
-            _ballBody.GetBody()->SetGravityScale(6.0f);
-        }
-    }
+    void Fall(void);
+    void Throw(const b2Vec2& velocity);
 
-    inline void Throw(const b2Vec2& velocity)
-    {
-        _playerState = kPlayer_Thrown;
-        _ballBody.GetBody()->SetGravityScale(0.0f);
-        _ballBody.GetBody()->SetLinearVelocity(velocity);
-    }
 private:
+	enum PlayerState
+	{
+		kPlayer_Bouncing,
+		kPlayer_Moving,
+		kPlayer_Thrown
+	};
+
     PlayerState _playerState;
     bool    _shouldBounce;
 

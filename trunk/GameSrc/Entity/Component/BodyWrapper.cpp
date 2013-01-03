@@ -13,6 +13,8 @@ BodyWrapper::BodyWrapper(Entity* const entity) : IPhysics(entity), _body(nullptr
 	GetEntity()->AddEventListenType(Event_Simulate);
 	GetEntity()->AddEventListenType(Event_BeginContact);
 	GetEntity()->AddEventListenType(Event_EndContact);
+	GetEntity()->AddEventListenType(Event_PreSolve);
+	GetEntity()->AddEventListenType(Event_PostSolve);
 }
 
 BodyWrapper::BodyWrapper( const BodyWrapper& wrapper, Entity* const entity ) : IPhysics( entity )
@@ -35,6 +37,8 @@ BodyWrapper::~BodyWrapper()
 	GetEntity()->RemoveEventListenType(Event_Simulate);
 	GetEntity()->RemoveEventListenType(Event_BeginContact);
 	GetEntity()->RemoveEventListenType(Event_EndContact);
+	GetEntity()->RemoveEventListenType(Event_PreSolve);
+	GetEntity()->RemoveEventListenType(Event_PostSolve);
 
     DestroyBody();
 }
@@ -108,4 +112,23 @@ void BodyWrapper::ResetTransform( void )
 {
     _smoothPosition = _previousPosition = _body->GetPosition();
     _smoothAngle = _previousAngle = _body->GetAngle();
+}
+
+bool BodyWrapper::IsContactRelated( const b2Contact* contact, const b2Fixture*& target ) const
+{
+	target = nullptr;
+	
+	if( contact->GetFixtureA()->GetBody()->GetUserData() == this )
+	{
+		target = contact->GetFixtureB();
+		return true;
+	}
+
+	if( contact->GetFixtureB()->GetBody()->GetUserData() == this )
+	{
+		target = contact->GetFixtureA();
+		return true;
+	}
+
+	return false;
 }

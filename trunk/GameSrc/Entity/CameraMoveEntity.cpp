@@ -7,7 +7,7 @@
 
 REGISTER_ENTITY( CameraMoveEntity, "CameraMove")
 
-CameraMoveEntity::CameraMoveEntity() : BaseClass(), _triggerBody(this), _travelTime(5.0f), _activated(false), _destination()
+CameraMoveEntity::CameraMoveEntity() : BaseClass(), _triggerBody(this), _travelTime(2.5f), _activated(false), _destination()
 {
 
 }
@@ -79,7 +79,11 @@ void CameraMoveEntity::ProcessContact(const b2Contact* contact, const b2Fixture*
     {
         _activated = true;
 
-		Task* cameraTask = new CameraMoveTask(_travelTime,0,_destination/_travelTime);
+		for(int i = 0; i < GraphicsManager::GetInstance()->GetRenderLayerStackSize(); i++ )
+		{
+			Task* cameraTask = new CameraMoveTask(_travelTime,i,_destination/_travelTime);
+			cameraTask->AddTask();
+		}
     }
 }
 
@@ -92,15 +96,11 @@ bool CameraMoveEntity::HandleEvent( const EventData& theevent )
         const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
         const b2Contact* contactInfo = contactData.GetContact();
 
-        if(contactInfo->GetFixtureA()==_triggerBody.LookUpFixture(("Trigger")))
-        {
-            ProcessContact(contactInfo,contactInfo->GetFixtureB());
-        }
-
-        if(contactInfo->GetFixtureB()==_triggerBody.LookUpFixture(("Trigger")))
-        {
-            ProcessContact(contactInfo,contactInfo->GetFixtureA());
-        }
+		const b2Fixture* target = nullptr;
+		if(_triggerBody.IsContactRelated(contactInfo,target))
+		{
+			ProcessContact(contactInfo,target);
+		}
 
         break;
     }

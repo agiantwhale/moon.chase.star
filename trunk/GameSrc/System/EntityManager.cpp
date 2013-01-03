@@ -94,6 +94,8 @@ SINGLETON_CONSTRUCTOR( EntityManager ),
 
 SINGLETON_DESTRUCTOR( EntityManager )
 {
+	RemoveEventListenType(Event_Unload);
+	RemoveEventListenType(Event_RestartLevel);
     ReleaseAll();
 }
 

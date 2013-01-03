@@ -4,6 +4,8 @@
 #include "../System/ResourceManager.hpp"
 #include "../System/EventManager.hpp"
 #include "../Event/ContactEventData.h"
+#include "../Event/SolveEventData.h"
+#include "CxxTL/tri_logger.hpp"
 
 template <typename T> int sgn(T val)
 {
@@ -103,15 +105,31 @@ void PlayerEntity::Control( void )
     b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
     b2Vec2 ballPosition = _ballBody.GetBody()->GetPosition();
 
-    if( sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && ballVelocity.x > -MAX_VELOCITY )
-    {
-        _ballBody.GetBody()->ApplyLinearImpulse( b2Vec2( -MOVE_IMPULSE, 0 ), ballPosition );
-    }
+	const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
+				rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
 
-    if( sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && ballVelocity.x < MAX_VELOCITY )
-    {
-        _ballBody.GetBody()->ApplyLinearImpulse( b2Vec2( MOVE_IMPULSE, 0 ), ballPosition );
-    }
+	if( (leftInput || rightInput) && _playerState == kPlayer_Thrown )
+	{
+		Fall();
+	}
+	else if(_playerState == kPlayer_Moving || _playerState == kPlayer_Bouncing)
+	{
+		if( leftInput && ballVelocity.x > -MAX_VELOCITY )
+		{
+			_ballBody.GetBody()->ApplyLinearImpulse( b2Vec2( -MOVE_IMPULSE, 0 ), ballPosition );
+		}
+
+		if( rightInput && ballVelocity.x < MAX_VELOCITY )
+		{
+			_ballBody.GetBody()->ApplyLinearImpulse( b2Vec2( MOVE_IMPULSE, 0 ), ballPosition );
+		}
+	}
+
+	if( _playerState == kPlayer_Thrown && ballVelocity.y > MAX_VELOCITY )
+	{
+		ballVelocity.y = MAX_VELOCITY;
+		_ballBody.GetBody()->SetLinearVelocity( ballVelocity );
+	}
 
     if( std::abs( ballVelocity.x ) > MAX_VELOCITY )
     {
@@ -135,14 +153,6 @@ void PlayerEntity::Update(float deltaTime)
         _dead = true;
 		EventData* eventData = new EventData( Event_RestartLevel );
 		eventData->QueueEvent(0.5f);
-    }
-
-    const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
-                rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-
-    if( leftInput || rightInput && _playerState != kPlayer_Moving )
-    {
-        Fall();
     }
 }
 
@@ -192,28 +202,38 @@ bool PlayerEntity::HandleEvent(const EventData& theevent)
     switch (theevent.GetEventType())
     {
     case Event_BeginContact:
-    {
-        const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
-        const b2Contact* contactInfo = contactData.GetContact();
+		{
+			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.GetContact();
 
-        if(contactInfo->GetFixtureA()==_ballBody.LookUpFixture(("Ball")))
-        {
-            ProcessContact(contactInfo,contactInfo->GetFixtureB());
-        }
+			const b2Fixture* target = nullptr;
+			if(_ballBody.IsContactRelated(contactInfo,target))
+			{
+				ProcessContact(contactInfo,target);
+			}
 
-        if(contactInfo->GetFixtureB()==_ballBody.LookUpFixture(("Ball")))
-        {
-            ProcessContact(contactInfo,contactInfo->GetFixtureA());
-        }
-
-        break;
-    }
+			break;
+		}
 
     case Event_Simulate:
-    {
-        Control();
-        break;
-    }
+		{
+			Control();
+			break;
+		}
+
+	case Event_PreSolve:
+		{
+			const PreSolveEventData& eventData = static_cast<const PreSolveEventData&>(theevent);
+			b2Contact* contactInfo = eventData.GetContact();
+
+			const b2Fixture* target = nullptr;
+			if(_ballBody.IsContactRelated(contactInfo,target))
+			{
+				ProcessThrow(contactInfo,target);
+			}
+
+			break;
+		}
 
     default:
         break;
@@ -238,11 +258,9 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
         {
         case 'THRW':
         {
-            if( slope >= 10.0f ) //45 degrees is acceptable.
-            {
-                _shouldBounce = false;
-            }
-            else if( (slope <= 0.25f || GetPosition().y < targetInterface->GetEntity()->GetPosition().y ) && _playerState == kPlayer_Thrown )
+			_shouldBounce = false;
+
+            if( (slope <= 0.25f || _ballBody.GetBody()->GetPosition().y < targetInterface->GetEntity()->GetPosition().y ) && _playerState == kPlayer_Thrown )
             {
                 Fall();
             }
@@ -262,6 +280,12 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
             break;
         }
 
+		case 'CMMV':
+			{
+				_shouldBounce = false;
+				break;
+			}
+
         default:
         {
             _shouldBounce = true;
@@ -269,4 +293,49 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
         }
         }
     }
+}
+
+void PlayerEntity::Fall( void )
+{
+	_playerState = kPlayer_Bouncing;
+	_ballBody.GetBody()->SetGravityScale(6.0f);
+
+	const float MAX_VELOCITY = 15.0f;
+	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
+	if( ballVelocity.y > MAX_VELOCITY )
+	{
+		ballVelocity.y = MAX_VELOCITY;
+		_ballBody.GetBody()->SetLinearVelocity( ballVelocity );
+	}
+}
+
+void PlayerEntity::Throw( const b2Vec2& velocity )
+{
+	_playerState = kPlayer_Thrown;
+	_ballBody.GetBody()->SetGravityScale(0.0f);
+	_ballBody.GetBody()->SetLinearVelocity(velocity);
+}
+
+void PlayerEntity::ProcessThrow( b2Contact* contact,const b2Fixture* target )
+{
+	const float THROW_VELOCITY = 40.0f;
+
+	b2WorldManifold manifold;
+	contact->GetWorldManifold(&manifold);
+
+	b2Vec2 normal = manifold.normal;
+	float slope = std::abs(normal.y/normal.x);
+
+	IPhysics *physicsInterface = GetPhysicsInterface(target);
+
+	if(physicsInterface && physicsInterface->GetEntity()->GetEntityType() == 'THRW'
+		&& slope >= 10.0f
+		&& target->GetBody()->GetPosition().y <= _ballBody.GetBody()->GetPosition().y )
+	{
+		_shouldBounce = false;
+		contact->SetEnabled(false);
+		b2Vec2 unit = target->GetBody()->GetWorldVector(b2Vec2(0,1.0f));
+		unit *= THROW_VELOCITY;
+		Throw(unit);
+	}
 }

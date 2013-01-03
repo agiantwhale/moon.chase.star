@@ -6,10 +6,13 @@ SINGLETON_CONSTRUCTOR(GraphicsManager),
                       IEventListener("GraphicsManager"),
                       _renderLayerStack()
 {
+	AddEventListenType(Event_Unload);
+
 }
 
 SINGLETON_DESTRUCTOR(GraphicsManager)
 {
+	RemoveEventListenType(Event_Unload);
     Unload();
 }
 
@@ -21,12 +24,6 @@ void GraphicsManager::SetUpGraphics(void)
 bool GraphicsManager::HandleEvent( const EventData& newevent )
 {
     if( newevent.GetEventType() == Event_Unload )
-    {
-        Unload();
-        return false;
-    }
-
-    if( newevent.GetEventType() == Event_RestartLevel )
     {
         Unload();
         return false;
@@ -75,7 +72,7 @@ void GraphicsManager::Render(void)
     }
 }
 
-RenderLayer* GraphicsManager::GetRenderLayer( unsigned int layer )
+RenderLayer* GraphicsManager::GetRenderLayer( unsigned int layer ) const
 {
     if( layer >= _renderLayerStack.size() )
     {

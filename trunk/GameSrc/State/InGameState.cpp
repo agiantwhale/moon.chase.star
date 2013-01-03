@@ -6,6 +6,7 @@
 #include "../System/ResourceManager.hpp"
 #include "../System/SceneManager.hpp"
 #include "../System/EventManager.hpp"
+#include "../System/TaskManager.hpp"
 #include "../Event/AppEventData.hpp"
 
 InGameState::InGameState() :	IState(),
@@ -40,6 +41,7 @@ bool InGameState::Update(float deltaTime)
     PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
     EntityManager::GetInstance()->Update( deltaTime );
     EventManager::GetInstance()->Update( deltaTime );
+	TaskManager::GetInstance()->Update( deltaTime );
 
     return _endState;
 }
@@ -63,7 +65,7 @@ bool InGameState::HandleEvent( const EventData& theevent )
 	{
 		const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
 
-		if(eventData.GetAppEvent().type == sf::Event::KeyPressed &&
+		if(eventData.GetAppEvent().type == sf::Event::KeyReleased &&
 			eventData.GetAppEvent().key.code == sf::Keyboard::Escape )
 		{
 			Game::GetInstance()->SetNextStateType(State_Paused);

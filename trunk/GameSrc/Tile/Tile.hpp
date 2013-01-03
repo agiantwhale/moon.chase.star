@@ -8,13 +8,11 @@
 #include "../Interface/IRenderable.hpp"
 #include "../Interface/IEventListener.hpp"
 
-class Tile : public IRenderable, public IEventListener
+class Tile : public IRenderable
 {
 public:
     Tile();
     virtual ~Tile();
-
-    virtual bool HandleEvent( const EventData& newevent );
 
     virtual void Render(void);
     void Initialize( const TiXmlElement* element );

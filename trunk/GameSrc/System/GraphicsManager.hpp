@@ -17,7 +17,8 @@ public:
     void AddRenderable(IRenderable* const renderable);
     void RemoveRenderable(IRenderable* const renderable);
 
-    RenderLayer* GetRenderLayer( unsigned int layer );
+    RenderLayer* GetRenderLayer( unsigned int layer ) const;
+	unsigned int GetRenderLayerStackSize(void) const {return _renderLayerStack.size();}
 
     void Render();
     void Unload();
