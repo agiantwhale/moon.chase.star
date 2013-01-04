@@ -2,6 +2,7 @@
 
 Entity::Entity() :	ITransform(),
     _released( false ),
+	_active(true),
     _initialized( false )
 {
 }

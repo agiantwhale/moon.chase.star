@@ -6,6 +6,7 @@
 #include "../Event/ContactEventData.h"
 #include "../Event/SolveEventData.h"
 #include "CxxTL/tri_logger.hpp"
+#include "../Event/AppEventData.hpp"
 
 template <typename T> int sgn(T val)
 {
@@ -74,83 +75,35 @@ void DummyBallEntity::Update( float deltaTime )
 	}
 }
 
+//PlayerEntity related constants
+const float BALL_RADIUS = 0.5f;
 const float KILL_TIME = 1.5f;
+const float JUMP_IMPULSE = 18.0f;
+const float MOVE_IMPULSE = 0.5f;
+const float MAX_HORI_VELOCITY = 15.0f;
+const float MAX_VERTI_VELOCITY = 15.0f;
 
 REGISTER_ENTITY( PlayerEntity, "Ball" )
 
 PlayerEntity::PlayerEntity() : Entity(), _ballBody(this), _ballSprite(this),
     _shouldBounce(false),
-    _playerState(kPlayer_Bouncing),
-    _dead(false)
+	_shouldAcceptInput(true),
+    _playerState(kPlayer_Moving)
 {
+	AddEventListenType(Event_App);
 }
 
 PlayerEntity::~PlayerEntity()
 {
-}
-
-void PlayerEntity::Kill(void)
-{
-    _dead = true;
-}
-
-void PlayerEntity::Control( void )
-{
-    if(_dead) return;
-
-    const float JUMP_IMPULSE = 18.0f;
-    const float MAX_VELOCITY = 15.0f;
-    const float MOVE_IMPULSE = 0.5f;
-
-    b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
-    b2Vec2 ballPosition = _ballBody.GetBody()->GetPosition();
-
-	const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
-				rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-
-	if( (leftInput || rightInput) && _playerState == kPlayer_Thrown )
-	{
-		Fall();
-	}
-	else if(_playerState == kPlayer_Moving || _playerState == kPlayer_Bouncing)
-	{
-		if( leftInput && ballVelocity.x > -MAX_VELOCITY )
-		{
-			_ballBody.GetBody()->ApplyLinearImpulse( b2Vec2( -MOVE_IMPULSE, 0 ), ballPosition );
-		}
-
-		if( rightInput && ballVelocity.x < MAX_VELOCITY )
-		{
-			_ballBody.GetBody()->ApplyLinearImpulse( b2Vec2( MOVE_IMPULSE, 0 ), ballPosition );
-		}
-	}
-
-	if( _playerState == kPlayer_Thrown && ballVelocity.y > MAX_VELOCITY )
-	{
-		ballVelocity.y = MAX_VELOCITY;
-		_ballBody.GetBody()->SetLinearVelocity( ballVelocity );
-	}
-
-    if( std::abs( ballVelocity.x ) > MAX_VELOCITY )
-    {
-        ballVelocity.x = sgn<float>(ballVelocity.x) * MAX_VELOCITY;
-        _ballBody.GetBody()->SetLinearVelocity( ballVelocity );
-    }
-
-    if( _shouldBounce )
-    {
-        _shouldBounce = false;
-        _ballBody.GetBody()->SetLinearVelocity( b2Vec2(ballVelocity.x, 0) );
-        _ballBody.GetBody()->SetTransform(ballPosition + b2Vec2(0,0.1f), _ballBody.GetBody()->GetAngle());
-        _ballBody.GetBody()->ApplyLinearImpulse(b2Vec2(0,JUMP_IMPULSE), _ballBody.GetBody()->GetPosition());
-    }
+	RemoveEventListenType(Event_App);
 }
 
 void PlayerEntity::Update(float deltaTime)
 {
-    if( !_dead && GetPosition().y < -(SCREENHEIGHT * UNRATIO * 0.5f + 5.0f) )
+	//Loses the game.
+    if( GetPosition().y < -(SCREENHEIGHT * UNRATIO * 0.5f + 5.0f) )
     {
-        _dead = true;
+		SetActive(false);
 		EventData* eventData = new EventData( Event_RestartLevel );
 		eventData->QueueEvent(0.5f);
     }
@@ -159,8 +112,6 @@ void PlayerEntity::Update(float deltaTime)
 void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
 {
     BaseClass::Initialize(propertyElement);
-
-    const float BALL_RADIUS = 0.5f;
 
     {
         TextureManager* textureMgr = TextureManager::GetInstance();
@@ -217,7 +168,7 @@ bool PlayerEntity::HandleEvent(const EventData& theevent)
 
     case Event_Simulate:
 		{
-			Control();
+			UpdatePlayerState();
 			break;
 		}
 
@@ -229,7 +180,22 @@ bool PlayerEntity::HandleEvent(const EventData& theevent)
 			const b2Fixture* target = nullptr;
 			if(_ballBody.IsContactRelated(contactInfo,target))
 			{
-				ProcessThrow(contactInfo,target);
+				ProcessPreSolve(contactInfo,target);
+			}
+
+			break;
+		}
+
+	case Event_App:
+		{
+			if(_playerState != kPlayer_Thrown) break;
+
+			const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
+
+			if(eventData.GetAppEvent().type == sf::Event::KeyReleased &&
+			   eventData.GetAppEvent().key.code == _pressedInput )
+			{
+				_shouldAcceptInput = true;
 			}
 
 			break;
@@ -295,28 +261,7 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
     }
 }
 
-void PlayerEntity::Fall( void )
-{
-	_playerState = kPlayer_Bouncing;
-	_ballBody.GetBody()->SetGravityScale(6.0f);
-
-	const float MAX_VELOCITY = 15.0f;
-	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
-	if( ballVelocity.y > MAX_VELOCITY )
-	{
-		ballVelocity.y = MAX_VELOCITY;
-		_ballBody.GetBody()->SetLinearVelocity( ballVelocity );
-	}
-}
-
-void PlayerEntity::Throw( const b2Vec2& velocity )
-{
-	_playerState = kPlayer_Thrown;
-	_ballBody.GetBody()->SetGravityScale(0.0f);
-	_ballBody.GetBody()->SetLinearVelocity(velocity);
-}
-
-void PlayerEntity::ProcessThrow( b2Contact* contact,const b2Fixture* target )
+void PlayerEntity::ProcessPreSolve( b2Contact* contact,const b2Fixture* target )
 {
 	const float THROW_VELOCITY = 40.0f;
 
@@ -330,12 +275,149 @@ void PlayerEntity::ProcessThrow( b2Contact* contact,const b2Fixture* target )
 
 	if(physicsInterface && physicsInterface->GetEntity()->GetEntityType() == 'THRW'
 		&& slope >= 10.0f
-		&& target->GetBody()->GetPosition().y <= _ballBody.GetBody()->GetPosition().y )
+		&& target->GetBody()->GetPosition().y < _ballBody.GetBody()->GetPosition().y )
 	{
 		_shouldBounce = false;
 		contact->SetEnabled(false);
 		b2Vec2 unit = target->GetBody()->GetWorldVector(b2Vec2(0,1.0f));
 		unit *= THROW_VELOCITY;
 		Throw(unit);
+	}
+}
+
+void PlayerEntity::Control( void )
+{
+	if(!_shouldAcceptInput) return;
+
+	const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
+				rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+
+	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
+	b2Vec2 ballPosition = _ballBody.GetBody()->GetPosition();
+
+	if( leftInput && ballVelocity.x > -MAX_HORI_VELOCITY )
+	{
+		_ballBody.GetBody()->ApplyLinearImpulse( b2Vec2( -MOVE_IMPULSE, 0 ), ballPosition );
+	}
+
+	if( rightInput && ballVelocity.x < MAX_HORI_VELOCITY )
+	{
+		_ballBody.GetBody()->ApplyLinearImpulse( b2Vec2( MOVE_IMPULSE, 0 ), ballPosition );
+	}
+}
+
+void PlayerEntity::Fall( void )
+{
+	_shouldAcceptInput = true;
+	_playerState = kPlayer_Moving;
+	_ballBody.GetBody()->SetGravityScale(6.0f);
+
+	const float MAX_VELOCITY = 15.0f;
+	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
+	if( ballVelocity.y > MAX_VELOCITY )
+	{
+		ballVelocity.y = MAX_VELOCITY;
+		_ballBody.GetBody()->SetLinearVelocity( ballVelocity );
+	}
+}
+
+void PlayerEntity::Throw( const b2Vec2& velocity )
+{
+	const bool leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
+			   rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+
+	_shouldAcceptInput = false;
+
+	if(leftInput)
+	{
+		_pressedInput = sf::Keyboard::Left;
+	}
+
+	if(rightInput)
+	{
+		_pressedInput = sf::Keyboard::Right;
+	}
+	
+	if( !leftInput && !rightInput )
+	{
+		_shouldAcceptInput = true;
+	}
+
+	_playerState = kPlayer_Thrown;
+	_ballBody.GetBody()->SetGravityScale(0.0f);
+	_ballBody.GetBody()->SetLinearVelocity(velocity);
+}
+
+void PlayerEntity::LimitHorizontalVelocity()
+{
+	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
+
+	if( std::abs( ballVelocity.x ) > MAX_HORI_VELOCITY )
+	{
+		ballVelocity.x = sgn<float>(ballVelocity.x) * MAX_HORI_VELOCITY;
+		_ballBody.GetBody()->SetLinearVelocity( ballVelocity );
+	}
+}
+
+void PlayerEntity::LimitVerticalVelocity()
+{
+	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
+
+	//Should this only limit when the velocity is bigger than MAX_VERTI_VELOCITY when going up?
+	if( std::abs( ballVelocity.y ) > MAX_VERTI_VELOCITY )
+	{
+		ballVelocity.y = sgn<float>(ballVelocity.y) * MAX_VERTI_VELOCITY;
+		_ballBody.GetBody()->SetLinearVelocity( ballVelocity );
+	}
+}
+
+void PlayerEntity::Bounce( void )
+{
+	_shouldBounce = false;
+
+	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
+	b2Vec2 ballPosition = _ballBody.GetBody()->GetPosition();
+
+	_ballBody.GetBody()->SetLinearVelocity( b2Vec2(ballVelocity.x, 0) );
+	_ballBody.GetBody()->SetTransform(ballPosition + b2Vec2(0,0.1f), _ballBody.GetBody()->GetAngle());
+	_ballBody.GetBody()->ApplyLinearImpulse(b2Vec2(0,JUMP_IMPULSE), _ballBody.GetBody()->GetPosition());
+}
+
+void PlayerEntity::UpdatePlayerState( void )
+{
+	switch(_playerState)
+	{
+	case kPlayer_Moving:
+		{
+			Control();
+
+			if(_shouldBounce)
+			{
+				Bounce();
+			}
+
+			LimitHorizontalVelocity();
+
+			break;
+		}
+
+	case kPlayer_Thrown:
+		{
+			const bool leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
+					   rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+
+			if( _shouldAcceptInput && (leftInput || rightInput) )
+			{
+				Fall();
+			}
+			else
+			{
+				LimitVerticalVelocity();
+			}
+
+			LimitHorizontalVelocity();
+
+			break;
+		}
 	}
 }

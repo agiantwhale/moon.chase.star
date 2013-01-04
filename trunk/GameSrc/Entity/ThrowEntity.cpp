@@ -5,10 +5,7 @@
 
 REGISTER_ENTITY( ThrowEntity, "Throw")
 
-const float THROW_SIZE = 2.0f;
-
-ThrowEntity::ThrowEntity() : BaseClass(), _throwBody(this), _throwSprite(this),
-    _targetEntity(NULL)
+ThrowEntity::ThrowEntity() : BaseClass(), _throwBody(this), _throwSprite(this)
 {
 }
 
@@ -19,6 +16,8 @@ ThrowEntity::~ThrowEntity()
 void ThrowEntity::Initialize( const TiXmlElement *propertyElement )
 {
     BaseClass::Initialize(propertyElement);
+
+	const float THROW_SIZE = 2.0f;
 
     {
         TextureManager* textureMgr = TextureManager::GetInstance();
@@ -74,33 +73,11 @@ bool ThrowEntity::HandleEvent(const EventData& theevent)
         break;
     }
 
-    case Event_Simulate:
-    {
-        Simulate();
-        break;
-    }
-
     default:
         break;
     }
 
     return false;
-}
-
-void ThrowEntity::Simulate(void)
-{
-    const float THROW_VELOCITY = 40.0f;
-
-	/*
-    if(_targetEntity)
-    {
-        b2Vec2 unit = _throwBody.GetBody()->GetWorldVector(b2Vec2(0,1.0f));
-        unit *= THROW_VELOCITY;
-        _targetEntity->Throw(unit);
-
-        _targetEntity = NULL;
-    }
-	*/
 }
 
 void ThrowEntity::ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture )
@@ -119,7 +96,7 @@ void ThrowEntity::ProcessContact(const b2Contact* contact, const b2Fixture* cont
 
             if(physicsInterface && physicsInterface->GetEntity()->GetEntityType() == 'BALL')
             {
-                _targetEntity = static_cast<PlayerEntity*>(physicsInterface->GetEntity());
+                //_targetEntity = static_cast<PlayerEntity*>(physicsInterface->GetEntity());
             }
         }
     }

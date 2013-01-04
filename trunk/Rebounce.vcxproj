@@ -20,6 +20,7 @@
     <ClCompile Include="GameSrc\Entity\Component\SpriteWrapper.cpp" />
     <ClCompile Include="GameSrc\Entity\Entity.cpp" />
     <ClCompile Include="GameSrc\Entity\HullEntity.cpp" />
+    <ClCompile Include="GameSrc\Entity\LevelCompleteZoneEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\PlayerEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\ThrowEntity.cpp" />
     <ClCompile Include="GameSrc\Event\EventData.cpp" />
@@ -64,6 +65,7 @@
     <ClInclude Include="GameSrc\Entity\Component\SpriteWrapper.hpp" />
     <ClInclude Include="GameSrc\Entity\Entity.hpp" />
     <ClInclude Include="GameSrc\Entity\HullEntity.hpp" />
+    <ClInclude Include="GameSrc\Entity\LevelCompleteZoneEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\PlayerEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\ThrowEntity.hpp" />
     <ClInclude Include="GameSrc\Event\AppEventData.hpp" />

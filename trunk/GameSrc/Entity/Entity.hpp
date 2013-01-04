@@ -27,26 +27,23 @@ public:
         return 'BASE';
     }
 
-    inline void Release( void )
+    void Release( void )
     {
         _released = true;
     }
 
-	inline void Register(void)
+	void Register(void)
 	{
 		EntityManager::GetInstance()->RegisterEntity(this);
 	}
 
-    inline const bool IsReleased( void ) const
-    {
-        return _released;
-    }
+    bool IsReleased( void ) const { return _released; }
 
     virtual void Initialize( const TiXmlElement *propertyElement = nullptr );
-    inline const bool IsInitialized( void ) const
-    {
-        return _initialized;
-    }
+    bool IsInitialized( void ) const { return _initialized; }
+
+	bool IsActive() const { return _active; }
+	void SetActive(bool val) { _active = val; }
 
 protected:
     Entity();
@@ -54,6 +51,7 @@ protected:
 
     bool _initialized;
     bool _released;
+	bool _active;		//Inactive entities are not updated.
 
     friend class EntityManager;
     friend class EntityList;

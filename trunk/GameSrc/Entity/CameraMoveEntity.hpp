@@ -14,7 +14,6 @@ public:
     virtual void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
     virtual bool HandleEvent( const EventData& theevent );
 private:
-    bool _activated;			//The ball collided with the CameraMoveEntity.
     const float _travelTime;	//Amount of time that should be interpolated between the current location and the destination.
 	Vec2D _destination;
 

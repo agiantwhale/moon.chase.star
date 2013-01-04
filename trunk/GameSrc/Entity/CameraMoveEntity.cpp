@@ -7,7 +7,7 @@
 
 REGISTER_ENTITY( CameraMoveEntity, "CameraMove")
 
-CameraMoveEntity::CameraMoveEntity() : BaseClass(), _triggerBody(this), _travelTime(2.5f), _activated(false), _destination()
+CameraMoveEntity::CameraMoveEntity() : BaseClass(), _triggerBody(this), _travelTime(2.5f), _destination()
 {
 
 }
@@ -75,9 +75,9 @@ void CameraMoveEntity::ProcessContact(const b2Contact* contact, const b2Fixture*
 {
     IPhysics *targetInterface = GetPhysicsInterface(contactFixture);
 
-    if(!_activated && targetInterface && targetInterface->GetEntity()->GetEntityType() == 'BALL')
+    if(targetInterface && targetInterface->GetEntity()->GetEntityType() == 'BALL')
     {
-        _activated = true;
+        SetActive(false);
 
 		for(int i = 0; i < GraphicsManager::GetInstance()->GetRenderLayerStackSize(); i++ )
 		{

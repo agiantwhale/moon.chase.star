@@ -71,7 +71,11 @@ void EntityList::Update(float deltaTime )
     for( iterator iter = begin(); iter != end(); iter++ )
     {
         Entity *entity = (iter->second);
-        entity->Update( deltaTime );
+
+		if(entity->IsActive())
+		{
+			entity->Update( deltaTime );
+		}
     }
 }
 

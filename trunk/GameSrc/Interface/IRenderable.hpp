@@ -14,19 +14,19 @@ public:
     virtual void Render() = 0;
     inline void Hide(void)
     {
-        _isHidden=true;
+        _hidden=true;
     }
     inline void Show(void)
     {
-        _isHidden=false;
+        _hidden=false;
     }
     inline bool IsHidden(void) const
     {
-        return _isHidden;
+        return _hidden;
     }
     inline bool IsRegistered(void) const
     {
-        return _isRegistered;
+        return _registered;
     }
 
     void RegisterRenderable( unsigned int renderLayer );
@@ -43,8 +43,8 @@ public:
 
 private:
     unsigned int _renderLayer;
-    bool _isRegistered;
-    bool _isHidden;
+    bool _registered;
+    bool _hidden;
     ITransform* const _transform;
 };
 

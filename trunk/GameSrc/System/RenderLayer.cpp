@@ -32,7 +32,8 @@ void RenderLayer::Render( void )
     for( std::list<IRenderable*>::iterator iter = begin(); iter != end(); iter++ )
     {
         IRenderable* renderable = (*iter);
-        renderable->Render();
+		if(!renderable->IsHidden())
+			renderable->Render();
     }
 }
 

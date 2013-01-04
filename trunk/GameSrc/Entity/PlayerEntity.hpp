@@ -14,17 +14,24 @@ public:
     virtual bool HandleEvent(const EventData& theevent);
     virtual void Update(float deltaTime);
 
-	void Control(void);
-	void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
-	void ProcessThrow(b2Contact* contact,const b2Fixture* target);
-    void Kill(void);
-    void Fall(void);
-    void Throw(const b2Vec2& velocity);
-
 private:
+	//Updates player state
+	void UpdatePlayerState(void);
+
+	//Ball control related functions
+	void Control(void);
+	void Bounce(void);
+	void Fall(void);
+	void Throw(const b2Vec2& velocity);
+	void LimitHorizontalVelocity(void);
+	void LimitVerticalVelocity(void);
+
+	//Hooks
+	void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
+	void ProcessPreSolve(b2Contact* contact,const b2Fixture* target);
+
 	enum PlayerState
 	{
-		kPlayer_Bouncing,
 		kPlayer_Moving,
 		kPlayer_Thrown
 	};
@@ -32,11 +39,11 @@ private:
     PlayerState _playerState;
     bool    _shouldBounce;
 
+	sf::Keyboard::Key _pressedInput;
+	bool				_shouldAcceptInput;	//This is used only during Thrown state!
+
     BodyWrapper _ballBody;
     SpriteWrapper _ballSprite;
-
-    bool _thrown;
-    bool _dead;
 };
 
 class DummyBallEntity : public Entity
