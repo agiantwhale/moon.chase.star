@@ -13,10 +13,10 @@
 #include "../System/EventManager.hpp"
 
 LoadingState::LoadingState() :	IState(),
-								_sceneFileName(""),
-								_loadType(Load_UNDEFINED),
-								_screenBase(nullptr),
-								_frameDrawn(false)
+	_sceneFileName(""),
+	_loadType(Load_UNDEFINED),
+	_screenBase(nullptr),
+	_frameDrawn(false)
 {
 	AddEventListenType(Event_NewGame);
 	AddEventListenType(Event_RestartLevel);

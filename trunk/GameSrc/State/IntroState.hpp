@@ -1,8 +1,7 @@
 #ifndef INTROSTATE_HPP
 #define INTROSTATE_HPP
 
-#include <SFML/Graphics.hpp>
-#include <Gwen/Controls/ImagePanel.h>
+#include <sfeMovie/Movie.hpp>
 #include "../Interface/IState.hpp"
 
 class IntroState : public IState
@@ -17,16 +16,7 @@ public:
     virtual void Exit(void);
 
 private:
-    enum IntroStatus
-    {
-        FADE_IN,
-        WAIT,
-        FADE_OUT
-    };
-
-    Gwen::Controls::ImagePanel *_splashImage;
-    sf::Clock	_splashTimer;
-    IntroStatus _currentStatus;
+	sfe::Movie*	_introMovie;
 };
 
 #endif

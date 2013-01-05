@@ -29,7 +29,7 @@ void RenderLayer::Render( void )
 {
     _renderCamera.Transform();
 
-    for( std::list<IRenderable*>::iterator iter = begin(); iter != end(); iter++ )
+    for( iterator iter = begin(); iter != end(); iter++ )
     {
         IRenderable* renderable = (*iter);
 		if(!renderable->IsHidden())
