@@ -15,6 +15,8 @@ MainMenuState::MainMenuState() :	IState(),
 
 MainMenuState::~MainMenuState()
 {
+	RemoveEventListenType(Event_NewGame);
+
 	delete _menuWindow;
 }
 

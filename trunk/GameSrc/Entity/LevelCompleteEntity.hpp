@@ -1,12 +1,12 @@
-#ifndef LEVELCOMPLETEZONEENTITY_HPP
-#define LEVELCOMPLETEZONEENTITY_HPP
+#ifndef LEVELCOMPLETEENTITY_HPP
+#define LEVELCOMPLETEENTITY_HPP
 
 #include "../Entity/Entity.hpp"
 #include "../Entity/Component/BodyWrapper.hpp"
 
-class LevelCompleteZoneEntity : public Entity
+class LevelCompleteEntity : public Entity
 {
-	DEFINE_ENTITY(LevelCompleteZoneEntity,Entity,'LVL')
+	DEFINE_ENTITY(LevelCompleteEntity,Entity,'LVL')
 
 public:
 	virtual void Initialize( const TiXmlElement *propertyElement = NULL );
@@ -14,8 +14,8 @@ public:
 	virtual bool HandleEvent( const EventData& theevent );
 
 private:
-	bool _activated;
 	BodyWrapper _triggerBody;
+	std::string _nextMapFile;
 };
 
 #endif

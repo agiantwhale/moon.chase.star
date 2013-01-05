@@ -24,6 +24,7 @@ private:
 		Load_New,
 		Load_Restart,
 		Load_Unload,
+		Load_Next,
 	} _loadType;
 	std::string _sceneFileName;
 	Gwen::Controls::Base* _screenBase;

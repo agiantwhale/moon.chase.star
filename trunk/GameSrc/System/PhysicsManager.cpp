@@ -41,7 +41,7 @@ void PhysicsManager::SetUpPhysics( void )
 	_debugDraw = new DebugDraw(*Game::GetInstance());
 	_debugDraw->SetFlags(b2Draw::e_shapeBit);
 
-    _physicsWorld = new b2World( b2Vec2( 0, -10 ) );
+    _physicsWorld = new b2World( b2Vec2( 0, -GRAVITY_ACCELERATION ) );
     _physicsWorld->SetContactListener(this);
     _physicsWorld->SetDebugDraw(_debugDraw);
 

@@ -9,6 +9,8 @@
 #include "../System/SceneManager.hpp"
 #include "../System/ResourceManager.hpp"
 #include "../Event/GUIEventData.h"
+#include "../Event/NextLevelEventData.hpp"
+#include "../System/EventManager.hpp"
 
 LoadingState::LoadingState() :	IState(),
 								_sceneFileName(""),
@@ -18,6 +20,7 @@ LoadingState::LoadingState() :	IState(),
 {
 	AddEventListenType(Event_NewGame);
 	AddEventListenType(Event_RestartLevel);
+	AddEventListenType(Event_NextLevel);
 	AddEventListenType(Event_GUI);
 
 	_screenBase = new Gwen::Controls::Base(GUIManager::GetInstance()->GetCanvas());
@@ -40,7 +43,10 @@ LoadingState::LoadingState() :	IState(),
 
 LoadingState::~LoadingState()
 {
-
+	RemoveEventListenType(Event_NewGame);
+	RemoveEventListenType(Event_RestartLevel);
+	RemoveEventListenType(Event_NextLevel);
+	RemoveEventListenType(Event_GUI);
 }
 
 void LoadingState::Enter( void )
@@ -78,11 +84,18 @@ bool LoadingState::Update( float deltaTime )
 				EventData* unloadEvent = new EventData(Event_Unload);
 				unloadEvent->TriggerEvent();
 
-				/*
-				Add code to load mainmenu later.
-				*/
-
 				Game::GetInstance()->SetNextStateType(State_MainMenu);
+				return true;
+				break;
+			}
+
+		case Load_Next:
+			{
+				EventData* unloadEvent = new EventData(Event_Unload);
+				unloadEvent->TriggerEvent();
+
+				SceneManager::GetInstance()->LoadScene(_sceneFileName);
+				Game::GetInstance()->SetNextStateType(State_InGame);
 				return true;
 				break;
 			}
@@ -114,12 +127,20 @@ void LoadingState::Exit( void )
 
 bool LoadingState::HandleEvent( const EventData& theevent )
 {
-	if(theevent.GetEventType() == Event_NewGame || theevent.GetEventType() == Event_NextLevel)
+	if(theevent.GetEventType() == Event_NewGame )
 	{
 		const NewGameEventData& eventData = static_cast<const NewGameEventData&>(theevent);
 		_sceneFileName = eventData.GetSceneFileName();
 
 		_loadType = Load_New;
+	}
+
+	if(theevent.GetEventType() == Event_NextLevel)
+	{
+		const NextLevelEventData& eventData = static_cast<const NextLevelEventData&>(theevent);
+		_sceneFileName = eventData.GetSceneFileName();
+
+		_loadType = Load_Next;
 	}
 
 	if(theevent.GetEventType() == Event_RestartLevel)

@@ -14,11 +14,16 @@ InGameState::InGameState() :	IState(),
 								_endState(false)
 {
 	AddEventListenType(Event_RestartLevel);
+	AddEventListenType(Event_NextLevel);
 	AddEventListenType(Event_App);
 }
 
 InGameState::~InGameState()
-{}
+{
+	RemoveEventListenType(Event_RestartLevel);
+	RemoveEventListenType(Event_NextLevel);
+	RemoveEventListenType(Event_App);
+}
 
 void InGameState::Enter()
 {
@@ -55,7 +60,7 @@ void InGameState::Exit()
 
 bool InGameState::HandleEvent( const EventData& theevent )
 {
-	if(theevent.GetEventType() == Event_RestartLevel)
+	if((theevent.GetEventType() == Event_NextLevel || theevent.GetEventType() == Event_RestartLevel) && IsActive())
 	{
 		Game::GetInstance()->SetNextStateType(State_Loading);
 		_endState = true;

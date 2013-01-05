@@ -20,7 +20,8 @@ PauseState::PauseState() :	IState(),
 
 PauseState::~PauseState()
 {
-
+	RemoveEventListenType(Event_GUI);
+	RemoveEventListenType(Event_App);
 }
 
 bool PauseState::HandleEvent( const EventData& theevent )

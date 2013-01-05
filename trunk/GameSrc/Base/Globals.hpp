@@ -12,4 +12,6 @@
 
 #define TILESIZE 32
 
+#define GRAVITY_ACCELERATION 10.0f
+
 #endif

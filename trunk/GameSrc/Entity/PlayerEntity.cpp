@@ -104,6 +104,9 @@ void PlayerEntity::Update(float deltaTime)
     if( GetPosition().y < -(SCREENHEIGHT * UNRATIO * 0.5f + 5.0f) )
     {
 		SetActive(false);
+
+		EventManager::GetInstance()->AbortEvent(Event_NextLevel,true);
+
 		EventData* eventData = new EventData( Event_RestartLevel );
 		eventData->QueueEvent(0.5f);
     }
@@ -246,15 +249,22 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
             break;
         }
 
-		case 'CMMV':
+		case 'BLCK':
 			{
-				_shouldBounce = false;
+				if( _playerState == kPlayer_Thrown )
+				{
+					Fall();
+				}
+				else if( slope >= 10.0f )
+				{
+					_shouldBounce = true;
+				}
 				break;
 			}
 
         default:
         {
-            _shouldBounce = true;
+            _shouldBounce = false;
             break;
         }
         }
