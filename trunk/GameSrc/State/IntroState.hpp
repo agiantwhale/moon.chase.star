@@ -16,7 +16,7 @@ public:
     virtual void Exit(void);
 
 private:
-	sfe::Movie*	_introMovie;
+	sfe::Movie	_introMovie;
 };
 
 #endif

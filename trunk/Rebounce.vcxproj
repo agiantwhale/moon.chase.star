@@ -55,8 +55,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Development\Rebounce\trunk\Libs\Box2D\lib\Debug;C:\Development\Rebounce\trunk\Libs\TinyXML\lib\DebugtinyxmlSTL;C:\Development\Rebounce\trunk\Libs\SFML\lib;C:\Development\Rebounce\trunk\Libs\sfeMovie\lib;C:\Development\Rebounce\trunk\Libs\GWEN\lib\windows\vs2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Box2D.lib;opengl32.lib;tinyxmlSTL.lib;gwend.lib;sfeMovie.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Development\Rebounce\trunk\Libs\Box2D\lib\Debug;C:\Development\Rebounce\trunk\Libs\TinyXML\lib\DebugtinyxmlSTL;C:\Development\Rebounce\trunk\Libs\SFML\lib;C:\Development\Rebounce\trunk\Libs\sfeMovie\lib\Debug;C:\Development\Rebounce\trunk\Libs\GWEN\lib\windows\vs2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Box2D.lib;opengl32.lib;tinyxmlSTL.lib;gwend.lib;sfeMovie_d.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -75,7 +75,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Development\Rebounce\trunk\Libs\Box2D\lib\Release;C:\Development\Rebounce\trunk\Libs\TinyXML\lib\ReleasetinyxmlSTL;C:\Development\Rebounce\trunk\Libs\SFML\lib;C:\Development\Rebounce\trunk\Libs\sfeMovie\lib;C:\Development\Rebounce\trunk\Libs\GWEN\lib\windows\vs2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Development\Rebounce\trunk\Libs\Box2D\lib\Release;C:\Development\Rebounce\trunk\Libs\TinyXML\lib\ReleasetinyxmlSTL;C:\Development\Rebounce\trunk\Libs\SFML\lib;C:\Development\Rebounce\trunk\Libs\sfeMovie\lib\MinSizeRel;C:\Development\Rebounce\trunk\Libs\GWEN\lib\windows\vs2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Box2D.lib;opengl32.lib;tinyxmlSTL.lib;gwen.lib;sfeMovie.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
