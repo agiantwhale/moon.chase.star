@@ -111,7 +111,6 @@
     <ClCompile Include="GameSrc\System\EventManager.cpp" />
     <ClCompile Include="GameSrc\System\GraphicsManager.cpp" />
     <ClCompile Include="GameSrc\System\GUIManager.cpp" />
-    <ClCompile Include="GameSrc\System\GUIRenderer\SFML.cpp" />
     <ClCompile Include="GameSrc\System\ParticleManager.cpp" />
     <ClCompile Include="GameSrc\System\PhysicsManager.cpp" />
     <ClCompile Include="GameSrc\System\RenderLayer.cpp" />
@@ -122,6 +121,7 @@
     <ClCompile Include="GameSrc\Task\Task.cpp" />
     <ClCompile Include="GameSrc\Tile\Tile.cpp" />
     <ClCompile Include="Libs\CxxTL\src\tri_logger.cpp" />
+    <ClCompile Include="Libs\GWEN\Renderers\SFML\SFML.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp" />

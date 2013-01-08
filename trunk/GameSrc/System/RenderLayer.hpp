@@ -9,6 +9,8 @@
 class Camera : public ITransform
 {
 public:
+	Camera();
+
     void Transform( void ) const;
 };
 

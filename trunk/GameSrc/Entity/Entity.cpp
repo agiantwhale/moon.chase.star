@@ -29,10 +29,10 @@ void Entity::Initialize( const TiXmlElement *propertyElement )
 
         //size
         {
-            double entityWidth = GetScale().x*RATIO, entityHeight = GetScale().y*RATIO;
+            double entityWidth = GetSize().x*RATIO, entityHeight = GetSize().y*RATIO;
             propertyElement->Attribute( "width", &entityWidth);
             propertyElement->Attribute( "height", &entityHeight );
-            SetScale(Vec2D(entityWidth*UNRATIO,entityHeight*UNRATIO));
+            SetSize(Vec2D(entityWidth*UNRATIO,entityHeight*UNRATIO));
         }
 
         //angle

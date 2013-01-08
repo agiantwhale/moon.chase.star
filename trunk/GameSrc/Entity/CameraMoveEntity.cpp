@@ -20,7 +20,7 @@ void CameraMoveEntity::Initialize( const TiXmlElement *propertyElement )
 {
     BaseClass::Initialize(propertyElement);
 
-    SetPosition( GetPosition() + 0.5f * sf::Vector2f(GetScale().x,-GetScale().y) );
+    SetPosition( GetPosition() + 0.5f * sf::Vector2f(GetSize().x,-GetSize().y) );
 
     if( propertyElement )
     {
@@ -58,7 +58,7 @@ void CameraMoveEntity::Initialize( const TiXmlElement *propertyElement )
             _triggerBody.CreateBody( bodyDefinition );
 
             b2PolygonShape boxShape;
-            boxShape.SetAsBox( 0.5f * GetScale().x, 0.5f * GetScale().y );
+            boxShape.SetAsBox( 0.5f * GetSize().x, 0.5f * GetSize().y );
 
             b2FixtureDef fixtureDefinition;
             fixtureDefinition.shape = &boxShape;
