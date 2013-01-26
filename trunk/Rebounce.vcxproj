@@ -152,6 +152,7 @@
     <ClInclude Include="GameSrc\GUI\MainMenu.hpp" />
     <ClInclude Include="GameSrc\GUI\PauseMenu.hpp" />
     <ClInclude Include="GameSrc\Interface\IEventListener.hpp" />
+    <ClInclude Include="GameSrc\Interface\IInput.hpp" />
     <ClInclude Include="GameSrc\Interface\IPhysics.hpp" />
     <ClInclude Include="GameSrc\Interface\IRenderable.hpp" />
     <ClInclude Include="GameSrc\Interface\IState.hpp" />

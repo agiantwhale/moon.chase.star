@@ -5,12 +5,6 @@ IRenderable::IRenderable(ITransform* const transform) : _transform(transform), _
 {
 }
 
-IRenderable::IRenderable(const IRenderable& renderable, ITransform* const transform) : _transform(transform)
-{
-    this->_hidden = renderable._hidden;
-    this->_renderLayer = 0;
-}
-
 IRenderable::~IRenderable()
 {
     if( _registered )

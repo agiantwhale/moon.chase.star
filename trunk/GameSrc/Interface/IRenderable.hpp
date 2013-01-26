@@ -8,7 +8,6 @@ class IRenderable
 {
 public:
     IRenderable(ITransform* const transform);
-    IRenderable(const IRenderable& renderable, ITransform* const transform);
     virtual ~IRenderable();
 
     virtual void Render() = 0;
