@@ -111,7 +111,6 @@
     <ClCompile Include="GameSrc\System\EventManager.cpp" />
     <ClCompile Include="GameSrc\System\GraphicsManager.cpp" />
     <ClCompile Include="GameSrc\System\GUIManager.cpp" />
-    <ClCompile Include="GameSrc\System\InputManager.cpp" />
     <ClCompile Include="GameSrc\System\ParticleManager.cpp" />
     <ClCompile Include="GameSrc\System\PhysicsManager.cpp" />
     <ClCompile Include="GameSrc\System\RenderLayer.cpp" />
@@ -152,7 +151,6 @@
     <ClInclude Include="GameSrc\GUI\MainMenu.hpp" />
     <ClInclude Include="GameSrc\GUI\PauseMenu.hpp" />
     <ClInclude Include="GameSrc\Interface\IEventListener.hpp" />
-    <ClInclude Include="GameSrc\Interface\IInput.hpp" />
     <ClInclude Include="GameSrc\Interface\IPhysics.hpp" />
     <ClInclude Include="GameSrc\Interface\IRenderable.hpp" />
     <ClInclude Include="GameSrc\Interface\IState.hpp" />
@@ -169,7 +167,6 @@
     <ClInclude Include="GameSrc\System\EventManager.hpp" />
     <ClInclude Include="GameSrc\System\GraphicsManager.hpp" />
     <ClInclude Include="GameSrc\System\GUIManager.hpp" />
-    <ClInclude Include="GameSrc\System\InputManager.hpp" />
     <ClInclude Include="GameSrc\System\ParticleManager.hpp" />
     <ClInclude Include="GameSrc\System\PhysicsManager.hpp" />
     <ClInclude Include="GameSrc\System\RenderLayer.hpp" />

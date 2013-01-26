@@ -17,7 +17,6 @@ class BodyWrapper : public IPhysics
 {
 public:
     BodyWrapper(Entity* const entity);
-    BodyWrapper( const BodyWrapper& wrapper, Entity* const entity );
     virtual ~BodyWrapper();
 
     virtual void UpdateTransform( void );

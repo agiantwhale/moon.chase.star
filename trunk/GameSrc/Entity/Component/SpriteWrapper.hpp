@@ -9,7 +9,6 @@ class SpriteWrapper : public IRenderable
 {
 public:
     SpriteWrapper(Entity* const entity);
-    SpriteWrapper(const SpriteWrapper& wrapper, Entity* const entity);
     virtual ~SpriteWrapper();
 
     virtual void Render(void);

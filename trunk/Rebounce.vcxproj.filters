@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="GameSrc">
+      <UniqueIdentifier>{aad74942-f2bf-482a-8357-02471fe8bc82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs">
+      <UniqueIdentifier>{35d0e97b-4da2-4067-93f8-c5afba67e79e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\App">
+      <UniqueIdentifier>{48442d82-5c36-4f2f-89cf-838c5c686e9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\Base">
+      <UniqueIdentifier>{b622e875-05b2-4e66-accf-2cc1f2c11d9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\Entity">
+      <UniqueIdentifier>{97a308a5-8013-4614-8fae-982062a62721}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\Entity\Component">
+      <UniqueIdentifier>{c1a659ed-ec78-4ab5-8844-68348d2e06bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\Event">
+      <UniqueIdentifier>{f382c4ca-1797-4e03-be15-dce35743ef86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\GUI">
+      <UniqueIdentifier>{1c077cea-58ff-4901-bbec-cefc87937562}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\Interface">
+      <UniqueIdentifier>{40c2170a-782d-4cb8-a9a0-eff30fbe73b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\Particle">
+      <UniqueIdentifier>{0e2a7202-180b-4083-91dd-dbf9aaf94296}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\State">
+      <UniqueIdentifier>{0d6f0081-37e7-4ae1-80ba-7e1e1bacdaf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\System">
+      <UniqueIdentifier>{2cce8f52-7a29-4ec8-9a26-1183ed6a7e6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\System\Debug">
+      <UniqueIdentifier>{f74451f1-bb4c-41ec-b833-3c31f0b068f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\Task">
+      <UniqueIdentifier>{e1356ead-b2a2-41eb-9de3-78a225ae8fe8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\Tile">
+      <UniqueIdentifier>{ef2102bd-03a3-48a5-98d7-a8c7a928a8eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Notes">
+      <UniqueIdentifier>{59e6c65a-dd64-483f-82aa-a4e96c1e885c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\CxxTL">
+      <UniqueIdentifier>{8ce87b4f-2f88-433f-be63-5c89515337a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\CxxTL\src">
+      <UniqueIdentifier>{fe6ce7c6-42f4-4024-ab02-38b70a43a658}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\GWEN">
+      <UniqueIdentifier>{f7a60ec0-36db-46c7-abe5-35340ec18224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\GWEN\Renderers">
+      <UniqueIdentifier>{c4e97896-d104-4a32-a592-fe60b9372985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\GWEN\Renderers\SFML">
+      <UniqueIdentifier>{182ccdca-6bcd-40cf-9fdb-15f346573ce4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameSrc\App\main.cpp">
+      <Filter>GameSrc\App</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\App\Game.cpp">
+      <Filter>GameSrc\App</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Base\Vec2D.cpp">
+      <Filter>GameSrc\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\CameraMoveEntity.cpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\Entity.cpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\HullEntity.cpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\LevelCompleteZoneEntity.cpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\PlayerEntity.cpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\ThrowEntity.cpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\BlockEntity.cpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\Component\SpriteWrapper.cpp">
+      <Filter>GameSrc\Entity\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\Component\BodyWrapper.cpp">
+      <Filter>GameSrc\Entity\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Event\EventData.cpp">
+      <Filter>GameSrc\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\GUI\PauseMenu.cpp">
+      <Filter>GameSrc\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\GUI\Log.cpp">
+      <Filter>GameSrc\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\GUI\MainMenu.cpp">
+      <Filter>GameSrc\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Interface\IPhysics.cpp">
+      <Filter>GameSrc\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Interface\IRenderable.cpp">
+      <Filter>GameSrc\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Interface\IState.cpp">
+      <Filter>GameSrc\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Interface\IEventListener.cpp">
+      <Filter>GameSrc\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Particle\ParticleSystem.cpp">
+      <Filter>GameSrc\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\State\LoadingState.cpp">
+      <Filter>GameSrc\State</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\State\MainMenuState.cpp">
+      <Filter>GameSrc\State</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\State\PauseState.cpp">
+      <Filter>GameSrc\State</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\State\InGameState.cpp">
+      <Filter>GameSrc\State</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\State\IntroState.cpp">
+      <Filter>GameSrc\State</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\EventManager.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\GraphicsManager.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\GUIManager.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\ParticleManager.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\PhysicsManager.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\RenderLayer.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\ResourceManager.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\SceneManager.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\TaskManager.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\EntityManager.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\Debug\PhysicsDebugDraw.cpp">
+      <Filter>GameSrc\System\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Task\Task.cpp">
+      <Filter>GameSrc\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Task\CameraMoveTask.cpp">
+      <Filter>GameSrc\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Tile\Tile.cpp">
+      <Filter>GameSrc\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\CxxTL\src\tri_logger.cpp">
+      <Filter>Libs\CxxTL\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\GWEN\Renderers\SFML\SFML.cpp">
+      <Filter>Libs\GWEN\Renderers\SFML</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameSrc\App\Game.hpp">
+      <Filter>GameSrc\App</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Base\Singleton.hpp">
+      <Filter>GameSrc\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Base\Vec2D.hpp">
+      <Filter>GameSrc\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Base\Callback.hpp">
+      <Filter>GameSrc\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Base\Delegate.hpp">
+      <Filter>GameSrc\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Base\Globals.hpp">
+      <Filter>GameSrc\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\BlockEntity.hpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\CameraMoveEntity.hpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\Entity.hpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\HullEntity.hpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\LevelCompleteEntity.hpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\PlayerEntity.hpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\Component\BodyWrapper.hpp">
+      <Filter>GameSrc\Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\Component\SpriteWrapper.hpp">
+      <Filter>GameSrc\Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\EventsDef.h">
+      <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\GUIEventData.h">
+      <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\NewGameEventData.hpp">
+      <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\NextLevelEventData.hpp">
+      <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\SolveEventData.h">
+      <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\AppEventData.hpp">
+      <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\ContactEventData.h">
+      <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\EventData.hpp">
+      <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\GUI\MainMenu.hpp">
+      <Filter>GameSrc\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\GUI\PauseMenu.hpp">
+      <Filter>GameSrc\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\GUI\Log.hpp">
+      <Filter>GameSrc\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Interface\IEventListener.hpp">
+      <Filter>GameSrc\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Interface\IPhysics.hpp">
+      <Filter>GameSrc\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Interface\IRenderable.hpp">
+      <Filter>GameSrc\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Interface\IState.hpp">
+      <Filter>GameSrc\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Interface\ITransform.hpp">
+      <Filter>GameSrc\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Particle\ParticleSystem.hpp">
+      <Filter>GameSrc\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\State\IntroState.hpp">
+      <Filter>GameSrc\State</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\State\LoadingState.hpp">
+      <Filter>GameSrc\State</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\State\MainMenuState.hpp">
+      <Filter>GameSrc\State</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\State\PauseState.hpp">
+      <Filter>GameSrc\State</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\State\StatesDef.h">
+      <Filter>GameSrc\State</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\State\InGameState.hpp">
+      <Filter>GameSrc\State</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\EntityManager.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\EventManager.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\GraphicsManager.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\GUIManager.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\ParticleManager.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\PhysicsManager.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\RenderLayer.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\ResourceManager.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\SceneManager.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\TaskManager.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\Debug\PhysicsDebugDraw.hpp">
+      <Filter>GameSrc\System\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Task\Task.hpp">
+      <Filter>GameSrc\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Task\CameraMoveTask.hpp">
+      <Filter>GameSrc\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Tile\Tile.hpp">
+      <Filter>GameSrc\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\ThrowEntity.hpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Notes\Gameplay ideas.txt">
+      <Filter>Notes</Filter>
+    </None>
+    <None Include="Notes\BGMs to check out.txt">
+      <Filter>Notes</Filter>
+    </None>
+    <None Include="Notes\dev.log">
+      <Filter>Notes</Filter>
+    </None>
+  </ItemGroup>
+</Project>

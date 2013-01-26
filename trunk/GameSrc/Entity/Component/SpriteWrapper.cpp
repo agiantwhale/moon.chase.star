@@ -6,12 +6,6 @@ SpriteWrapper::SpriteWrapper(Entity* const entity) : IRenderable(entity), _sprit
 {
 }
 
-SpriteWrapper::SpriteWrapper(const SpriteWrapper& wrapper, Entity* const entity) : IRenderable( wrapper, entity )
-{
-    if( wrapper._sprite )
-        this->_sprite = new sf::Sprite(*wrapper._sprite->getTexture(), wrapper._sprite->getTextureRect());
-}
-
 SpriteWrapper::~SpriteWrapper()
 {
     delete _sprite;

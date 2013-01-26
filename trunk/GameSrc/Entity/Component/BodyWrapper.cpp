@@ -17,21 +17,6 @@ BodyWrapper::BodyWrapper(Entity* const entity) : IPhysics(entity), _body(nullptr
 	GetEntity()->AddEventListenType(Event_PostSolve);
 }
 
-BodyWrapper::BodyWrapper( const BodyWrapper& wrapper, Entity* const entity ) : IPhysics( entity )
-{
-    CreateBody( wrapper._bodyDef );
-
-    for( FixtureMap::const_iterator iter = wrapper._fixtureMap.begin(); iter != wrapper._fixtureMap.end(); iter++ )
-    {
-        CreateFixture( iter->second.fixtureDefinition, iter->first );
-    }
-
-    this->_smoothPosition = wrapper._smoothPosition;
-    this->_smoothAngle = wrapper._smoothAngle;
-    this->_previousPosition = wrapper._previousPosition;
-    this->_previousAngle = wrapper._previousAngle;
-}
-
 BodyWrapper::~BodyWrapper()
 {
 	GetEntity()->RemoveEventListenType(Event_Simulate);
