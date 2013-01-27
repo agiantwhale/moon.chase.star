@@ -1,7 +1,7 @@
 #include <cmath>
 #include "../Entity/PlayerEntity.hpp"
 #include "../System/PhysicsManager.hpp"
-#include "../System/ResourceManager.hpp"
+#include "../System/ResourceCache.hpp"
 #include "../System/EventManager.hpp"
 #include "../Event/ContactEventData.h"
 #include "../Event/SolveEventData.h"
@@ -32,8 +32,9 @@ void DummyBallEntity::Initialize( const TiXmlElement *propertyElement )
 	const float BALL_RADIUS = 0.5f;
 
 	{
-		TextureManager* textureMgr = TextureManager::GetInstance();
-		sf::Sprite* ballSprite = new sf::Sprite(*textureMgr->GetResource("Resource/Ogmo/Entities/Ball.png"));
+		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Ball.png");
+		std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);
+		sf::Sprite* ballSprite = new sf::Sprite(*texture);
 		ballSprite->setOrigin(sf::Vector2f(BALL_RADIUS*RATIO,BALL_RADIUS*RATIO));
 		_ballSprite.SetSprite( ballSprite );
 		_ballSprite.RegisterRenderable( 2 );
@@ -117,8 +118,9 @@ void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
     BaseClass::Initialize(propertyElement);
 
     {
-        TextureManager* textureMgr = TextureManager::GetInstance();
-        sf::Sprite* ballSprite = new sf::Sprite(*textureMgr->GetResource("Resource/Ogmo/Entities/Ball.png"));
+		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Ball.png");
+		std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);
+		sf::Sprite* ballSprite = new sf::Sprite(*texture);
         ballSprite->setOrigin(sf::Vector2f(BALL_RADIUS*RATIO,BALL_RADIUS*RATIO));
         _ballSprite.SetSprite( ballSprite );
         _ballSprite.RegisterRenderable( 2 );

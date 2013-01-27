@@ -3,7 +3,6 @@
 #include "../System/GraphicsManager.hpp"
 #include "../System/EntityManager.hpp"
 #include "../System/PhysicsManager.hpp"
-#include "../System/ResourceManager.hpp"
 #include "../System/SceneManager.hpp"
 #include "../System/EventManager.hpp"
 #include "../System/TaskManager.hpp"

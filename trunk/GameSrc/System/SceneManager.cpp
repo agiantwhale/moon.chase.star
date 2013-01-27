@@ -3,7 +3,6 @@
 #include "../Base/Globals.hpp"
 #include "../System/SceneManager.hpp"
 #include "../System/EntityManager.hpp"
-#include "../System/ResourceManager.hpp"
 #include "../Entity/Entity.hpp"
 #include "../Tile/Tile.hpp"
 #include "GraphicsManager.hpp"

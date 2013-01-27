@@ -1,7 +1,6 @@
 #include <CxxTL/tri_logger.hpp>
 #include "../App/Game.hpp"
 #include "../System/EntityManager.hpp"
-#include "../System/ResourceManager.hpp"
 #include "../Entity/Entity.hpp"
 
 EntityList::EntityList() :  std::map<int,Entity*>()

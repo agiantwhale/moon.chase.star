@@ -3,7 +3,6 @@
 #include "../State/IntroState.hpp"
 #include "../Base/Globals.hpp"
 #include "../App/Game.hpp"
-#include "../System/ResourceManager.hpp"
 #include "../System/GUIManager.hpp"
 
 IntroState::IntroState() : _introMovie()

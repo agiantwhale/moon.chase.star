@@ -150,16 +150,10 @@
     <ClCompile Include="GameSrc\System\GUIManager.cpp">
       <Filter>GameSrc\System</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\System\ParticleManager.cpp">
-      <Filter>GameSrc\System</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\System\PhysicsManager.cpp">
       <Filter>GameSrc\System</Filter>
     </ClCompile>
     <ClCompile Include="GameSrc\System\RenderLayer.cpp">
-      <Filter>GameSrc\System</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\System\ResourceManager.cpp">
       <Filter>GameSrc\System</Filter>
     </ClCompile>
     <ClCompile Include="GameSrc\System\SceneManager.cpp">
@@ -191,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="GameSrc\Kinect\KinectSetUp.cpp">
       <Filter>GameSrc\Kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\ResourceCache.cpp">
+      <Filter>GameSrc\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -314,16 +311,10 @@
     <ClInclude Include="GameSrc\System\GUIManager.hpp">
       <Filter>GameSrc\System</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\System\ParticleManager.hpp">
-      <Filter>GameSrc\System</Filter>
-    </ClInclude>
     <ClInclude Include="GameSrc\System\PhysicsManager.hpp">
       <Filter>GameSrc\System</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\System\RenderLayer.hpp">
-      <Filter>GameSrc\System</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\System\ResourceManager.hpp">
       <Filter>GameSrc\System</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\System\SceneManager.hpp">
@@ -350,8 +341,8 @@
     <ClInclude Include="GameSrc\Kinect\KinectSetUp.hpp">
       <Filter>GameSrc\Kinect</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\Entity\Component\ParticleWrapper.hpp">
-      <Filter>GameSrc\Entity\Component</Filter>
+    <ClInclude Include="GameSrc\System\ResourceCache.hpp">
+      <Filter>GameSrc\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

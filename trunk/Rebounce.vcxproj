@@ -111,10 +111,9 @@
     <ClCompile Include="GameSrc\System\EventManager.cpp" />
     <ClCompile Include="GameSrc\System\GraphicsManager.cpp" />
     <ClCompile Include="GameSrc\System\GUIManager.cpp" />
-    <ClCompile Include="GameSrc\System\ParticleManager.cpp" />
     <ClCompile Include="GameSrc\System\PhysicsManager.cpp" />
     <ClCompile Include="GameSrc\System\RenderLayer.cpp" />
-    <ClCompile Include="GameSrc\System\ResourceManager.cpp" />
+    <ClCompile Include="GameSrc\System\ResourceCache.cpp" />
     <ClCompile Include="GameSrc\System\SceneManager.cpp" />
     <ClCompile Include="GameSrc\System\TaskManager.cpp" />
     <ClCompile Include="GameSrc\Task\CameraMoveTask.cpp" />
@@ -133,7 +132,6 @@
     <ClInclude Include="GameSrc\Entity\BlockEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\CameraMoveEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\Component\BodyWrapper.hpp" />
-    <ClInclude Include="GameSrc\Entity\Component\ParticleWrapper.hpp" />
     <ClInclude Include="GameSrc\Entity\Component\SpriteWrapper.hpp" />
     <ClInclude Include="GameSrc\Entity\Entity.hpp" />
     <ClInclude Include="GameSrc\Entity\HullEntity.hpp" />
@@ -168,10 +166,9 @@
     <ClInclude Include="GameSrc\System\EventManager.hpp" />
     <ClInclude Include="GameSrc\System\GraphicsManager.hpp" />
     <ClInclude Include="GameSrc\System\GUIManager.hpp" />
-    <ClInclude Include="GameSrc\System\ParticleManager.hpp" />
     <ClInclude Include="GameSrc\System\PhysicsManager.hpp" />
     <ClInclude Include="GameSrc\System\RenderLayer.hpp" />
-    <ClInclude Include="GameSrc\System\ResourceManager.hpp" />
+    <ClInclude Include="GameSrc\System\ResourceCache.hpp" />
     <ClInclude Include="GameSrc\System\SceneManager.hpp" />
     <ClInclude Include="GameSrc\System\TaskManager.hpp" />
     <ClInclude Include="GameSrc\Task\CameraMoveTask.hpp" />

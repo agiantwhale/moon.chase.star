@@ -1,6 +1,6 @@
 #include "../Entity/BlockEntity.hpp"
 #include "../System/PhysicsManager.hpp"
-#include "../System/ResourceManager.hpp"
+#include "../System/ResourceCache.hpp"
 #include "../Event/ContactEventData.h"
 
 REGISTER_ENTITY( BlockEntity, "Block")
@@ -21,8 +21,9 @@ void BlockEntity::Initialize( const TiXmlElement *propertyElement )
     const float BLOCK_SIZE = 2.0f;
 
     {
-        TextureManager* texturMgr = TextureManager::GetInstance();
-        sf::Sprite* blockSprite = new sf::Sprite(*texturMgr->GetResource("Resource/Ogmo/Entities/Block.png"));
+		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Block.png");
+		std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);
+		sf::Sprite* blockSprite = new sf::Sprite(*texture);
         blockSprite->setOrigin(sf::Vector2f(0.5f*BLOCK_SIZE*RATIO,0.5f*BLOCK_SIZE*RATIO));
         _blockSprite.SetSprite( blockSprite );
         _blockSprite.RegisterRenderable( 2 );

@@ -7,7 +7,7 @@
 #include "../Event/NewGameEventData.hpp"
 #include "../System/GUIManager.hpp"
 #include "../System/SceneManager.hpp"
-#include "../System/ResourceManager.hpp"
+#include "../System/ResourceCache.hpp"
 #include "../Event/GUIEventData.h"
 #include "../Event/NextLevelEventData.hpp"
 #include "../System/EventManager.hpp"
@@ -83,6 +83,8 @@ bool LoadingState::Update( float deltaTime )
 			{
 				EventData* unloadEvent = new EventData(Event_Unload);
 				unloadEvent->TriggerEvent();
+
+				ResourceCache::DestroyInstance();
 
 				Game::GetInstance()->SetNextStateType(State_MainMenu);
 				return true;

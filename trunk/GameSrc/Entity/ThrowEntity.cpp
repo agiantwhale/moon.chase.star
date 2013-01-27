@@ -1,5 +1,5 @@
 #include "../Entity/ThrowEntity.hpp"
-#include "../System/ResourceManager.hpp"
+#include "../System/ResourceCache.hpp"
 #include "../Event/ContactEventData.h"
 #include "../Event/SolveEventData.h"
 
@@ -20,8 +20,10 @@ void ThrowEntity::Initialize( const TiXmlElement *propertyElement )
 	const float THROW_SIZE = 2.0f;
 
     {
-        TextureManager* textureMgr = TextureManager::GetInstance();
-        sf::Sprite *throwSprite = new sf::Sprite(*textureMgr->GetResource("Resource/Ogmo/Entities/Throw.png"));
+		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Throw.png");
+		std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);
+
+		sf::Sprite* throwSprite = new sf::Sprite(*texture);
         throwSprite->setOrigin(sf::Vector2f(0.5f*THROW_SIZE*RATIO,0.5f*THROW_SIZE*RATIO));
         _throwSprite.SetSprite( throwSprite );
         _throwSprite.RegisterRenderable( 2 );

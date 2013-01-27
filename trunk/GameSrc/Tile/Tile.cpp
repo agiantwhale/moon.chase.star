@@ -1,5 +1,5 @@
 #include "../Tile/Tile.hpp"
-#include "../System/ResourceManager.hpp"
+#include "../System/ResourceCache.hpp"
 #include "../System/EventManager.hpp"
 #include "../System/SceneManager.hpp"
 #include "../App/Game.hpp"
@@ -29,7 +29,9 @@ void Tile::Initialize( const TiXmlElement* element )
     if(element)
     {
         const TiXmlElement *tileElement = element->FirstChildElement("tile");
-        const sf::Texture *tilesetSprite = TextureManager::GetInstance()->GetResource(_tilesetMap.find(element->Attribute("tileset"))->second);
+		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>(_tilesetMap.find(element->Attribute("tileset"))->second);
+		std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);
+
         while(tileElement)
         {
             double xValue = 0.0, yValue = 0.0;
@@ -40,7 +42,7 @@ void Tile::Initialize( const TiXmlElement* element )
             tileElement->Attribute("tx",&tileX);
             tileElement->Attribute("ty",&tileY);
 
-            sf::Sprite tile = sf::Sprite( *tilesetSprite, sf::IntRect(tileX*TILESIZE, tileY*TILESIZE, TILESIZE, TILESIZE) );
+            sf::Sprite tile = sf::Sprite( *texture, sf::IntRect(tileX*TILESIZE, tileY*TILESIZE, TILESIZE, TILESIZE) );
             tile.setPosition( sf::Vector2f( xValue * TILESIZE, yValue * TILESIZE ) );
             _tileTexture->draw( tile );
 
