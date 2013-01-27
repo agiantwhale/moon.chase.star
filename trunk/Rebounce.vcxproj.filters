@@ -28,9 +28,6 @@
     <Filter Include="GameSrc\Interface">
       <UniqueIdentifier>{40c2170a-782d-4cb8-a9a0-eff30fbe73b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameSrc\Particle">
-      <UniqueIdentifier>{0e2a7202-180b-4083-91dd-dbf9aaf94296}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameSrc\State">
       <UniqueIdentifier>{0d6f0081-37e7-4ae1-80ba-7e1e1bacdaf8}</UniqueIdentifier>
     </Filter>
@@ -63,6 +60,9 @@
     </Filter>
     <Filter Include="Libs\GWEN\Renderers\SFML">
       <UniqueIdentifier>{182ccdca-6bcd-40cf-9fdb-15f346573ce4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\Kinect">
+      <UniqueIdentifier>{5605afd7-e8ab-4cb7-8fb3-2c1d61c4c2f9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -126,9 +126,6 @@
     <ClCompile Include="GameSrc\Interface\IEventListener.cpp">
       <Filter>GameSrc\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\Particle\ParticleSystem.cpp">
-      <Filter>GameSrc\Particle</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\State\LoadingState.cpp">
       <Filter>GameSrc\State</Filter>
     </ClCompile>
@@ -191,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="Libs\GWEN\Renderers\SFML\SFML.cpp">
       <Filter>Libs\GWEN\Renderers\SFML</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Kinect\KinectSetUp.cpp">
+      <Filter>GameSrc\Kinect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -284,9 +284,6 @@
     <ClInclude Include="GameSrc\Interface\ITransform.hpp">
       <Filter>GameSrc\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\Particle\ParticleSystem.hpp">
-      <Filter>GameSrc\Particle</Filter>
-    </ClInclude>
     <ClInclude Include="GameSrc\State\IntroState.hpp">
       <Filter>GameSrc\State</Filter>
     </ClInclude>
@@ -349,6 +346,12 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Entity\ThrowEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Kinect\KinectSetUp.hpp">
+      <Filter>GameSrc\Kinect</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\Component\ParticleWrapper.hpp">
+      <Filter>GameSrc\Entity\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

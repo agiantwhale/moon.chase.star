@@ -1,7 +1,7 @@
 #include "../Interface/IRenderable.hpp"
 #include "../System/GraphicsManager.hpp"
 
-IRenderable::IRenderable(ITransform* const transform) : _transform(transform), _hidden(false), _renderLayer(0), _registered( false )
+IRenderable::IRenderable(const ITransform* transform) : _transform(transform), _hidden(false), _renderLayer(0), _registered( false )
 {
 }
 

@@ -7,7 +7,7 @@
 class IRenderable
 {
 public:
-    IRenderable(ITransform* const transform);
+    IRenderable(const ITransform* transform);
     virtual ~IRenderable();
 
     virtual void Render() = 0;
@@ -31,7 +31,7 @@ public:
     void RegisterRenderable( unsigned int renderLayer );
     void UnregisterRenderable( void );
 
-    inline ITransform* const GetTransform(void) const
+    inline const ITransform* GetTransform(void) const
     {
         return _transform;
     }
@@ -44,7 +44,7 @@ private:
     unsigned int _renderLayer;
     bool _registered;
     bool _hidden;
-    ITransform* const _transform;
+    const ITransform* _transform;
 };
 
 inline const Vec2D WorldToScreen( const Vec2D& world )
