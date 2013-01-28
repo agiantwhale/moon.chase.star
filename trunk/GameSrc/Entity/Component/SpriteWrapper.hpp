@@ -8,15 +8,13 @@
 class SpriteWrapper : public IRenderable
 {
 public:
-    SpriteWrapper(Entity* const entity);
+    SpriteWrapper(const ITransform* entity);
     virtual ~SpriteWrapper();
 
     virtual void Render(void);
 
-    inline void SetSprite( sf::Sprite* sprite )
-    {
-        _sprite = sprite;
-    }
+	sf::Sprite* GetSprite() const { return _sprite; }
+	void SetSprite(sf::Sprite* val) { _sprite = val; }
 
 protected:
     sf::Sprite* _sprite;

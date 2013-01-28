@@ -19,27 +19,29 @@ void Entity::Initialize( const TiXmlElement *propertyElement )
     {
         //position
         {
-            double xValue = GetPosition().x, yValue = GetPosition().y;
-            propertyElement->Attribute( "x", &xValue );
-            propertyElement->Attribute( "y", &yValue );
+			float x = 0.f, y = 0.f;
+			propertyElement->QueryFloatAttribute("x",&x);
+			propertyElement->QueryFloatAttribute("y",&y);
 
-            Vec2D world((xValue - SCREENWIDTH/2) * UNRATIO, (yValue - SCREENHEIGHT/2) * UNRATIO * -1);
+            Vec2D world((x - SCREENWIDTH/2) * UNRATIO, (y - SCREENHEIGHT/2) * UNRATIO * -1);
             SetPosition(world);
         }
 
         //size
         {
-            double entityWidth = GetSize().x*RATIO, entityHeight = GetSize().y*RATIO;
-            propertyElement->Attribute( "width", &entityWidth);
-            propertyElement->Attribute( "height", &entityHeight );
-            SetSize(Vec2D(entityWidth*UNRATIO,entityHeight*UNRATIO));
+			float w = 0.f, h = 0.f;
+			propertyElement->QueryFloatAttribute("width",&w);
+			propertyElement->QueryFloatAttribute("height",&h);
+
+            SetSize(Vec2D(w*UNRATIO,h*UNRATIO));
         }
 
         //angle
         {
-            double angleValue = GetRotation();
-            propertyElement->Attribute( "angle", &angleValue );
-            SetRotation(angleValue);
+			float r = 0.f;
+			propertyElement->QueryFloatAttribute("angle",&r);
+
+            SetRotation(r);
         }
     }
 }

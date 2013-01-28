@@ -84,9 +84,6 @@
     <ClCompile Include="GameSrc\Entity\HullEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\Entity\LevelCompleteZoneEntity.cpp">
-      <Filter>GameSrc\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\Entity\PlayerEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
     </ClCompile>
@@ -188,6 +185,15 @@
     </ClCompile>
     <ClCompile Include="GameSrc\System\ResourceCache.cpp">
       <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\Component\ParticleWrapper.cpp">
+      <Filter>GameSrc\Entity\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\StarEntity.cpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\LevelCompleteEntity.cpp">
+      <Filter>GameSrc\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -343,6 +349,15 @@
     </ClInclude>
     <ClInclude Include="GameSrc\System\ResourceCache.hpp">
       <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\Component\ParticleWrapper.hpp">
+      <Filter>GameSrc\Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\StarEntity.hpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Base\Spline.hpp">
+      <Filter>GameSrc\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

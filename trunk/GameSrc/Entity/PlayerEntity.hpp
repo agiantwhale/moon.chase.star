@@ -4,6 +4,7 @@
 #include "../Entity/Entity.hpp"
 #include "../Entity/Component/BodyWrapper.hpp"
 #include "../Entity/Component/SpriteWrapper.hpp"
+#include "../Entity/Component/ParticleWrapper.hpp"
 
 class PlayerEntity : public Entity
 {
@@ -44,6 +45,9 @@ private:
 
     BodyWrapper _ballBody;
     SpriteWrapper _ballSprite;
+	ParticleWrapper _ballParticle;
+
+	thor::UniversalEmitter::Ptr emitter;
 };
 
 class DummyBallEntity : public Entity

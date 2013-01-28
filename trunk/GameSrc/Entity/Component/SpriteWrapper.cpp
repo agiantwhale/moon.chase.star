@@ -1,8 +1,7 @@
 #include "../../Entity/Component/SpriteWrapper.hpp"
-#include "../../Entity/Entity.hpp"
 #include "../../App/Game.hpp"
 
-SpriteWrapper::SpriteWrapper(Entity* const entity) : IRenderable(entity), _sprite(nullptr)
+SpriteWrapper::SpriteWrapper(const ITransform* entity) : IRenderable(entity), _sprite(nullptr)
 {
 }
 
