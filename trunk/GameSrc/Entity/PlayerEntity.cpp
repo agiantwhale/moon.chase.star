@@ -1,7 +1,4 @@
 #include <cmath>
-#include <Thor/Graphics.hpp>
-#include <Thor/Animation.hpp>
-#include <Thor/Math.hpp>
 #include "../Entity/PlayerEntity.hpp"
 #include "../System/PhysicsManager.hpp"
 #include "../System/ResourceCache.hpp"
@@ -84,16 +81,15 @@ const float BALL_RADIUS = 0.5f;
 const float KILL_TIME = 1.5f;
 const float JUMP_IMPULSE = 18.0f;
 const float MOVE_IMPULSE = 0.5f;
-const float MAX_HORI_VELOCITY = 15.0f;
-const float MAX_VERTI_VELOCITY = 15.0f;
+const float MAX_HORI_VELOCITY = 6.0f;
+const float MAX_VERTI_VELOCITY = 6.0f;
 
 REGISTER_ENTITY( PlayerEntity, "Ball" )
 
-PlayerEntity::PlayerEntity() : Entity(), _ballBody(this), _ballSprite(this), _ballParticle(this),
+PlayerEntity::PlayerEntity() : Entity(), _ballBody(this), _ballSprite(this),
     _shouldBounce(false),
 	_shouldAcceptInput(true),
-    _playerState(kPlayer_Moving),
-	emitter(nullptr)
+    _playerState(kPlayer_Moving)
 {
 	AddEventListenType(Event_App);
 }
@@ -105,18 +101,6 @@ PlayerEntity::~PlayerEntity()
 
 void PlayerEntity::Update(float deltaTime)
 {
-	Vec2D position = WorldToScreen(GetPosition());
-	Vec2D velocity = _ballBody.GetBody()->GetLinearVelocity();
-	velocity *= RATIO;
-	velocity.y *= -1.f;
-	velocity *= 0.1f;
-	
-	emitter->setParticleRotationSpeed(20.f);
-	emitter->setParticleVelocity(thor::Distributions::deflect(velocity, 30.f) );
-	emitter->setParticlePosition(thor::Distributions::circle(position,BALL_RADIUS*RATIO * 0.2));
-
-	_ballParticle.Update(deltaTime);
-
 	//Loses the game.
     if( GetPosition().y < -(SCREENHEIGHT * UNRATIO * 0.5f + 5.0f) )
     {
@@ -141,40 +125,6 @@ void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
         _ballSprite.SetSprite( ballSprite );
         _ballSprite.RegisterRenderable( 2 );
     }
-
-	{
-		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Particles/whiteSpark.png");
-		std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);
-		thor::ParticleSystem* particleSystem = new thor::ParticleSystem(texture);
-
-		// Create emitter
-		emitter = thor::UniversalEmitter::create();
-		emitter->setEmissionRate(200.f);
-		emitter->setParticleLifetime(sf::seconds(3.f));
-		emitter->setParticlePosition(WorldToScreen(GetPosition()));
-
-		particleSystem->addEmitter(emitter);
-
-		// Build color gradient (green -> teal -> blue)
-		/*
-		thor::ColorGradient gradient = thor::createGradient
-			(sf::Color(255, 255, 255))		(1)
-			(sf::Color(0, 0, 0));
-
-		// Create color and fade in/out animations
-		thor::ColorAnimation colorizer(gradient);
-		*/
-		thor::FadeAnimation fader(0.f, 1.f);
-
-		// Add particle affectors
-		//particleSystem->addAffector( thor::AnimationAffector::create(colorizer) );
-		particleSystem->addAffector( thor::AnimationAffector::create(fader) );
-		particleSystem->addAffector( thor::TorqueAffector::create(100.f) );
-		//particleSystem->addAffector( thor::ForceAffector::create(sf::Vector2f(0.f, 9.8f * RATIO * 0.01f))  );
-
-		_ballParticle.SetParticleSystem(particleSystem);
-		//_ballParticle.RegisterRenderable(5);
-	}
 
     //BodyComponent
     {
@@ -340,7 +290,7 @@ void PlayerEntity::ProcessPreSolve( b2Contact* contact,const b2Fixture* target )
 		&& target->GetBody()->GetPosition().y < _ballBody.GetBody()->GetPosition().y )
 	{
 		_shouldBounce = false;
-		contact->SetEnabled(false);
+		//contact->SetEnabled(false);
 		b2Vec2 unit = target->GetBody()->GetWorldVector(b2Vec2(0,1.0f));
 		unit *= THROW_VELOCITY;
 		Throw(unit);

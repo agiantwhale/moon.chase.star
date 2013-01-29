@@ -45,9 +45,6 @@ private:
 
     BodyWrapper _ballBody;
     SpriteWrapper _ballSprite;
-	ParticleWrapper _ballParticle;
-
-	thor::UniversalEmitter::Ptr emitter;
 };
 
 class DummyBallEntity : public Entity

@@ -93,6 +93,7 @@
     <ClCompile Include="GameSrc\Entity\LevelCompleteEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\PlayerEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\StarEntity.cpp" />
+    <ClCompile Include="GameSrc\Entity\TeleportEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\ThrowEntity.cpp" />
     <ClCompile Include="GameSrc\Event\EventData.cpp" />
     <ClCompile Include="GameSrc\GUI\Log.cpp" />
@@ -130,7 +131,7 @@
     <ClInclude Include="GameSrc\Base\Delegate.hpp" />
     <ClInclude Include="GameSrc\Base\Globals.hpp" />
     <ClInclude Include="GameSrc\Base\Singleton.hpp" />
-    <ClInclude Include="GameSrc\Base\Spline.hpp" />
+    <ClInclude Include="GameSrc\Base\Math.hpp" />
     <ClInclude Include="GameSrc\Base\Vec2D.hpp" />
     <ClInclude Include="GameSrc\Entity\BlockEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\CameraMoveEntity.hpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="GameSrc\Tile\Tile.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GameSrc\Entity\TeleportEntity.hpp" />
     <None Include="Notes\BGMs to check out.txt" />
     <None Include="Notes\dev.log" />
     <None Include="Notes\Gameplay ideas.txt" />

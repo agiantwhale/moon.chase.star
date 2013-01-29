@@ -1,7 +1,7 @@
 #ifndef STARENTITY_HPP
 #define STARENTITY_HPP
 
-#include "../Base/Spline.hpp"
+#include "../Base/Math.hpp"
 #include "../Entity/Entity.hpp"
 #include "../Entity/Component/SpriteWrapper.hpp"
 #include "../Entity/Component/ParticleWrapper.hpp"
@@ -14,19 +14,24 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void Initialize( const TiXmlElement *propertyElement /* = nullptr */ );
 
-	bool GetIsTraveling() const { return _isTraveling; }
-	void SetIsTraveling(bool val) { _isTraveling = val; }
-
 private:
 	SpriteWrapper _starSprite;
 	ParticleWrapper _starParticle;
 
-	bool  _isTraveling;
-	float _totalTravelTime;
+	enum 
+	{
+		kStar_Traveling,
+		kStar_Arrived
+	} _starState;
 	float _currentTime;
+	float _totalTravelTime;
 	Vec2D _previousPosition;
+	Vec2D _particleVelocity;
 
-	Spline<float,Vec2D> _travelPath;
+	Spline _xSpline;
+	Spline _ySpline;
+
+	thor::UniversalEmitter::Ptr _emitter;
 };
 
 #endif
