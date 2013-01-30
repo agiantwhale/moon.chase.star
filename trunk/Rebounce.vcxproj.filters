@@ -362,6 +362,7 @@
     <ClInclude Include="GameSrc\Base\Math.hpp">
       <Filter>GameSrc\Base</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Notes\Gameplay ideas.txt">
@@ -376,5 +377,11 @@
     <None Include="GameSrc\Entity\TeleportEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
     </None>
+    <None Include="..\..\..\Users\J\Desktop\logo.ico" />
+    <None Include="icon1.ico" />
+    <None Include="Resource\Logo\logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Rebounce.rc" />
   </ItemGroup>
 </Project>

@@ -180,12 +180,19 @@
     <ClInclude Include="GameSrc\Task\CameraMoveTask.hpp" />
     <ClInclude Include="GameSrc\Task\Task.hpp" />
     <ClInclude Include="GameSrc\Tile\Tile.hpp" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\Users\J\Desktop\logo.ico" />
     <None Include="GameSrc\Entity\TeleportEntity.hpp" />
+    <None Include="icon1.ico" />
     <None Include="Notes\BGMs to check out.txt" />
     <None Include="Notes\dev.log" />
     <None Include="Notes\Gameplay ideas.txt" />
+    <None Include="Resource\Logo\logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Rebounce.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

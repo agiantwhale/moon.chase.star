@@ -39,7 +39,7 @@ SINGLETON_DESTRUCTOR( Game )
 
 void Game::Initialize( void )
 {
-	create(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"Bounce",sf::Style::Close);
+	create(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"moon.chase.star",sf::Style::Close);
 
 	GUIManager::GetInstance()->SetUpGUI();
     PhysicsManager::GetInstance()->SetUpPhysics();

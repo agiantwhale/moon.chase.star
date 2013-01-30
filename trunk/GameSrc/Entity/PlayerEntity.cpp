@@ -358,6 +358,8 @@ void PlayerEntity::Throw( const b2Vec2& velocity )
 	_playerState = kPlayer_Thrown;
 	_ballBody.GetBody()->SetGravityScale(0.0f);
 	_ballBody.GetBody()->SetLinearVelocity(velocity);
+
+	LimitHorizontalVelocity();
 }
 
 void PlayerEntity::LimitHorizontalVelocity()

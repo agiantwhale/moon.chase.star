@@ -12,6 +12,8 @@ class TeleportEntity : public Entity
 public:
 	virtual void Update(float deltaTime);
 	virtual void Initialize( const TiXmlElement *propertyElement = NULL );
+
+	const Vec2D& GetExitPosition() {return _exitTransform.GetPosition();}
 private:
 	ITransform		_exitTransform;
 
