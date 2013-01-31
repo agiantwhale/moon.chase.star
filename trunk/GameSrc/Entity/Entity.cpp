@@ -33,7 +33,7 @@ void Entity::Initialize( const TiXmlElement *propertyElement )
 			propertyElement->QueryFloatAttribute("width",&w);
 			propertyElement->QueryFloatAttribute("height",&h);
 
-            SetSize(Vec2D(w*UNRATIO,h*UNRATIO));
+            SetScale(Vec2D(w*UNRATIO,h*UNRATIO));
         }
 
         //angle

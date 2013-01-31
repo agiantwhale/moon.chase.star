@@ -49,4 +49,19 @@ void TeleportEntity::Initialize( const TiXmlElement *propertyElement /*= NULL */
 		_exitSprite.SetSprite( exitSprite );
 		_exitSprite.RegisterRenderable( 2 );
 	}
+
+	{
+		const TiXmlElement* exitNode = propertyElement->FirstChildElement("node");
+		float previousX = GetPosition().x, previousY = GetPosition().y;
+
+		if(exitNode)
+		{
+			float x = 0.f, y = 0.f;
+			exitNode->QueryFloatAttribute("x",&x);
+			exitNode->QueryFloatAttribute("y",&y);
+
+			Vec2D world((x - SCREENWIDTH/2) * UNRATIO, (y - SCREENHEIGHT/2) * UNRATIO * -1);
+			_exitTransform.SetPosition(world);
+		}
+	}
 }

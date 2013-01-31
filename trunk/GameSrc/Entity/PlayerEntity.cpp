@@ -264,6 +264,16 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
 				break;
 			}
 
+		case 'TLPT':
+			{
+				if( _playerState == kPlayer_Thrown )
+				{
+					Fall();
+				}
+
+				break;
+			}
+
         default:
         {
             _shouldBounce = false;

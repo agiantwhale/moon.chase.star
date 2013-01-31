@@ -19,7 +19,7 @@ void LevelCompleteEntity::Initialize( const TiXmlElement *propertyElement /*= NU
 {
 	BaseClass::Initialize(propertyElement);
 
-	SetPosition( GetPosition() + 0.5f * sf::Vector2f(GetSize().x,-GetSize().y) );
+	SetPosition( GetPosition() + 0.5f * sf::Vector2f(GetScale().x,-GetScale().y) );
 
 	if( propertyElement )
 	{
@@ -38,7 +38,7 @@ void LevelCompleteEntity::Initialize( const TiXmlElement *propertyElement /*= NU
 			_triggerBody.CreateBody( bodyDefinition );
 
 			b2PolygonShape boxShape;
-			boxShape.SetAsBox( 0.5f * GetSize().x, 0.5f * GetSize().y );
+			boxShape.SetAsBox( 0.5f * GetScale().x, 0.5f * GetScale().y );
 
 			b2FixtureDef fixtureDefinition;
 			fixtureDefinition.shape = &boxShape;

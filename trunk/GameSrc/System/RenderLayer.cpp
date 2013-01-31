@@ -7,14 +7,14 @@ void Camera::Transform( void ) const
     sf::View cameraView;
     cameraView.setCenter( SCREENWIDTH/2 + GetPosition().x * RATIO, SCREENHEIGHT/2 - GetPosition().y * RATIO);
     cameraView.setRotation(GetRotation());
-    cameraView.setSize(sf::Vector2f(GetSize().x,GetSize().y));
+    cameraView.setSize(sf::Vector2f(GetScale().x * SCREENWIDTH,GetScale().y * SCREENHEIGHT));
 
     Game::GetInstance()->setView(cameraView);
 }
 
 Camera::Camera() : ITransform()
 {
-	SetSize(Vec2D(SCREENWIDTH,SCREENHEIGHT));
+	SetScale(Vec2D(1.0f,1.0f));
 }
 
 RenderLayer::~RenderLayer()

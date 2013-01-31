@@ -29,6 +29,11 @@ public:
         y = b2vec.y;
     }
 
+	Vec2D(float r)
+	{
+		x = y = r;
+	}
+
     Vec2D(float r, float s)
     {
         x = r;

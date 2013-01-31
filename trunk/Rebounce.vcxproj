@@ -121,6 +121,7 @@
     <ClCompile Include="GameSrc\System\TaskManager.cpp" />
     <ClCompile Include="GameSrc\Task\CameraMoveTask.cpp" />
     <ClCompile Include="GameSrc\Task\Task.cpp" />
+    <ClCompile Include="GameSrc\Task\TeleportTask.cpp" />
     <ClCompile Include="GameSrc\Tile\Tile.cpp" />
     <ClCompile Include="Libs\CxxTL\src\tri_logger.cpp" />
     <ClCompile Include="Libs\GWEN\Renderers\SFML\SFML.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="GameSrc\System\TaskManager.hpp" />
     <ClInclude Include="GameSrc\Task\CameraMoveTask.hpp" />
     <ClInclude Include="GameSrc\Task\Task.hpp" />
+    <ClInclude Include="GameSrc\Task\TeleportTask.hpp" />
     <ClInclude Include="GameSrc\Tile\Tile.hpp" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

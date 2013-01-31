@@ -15,6 +15,8 @@ void SpriteWrapper::Render()
     if(_sprite)
     {
         Vec2D screenPosition = WorldToScreen(GetTransform()->GetPosition());
+		Vec2D screenScale = GetTransform()->GetScale();
+		_sprite->setScale(screenScale);
         _sprite->setPosition(screenPosition);
         _sprite->setRotation(GetTransform()->GetRotation());
         Game::GetInstance()->draw(*_sprite);

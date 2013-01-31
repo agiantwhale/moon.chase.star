@@ -12,8 +12,11 @@ public:
 
 	virtual void Start();
 	//Return true when task is over.
-	virtual bool DoTask(float deltaTIme);
+	virtual bool DoTask(float deltaTime);
 	virtual void End();
+
+protected:
+	float GetTimeRemaining() const { return _timeRemaining; }
 
 private:
 	float _timeRemaining;

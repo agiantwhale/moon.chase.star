@@ -44,7 +44,7 @@ private:
 	bool				_shouldAcceptInput;	//This is used only during Thrown state!
 
     BodyWrapper _ballBody;
-    SpriteWrapper _ballSprite;
+	SpriteWrapper _ballSprite;
 };
 
 class DummyBallEntity : public Entity

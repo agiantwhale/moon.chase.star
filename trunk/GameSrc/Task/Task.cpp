@@ -11,9 +11,9 @@ void Task::Start()
 
 }
 
-bool Task::DoTask( float deltaTIme )
+bool Task::DoTask( float deltaTime )
 {
-	_timeRemaining -= deltaTIme;
+	_timeRemaining -= deltaTime;
 
 	return _timeRemaining <= 0;
 }

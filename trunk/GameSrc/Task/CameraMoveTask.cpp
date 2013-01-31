@@ -14,12 +14,12 @@ void CameraMoveTask::Start()
 	_initialPosition = GraphicsManager::GetInstance()->GetRenderLayer(_renderLayer)->GetCamera().GetPosition();
 }
 
-bool CameraMoveTask::DoTask( float deltaTIme )
+bool CameraMoveTask::DoTask( float deltaTime )
 {
-	if(Task::DoTask(deltaTIme))
+	if(Task::DoTask(deltaTime))
 		return true;
 
-	GraphicsManager::GetInstance()->GetRenderLayer(_renderLayer)->GetCamera().SetPosition(GraphicsManager::GetInstance()->GetRenderLayer(_renderLayer)->GetCamera().GetPosition()+_moveSpeed*deltaTIme);
+	GraphicsManager::GetInstance()->GetRenderLayer(_renderLayer)->GetCamera().SetPosition(GraphicsManager::GetInstance()->GetRenderLayer(_renderLayer)->GetCamera().GetPosition()+_moveSpeed*deltaTime);
 
 	return false;
 }

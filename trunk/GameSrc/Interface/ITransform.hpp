@@ -7,7 +7,7 @@ class ITransform
 {
 public:
     ITransform() : _position(0.0f,0.0f),
-        _size(1.0f,1.0f),
+        _scale(1.0f,1.0f),
         _rotation(0.0f)
     {
     }
@@ -16,9 +16,9 @@ public:
     {
         return _position;
     }
-    inline const Vec2D& GetSize( void ) const
+    inline const Vec2D& GetScale( void ) const
     {
-        return _size;
+        return _scale;
     }
     inline float GetRotation( void ) const
     {
@@ -29,9 +29,9 @@ public:
     {
         _position=position;
     }
-    inline void  SetSize(const Vec2D& size)
+    inline void  SetScale(const Vec2D& size)
     {
-        _size=size;
+        _scale=size;
     }
     inline void  SetRotation(float rotation)
     {
@@ -40,7 +40,7 @@ public:
 
 private:
     Vec2D _position;
-    Vec2D _size;
+    Vec2D _scale;
     float _rotation;
 };
 

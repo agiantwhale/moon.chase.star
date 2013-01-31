@@ -198,6 +198,9 @@
     <ClCompile Include="GameSrc\Entity\TeleportEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="GameSrc\Task\TeleportTask.cpp">
+      <Filter>GameSrc\Task</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp">
@@ -363,6 +366,9 @@
       <Filter>GameSrc\Base</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="GameSrc\Task\TeleportTask.hpp">
+      <Filter>GameSrc\Task</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Notes\Gameplay ideas.txt">

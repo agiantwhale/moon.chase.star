@@ -12,7 +12,7 @@ public:
 	CameraMoveTask( float timeDuration, unsigned int renderLayer, const Vec2D& moveSpeed );
 
 	virtual void Start();
-	virtual bool DoTask(float deltaTIme);
+	virtual bool DoTask(float deltaTime);
 	virtual void End();
 
 private:
