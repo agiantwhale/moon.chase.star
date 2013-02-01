@@ -15,15 +15,19 @@ public:
     virtual bool HandleEvent(const EventData& theevent);
     virtual void Update(float deltaTime);
 
+	BodyWrapper& GetBallBody() { return _ballBody; }
+	SpriteWrapper& GetBallSprite() { return _ballSprite; }
+
+	void Fall(void);
+	void Control(void);
+	void Bounce(void);
+	void Throw(const b2Vec2& velocity);
+
 private:
 	//Updates player state
 	void UpdatePlayerState(void);
 
 	//Ball control related functions
-	void Control(void);
-	void Bounce(void);
-	void Fall(void);
-	void Throw(const b2Vec2& velocity);
 	void LimitHorizontalVelocity(void);
 	void LimitVerticalVelocity(void);
 
@@ -34,7 +38,8 @@ private:
 	enum PlayerState
 	{
 		kPlayer_Moving,
-		kPlayer_Thrown
+		kPlayer_Thrown,
+		kPlayer_Teleport
 	};
 
     PlayerState _playerState;

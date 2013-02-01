@@ -1,6 +1,7 @@
 #include "../Entity/Entity.hpp"
 
-Entity::Entity() :	ITransform(),
+Entity::Entity() :
+	ITransform(),
     _released( false ),
 	_active(true),
     _initialized( false )
@@ -29,11 +30,11 @@ void Entity::Initialize( const TiXmlElement *propertyElement )
 
         //size
         {
-			float w = 0.f, h = 0.f;
+			float w = 1.f, h = 1.f;
 			propertyElement->QueryFloatAttribute("width",&w);
 			propertyElement->QueryFloatAttribute("height",&h);
 
-            SetScale(Vec2D(w*UNRATIO,h*UNRATIO));
+            SetScale(Vec2D(w,h));
         }
 
         //angle

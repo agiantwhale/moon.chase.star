@@ -16,6 +16,7 @@ SINGLETON_DESTRUCTOR(TaskManager)
 void TaskManager::RemoveTask( Task* task )
 {
 	_toDoList.remove(task);
+	task->_taskState = Task::kTask_Unregistered;
 }
 
 void TaskManager::Update( float dt )
@@ -23,6 +24,11 @@ void TaskManager::Update( float dt )
 	for(ToDoList::iterator iter = _toDoList.begin(); iter != _toDoList.end();)
 	{
 		Task* task = (*iter);
+
+		if(task->_taskState == Task::kTask_Registered)
+		{
+			task->Start();
+		}
 
 		if(task->DoTask(dt))
 		{
@@ -40,6 +46,7 @@ void TaskManager::Update( float dt )
 void TaskManager::AddTask( Task* task )
 {
 	_toDoList.push_back(task);
+	task->_taskState = Task::kTask_Registered;
 }
 
 bool TaskManager::HandleEvent( const EventData& theevent )

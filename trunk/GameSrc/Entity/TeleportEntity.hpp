@@ -15,6 +15,7 @@ public:
 
 	const Vec2D& GetExitPosition() {return _exitTransform.GetPosition();}
 private:
+	ITransform		_enterTransform;
 	ITransform		_exitTransform;
 
 	BodyWrapper		_triggerBody;

@@ -1,5 +1,7 @@
 #include <cmath>
 #include "../Entity/PlayerEntity.hpp"
+#include "../Entity/TeleportEntity.hpp"
+#include "../Task/TeleportTask.hpp"
 #include "../System/PhysicsManager.hpp"
 #include "../System/ResourceCache.hpp"
 #include "../System/EventManager.hpp"
@@ -271,6 +273,15 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
 					Fall();
 				}
 
+				if(_playerState != kPlayer_Teleport)
+				{
+					_playerState = kPlayer_Teleport;
+
+					TeleportEntity* tlptEntity = static_cast<TeleportEntity*>(targetInterface->GetEntity());
+					TeleportTask* tlptTask = new TeleportTask(2.0f, this, tlptEntity);
+					tlptTask->AddTask();
+				}
+
 				break;
 			}
 
@@ -334,11 +345,10 @@ void PlayerEntity::Fall( void )
 	_playerState = kPlayer_Moving;
 	_ballBody.GetBody()->SetGravityScale(6.0f);
 
-	const float MAX_VELOCITY = 15.0f;
 	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
-	if( ballVelocity.y > MAX_VELOCITY )
+	if( ballVelocity.y > MAX_VERTI_VELOCITY )
 	{
-		ballVelocity.y = MAX_VELOCITY;
+		ballVelocity.y = MAX_VERTI_VELOCITY;
 		_ballBody.GetBody()->SetLinearVelocity( ballVelocity );
 	}
 }

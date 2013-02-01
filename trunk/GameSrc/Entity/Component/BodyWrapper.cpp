@@ -81,8 +81,11 @@ void BodyWrapper::DestroyBody( void )
 
 void BodyWrapper::UpdateTransform( void )
 {
-    GetEntity()->SetPosition(sf::Vector2f(_smoothPosition.x,_smoothPosition.y));
-    GetEntity()->SetRotation(-_smoothAngle*RADTODEG);
+	if(_body->IsActive())
+	{
+		GetEntity()->SetPosition(sf::Vector2f(_smoothPosition.x,_smoothPosition.y));
+		GetEntity()->SetRotation(-_smoothAngle*RADTODEG);
+	}
 }
 
 void BodyWrapper::SmoothenTransform( float remainderRatio )
@@ -95,8 +98,11 @@ void BodyWrapper::SmoothenTransform( float remainderRatio )
 
 void BodyWrapper::ResetTransform( void )
 {
-    _smoothPosition = _previousPosition = _body->GetPosition();
-    _smoothAngle = _previousAngle = _body->GetAngle();
+	if(_body)
+	{
+		_smoothPosition = _previousPosition = _body->GetPosition();
+		_smoothAngle = _previousAngle = _body->GetAngle();
+	}
 }
 
 bool BodyWrapper::IsContactRelated( const b2Contact* contact, const b2Fixture*& target ) const

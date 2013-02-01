@@ -1,9 +1,19 @@
 #ifndef TASK_HPP
 #define TASK_HPP
 
+class TaskManager;
+
 class Task
 {
 public:
+	enum TaskState
+	{
+		kTask_Unregistered,
+		kTask_Registered,
+		kTask_Started,
+		kTask_Ended
+	};
+
 	Task(float taskDuration);
 	virtual ~Task() {}
 
@@ -20,6 +30,9 @@ protected:
 
 private:
 	float _timeRemaining;
+	TaskState	_taskState;
+
+	friend class TaskManager;
 };
 
 #endif

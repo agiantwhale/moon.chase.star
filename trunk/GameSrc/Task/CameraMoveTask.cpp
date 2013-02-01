@@ -11,6 +11,8 @@ CameraMoveTask::CameraMoveTask( float timeDuration, unsigned int renderLayer, co
 
 void CameraMoveTask::Start()
 {
+	Task::Start();
+
 	_initialPosition = GraphicsManager::GetInstance()->GetRenderLayer(_renderLayer)->GetCamera().GetPosition();
 }
 
@@ -26,6 +28,8 @@ bool CameraMoveTask::DoTask( float deltaTime )
 
 void CameraMoveTask::End()
 {
+	Task::End();
+
 	GraphicsManager::GetInstance()->GetRenderLayer(_renderLayer)->GetCamera().SetPosition(_initialPosition + _totalMoveAmount );
 }
 
