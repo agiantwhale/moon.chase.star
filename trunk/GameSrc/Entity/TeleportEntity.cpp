@@ -24,7 +24,7 @@ TeleportEntity::~TeleportEntity()
 
 void TeleportEntity::Update( float deltaTime )
 {
-	_enterTransform.SetRotation(_enterTransform.GetRotation() - ROTATION_PER_SECOND * deltaTime);
+	_enterTransform.SetRotation(_enterTransform.GetRotation() + ROTATION_PER_SECOND * deltaTime);
 	_exitTransform.SetRotation(_exitTransform.GetRotation() - ROTATION_PER_SECOND * deltaTime);
 }
 

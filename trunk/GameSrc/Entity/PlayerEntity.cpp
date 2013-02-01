@@ -278,7 +278,7 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
 					_playerState = kPlayer_Teleport;
 
 					TeleportEntity* tlptEntity = static_cast<TeleportEntity*>(targetInterface->GetEntity());
-					TeleportTask* tlptTask = new TeleportTask(2.0f, this, tlptEntity);
+					TeleportTask* tlptTask = new TeleportTask(1.0f, this, tlptEntity);
 					tlptTask->AddTask();
 				}
 

@@ -56,14 +56,11 @@ void StarEntity::Update( float deltaTime )
 
 				Vec2D position = WorldToScreen(GetPosition());
 				Vec2D velocity = (GetPosition() - _previousPosition)/deltaTime;
-				velocity.Normalize();
-				velocity *= TRAVEL_SPEED;
 				velocity *= RATIO;
 				velocity.x *= -1;
-				velocity *= 3.0f;
 
 				//_emitter->setParticleRotationSpeed(20.f);
-				_emitter->setParticleVelocity(thor::Distributions::deflect(velocity, 10.f) );
+				_emitter->setParticleVelocity(thor::Distributions::deflect(velocity, 20.f) );
 				_emitter->setParticlePosition(position);
 				//_emitter->setParticlePosition(thor::Distributions::circle(position,STAR_RADIUS*RATIO * 0.2));
 
@@ -114,7 +111,7 @@ void StarEntity::Initialize( const TiXmlElement *propertyElement /* = nullptr */
 			// Create emitter
 			_emitter = thor::UniversalEmitter::create();
 			_emitter->setEmissionRate(EMISSION_RATE);
-			_emitter->setParticleLifetime(sf::seconds(3.f));
+			_emitter->setParticleLifetime(sf::seconds(TRAVEL_LIFETIME));
 			_emitter->setParticlePosition(WorldToScreen(GetPosition()));
 
 			particleSystem->addEmitter(_emitter);
