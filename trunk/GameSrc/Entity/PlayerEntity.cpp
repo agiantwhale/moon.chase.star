@@ -125,6 +125,9 @@ void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
 {
     BaseClass::Initialize(propertyElement);
 
+	_controller = new Leap::Controller;
+	_listener = new SwipeListener;
+
     {
 		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Ball.png");
 		std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);

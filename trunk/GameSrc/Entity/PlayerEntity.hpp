@@ -1,6 +1,7 @@
 #ifndef PLAYERENTITY_HPP
 #define PLAYERENTITY_HPP
 
+#include "../Leap/Leap.hpp"
 #include <SFML/Audio.hpp>
 #include "../Entity/Entity.hpp"
 #include "../Entity/Component/BodyWrapper.hpp"
@@ -53,6 +54,9 @@ private:
 	SpriteWrapper _ballSprite;
 	sf::Sound*	_bounceSound;
 	sf::Sound*	_throwSound;
+
+	Leap::Controller* _controller;
+	Leap::Listener*	  _listener;
 };
 
 class DummyBallEntity : public Entity

@@ -64,6 +64,9 @@
     <Filter Include="GameSrc\Kinect">
       <UniqueIdentifier>{5605afd7-e8ab-4cb7-8fb3-2c1d61c4c2f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameSrc\Leap">
+      <UniqueIdentifier>{e0ebc5e4-eda4-4e06-aa2c-c456e9b7f31c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSrc\App\main.cpp">
@@ -380,6 +383,9 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Entity\BGMEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Leap\Leap.hpp">
+      <Filter>GameSrc\Leap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
