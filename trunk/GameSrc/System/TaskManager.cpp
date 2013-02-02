@@ -4,6 +4,7 @@
 SINGLETON_CONSTRUCTOR(TaskManager), IEventListener("TaskManager")
 {
 	AddEventListenType(Event_Unload);
+	AddEventListenType(Event_RestartLevel);
 
 	_toDoList.clear();
 }
@@ -11,6 +12,7 @@ SINGLETON_CONSTRUCTOR(TaskManager), IEventListener("TaskManager")
 SINGLETON_DESTRUCTOR(TaskManager)
 {
 	RemoveEventListenType(Event_Unload);
+	RemoveEventListenType(Event_RestartLevel);
 }
 
 void TaskManager::RemoveTask( Task* task )
@@ -51,7 +53,7 @@ void TaskManager::AddTask( Task* task )
 
 bool TaskManager::HandleEvent( const EventData& theevent )
 {
-	if(theevent.GetEventType() == Event_Unload)
+	if(theevent.GetEventType() == Event_Unload || theevent.GetEventType() == Event_RestartLevel)
 	{
 		for(ToDoList::iterator iter = _toDoList.begin(); iter != _toDoList.end(); iter++)
 		{

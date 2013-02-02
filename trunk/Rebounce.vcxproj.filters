@@ -183,9 +183,6 @@
     <ClCompile Include="Libs\GWEN\Renderers\SFML\SFML.cpp">
       <Filter>Libs\GWEN\Renderers\SFML</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\Kinect\KinectSetUp.cpp">
-      <Filter>GameSrc\Kinect</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\System\ResourceCache.cpp">
       <Filter>GameSrc\System</Filter>
     </ClCompile>
@@ -209,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="GameSrc\Entity\BGMEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Leap\Leap.cpp">
+      <Filter>GameSrc\Leap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -358,9 +358,6 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Entity\ThrowEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Kinect\KinectSetUp.hpp">
-      <Filter>GameSrc\Kinect</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\System\ResourceCache.hpp">
       <Filter>GameSrc\System</Filter>

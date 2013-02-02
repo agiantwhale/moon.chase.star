@@ -97,11 +97,15 @@ PlayerEntity::PlayerEntity() : Entity(), _ballBody(this), _ballSprite(this),
 	_throwSound(nullptr)
 {
 	AddEventListenType(Event_App);
+
+	//_controller.addListener(_listener);
 }
 
 PlayerEntity::~PlayerEntity()
 {
 	RemoveEventListenType(Event_App);
+
+	//_controller.removeListener(_listener);
 
 	delete _bounceSound;
 	delete _throwSound;
@@ -125,8 +129,6 @@ void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
 {
     BaseClass::Initialize(propertyElement);
 
-	_controller = new Leap::Controller;
-	_listener = new SwipeListener;
 
     {
 		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Ball.png");
@@ -359,6 +361,11 @@ void PlayerEntity::Control( void )
 
 	const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
 				rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+	
+	/*
+	const bool  leftInput = FingerOnLeft(),
+				rightInput = FingerOnRight();
+				*/
 
 	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
 	b2Vec2 ballPosition = _ballBody.GetBody()->GetPosition();
@@ -392,6 +399,11 @@ void PlayerEntity::Throw( const b2Vec2& velocity )
 {
 	const bool leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
 			   rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+
+	/*
+	const bool  leftInput = FingerOnLeft(),
+		rightInput = FingerOnRight();
+		*/
 
 	_shouldAcceptInput = false;
 
@@ -476,6 +488,11 @@ void PlayerEntity::UpdatePlayerState( void )
 
 	case kPlayer_Thrown:
 		{
+			/*
+			const bool  leftInput = FingerOnLeft(),
+				rightInput = FingerOnRight();
+				*/
+
 			const bool leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
 					   rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
 

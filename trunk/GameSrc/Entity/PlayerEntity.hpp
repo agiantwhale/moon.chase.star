@@ -26,6 +26,40 @@ public:
 	void Throw(const b2Vec2& velocity);
 
 private:
+	inline bool FingerOnLeft(void)
+	{
+		Leap::Hand hand = _controller.frame().hands()[0];
+		Leap::Vector avgPos = Leap::Vector::zero();
+
+		Leap::FingerList fingers = hand.fingers();
+		if(!fingers.empty())
+		{
+			for(Leap::FingerList::const_iterator iter = fingers.begin(); iter != fingers.end(); iter++)
+			{
+				avgPos += (*iter).tipPosition();
+			}
+		}
+
+		return (avgPos.x < -50.f);
+	}
+
+	inline bool FingerOnRight(void)
+	{
+		Leap::Hand hand = _controller.frame().hands()[0];
+		Leap::Vector avgPos = Leap::Vector::zero();
+
+		Leap::FingerList fingers = hand.fingers();
+		if(!fingers.empty())
+		{
+			for(Leap::FingerList::const_iterator iter = fingers.begin(); iter != fingers.end(); iter++)
+			{
+				avgPos += (*iter).tipPosition();
+			}
+		}
+
+		return (avgPos.x > 50.f);
+	}
+
 	//Updates player state
 	void UpdatePlayerState(void);
 
@@ -55,8 +89,8 @@ private:
 	sf::Sound*	_bounceSound;
 	sf::Sound*	_throwSound;
 
-	Leap::Controller* _controller;
-	Leap::Listener*	  _listener;
+	Leap::Controller _controller;
+	//SwipeListener	  _listener;
 };
 
 class DummyBallEntity : public Entity
