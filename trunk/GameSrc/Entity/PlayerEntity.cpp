@@ -266,6 +266,19 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
 				break;
 			}
 
+		case 'MVPT':
+			{
+				if( _playerState == kPlayer_Thrown )
+				{
+					Fall();
+				}
+				else if( slope >= 10.0f )
+				{
+					_shouldBounce = true;
+				}
+				break;
+			}
+
 		case 'TLPT':
 			{
 				if( _playerState == kPlayer_Thrown )

@@ -5,6 +5,8 @@
 
 REGISTER_ENTITY( BlockEntity, "Block")
 
+const float BLOCK_SIZE = 2.0f;
+
 BlockEntity::BlockEntity() : BaseClass(), _blockBody(this), _blockSprite(this),
     _shouldFall(false)
 {
@@ -17,8 +19,6 @@ BlockEntity::~BlockEntity()
 void BlockEntity::Initialize( const TiXmlElement *propertyElement )
 {
     BaseClass::Initialize(propertyElement);
-
-    const float BLOCK_SIZE = 2.0f;
 
     {
 		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Block.png");

@@ -91,6 +91,7 @@
     <ClCompile Include="GameSrc\Entity\Entity.cpp" />
     <ClCompile Include="GameSrc\Entity\HullEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\LevelCompleteEntity.cpp" />
+    <ClCompile Include="GameSrc\Entity\MovingPlatformEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\PlayerEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\StarEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\TeleportEntity.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="GameSrc\Entity\Entity.hpp" />
     <ClInclude Include="GameSrc\Entity\HullEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\LevelCompleteEntity.hpp" />
+    <ClInclude Include="GameSrc\Entity\MovingPlatformEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\PlayerEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\StarEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\ThrowEntity.hpp" />
