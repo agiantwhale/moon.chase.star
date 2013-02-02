@@ -11,6 +11,7 @@
 #include "../Event/GUIEventData.h"
 #include "../Event/NextLevelEventData.hpp"
 #include "../System/EventManager.hpp"
+#include "../System/GraphicsManager.hpp"
 
 LoadingState::LoadingState() :	IState(),
 	_sceneFileName(""),

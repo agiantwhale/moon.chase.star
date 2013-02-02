@@ -7,12 +7,14 @@ SINGLETON_CONSTRUCTOR(GraphicsManager),
                       _renderLayerStack()
 {
 	AddEventListenType(Event_Unload);
+	AddEventListenType(Event_RestartLevel);
 
 }
 
 SINGLETON_DESTRUCTOR(GraphicsManager)
 {
 	RemoveEventListenType(Event_Unload);
+	RemoveEventListenType(Event_RestartLevel);
     Unload();
 }
 
@@ -23,11 +25,27 @@ void GraphicsManager::SetUpGraphics(void)
 
 bool GraphicsManager::HandleEvent( const EventData& newevent )
 {
-    if( newevent.GetEventType() == Event_Unload )
-    {
-        Unload();
-        return false;
-    }
+	switch (newevent.GetEventType())
+	{
+	case Event_Unload:
+		{
+			Unload();
+			break;
+		}
+
+	case Event_RestartLevel:
+		{
+			for(RenderLayerStack::iterator iter = _renderLayerStack.begin(); iter != _renderLayerStack.end(); iter++)
+			{
+				RenderLayer* renderLayer = *iter;
+				renderLayer->GetCamera().SetPosition(Vec2D(0,0));
+				renderLayer->GetCamera().SetRotation(0.0f);
+				renderLayer->GetCamera().SetScale(Vec2D(1.0f,1.0f));
+			}
+
+			break;
+		}
+	}
 
     return false;
 }

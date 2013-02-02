@@ -83,6 +83,7 @@
     <ClCompile Include="GameSrc\App\Game.cpp" />
     <ClCompile Include="GameSrc\App\main.cpp" />
     <ClCompile Include="GameSrc\Base\Vec2D.cpp" />
+    <ClCompile Include="GameSrc\Entity\BGMEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\BlockEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\CameraMoveEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\Component\BodyWrapper.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="GameSrc\Base\Singleton.hpp" />
     <ClInclude Include="GameSrc\Base\Math.hpp" />
     <ClInclude Include="GameSrc\Base\Vec2D.hpp" />
+    <ClInclude Include="GameSrc\Entity\BGMEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\BlockEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\CameraMoveEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\Component\BodyWrapper.hpp" />

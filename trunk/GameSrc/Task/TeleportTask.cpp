@@ -1,4 +1,5 @@
 #include "../Task/TeleportTask.hpp"
+#include "../System/ResourceCache.hpp"
 #include <algorithm>
 
 TeleportTask::TeleportTask( float taskDuration, PlayerEntity* playerEntity, TeleportEntity* teleportEntity )
@@ -6,8 +7,14 @@ TeleportTask::TeleportTask( float taskDuration, PlayerEntity* playerEntity, Tele
 		_totalSeconds(taskDuration),
 		_playerEntity(playerEntity),
 		_teleportEntity(teleportEntity),
-		_movementSpeed(0.f,0.f)
+		_movementSpeed(0.f,0.f),
+		_teleportSound(nullptr)
 {
+	{
+		thor::ResourceKey<sf::SoundBuffer> key = thor::Resources::fromFile<sf::SoundBuffer>("Resource/Sounds/teleport.wav");
+		std::shared_ptr<sf::SoundBuffer> buffer = ResourceCache::GetInstance()->acquire<sf::SoundBuffer>(key);
+		_teleportSound = new sf::Sound(*buffer);
+	}
 }
 
 void TeleportTask::Start()
@@ -16,6 +23,8 @@ void TeleportTask::Start()
 
 	_movementSpeed = (_teleportEntity->GetPosition() - _playerEntity->GetPosition())/_totalSeconds;
 	_playerEntity->GetBallBody().GetBody()->SetActive(false);
+
+	_teleportSound->play();
 }
 
 bool TeleportTask::DoTask( float deltaTime )
@@ -43,4 +52,9 @@ void TeleportTask::End()
 	_playerEntity->GetBallBody().ResetTransform();
 	_playerEntity->GetBallBody().UpdateTransform();
 	_playerEntity->Fall();
+}
+
+TeleportTask::~TeleportTask()
+{
+	delete _teleportSound;
 }

@@ -75,7 +75,7 @@ void CameraMoveEntity::ProcessContact(const b2Contact* contact, const b2Fixture*
 {
     IPhysics *targetInterface = GetPhysicsInterface(contactFixture);
 
-    if(IsActive() && targetInterface && targetInterface->GetEntity()->GetEntityType() == 'BALL')
+    if(IsActive() && targetInterface && targetInterface->GetEntity()->GetEntityType() == 'STAR')
     {
         SetActive(false);
 

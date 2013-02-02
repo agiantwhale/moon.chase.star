@@ -9,7 +9,7 @@ REGISTER_ENTITY(StarEntity,"Star")
 
 const float STAR_RADIUS = 0.5f;
 const float EMISSION_RATE = 200.0f;
-const float TRAVEL_SPEED = 7.0f;
+const float TRAVEL_SPEED = 6.0f;
 const float TRAVEL_LIFETIME = 3.0f;
 const float ARRIVAL_LIFETIME = 0.1f;
 
@@ -17,6 +17,7 @@ StarEntity::StarEntity()
 	:	BaseClass(),
 		_starSprite(this),
 		_starParticle(this),
+		_starBody(this),
 		_starState(kStar_Traveling),
 		_currentTime(0.f),
 		_totalTravelTime(0.f),
@@ -104,6 +105,28 @@ void StarEntity::Initialize( const TiXmlElement *propertyElement /* = nullptr */
 	if( propertyElement )
 	{
 		{
+			b2BodyDef bodyDefinition;
+			bodyDefinition.userData = (IPhysics*)this;
+			bodyDefinition.position = b2Vec2(GetPosition().x, GetPosition().y);
+			bodyDefinition.angle = 0.0f;
+			bodyDefinition.fixedRotation = true;
+			bodyDefinition.type = b2_dynamicBody;
+
+			_starBody.CreateBody( bodyDefinition );
+
+			b2PolygonShape boxShape;
+			boxShape.SetAsBox( 0.5f * UNRATIO, 0.5f * UNRATIO );
+
+			b2FixtureDef fixtureDefinition;
+			fixtureDefinition.shape = &boxShape;
+			fixtureDefinition.isSensor = true;
+
+			_starBody.CreateFixture( fixtureDefinition, "Star" );
+
+			_starBody.ResetTransform();
+		}
+
+		{
 			thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Particles/whiteSpark.png");
 			std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);
 			thor::ParticleSystem* particleSystem = new thor::ParticleSystem(texture);
@@ -168,3 +191,23 @@ void StarEntity::Initialize( const TiXmlElement *propertyElement /* = nullptr */
 	}
 }
 
+bool StarEntity::HandleEvent(const EventData& theevent)
+{
+	switch (theevent.GetEventType())
+	{
+	case Event_Simulate:
+		{
+			Vec2D position = GetPosition();
+			_starBody.GetBody()->SetTransform(position,0);
+			_starBody.GetBody()->SetAwake(true);
+			break;
+		}
+
+	default:
+		{
+			break;
+		}
+	}
+
+	return false;
+}

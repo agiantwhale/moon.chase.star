@@ -83,15 +83,18 @@ const float BALL_RADIUS = 0.5f;
 const float KILL_TIME = 1.5f;
 const float JUMP_IMPULSE = 18.0f;
 const float MOVE_IMPULSE = 0.5f;
-const float MAX_HORI_VELOCITY = 6.0f;
-const float MAX_VERTI_VELOCITY = 6.0f;
+const float MAX_HORI_VELOCITY = 7.0f;
+const float MAX_VERTI_VELOCITY = 7.0f;
+const float JUMP_SLOPE = 0.25f;
 
 REGISTER_ENTITY( PlayerEntity, "Ball" )
 
 PlayerEntity::PlayerEntity() : Entity(), _ballBody(this), _ballSprite(this),
     _shouldBounce(false),
 	_shouldAcceptInput(true),
-    _playerState(kPlayer_Moving)
+    _playerState(kPlayer_Moving),
+	_bounceSound(nullptr),
+	_throwSound(nullptr)
 {
 	AddEventListenType(Event_App);
 }
@@ -99,6 +102,9 @@ PlayerEntity::PlayerEntity() : Entity(), _ballBody(this), _ballSprite(this),
 PlayerEntity::~PlayerEntity()
 {
 	RemoveEventListenType(Event_App);
+
+	delete _bounceSound;
+	delete _throwSound;
 }
 
 void PlayerEntity::Update(float deltaTime)
@@ -153,6 +159,18 @@ void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
 
         _ballBody.ResetTransform();
     }
+
+	{
+		thor::ResourceKey<sf::SoundBuffer> key = thor::Resources::fromFile<sf::SoundBuffer>("Resource/Sounds/jump.wav");
+		std::shared_ptr<sf::SoundBuffer> buffer = ResourceCache::GetInstance()->acquire<sf::SoundBuffer>(key);
+		_bounceSound = new sf::Sound(*buffer);
+	}
+
+	{
+		thor::ResourceKey<sf::SoundBuffer> key = thor::Resources::fromFile<sf::SoundBuffer>("Resource/Sounds/throw.wav");
+		std::shared_ptr<sf::SoundBuffer> buffer = ResourceCache::GetInstance()->acquire<sf::SoundBuffer>(key);
+		_throwSound = new sf::Sound(*buffer);
+	}
 }
 
 bool PlayerEntity::HandleEvent(const EventData& theevent)
@@ -233,7 +251,7 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
         {
 			_shouldBounce = false;
 
-            if( (slope <= 0.25f || _ballBody.GetBody()->GetPosition().y < targetInterface->GetEntity()->GetPosition().y ) && _playerState == kPlayer_Thrown )
+            if( (slope <= JUMP_SLOPE || _ballBody.GetBody()->GetPosition().y < targetInterface->GetEntity()->GetPosition().y ) && _playerState == kPlayer_Thrown )
             {
                 Fall();
             }
@@ -246,7 +264,7 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
             {
                 Fall();
             }
-            else if( slope >= 10.0f )
+            else if( slope >= JUMP_SLOPE && (GetPosition().y > targetInterface->GetEntity()->GetPosition().y) )
             {
                 _shouldBounce = true;
             }
@@ -259,7 +277,7 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
 				{
 					Fall();
 				}
-				else if( slope >= 10.0f )
+				else if( slope >= JUMP_SLOPE )
 				{
 					_shouldBounce = true;
 				}
@@ -320,8 +338,9 @@ void PlayerEntity::ProcessPreSolve( b2Contact* contact,const b2Fixture* target )
 	IPhysics *physicsInterface = GetPhysicsInterface(target);
 
 	if(physicsInterface && physicsInterface->GetEntity()->GetEntityType() == 'THRW'
-		&& slope >= 10.0f
-		&& target->GetBody()->GetPosition().y < _ballBody.GetBody()->GetPosition().y )
+		&& slope >= JUMP_SLOPE
+		&& target->GetBody()->GetPosition().y < _ballBody.GetBody()->GetPosition().y
+		&& _playerState == kPlayer_Moving )
 	{
 		_shouldBounce = false;
 		//contact->SetEnabled(false);
@@ -393,6 +412,8 @@ void PlayerEntity::Throw( const b2Vec2& velocity )
 	_ballBody.GetBody()->SetLinearVelocity(velocity);
 
 	LimitHorizontalVelocity();
+
+	_throwSound->play();
 }
 
 void PlayerEntity::LimitHorizontalVelocity()
@@ -428,6 +449,8 @@ void PlayerEntity::Bounce( void )
 	_ballBody.GetBody()->SetLinearVelocity( b2Vec2(ballVelocity.x, 0) );
 	_ballBody.GetBody()->SetTransform(ballPosition + b2Vec2(0,0.1f), _ballBody.GetBody()->GetAngle());
 	_ballBody.GetBody()->ApplyLinearImpulse(b2Vec2(0,JUMP_IMPULSE), _ballBody.GetBody()->GetPosition());
+
+	_bounceSound->play();
 }
 
 void PlayerEntity::UpdatePlayerState( void )

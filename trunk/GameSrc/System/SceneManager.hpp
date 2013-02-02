@@ -4,7 +4,7 @@
 #include <list>
 #include <vector>
 #include <string>
-
+#include <SFML/Audio.hpp>
 #include "../Base/Vec2D.hpp"
 #include "../Base/Singleton.hpp"
 #include "../Interface/IEventListener.hpp"

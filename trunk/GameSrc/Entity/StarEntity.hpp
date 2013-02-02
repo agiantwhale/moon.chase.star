@@ -5,6 +5,7 @@
 #include "../Entity/Entity.hpp"
 #include "../Entity/Component/SpriteWrapper.hpp"
 #include "../Entity/Component/ParticleWrapper.hpp"
+#include "../Entity/Component/BodyWrapper.hpp"
 
 class StarEntity : public Entity
 {
@@ -12,11 +13,13 @@ class StarEntity : public Entity
 
 public:
 	virtual void Update(float deltaTime);
+	virtual bool HandleEvent(const EventData& theevent);
 	virtual void Initialize( const TiXmlElement *propertyElement /* = nullptr */ );
 
 private:
 	SpriteWrapper _starSprite;
 	ParticleWrapper _starParticle;
+	BodyWrapper		_starBody;
 
 	enum 
 	{
