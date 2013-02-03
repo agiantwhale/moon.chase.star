@@ -17,6 +17,7 @@ class SceneManager : public Singleton<SceneManager>, private IEventListener
 
 public:
 	void SetUpScene(void);
+	void SaveProgress(void);
 	void LoadScene( unsigned int sceneNum );
     void RestartScene(void);
     void UnloadScene( void );

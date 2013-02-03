@@ -35,7 +35,7 @@ LoadingState::LoadingState() :	IState(),
 
 	Gwen::Controls::Label* label = new Gwen::Controls::Label(center);
 	label->SetTextColor(Gwen::Colors::White);
-	label->SetText(L"불러오는 중...");
+	label->SetText(L"Loading...");
 	label->SizeToContents();
 
 	_screenBase->Hide();

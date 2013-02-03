@@ -7,6 +7,7 @@
 #include "../Base/Globals.hpp"
 #include "../App/Game.hpp"
 #include "../Event/NewGameEventData.hpp"
+#include "../System/SceneManager.hpp"
 
 GWEN_CONTROL_CONSTRUCTOR(MainMenuControl)
 {
@@ -21,19 +22,19 @@ GWEN_CONTROL_CONSTRUCTOR(MainMenuControl)
 	titleImage->SetBounds(20,50,640,400);
 
 	Gwen::Controls::Button* newGameButton = new Gwen::Controls::Button(this);
-	newGameButton->SetText(L"새 게임");
+	newGameButton->SetText(L"New Game");
 	newGameButton->SetSize(250,100);
 	newGameButton->SetPos(960 + 35,360);
 	newGameButton->onPress.Add(this,&MainMenuControl::OnNewGame);
 
 	Gwen::Controls::Button* continueButton = new Gwen::Controls::Button(this);
-	continueButton->SetText(L"이어하기");
+	continueButton->SetText(L"Continue");
 	continueButton->SetSize(250,100);
 	continueButton->SetPos(960 + 35,470);
 	continueButton->onPress.Add(this,&MainMenuControl::OnContinue);
 
 	Gwen::Controls::Button* exitButton = new Gwen::Controls::Button(this);
-	exitButton->SetText(L"끝내기");
+	exitButton->SetText(L"End Game");
 	exitButton->SetSize(250,100);
 	exitButton->SetPos(960 + 35,580);
 	exitButton->onPress.Add(this,&MainMenuControl::OnExit);
@@ -56,5 +57,6 @@ void MainMenuControl::OnNewGame( Gwen::Controls::Base* control )
 
 void MainMenuControl::OnContinue( Gwen::Controls::Base* control )
 {
+	EventData* eventData = new NewGameEventData(SceneManager::GetInstance()->GetLoadedSceneNumber());
+	eventData->TriggerEvent();
 }
-

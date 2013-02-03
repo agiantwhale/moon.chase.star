@@ -222,7 +222,7 @@ void SceneManager::SetUpScene( void )
 		TiXmlElement* scenesElement = document.FirstChildElement("Scenes");
 		if(scenesElement)
 		{
-			scenesElement->QueryFloatAttribute("Continue", _sceneNum);
+			scenesElement->QueryUnsignedAttribute("Continue", &_sceneNum);
 
 			TiXmlElement* sceneElement = scenesElement->FirstChildElement("Scene");
 			while(sceneElement)
@@ -231,5 +231,20 @@ void SceneManager::SetUpScene( void )
 				sceneElement = sceneElement->NextSiblingElement();
 			}
 		}
+	}
+}
+
+void SceneManager::SaveProgress( void )
+{
+	TiXmlDocument document("Scenes.xml");
+	if(document.LoadFile())
+	{
+		TiXmlElement* scenesElement = document.FirstChildElement("Scenes");
+		if(scenesElement)
+		{
+			scenesElement->SetAttribute("Continue", _sceneNum);
+		}
+
+		document.SaveFile();
 	}
 }
