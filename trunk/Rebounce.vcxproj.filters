@@ -210,6 +210,9 @@
     <ClCompile Include="GameSrc\Leap\Leap.cpp">
       <Filter>GameSrc\Leap</Filter>
     </ClCompile>
+    <ClCompile Include="GameSrc\Tile\BackgroundTile.cpp">
+      <Filter>GameSrc\Tile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp">
@@ -258,12 +261,6 @@
       <Filter>GameSrc\Event</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Event\GUIEventData.h">
-      <Filter>GameSrc\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Event\NewGameEventData.hpp">
-      <Filter>GameSrc\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Event\NextLevelEventData.hpp">
       <Filter>GameSrc\Event</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Event\SolveEventData.h">
@@ -383,6 +380,12 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Leap\Leap.hpp">
       <Filter>GameSrc\Leap</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Tile\BackgroundTile.hpp">
+      <Filter>GameSrc\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\NewGameEventData.hpp">
+      <Filter>GameSrc\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

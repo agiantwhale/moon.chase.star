@@ -28,6 +28,8 @@ void InGameState::Enter()
 {
 	IState::Enter();
 
+	Game::GetInstance()->setMouseCursorVisible(false);
+
 	_endState = false;
 }
 
@@ -53,6 +55,8 @@ bool InGameState::Update(float deltaTime)
 void InGameState::Exit()
 {
 	IState::Exit();
+
+	Game::GetInstance()->setMouseCursorVisible(true);
 
 	_endState = false;
 }

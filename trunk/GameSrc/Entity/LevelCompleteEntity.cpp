@@ -1,6 +1,5 @@
 #include "../Entity/LevelCompleteEntity.hpp"
 #include "../Event/ContactEventData.h"
-#include "../Event/NextLevelEventData.hpp"
 
 REGISTER_ENTITY(LevelCompleteEntity,"LevelComplete")
 
@@ -23,10 +22,6 @@ void LevelCompleteEntity::Initialize( const TiXmlElement *propertyElement /*= NU
 
 	if( propertyElement )
 	{
-		{
-			_nextMapFile = propertyElement->Attribute("NextMapFile");
-		}
-
 		{
 			b2BodyDef bodyDefinition;
 			bodyDefinition.userData = (IPhysics*)this;
@@ -59,7 +54,7 @@ void LevelCompleteEntity::ProcessContact( const b2Contact* contact, const b2Fixt
 	{
 		SetActive(false);
 
-		NextLevelEventData* eventData = new NextLevelEventData(_nextMapFile);
+		EventData* eventData = new EventData(Event_NextLevel);
 		eventData->QueueEvent(0.5f);
 	}
 }

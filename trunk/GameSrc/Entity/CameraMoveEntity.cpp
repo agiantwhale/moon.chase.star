@@ -81,7 +81,15 @@ void CameraMoveEntity::ProcessContact(const b2Contact* contact, const b2Fixture*
 
 		for(int i = 0; i < GraphicsManager::GetInstance()->GetRenderLayerStackSize(); i++ )
 		{
-			Task* cameraTask = new CameraMoveTask(_travelTime,i,_destination/_travelTime);
+			Task* cameraTask = nullptr;
+			if(i==0)
+			{
+				cameraTask = new CameraMoveTask(_travelTime,i,_destination/_travelTime * 0.5f);
+			}
+			else
+			{
+				cameraTask = new CameraMoveTask(_travelTime,i,_destination/_travelTime);
+			}
 			cameraTask->AddTask();
 		}
     }

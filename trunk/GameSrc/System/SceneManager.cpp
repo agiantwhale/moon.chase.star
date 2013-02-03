@@ -1,17 +1,19 @@
 #include <CxxTL\tri_logger.hpp>
 #include <TinyXML\tinyxml.h>
+#include "../App/Game.hpp"
 #include "../Base/Globals.hpp"
 #include "../System/SceneManager.hpp"
 #include "../System/EntityManager.hpp"
 #include "../Entity/Entity.hpp"
 #include "../Tile/Tile.hpp"
+#include "../Tile/BackgroundTile.hpp"
 #include "GraphicsManager.hpp"
 
 SINGLETON_CONSTRUCTOR(SceneManager),
                       IEventListener("SceneManager"),
 					  _levelSize(),
                       _sceneLoaded(false),
-                      _sceneFileName()
+                      _sceneNum(0)
 {
 	AddEventListenType(Event_Unload);
 }
@@ -38,10 +40,10 @@ void SceneManager::RestartScene(void)
 
     TiXmlDocument sceneDocument;
 
-    if( !sceneDocument.LoadFile(_sceneFileName) )
+    if( !sceneDocument.LoadFile(_sceneFileNameStack[_sceneNum]) )
     {
         TRI_LOG_STR("Unable to load scene.");
-		TRI_LOG(_sceneFileName);
+		TRI_LOG(_sceneNum);
         return;
     }
 
@@ -88,8 +90,16 @@ void SceneManager::RestartScene(void)
     _sceneLoaded = true;
 }
 
-void SceneManager::LoadScene(const std::string& sceneFileName)
+void SceneManager::LoadScene( unsigned int sceneNum )
 {
+	if(sceneNum >= _sceneFileNameStack.size())
+	{
+		sceneNum = 0;
+	}
+	std::string sceneFileName = _sceneFileNameStack.at(sceneNum);
+
+	Game::GetInstance()->PauseFrameTimer();
+
     TRI_LOG_STR("Loading scene.");
 
     TiXmlDocument sceneDocument;
@@ -97,13 +107,13 @@ void SceneManager::LoadScene(const std::string& sceneFileName)
     if( !sceneDocument.LoadFile(sceneFileName) )
     {
 		TRI_LOG_STR("Unable to load scene.");
-		TRI_LOG(sceneFileName);
+		TRI_LOG(_sceneNum);
 		return;
     }
-    else
-    {
-        _sceneFileName = sceneFileName;
-    }
+	else
+	{
+		_sceneNum = sceneNum;
+	}
 
     EntityFactory* entityFcty = EntityFactory::GetInstance();
     EntityManager* entityMgr = EntityManager::GetInstance();
@@ -145,8 +155,17 @@ void SceneManager::LoadScene(const std::string& sceneFileName)
         {
             Tile* tile = new Tile();
             tile->Initialize( tilesElement );
-            tile->RegisterRenderable( 0 );
+            tile->RegisterRenderable( 1 );
         }
+
+		//Tiles
+		TiXmlElement *backgroundTilesElement = levelElement->FirstChildElement("Backgrounds");
+		if(backgroundTilesElement)
+		{
+			BackgroundTile* tile = new BackgroundTile();
+			tile->Initialize( backgroundTilesElement );
+			tile->RegisterRenderable( 0 );
+		}
 
         //Objects
         TiXmlElement *objectsElement = levelElement->FirstChildElement( "Objects" );
@@ -180,6 +199,8 @@ void SceneManager::LoadScene(const std::string& sceneFileName)
     TRI_LOG_STR("Load complete.");
 
     _sceneLoaded = true;
+
+	Game::GetInstance()->ResumeFrameTimer();
 }
 
 void SceneManager::UnloadScene(void)
@@ -191,4 +212,24 @@ void SceneManager::UnloadScene(void)
 
 	_tileStack.clear();
     _sceneLoaded = false;
+}
+
+void SceneManager::SetUpScene( void )
+{
+	TiXmlDocument document("Scenes.xml");
+	if(document.LoadFile())
+	{
+		TiXmlElement* scenesElement = document.FirstChildElement("Scenes");
+		if(scenesElement)
+		{
+			scenesElement->QueryFloatAttribute("Continue", _sceneNum);
+
+			TiXmlElement* sceneElement = scenesElement->FirstChildElement("Scene");
+			while(sceneElement)
+			{
+				_sceneFileNameStack.push_back(sceneElement->GetText());
+				sceneElement = sceneElement->NextSiblingElement();
+			}
+		}
+	}
 }

@@ -4,17 +4,16 @@
 #include "../State/LoadingState.hpp"
 #include "../Base/Globals.hpp"
 #include "../App/Game.hpp"
-#include "../Event/NewGameEventData.hpp"
 #include "../System/GUIManager.hpp"
 #include "../System/SceneManager.hpp"
 #include "../System/ResourceCache.hpp"
 #include "../Event/GUIEventData.h"
-#include "../Event/NextLevelEventData.hpp"
+#include "../Event/NewGameEventData.hpp"
 #include "../System/EventManager.hpp"
 #include "../System/GraphicsManager.hpp"
 
 LoadingState::LoadingState() :	IState(),
-	_sceneFileName(""),
+	_sceneNum(0),
 	_loadType(Load_UNDEFINED),
 	_screenBase(nullptr),
 	_frameDrawn(false)
@@ -67,7 +66,7 @@ bool LoadingState::Update( float deltaTime )
 		case Load_New:
 			{
 				Game::GetInstance()->SetNextStateType(State_InGame);
-				SceneManager::GetInstance()->LoadScene(_sceneFileName);
+				SceneManager::GetInstance()->LoadScene(_sceneNum);
 				return true;
 				break;
 			}
@@ -97,7 +96,7 @@ bool LoadingState::Update( float deltaTime )
 				EventData* unloadEvent = new EventData(Event_Unload);
 				unloadEvent->TriggerEvent();
 
-				SceneManager::GetInstance()->LoadScene(_sceneFileName);
+				SceneManager::GetInstance()->LoadScene(_sceneNum);
 				Game::GetInstance()->SetNextStateType(State_InGame);
 				return true;
 				break;
@@ -133,15 +132,14 @@ bool LoadingState::HandleEvent( const EventData& theevent )
 	if(theevent.GetEventType() == Event_NewGame )
 	{
 		const NewGameEventData& eventData = static_cast<const NewGameEventData&>(theevent);
-		_sceneFileName = eventData.GetSceneFileName();
+		_sceneNum = eventData.GetSceneNumber();
 
 		_loadType = Load_New;
 	}
 
 	if(theevent.GetEventType() == Event_NextLevel)
 	{
-		const NextLevelEventData& eventData = static_cast<const NextLevelEventData&>(theevent);
-		_sceneFileName = eventData.GetSceneFileName();
+		_sceneNum = SceneManager::GetInstance()->GetLoadedSceneNumber() + 1;
 
 		_loadType = Load_Next;
 	}

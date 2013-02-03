@@ -22,7 +22,7 @@ public:
         _tilesetMap.insert( std::make_pair( tile, tileset ) );
     }
 
-private:
+protected:
     sf::RenderTexture* _tileTexture;
 
     static std::unordered_map<std::string,std::string> _tilesetMap;

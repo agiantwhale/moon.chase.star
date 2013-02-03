@@ -26,7 +26,7 @@ private:
 		Load_Unload,
 		Load_Next,
 	} _loadType;
-	std::string _sceneFileName;
+	unsigned int _sceneNum;
 	Gwen::Controls::Base* _screenBase;
 	bool _frameDrawn;
 };

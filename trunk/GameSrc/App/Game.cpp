@@ -1,12 +1,15 @@
 #include "../App/Game.hpp"
 
-//Evnet
+#include <TinyXML/tinyxml.h>
+
+//Event
 #include "../Event/AppEventData.hpp"
 
 //Managers
 #include "../System/GraphicsManager.hpp"
 #include "../System/PhysicsManager.hpp"
 #include "../System/GUIManager.hpp"
+#include "../System/SceneManager.hpp"
 
 //Tile
 #include "../Tile/Tile.hpp"
@@ -39,13 +42,32 @@ SINGLETON_DESTRUCTOR( Game )
 
 void Game::Initialize( void )
 {
-	create(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"moon.chase.star",sf::Style::Close);
+	Settings gameSettings;
+	gameSettings.fullscreen = false;
+	TiXmlDocument document;
+	if(document.LoadFile("MCS.xml"))
+	{
+		const TiXmlElement* settingsElement = document.FirstChildElement("Settings");
+		if(settingsElement)
+		{
+			settingsElement->QueryBoolAttribute("Fullscreen", &gameSettings.fullscreen);
+		}
+	}
+
+	unsigned int screenSettings = sf::Style::Close;
+	if(gameSettings.fullscreen)
+	{
+		screenSettings = sf::Style::Close | sf::Style::Fullscreen;
+	}
+	create(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"moon.chase.star",screenSettings);
 
 	GUIManager::GetInstance()->SetUpGUI();
     PhysicsManager::GetInstance()->SetUpPhysics();
     GraphicsManager::GetInstance()->SetUpGraphics();
+	SceneManager::GetInstance()->SetUpScene();
 
     Tile::RegisterTileset("Rect", "Resource/Ogmo/Tiles/Rect.png");
+	Tile::RegisterTileset("Back", "Resource/Ogmo/Tiles/Back.png");
 
 	_stateMap.insert(std::make_pair(State_Intro,new IntroState));
 	_stateMap.insert(std::make_pair(State_MainMenu,new MainMenuState));
@@ -116,7 +138,8 @@ void Game::ChangeStates(void)
 
 void Game::Update(void)
 {
-    float deltaTime = _frameClock.restart().asSeconds();
+    float deltaTime = _frameClock.getElapsedTime().asSeconds();
+	_frameClock.restart();
 
     _shouldSwitchState = _currentState->Update(deltaTime);
 }

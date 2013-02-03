@@ -15,7 +15,6 @@ public:
 
 private:
 	BodyWrapper _triggerBody;
-	std::string _nextMapFile;
 };
 
 #endif

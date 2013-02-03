@@ -124,6 +124,7 @@
     <ClCompile Include="GameSrc\Task\CameraMoveTask.cpp" />
     <ClCompile Include="GameSrc\Task\Task.cpp" />
     <ClCompile Include="GameSrc\Task\TeleportTask.cpp" />
+    <ClCompile Include="GameSrc\Tile\BackgroundTile.cpp" />
     <ClCompile Include="GameSrc\Tile\Tile.cpp" />
     <ClCompile Include="Libs\CxxTL\src\tri_logger.cpp" />
     <ClCompile Include="Libs\GWEN\Renderers\SFML\SFML.cpp" />
@@ -155,7 +156,6 @@
     <ClInclude Include="GameSrc\Event\EventsDef.h" />
     <ClInclude Include="GameSrc\Event\GUIEventData.h" />
     <ClInclude Include="GameSrc\Event\NewGameEventData.hpp" />
-    <ClInclude Include="GameSrc\Event\NextLevelEventData.hpp" />
     <ClInclude Include="GameSrc\Event\SolveEventData.h" />
     <ClInclude Include="GameSrc\GUI\Log.hpp" />
     <ClInclude Include="GameSrc\GUI\MainMenu.hpp" />
@@ -185,6 +185,7 @@
     <ClInclude Include="GameSrc\Task\CameraMoveTask.hpp" />
     <ClInclude Include="GameSrc\Task\Task.hpp" />
     <ClInclude Include="GameSrc\Task\TeleportTask.hpp" />
+    <ClInclude Include="GameSrc\Tile\BackgroundTile.hpp" />
     <ClInclude Include="GameSrc\Tile\Tile.hpp" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

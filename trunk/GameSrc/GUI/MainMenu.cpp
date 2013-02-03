@@ -50,7 +50,7 @@ void MainMenuControl::OnExit( Gwen::Controls::Base* control )
 
 void MainMenuControl::OnNewGame( Gwen::Controls::Base* control )
 {
-	EventData* eventData = new NewGameEventData("Resource/Ogmo/Levels/Level1.oel");
+	EventData* eventData = new NewGameEventData(0);
 	eventData->TriggerEvent();
 }
 

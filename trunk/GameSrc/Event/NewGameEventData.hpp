@@ -7,14 +7,14 @@
 class NewGameEventData : public EventData
 {
 public:
-	NewGameEventData(const std::string& sceneFileName) : EventData(Event_NewGame), _sceneFileName(sceneFileName)
+	NewGameEventData(unsigned int sceneNum) : EventData(Event_NewGame), _sceneNum(sceneNum)
 	{
 	}
 
-	const std::string& GetSceneFileName(void) const {return _sceneFileName;}
+	unsigned int GetSceneNumber() const { return _sceneNum; }
 
 private:
-	std::string _sceneFileName;
+	unsigned int _sceneNum;
 };
 
 

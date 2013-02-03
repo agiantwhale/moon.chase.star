@@ -4,12 +4,18 @@
 #include <SFML/Graphics.hpp>
 #include <CxxTL/tri_logger.hpp>
 #include <unordered_map>
+#include <Thor/Time.hpp>
 
 #include <Gwen/Controls/Canvas.h>
 #include <Gwen/Input/SFML.h>
 
 #include "../Interface/IState.hpp"
 #include "../Base/Singleton.hpp"
+
+struct Settings
+{
+	bool fullscreen;
+};
 
 class Game : public Singleton<Game>, public sf::RenderWindow
 {
@@ -38,6 +44,16 @@ public:
         _nextStateType = val;
     }
 
+	inline void PauseFrameTimer(void)
+	{
+		_frameClock.stop();
+	}
+
+	inline void ResumeFrameTimer(void)
+	{
+		_frameClock.start();
+	}
+
 private:
     typedef std::unordered_map<StateType,IState*> StateMap;
 
@@ -54,7 +70,7 @@ private:
     IState* _currentState;
     StateMap _stateMap;
 
-    sf::Clock         _frameClock;
+    thor::StopWatch   _frameClock;
     sf::Clock		  _gameClock;
 };
 

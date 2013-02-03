@@ -16,7 +16,8 @@ class SceneManager : public Singleton<SceneManager>, private IEventListener
     DEFINE_SINGLETON( SceneManager );
 
 public:
-    void LoadScene( const std::string& mapName );
+	void SetUpScene(void);
+	void LoadScene( unsigned int sceneNum );
     void RestartScene(void);
     void UnloadScene( void );
     inline bool IsSceneLoaded( void )
@@ -30,13 +31,15 @@ public:
 	}
 
 	const Vec2D& GetLevelSize() const { return _levelSize; }
+	unsigned int GetLoadedSceneNumber() const { return _sceneNum; }
 
 private:
 	virtual bool HandleEvent( const EventData& newevent );
 
+	unsigned int _sceneNum;
+	std::vector<std::string> _sceneFileNameStack;
     bool _sceneLoaded;
 	Vec2D _levelSize;
-	std::string _sceneFileName;
 	std::vector<Tile*> _tileStack;
 };
 

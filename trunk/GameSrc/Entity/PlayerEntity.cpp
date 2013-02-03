@@ -169,12 +169,14 @@ void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
 		thor::ResourceKey<sf::SoundBuffer> key = thor::Resources::fromFile<sf::SoundBuffer>("Resource/Sounds/jump.wav");
 		std::shared_ptr<sf::SoundBuffer> buffer = ResourceCache::GetInstance()->acquire<sf::SoundBuffer>(key);
 		_bounceSound = new sf::Sound(*buffer);
+		_bounceSound->setVolume(10.f);
 	}
 
 	{
 		thor::ResourceKey<sf::SoundBuffer> key = thor::Resources::fromFile<sf::SoundBuffer>("Resource/Sounds/throw.wav");
 		std::shared_ptr<sf::SoundBuffer> buffer = ResourceCache::GetInstance()->acquire<sf::SoundBuffer>(key);
 		_throwSound = new sf::Sound(*buffer);
+		_throwSound->setVolume(30.f);
 	}
 }
 
@@ -361,7 +363,7 @@ void PlayerEntity::Control( void )
 
 	const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
 				rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-	
+
 	/*
 	const bool  leftInput = FingerOnLeft(),
 				rightInput = FingerOnRight();
@@ -378,6 +380,13 @@ void PlayerEntity::Control( void )
 	if( rightInput && ballVelocity.x < MAX_HORI_VELOCITY )
 	{
 		_ballBody.GetBody()->ApplyLinearImpulse( b2Vec2( MOVE_IMPULSE, 0 ), ballPosition );
+	}
+
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		b2Vec2 velocity = _ballBody.GetBody()->GetLinearVelocity();
+		velocity.x = 0.f;
+		_ballBody.GetBody()->SetLinearVelocity(velocity);
 	}
 }
 
