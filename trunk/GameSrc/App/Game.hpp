@@ -15,6 +15,7 @@
 struct Settings
 {
 	bool fullscreen;
+	int maxFramerate;
 };
 
 class Game : public Singleton<Game>, public sf::RenderWindow

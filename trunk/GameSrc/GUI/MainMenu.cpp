@@ -7,6 +7,7 @@
 #include "../Base/Globals.hpp"
 #include "../App/Game.hpp"
 #include "../Event/NewGameEventData.hpp"
+#include "../Event/GUIEventData.h"
 #include "../System/SceneManager.hpp"
 
 GWEN_CONTROL_CONSTRUCTOR(MainMenuControl)
@@ -24,14 +25,21 @@ GWEN_CONTROL_CONSTRUCTOR(MainMenuControl)
 	Gwen::Controls::Button* newGameButton = new Gwen::Controls::Button(this);
 	newGameButton->SetText(L"New Game");
 	newGameButton->SetSize(250,100);
-	newGameButton->SetPos(960 + 35,360);
+	newGameButton->SetPos(960 + 35,250);
 	newGameButton->onPress.Add(this,&MainMenuControl::OnNewGame);
 
 	Gwen::Controls::Button* continueButton = new Gwen::Controls::Button(this);
 	continueButton->SetText(L"Continue");
 	continueButton->SetSize(250,100);
-	continueButton->SetPos(960 + 35,470);
+	continueButton->SetPos(960 + 35,360);
 	continueButton->onPress.Add(this,&MainMenuControl::OnContinue);
+
+	Gwen::Controls::Button* creditsButton = new Gwen::Controls::Button(this);
+	creditsButton->SetText(L"Credits");
+	creditsButton->SetSize(250,100);
+	creditsButton->SetPos(960 + 35,470);
+	creditsButton->SetName("Credits");
+	creditsButton->onPress.Add(this,&MainMenuControl::OnContinue);
 
 	Gwen::Controls::Button* exitButton = new Gwen::Controls::Button(this);
 	exitButton->SetText(L"End Game");
@@ -58,5 +66,11 @@ void MainMenuControl::OnNewGame( Gwen::Controls::Base* control )
 void MainMenuControl::OnContinue( Gwen::Controls::Base* control )
 {
 	EventData* eventData = new NewGameEventData(SceneManager::GetInstance()->GetLoadedSceneNumber());
+	eventData->TriggerEvent();
+}
+
+void MainMenuControl::OnCredits( Gwen::Controls::Base* control )
+{
+	EventData* eventData = new GUIEventData(control);
 	eventData->TriggerEvent();
 }

@@ -26,21 +26,21 @@ GWEN_CONTROL_CONSTRUCTOR(PauseMenuControl)
 	titleImage->SetBounds(20,50,640,400);
 
 	Gwen::Controls::Button* resumeButton = new Gwen::Controls::Button(this);
-	resumeButton->SetText(L"계속하기");
+	resumeButton->SetText(L"Resume");
 	resumeButton->SetSize(250,100);
 	resumeButton->SetPos(960 + 35,360);
 	resumeButton->SetName("ResumeButton");
 	resumeButton->onPress.Add(this,&PauseMenuControl::OnButtonPressed);
 
 	Gwen::Controls::Button* mainMenuButton = new Gwen::Controls::Button(this);
-	mainMenuButton->SetText(L"초기화면으로");
+	mainMenuButton->SetText(L"To Main Menu");
 	mainMenuButton->SetSize(250,100);
 	mainMenuButton->SetPos(960 + 35,470);
 	mainMenuButton->SetName("MainMenuButton");
 	mainMenuButton->onPress.Add(this,&PauseMenuControl::OnButtonPressed);
 
 	Gwen::Controls::Button* exitButton = new Gwen::Controls::Button(this);
-	exitButton->SetText(L"끝내기");
+	exitButton->SetText(L"End Game");
 	exitButton->SetSize(250,100);
 	exitButton->SetPos(960 + 35,580);
 	exitButton->SetName("ExitButton");

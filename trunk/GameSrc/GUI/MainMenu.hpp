@@ -10,6 +10,7 @@ class MainMenuControl : public Gwen::Controls::Base
 public:
 	void OnContinue(Gwen::Controls::Base* control);
 	void OnNewGame(Gwen::Controls::Base* control);
+	void OnCredits(Gwen::Controls::Base* control);
 	void OnExit(Gwen::Controls::Base* control);
 };
 

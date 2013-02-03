@@ -51,6 +51,7 @@ void Game::Initialize( void )
 		if(settingsElement)
 		{
 			settingsElement->QueryBoolAttribute("Fullscreen", &gameSettings.fullscreen);
+			settingsElement->QueryIntAttribute("MaxFramerate", &gameSettings.maxFramerate);
 		}
 	}
 
@@ -60,6 +61,11 @@ void Game::Initialize( void )
 		screenSettings = sf::Style::Close | sf::Style::Fullscreen;
 	}
 	create(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"moon.chase.star",screenSettings);
+
+	if(gameSettings.maxFramerate != 0)
+	{
+		setFramerateLimit(gameSettings.maxFramerate);
+	}
 
 	GUIManager::GetInstance()->SetUpGUI();
     PhysicsManager::GetInstance()->SetUpPhysics();
@@ -77,6 +83,8 @@ void Game::Initialize( void )
 
 	SetNextStateType(State_Intro);
 	_shouldSwitchState = true;
+
+	setFramerateLimit(30);
 
 	TRI_LOG_STR("Game initialized.");
 }
