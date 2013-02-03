@@ -83,4 +83,3 @@ bool LevelCompleteEntity::HandleEvent( const EventData& theevent )
 
 	return false;
 }
-
