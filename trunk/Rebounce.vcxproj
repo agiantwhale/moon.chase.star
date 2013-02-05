@@ -50,13 +50,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;TIXML_USE_STL;FTLOG="Game";_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Development\Rebounce\trunk\Libs\Leap_SDK\include;C:\Development\Rebounce\trunk\Libs\Thor\include;C:\Program Files %28x86%29\PrimeSense\NiTE2\Include;$(OPENNI2_INCLUDE);C:\Development\Rebounce\trunk\Libs\Box2D\include;C:\Development\Rebounce\trunk\Libs\TinyXML\include;C:\Development\Rebounce\trunk\Libs\CxxTL\include;C:\Development\Rebounce\trunk\Libs\SFML\include;C:\Development\Rebounce\trunk\Libs\sfeMovie\include;C:\Development\Rebounce\trunk\Libs\GWEN\include;C:\Development\Rebounce\trunk\Libs\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Development\Rebounce\trunk\Libs\Thor\include;C:\Development\Rebounce\trunk\Libs\Box2D\include;C:\Development\Rebounce\trunk\Libs\TinyXML\include;C:\Development\Rebounce\trunk\Libs\CxxTL\include;C:\Development\Rebounce\trunk\Libs\SFML\include;C:\Development\Rebounce\trunk\Libs\sfeMovie\include;C:\Development\Rebounce\trunk\Libs\GWEN\include;C:\Development\Rebounce\trunk\Libs\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Development\Rebounce\trunk\Libs\Leap_SDK\lib\x86;C:\Development\Rebounce\trunk\Libs\Thor\lib;C:\Program Files %28x86%29\PrimeSense\NiTE2\Lib;$(OPENNI2_LIB);C:\Development\Rebounce\trunk\Libs\Box2D\lib\Debug;C:\Development\Rebounce\trunk\Libs\TinyXML\lib\DebugtinyxmlSTL;C:\Development\Rebounce\trunk\Libs\SFML\lib;C:\Development\Rebounce\trunk\Libs\sfeMovie\lib\Debug;C:\Development\Rebounce\trunk\Libs\GWEN\lib\windows\vs2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>thor-d.lib;Leapd.lib;Box2D.lib;opengl32.lib;tinyxmlSTL.lib;gwend.lib;sfeMovie_d.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Development\Rebounce\trunk\Libs\Thor\lib;C:\Development\Rebounce\trunk\Libs\Box2D\lib\Debug;C:\Development\Rebounce\trunk\Libs\TinyXML\lib\DebugtinyxmlSTL;C:\Development\Rebounce\trunk\Libs\SFML\lib;C:\Development\Rebounce\trunk\Libs\sfeMovie\lib\Debug;C:\Development\Rebounce\trunk\Libs\GWEN\lib\windows\vs2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>thor-d.lib;Box2D.lib;opengl32.lib;tinyxmlSTL.lib;gwend.lib;sfeMovie_d.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -68,15 +68,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;TIXML_USE_STL;FTLOG="Game";NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Development\Rebounce\trunk\Libs\Leap_SDK\include;C:\Development\Rebounce\trunk\Libs\Thor\include;C:\Program Files %28x86%29\PrimeSense\NiTE2\Include;$(OPENNI2_INCLUDE);C:\Development\Rebounce\trunk\Libs\Box2D\include;C:\Development\Rebounce\trunk\Libs\TinyXML\include;C:\Development\Rebounce\trunk\Libs\SFML\include;C:\Development\Rebounce\trunk\Libs\sfeMovie\include;C:\Development\Rebounce\trunk\Libs\GWEN\include;C:\Development\Rebounce\trunk\Libs\CxxTL\include;C:\Development\Rebounce\trunk\Libs\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Development\Rebounce\trunk\Libs\Thor\include;C:\Development\Rebounce\trunk\Libs\Box2D\include;C:\Development\Rebounce\trunk\Libs\TinyXML\include;C:\Development\Rebounce\trunk\Libs\SFML\include;C:\Development\Rebounce\trunk\Libs\sfeMovie\include;C:\Development\Rebounce\trunk\Libs\GWEN\include;C:\Development\Rebounce\trunk\Libs\CxxTL\include;C:\Development\Rebounce\trunk\Libs\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Development\Rebounce\trunk\Libs\Leap_SDK\lib\x86;C:\Development\Rebounce\trunk\Libs\Thor\lib;C:\Program Files %28x86%29\PrimeSense\NiTE2\Lib;$(OPENNI2_LIB);C:\Development\Rebounce\trunk\Libs\Box2D\lib\Release;C:\Development\Rebounce\trunk\Libs\TinyXML\lib\ReleasetinyxmlSTL;C:\Development\Rebounce\trunk\Libs\SFML\lib;C:\Development\Rebounce\trunk\Libs\sfeMovie\lib\MinSizeRel;C:\Development\Rebounce\trunk\Libs\GWEN\lib\windows\vs2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>thor.lib;Leap.lib;Box2D.lib;opengl32.lib;tinyxmlSTL.lib;gwen.lib;sfeMovie.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Development\Rebounce\trunk\Libs\Thor\lib;C:\Development\Rebounce\trunk\Libs\Box2D\lib\Release;C:\Development\Rebounce\trunk\Libs\TinyXML\lib\ReleasetinyxmlSTL;C:\Development\Rebounce\trunk\Libs\SFML\lib;C:\Development\Rebounce\trunk\Libs\sfeMovie\lib\MinSizeRel;C:\Development\Rebounce\trunk\Libs\GWEN\lib\windows\vs2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>thor.lib;Box2D.lib;opengl32.lib;tinyxmlSTL.lib;gwen.lib;sfeMovie.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -105,7 +105,6 @@
     <ClCompile Include="GameSrc\Interface\IPhysics.cpp" />
     <ClCompile Include="GameSrc\Interface\IRenderable.cpp" />
     <ClCompile Include="GameSrc\Interface\IState.cpp" />
-    <ClCompile Include="GameSrc\Leap\Leap.cpp" />
     <ClCompile Include="GameSrc\State\InGameState.cpp" />
     <ClCompile Include="GameSrc\State\IntroState.cpp" />
     <ClCompile Include="GameSrc\State\LoadingState.cpp" />
@@ -157,6 +156,7 @@
     <ClInclude Include="GameSrc\Event\GUIEventData.h" />
     <ClInclude Include="GameSrc\Event\NewGameEventData.hpp" />
     <ClInclude Include="GameSrc\Event\SolveEventData.h" />
+    <ClInclude Include="GameSrc\Event\StarInitializeEventData.hpp" />
     <ClInclude Include="GameSrc\GUI\Log.hpp" />
     <ClInclude Include="GameSrc\GUI\MainMenu.hpp" />
     <ClInclude Include="GameSrc\GUI\PauseMenu.hpp" />
@@ -165,7 +165,6 @@
     <ClInclude Include="GameSrc\Interface\IRenderable.hpp" />
     <ClInclude Include="GameSrc\Interface\IState.hpp" />
     <ClInclude Include="GameSrc\Interface\ITransform.hpp" />
-    <ClInclude Include="GameSrc\Leap\Leap.hpp" />
     <ClInclude Include="GameSrc\State\InGameState.hpp" />
     <ClInclude Include="GameSrc\State\IntroState.hpp" />
     <ClInclude Include="GameSrc\State\LoadingState.hpp" />

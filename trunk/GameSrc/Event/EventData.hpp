@@ -25,7 +25,6 @@ public:
 	void TriggerEvent(void);
 	void QueueEvent(float waitTime = 0.0f);
 	void AbortEvent(bool allOfType = false);
-
     void StartEvent(void);
 
 protected:

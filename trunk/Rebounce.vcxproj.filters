@@ -207,9 +207,6 @@
     <ClCompile Include="GameSrc\Entity\BGMEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\Leap\Leap.cpp">
-      <Filter>GameSrc\Leap</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\Tile\BackgroundTile.cpp">
       <Filter>GameSrc\Tile</Filter>
     </ClCompile>
@@ -378,13 +375,13 @@
     <ClInclude Include="GameSrc\Entity\BGMEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\Leap\Leap.hpp">
-      <Filter>GameSrc\Leap</Filter>
-    </ClInclude>
     <ClInclude Include="GameSrc\Tile\BackgroundTile.hpp">
       <Filter>GameSrc\Tile</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Event\NewGameEventData.hpp">
+      <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\StarInitializeEventData.hpp">
       <Filter>GameSrc\Event</Filter>
     </ClInclude>
   </ItemGroup>

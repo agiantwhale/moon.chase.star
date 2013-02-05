@@ -91,22 +91,14 @@ REGISTER_ENTITY( PlayerEntity, "Ball" )
 
 PlayerEntity::PlayerEntity() : Entity(), _ballBody(this), _ballSprite(this),
     _shouldBounce(false),
-	_shouldAcceptInput(true),
     _playerState(kPlayer_Moving),
 	_bounceSound(nullptr),
 	_throwSound(nullptr)
 {
-	AddEventListenType(Event_App);
-
-	//_controller.addListener(_listener);
 }
 
 PlayerEntity::~PlayerEntity()
 {
-	RemoveEventListenType(Event_App);
-
-	//_controller.removeListener(_listener);
-
 	delete _bounceSound;
 	delete _throwSound;
 }
@@ -213,21 +205,6 @@ bool PlayerEntity::HandleEvent(const EventData& theevent)
 			if(_ballBody.IsContactRelated(contactInfo,target))
 			{
 				ProcessPreSolve(contactInfo,target);
-			}
-
-			break;
-		}
-
-	case Event_App:
-		{
-			if(_playerState != kPlayer_Thrown) break;
-
-			const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
-
-			if(eventData.GetAppEvent().type == sf::Event::KeyReleased &&
-			   eventData.GetAppEvent().key.code == _pressedInput )
-			{
-				_shouldAcceptInput = true;
 			}
 
 			break;
@@ -359,15 +336,8 @@ void PlayerEntity::ProcessPreSolve( b2Contact* contact,const b2Fixture* target )
 
 void PlayerEntity::Control( void )
 {
-	if(!_shouldAcceptInput) return;
-
 	const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
 				rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-
-	/*
-	const bool  leftInput = FingerOnLeft(),
-				rightInput = FingerOnRight();
-				*/
 
 	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
 	b2Vec2 ballPosition = _ballBody.GetBody()->GetPosition();
@@ -381,18 +351,10 @@ void PlayerEntity::Control( void )
 	{
 		_ballBody.GetBody()->ApplyLinearImpulse( b2Vec2( MOVE_IMPULSE, 0 ), ballPosition );
 	}
-
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		b2Vec2 velocity = _ballBody.GetBody()->GetLinearVelocity();
-		velocity.x = 0.f;
-		_ballBody.GetBody()->SetLinearVelocity(velocity);
-	}
 }
 
 void PlayerEntity::Fall( void )
 {
-	_shouldAcceptInput = true;
 	_playerState = kPlayer_Moving;
 	_ballBody.GetBody()->SetGravityScale(6.0f);
 
@@ -406,31 +368,6 @@ void PlayerEntity::Fall( void )
 
 void PlayerEntity::Throw( const b2Vec2& velocity )
 {
-	const bool leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
-			   rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-
-	/*
-	const bool  leftInput = FingerOnLeft(),
-		rightInput = FingerOnRight();
-		*/
-
-	_shouldAcceptInput = false;
-
-	if(leftInput)
-	{
-		_pressedInput = sf::Keyboard::Left;
-	}
-
-	if(rightInput)
-	{
-		_pressedInput = sf::Keyboard::Right;
-	}
-	
-	if( !leftInput && !rightInput )
-	{
-		_shouldAcceptInput = true;
-	}
-
 	_playerState = kPlayer_Thrown;
 	_ballBody.GetBody()->SetGravityScale(0.0f);
 	_ballBody.GetBody()->SetLinearVelocity(velocity);
@@ -497,15 +434,7 @@ void PlayerEntity::UpdatePlayerState( void )
 
 	case kPlayer_Thrown:
 		{
-			/*
-			const bool  leftInput = FingerOnLeft(),
-				rightInput = FingerOnRight();
-				*/
-
-			const bool leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
-					   rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-
-			if( _shouldAcceptInput && (leftInput || rightInput) )
+			if( sf::Keyboard::isKeyPressed(sf::Keyboard::Down) )
 			{
 				Fall();
 			}

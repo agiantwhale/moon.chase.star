@@ -71,6 +71,4 @@ void MainMenuControl::OnContinue( Gwen::Controls::Base* control )
 
 void MainMenuControl::OnCredits( Gwen::Controls::Base* control )
 {
-	EventData* eventData = new GUIEventData(control);
-	eventData->TriggerEvent();
 }
