@@ -115,6 +115,7 @@
     <ClCompile Include="GameSrc\System\EventManager.cpp" />
     <ClCompile Include="GameSrc\System\GraphicsManager.cpp" />
     <ClCompile Include="GameSrc\System\GUIManager.cpp" />
+    <ClCompile Include="GameSrc\System\InputManager.cpp" />
     <ClCompile Include="GameSrc\System\PhysicsManager.cpp" />
     <ClCompile Include="GameSrc\System\RenderLayer.cpp" />
     <ClCompile Include="GameSrc\System\ResourceCache.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="GameSrc\System\EventManager.hpp" />
     <ClInclude Include="GameSrc\System\GraphicsManager.hpp" />
     <ClInclude Include="GameSrc\System\GUIManager.hpp" />
+    <ClInclude Include="GameSrc\System\InputManager.hpp" />
     <ClInclude Include="GameSrc\System\PhysicsManager.hpp" />
     <ClInclude Include="GameSrc\System\RenderLayer.hpp" />
     <ClInclude Include="GameSrc\System\ResourceCache.hpp" />

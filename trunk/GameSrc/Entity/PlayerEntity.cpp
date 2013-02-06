@@ -5,6 +5,7 @@
 #include "../System/PhysicsManager.hpp"
 #include "../System/ResourceCache.hpp"
 #include "../System/EventManager.hpp"
+#include "../System/InputManager.hpp"
 #include "../Event/ContactEventData.h"
 #include "../Event/SolveEventData.h"
 #include "CxxTL/tri_logger.hpp"
@@ -336,8 +337,8 @@ void PlayerEntity::ProcessPreSolve( b2Contact* contact,const b2Fixture* target )
 
 void PlayerEntity::Control( void )
 {
-	const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
-				rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+	const bool  leftInput = InputManager::GetInstance()->GetLeftInput(),
+				rightInput = InputManager::GetInstance()->GetRightInput();
 
 	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
 	b2Vec2 ballPosition = _ballBody.GetBody()->GetPosition();
@@ -434,7 +435,7 @@ void PlayerEntity::UpdatePlayerState( void )
 
 	case kPlayer_Thrown:
 		{
-			if( sf::Keyboard::isKeyPressed(sf::Keyboard::Down) )
+			if( InputManager::GetInstance()->GetDownInput() )
 			{
 				Fall();
 			}
