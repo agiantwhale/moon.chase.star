@@ -21,11 +21,6 @@ private:
 	ParticleWrapper _starParticle;
 	BodyWrapper		_starBody;
 
-	enum 
-	{
-		kStar_Traveling,
-		kStar_Arrived
-	} _starState;
 	float _currentTime;
 	float _totalTravelTime;
 	Vec2D _previousPosition;

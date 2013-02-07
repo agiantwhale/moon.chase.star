@@ -10,6 +10,7 @@
 #include "../System/PhysicsManager.hpp"
 #include "../System/GUIManager.hpp"
 #include "../System/SceneManager.hpp"
+#include "../system/InputManager.hpp"
 
 //Tile
 #include "../Tile/Tile.hpp"
@@ -71,6 +72,7 @@ void Game::Initialize( void )
     PhysicsManager::GetInstance()->SetUpPhysics();
     GraphicsManager::GetInstance()->SetUpGraphics();
 	SceneManager::GetInstance()->SetUpScene();
+	InputManager::GetInstance()->SetUpInput();
 
     Tile::RegisterTileset("Rect", "Resource/Ogmo/Tiles/Rect.png");
 	Tile::RegisterTileset("Back", "Resource/Ogmo/Tiles/Back.png");

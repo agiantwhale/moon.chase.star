@@ -213,6 +213,9 @@
     <ClCompile Include="GameSrc\System\InputManager.cpp">
       <Filter>GameSrc\System</Filter>
     </ClCompile>
+    <ClCompile Include="GameSrc\Entity\ZoneEntity.cpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp">
@@ -389,6 +392,9 @@
     </ClInclude>
     <ClInclude Include="GameSrc\System\InputManager.hpp">
       <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\ZoneEntity.hpp">
+      <Filter>GameSrc\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

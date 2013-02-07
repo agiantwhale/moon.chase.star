@@ -7,6 +7,7 @@
 #include "../Entity/Entity.hpp"
 #include "../Tile/Tile.hpp"
 #include "../Tile/BackgroundTile.hpp"
+#include "../Entity/ZoneEntity.hpp"
 #include "GraphicsManager.hpp"
 
 SINGLETON_CONSTRUCTOR(SceneManager),
@@ -36,6 +37,8 @@ bool SceneManager::HandleEvent( const EventData& newevent )
 
 void SceneManager::RestartScene(void)
 {
+	_transformMap.clear();
+
 	TRI_LOG_STR("Restarting scene.");
 
     TiXmlDocument sceneDocument;
@@ -72,16 +75,24 @@ void SceneManager::RestartScene(void)
                 objectElement = objectElement->NextSiblingElement();
             }
         }
-
-		int camSlice = 0;
-		levelElement->Attribute("camSlice",&camSlice);
-		const int horiSlice = _levelSize.x / SCREENWIDTH;
-
-		for(int i = 0; i < GraphicsManager::GetInstance()->GetRenderLayerStackSize(); i++ )
-		{
-			GraphicsManager::GetInstance()->GetRenderLayer(i)->GetCamera().SetPosition(Vec2D(SCREENWIDTH*UNRATIO*(camSlice%horiSlice),-SCREENHEIGHT*UNRATIO*static_cast<int>(camSlice/horiSlice)));
-		}
     }
+
+	{
+		const int horizontalBlocks = _levelSize.x / SCREENWIDTH;
+		const int verticalBlocks = _levelSize.y / SCREENHEIGHT;
+
+		for(int h = 0; h < horizontalBlocks; h++)
+		{
+			for(int v = 0; v < verticalBlocks; v++)
+			{
+				Vec2D worldPosition(h * SCREENWIDTH * UNRATIO, v * SCREENHEIGHT * UNRATIO * -1.f );
+				Entity* entity = new ZoneEntity;
+				entity->SetPosition(worldPosition);
+				entity->Initialize();
+				entityMgr->RegisterEntity(entity);
+			}
+		}
+	}
 
     entityMgr->PostLoad();
 
@@ -127,9 +138,11 @@ void SceneManager::LoadScene( unsigned int sceneNum )
     {
         //Initialize all this later, after loading all crap from the scene file.
 
+
+
         int levelWidth = 0.0f, levelHeight = 0.0f;
-        levelElement->Attribute("width",&levelWidth);
-        levelElement->Attribute("height",&levelHeight);
+        levelElement->QueryIntAttribute("width",&levelWidth);
+        levelElement->QueryIntAttribute("height",&levelHeight);
 		_levelSize.Set(levelWidth,levelHeight);
 
         //Collision
@@ -183,16 +196,24 @@ void SceneManager::LoadScene( unsigned int sceneNum )
                 objectElement = objectElement->NextSiblingElement();
             }
         }
-
-		int camSlice = 0;
-		levelElement->Attribute("camSlice",&camSlice);
-		const int horiSlice = levelWidth / SCREENWIDTH;
-
-		for(int i = 0; i < GraphicsManager::GetInstance()->GetRenderLayerStackSize(); i++ )
-		{
-			GraphicsManager::GetInstance()->GetRenderLayer(i)->GetCamera().SetPosition(Vec2D(SCREENWIDTH*UNRATIO*(camSlice%horiSlice),-SCREENHEIGHT*UNRATIO*static_cast<int>(camSlice/horiSlice)));
-		}
     }
+
+	{
+		const int horizontalBlocks = _levelSize.x / SCREENWIDTH;
+		const int verticalBlocks = _levelSize.y / SCREENHEIGHT;
+
+		for(int h = 0; h < horizontalBlocks; h++)
+		{
+			for(int v = 0; v < verticalBlocks; v++)
+			{
+				Vec2D worldPosition(h * SCREENWIDTH * UNRATIO, v * SCREENHEIGHT * UNRATIO * -1.f );
+				Entity* entity = new ZoneEntity;
+				entity->SetPosition(worldPosition);
+				entity->Initialize();
+				entityMgr->RegisterEntity(entity);
+			}
+		}
+	}
 
     entityMgr->PostLoad();
 
@@ -211,6 +232,7 @@ void SceneManager::UnloadScene(void)
 	}
 
 	_tileStack.clear();
+	_transformMap.clear();
     _sceneLoaded = false;
 }
 
@@ -247,4 +269,20 @@ void SceneManager::SaveProgress( void )
 
 		document.SaveFile();
 	}
+}
+
+void SceneManager::RegisterTransform( const std::string& name, ITransform* transform )
+{
+	_transformMap.insert(std::make_pair(name,transform));
+}
+
+ITransform* SceneManager::FindTransform( const std::string &name )
+{
+	TransformMap::iterator iter = _transformMap.find(name);
+	if(iter != _transformMap.end())
+	{
+		return iter->second;
+	}
+
+	return nullptr;
 }

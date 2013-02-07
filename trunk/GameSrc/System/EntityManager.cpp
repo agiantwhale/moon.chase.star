@@ -122,6 +122,7 @@ bool EntityManager::HandleEvent( const EventData& newevent )
 void EntityManager::Update(float deltaTime)
 {
     _entityList.Update(deltaTime);
+	_entityList.DelayedRelease();
 }
 
 void EntityManager::PostLoad(void)

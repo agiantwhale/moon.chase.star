@@ -6,6 +6,7 @@
 #include "../System/SceneManager.hpp"
 #include "../System/EventManager.hpp"
 #include "../System/TaskManager.hpp"
+#include "../system/InputManager.hpp"
 #include "../Event/AppEventData.hpp"
 
 InGameState::InGameState() :	IState(),
@@ -44,9 +45,10 @@ void InGameState::Render()
 
 bool InGameState::Update(float deltaTime)
 {
+	InputManager::GetInstance()->Update( deltaTime );
     PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
+	EventManager::GetInstance()->Update( deltaTime );
     EntityManager::GetInstance()->Update( deltaTime );
-    EventManager::GetInstance()->Update( deltaTime );
 	TaskManager::GetInstance()->Update( deltaTime );
 
     return _endState;

@@ -6,6 +6,7 @@
 #include "../System/ResourceCache.hpp"
 #include "../System/EventManager.hpp"
 #include "../System/InputManager.hpp"
+#include "../System/SceneManager.hpp"
 #include "../Event/ContactEventData.h"
 #include "../Event/SolveEventData.h"
 #include "CxxTL/tri_logger.hpp"
@@ -84,7 +85,7 @@ const float BALL_RADIUS = 0.5f;
 const float KILL_TIME = 1.5f;
 const float JUMP_IMPULSE = 18.0f;
 const float MOVE_IMPULSE = 0.5f;
-const float MAX_HORI_VELOCITY = 7.0f;
+const float MAX_HORI_VELOCITY = 9.0f;
 const float MAX_VERTI_VELOCITY = 7.0f;
 const float JUMP_SLOPE = 0.25f;
 
@@ -106,16 +107,18 @@ PlayerEntity::~PlayerEntity()
 
 void PlayerEntity::Update(float deltaTime)
 {
-	//Loses the game.
-    if( GetPosition().y < -(SCREENHEIGHT * UNRATIO * 0.5f + 5.0f) )
-    {
+
+	ITransform* starTransform = SceneManager::GetInstance()->FindTransform("Star");
+	Vec2D deltaDistance = GetPosition() - starTransform->GetPosition();
+	if(Magnitude(deltaDistance) >= 45.0f)
+	{
 		SetActive(false);
 
 		EventManager::GetInstance()->AbortEvent(Event_NextLevel,true);
 
 		EventData* eventData = new EventData( Event_RestartLevel );
 		eventData->QueueEvent(0.5f);
-    }
+	}
 }
 
 void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
@@ -171,6 +174,8 @@ void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
 		_throwSound = new sf::Sound(*buffer);
 		_throwSound->setVolume(30.f);
 	}
+
+	SceneManager::GetInstance()->RegisterTransform("Player",this);
 }
 
 bool PlayerEntity::HandleEvent(const EventData& theevent)
@@ -298,6 +303,8 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
 					tlptTask->AddTask();
 				}
 
+				InputManager::GetInstance()->FeedOutput(0.6f,0.6f);
+
 				break;
 			}
 
@@ -376,6 +383,8 @@ void PlayerEntity::Throw( const b2Vec2& velocity )
 	LimitHorizontalVelocity();
 
 	_throwSound->play();
+
+	InputManager::GetInstance()->FeedOutput(0.5f, 0.2f);
 }
 
 void PlayerEntity::LimitHorizontalVelocity()
@@ -413,6 +422,8 @@ void PlayerEntity::Bounce( void )
 	_ballBody.GetBody()->ApplyLinearImpulse(b2Vec2(0,JUMP_IMPULSE), _ballBody.GetBody()->GetPosition());
 
 	_bounceSound->play();
+
+	InputManager::GetInstance()->FeedOutput(0.3f, 0.15f);
 }
 
 void PlayerEntity::UpdatePlayerState( void )

@@ -5,9 +5,11 @@
 #include <vector>
 #include <string>
 #include <SFML/Audio.hpp>
+#include <unordered_map>
 #include "../Base/Vec2D.hpp"
 #include "../Base/Singleton.hpp"
 #include "../Interface/IEventListener.hpp"
+#include "../Interface/ITransform.hpp"
 
 class Tile;
 
@@ -34,6 +36,9 @@ public:
 	const Vec2D& GetLevelSize() const { return _levelSize; }
 	unsigned int GetLoadedSceneNumber() const { return _sceneNum; }
 
+	void RegisterTransform(const std::string& name, ITransform* transform);
+	ITransform* FindTransform(const std::string &name);
+
 private:
 	virtual bool HandleEvent( const EventData& newevent );
 
@@ -42,6 +47,9 @@ private:
     bool _sceneLoaded;
 	Vec2D _levelSize;
 	std::vector<Tile*> _tileStack;
+
+	typedef std::unordered_map<std::string,ITransform*> TransformMap;
+	TransformMap _transformMap;
 };
 
 #endif

@@ -1,0 +1,129 @@
+#include "../Entity/ZoneEntity.hpp"
+#include "../Event/ContactEventData.h"
+#include "../Task/CameraMoveTask.hpp"
+#include "../System/GraphicsManager.hpp"
+#include "../System/SceneManager.hpp"
+
+const float HORIZONTAL_TRAVEL_TIME = 2.0f;
+const float VERTICAL_TRAVEL_TIME = 1.0f;
+
+ZoneEntity::ZoneEntity()
+	:	BaseClass(),
+		_zoneBody(this),
+		_containsBall(false)
+{
+}
+
+ZoneEntity::~ZoneEntity()
+{
+}
+
+void ZoneEntity::Initialize( const TiXmlElement *propertyElement /*= NULL */ )
+{
+	BaseClass::Initialize(propertyElement);
+
+	{
+		b2BodyDef bodyDefinition;
+		bodyDefinition.userData = (IPhysics*)this;
+		bodyDefinition.position = b2Vec2(GetPosition().x, GetPosition().y);
+		bodyDefinition.angle = 0.0f;
+		bodyDefinition.fixedRotation = true;
+		bodyDefinition.type = b2_staticBody;
+
+		_zoneBody.CreateBody( bodyDefinition );
+
+		b2PolygonShape boxShape;
+		boxShape.SetAsBox( 0.5f * SCREENWIDTH * UNRATIO, 0.5f * SCREENHEIGHT * UNRATIO );
+
+		b2FixtureDef fixtureDef;
+		fixtureDef.isSensor = true;
+		fixtureDef.shape = &boxShape;
+
+		_zoneBody.CreateFixture( fixtureDef, "Zone" );
+
+		_zoneBody.ResetTransform();
+	}
+}
+
+void ZoneEntity::PostLoad()
+{
+	ITransform* moonTransform = SceneManager::GetInstance()->FindTransform("Player");
+
+	Vec2D moonPos = moonTransform->GetPosition();
+	if(_zoneBody.LookUpFixture("Zone")->TestPoint(moonPos))
+	{
+		for(unsigned int i = 0; i < GraphicsManager::GetInstance()->GetRenderLayerStackSize(); i++ )
+		{
+			GraphicsManager::GetInstance()->GetRenderLayer(i)->GetCamera().SetPosition(GetPosition());
+		}
+	}
+}
+
+bool ZoneEntity::HandleEvent( const EventData& theevent )
+{
+	switch (theevent.GetEventType())
+	{
+	case Event_BeginContact:
+		{
+			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.GetContact();
+
+			const b2Fixture* target = nullptr;
+			if(_zoneBody.IsContactRelated(contactInfo,target))
+			{
+				IPhysics *targetInterface = GetPhysicsInterface(target);
+
+				if(targetInterface->GetEntity()->GetEntityType() == 'BALL')
+				{
+					_containsBall = true;
+
+					for(unsigned int i = 0; i < GraphicsManager::GetInstance()->GetRenderLayerStackSize(); i++ )
+					{
+						Task* cameraTask = nullptr;
+						float travelTme = VERTICAL_TRAVEL_TIME;
+						Vec2D deltaDistance = GetPosition() - GraphicsManager::GetInstance()->GetRenderLayer(i)->GetCamera().GetPosition();
+						if( std::abs(deltaDistance.x) >= 0.f )
+						{
+							travelTme = HORIZONTAL_TRAVEL_TIME;
+						}
+
+						if(i==0)
+						{
+							cameraTask = new CameraMoveTask(travelTme,i,deltaDistance/travelTme * 0.5f);
+						}
+						else
+						{
+							cameraTask = new CameraMoveTask(travelTme,i,deltaDistance/travelTme);
+						}
+						cameraTask->AddTask();
+					}
+
+					Release();
+				}
+			}
+
+			break;
+		}
+
+	case Event_EndContact:
+		{
+			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.GetContact();
+
+			const b2Fixture* target = nullptr;
+			if(_zoneBody.IsContactRelated(contactInfo,target))
+			{
+				IPhysics *targetInterface = GetPhysicsInterface(target);
+
+				if(targetInterface->GetEntity()->GetEntityType() == 'BALL')
+				{
+					_containsBall = false;
+				}
+			}
+
+			break;
+		}
+	}
+
+	return false;
+}

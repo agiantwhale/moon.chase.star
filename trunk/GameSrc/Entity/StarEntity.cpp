@@ -2,6 +2,7 @@
 #include <Thor/Animation.hpp>
 #include <Thor/Math.hpp>
 #include "../System/ResourceCache.hpp"
+#include "../System/SceneManager.hpp"
 #include "../Entity/StarEntity.hpp"
 #include "../Task/Task.hpp"
 
@@ -18,7 +19,6 @@ StarEntity::StarEntity()
 		_starSprite(this),
 		_starParticle(this),
 		_starBody(this),
-		_starState(kStar_Traveling),
 		_currentTime(0.f),
 		_totalTravelTime(0.f),
 		_previousPosition(0.f,0.f),
@@ -39,63 +39,32 @@ void StarEntity::Update( float deltaTime )
 {
 	BaseClass::Update(deltaTime);
 
-	switch (_starState)
+	_currentTime += deltaTime;
+
+	if(_currentTime>=_totalTravelTime)
 	{
-	case kStar_Traveling:
-		{
-			_currentTime += deltaTime;
-
-			if(_currentTime>=_totalTravelTime)
-			{
-				_starState = kStar_Arrived;
-				_currentTime = 1.0f;
-				break;
-			}
-			else
-			{
-				SetPosition(Vec2D(_xSpline(_currentTime),_ySpline(_currentTime)));
-
-				Vec2D position = WorldToScreen(GetPosition());
-				Vec2D velocity = (GetPosition() - _previousPosition)/deltaTime;
-				velocity *= RATIO;
-				velocity.x *= -1;
-
-				//_emitter->setParticleRotationSpeed(20.f);
-				_emitter->setParticleVelocity(thor::Distributions::deflect(velocity, 20.f) );
-				_emitter->setParticlePosition(position);
-				//_emitter->setParticlePosition(thor::Distributions::circle(position,STAR_RADIUS*RATIO * 0.2));
-
-				_starParticle.Update(deltaTime);
-
-				_previousPosition = GetPosition();
-
-				_particleVelocity = velocity;
-			}
-
-			break;
-		}
-
-	case kStar_Arrived:
-		{
-			if(_currentTime >= 0.f)
-			{
-				_currentTime -= deltaTime;
-			}
-			else if( _currentTime < 0.f )
-			{
-				_currentTime = 0.0f;
-			}
-
-			float lerp = 1.0f - _currentTime;
-
-			float time = TRAVEL_LIFETIME + lerp * (ARRIVAL_LIFETIME-TRAVEL_LIFETIME);
-			_emitter->setParticleLifetime(sf::seconds(time));
-
-			_starParticle.Update(deltaTime);
-			
-			break;
-		}
+		SetPosition(Vec2D(_xSpline(_totalTravelTime),_ySpline(_totalTravelTime)));
+		_emitter->setParticleLifetime(sf::seconds(ARRIVAL_LIFETIME));
 	}
+	else
+	{
+		SetPosition(Vec2D(_xSpline(_currentTime),_ySpline(_currentTime)));
+
+		Vec2D position = WorldToScreen(GetPosition());
+		Vec2D velocity = (GetPosition() - _previousPosition)/deltaTime;
+		velocity *= RATIO;
+		velocity.x *= -1;
+
+		//_emitter->setParticleRotationSpeed(20.f);
+		_emitter->setParticleVelocity(thor::Distributions::deflect(velocity, 20.f) );
+		_emitter->setParticlePosition(position);
+		//_emitter->setParticlePosition(thor::Distributions::circle(position,STAR_RADIUS*RATIO * 0.2));
+
+		_previousPosition = GetPosition();
+		_particleVelocity = velocity;
+	}
+
+	_starParticle.Update(deltaTime);
 }
 
 void StarEntity::Initialize( const TiXmlElement *propertyElement /* = nullptr */ )
@@ -189,6 +158,8 @@ void StarEntity::Initialize( const TiXmlElement *propertyElement /* = nullptr */
 			_previousPosition = GetPosition();
 		}
 	}
+
+	SceneManager::GetInstance()->RegisterTransform("Star",this);
 }
 
 bool StarEntity::HandleEvent(const EventData& theevent)
