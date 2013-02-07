@@ -19,8 +19,11 @@ SINGLETON_DESTRUCTOR(InputManager)
 {
 	RemoveEventListenType(Event_Unload);
 
-	ClearVibration();
-	SetVibratationState();
+	if(_inputType == kInput_Xbox)
+	{
+		ClearVibration();
+		SetVibratationState();
+	}
 }
 
 void InputManager::SetUpInput()
@@ -43,6 +46,18 @@ void InputManager::Update(float dt)
 	_leftInput = false;
 	_rightInput = false;
 	_downInput = false;
+
+	/*
+	{
+		XINPUT_STATE state;
+		memset(&state,0, sizeof(XINPUT_STATE));
+		DWORD result = XInputGetState(0, &state);
+		if(result == ERROR_SUCCESS)
+		{
+			_inputType = kInput_Xbox;
+		}
+	}
+	*/
 
 	switch(_inputType)
 	{
@@ -139,17 +154,20 @@ bool InputManager::HandleEvent( const EventData& theevent )
 
 void InputManager::SetVibratationState( void )
 {
-	XINPUT_VIBRATION vibration;
-	memset(&vibration, 0, sizeof(XINPUT_VIBRATION));
+	if(_inputType == kInput_Xbox)
+	{
+		XINPUT_VIBRATION vibration;
+		memset(&vibration, 0, sizeof(XINPUT_VIBRATION));
 
-	int leftVib = (int)(_vibrateAmount*65535.0f);
-	int rightVib = (int)(_vibrateAmount*65535.0f);
+		int leftVib = (int)(_vibrateAmount*65535.0f);
+		int rightVib = (int)(_vibrateAmount*65535.0f);
 
-	// Set the Vibration Values
-	vibration.wLeftMotorSpeed = leftVib;
-	vibration.wRightMotorSpeed = rightVib;
-	// Vibrate the controller
-	XInputSetState(0, &vibration);
+		// Set the Vibration Values
+		vibration.wLeftMotorSpeed = leftVib;
+		vibration.wRightMotorSpeed = rightVib;
+		// Vibrate the controller
+		XInputSetState(0, &vibration);
+	}
 }
 
 void InputManager::ClearVibration( void )
