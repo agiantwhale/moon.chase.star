@@ -15,6 +15,7 @@ public:
 
 private:
 	BodyWrapper _triggerBody;
+	bool _acceptArrival;
 };
 
 #endif

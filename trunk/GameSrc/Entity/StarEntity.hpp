@@ -21,6 +21,7 @@ private:
 	ParticleWrapper _starParticle;
 	BodyWrapper		_starBody;
 
+	bool	_arrived;
 	float _currentTime;
 	float _totalTravelTime;
 	Vec2D _previousPosition;

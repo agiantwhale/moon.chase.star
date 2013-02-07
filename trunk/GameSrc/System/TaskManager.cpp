@@ -1,5 +1,6 @@
 #include "../System/TaskManager.hpp"
 #include "../Task/Task.hpp"
+#include "../Entity/ZoneEntity.hpp"
 
 SINGLETON_CONSTRUCTOR(TaskManager), IEventListener("TaskManager")
 {
@@ -60,6 +61,8 @@ bool TaskManager::HandleEvent( const EventData& theevent )
 			Task* task = (*iter);
 			delete task;
 		}
+
+		ZoneEntity::_taskList.clear();
 
 		_toDoList.clear();
 	}

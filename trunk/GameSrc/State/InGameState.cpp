@@ -37,10 +37,7 @@ void InGameState::Enter()
 void InGameState::Render()
 {
     GraphicsManager::GetInstance()->Render();
-
-#ifdef _DEBUG
     //PhysicsManager::GetInstance()->Render();
-#endif
 }
 
 bool InGameState::Update(float deltaTime)

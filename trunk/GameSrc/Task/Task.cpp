@@ -32,4 +32,3 @@ void Task::RemoveTask()
 {
 	TaskManager::GetInstance()->RemoveTask(this);
 }
-

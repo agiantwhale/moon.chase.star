@@ -4,8 +4,7 @@
 #include "../System/GraphicsManager.hpp"
 #include "../System/SceneManager.hpp"
 
-const float HORIZONTAL_TRAVEL_TIME = 2.0f;
-const float VERTICAL_TRAVEL_TIME = 1.0f;
+std::list<Task*> ZoneEntity::_taskList;
 
 ZoneEntity::ZoneEntity()
 	:	BaseClass(),
@@ -77,28 +76,29 @@ bool ZoneEntity::HandleEvent( const EventData& theevent )
 				{
 					_containsBall = true;
 
+					for(std::list<Task*>::iterator iter = _taskList.begin(); iter != _taskList.end(); iter++ )
+					{
+						Task* moveTask = (*iter);
+						moveTask->RemoveTask();
+						delete moveTask;
+					}
+					_taskList.clear();
+
 					for(unsigned int i = 0; i < GraphicsManager::GetInstance()->GetRenderLayerStackSize(); i++ )
 					{
-						Task* cameraTask = nullptr;
-						float travelTme = VERTICAL_TRAVEL_TIME;
-						Vec2D deltaDistance = GetPosition() - GraphicsManager::GetInstance()->GetRenderLayer(i)->GetCamera().GetPosition();
-						if( std::abs(deltaDistance.x) >= 0.f )
-						{
-							travelTme = HORIZONTAL_TRAVEL_TIME;
-						}
+						CameraMoveTask* cameraTask = nullptr;
 
 						if(i==0)
 						{
-							cameraTask = new CameraMoveTask(travelTme,i,deltaDistance/travelTme * 0.5f);
+							cameraTask = new CameraMoveTask(GetPosition(),i,0.5f);
 						}
 						else
 						{
-							cameraTask = new CameraMoveTask(travelTme,i,deltaDistance/travelTme);
+							cameraTask = new CameraMoveTask(GetPosition(),i,1.0f);
 						}
 						cameraTask->AddTask();
+						_taskList.push_back(cameraTask);
 					}
-
-					Release();
 				}
 			}
 

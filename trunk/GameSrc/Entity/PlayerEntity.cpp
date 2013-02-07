@@ -107,17 +107,19 @@ PlayerEntity::~PlayerEntity()
 
 void PlayerEntity::Update(float deltaTime)
 {
-
 	ITransform* starTransform = SceneManager::GetInstance()->FindTransform("Star");
-	Vec2D deltaDistance = GetPosition() - starTransform->GetPosition();
-	if(Magnitude(deltaDistance) >= 45.0f)
+	if(starTransform)
 	{
-		SetActive(false);
+		Vec2D deltaDistance = GetPosition() - starTransform->GetPosition();
+		if(Magnitude(deltaDistance) >= 45.0f)
+		{
+			SetActive(false);
 
-		EventManager::GetInstance()->AbortEvent(Event_NextLevel,true);
+			EventManager::GetInstance()->AbortEvent(Event_NextLevel,true);
 
-		EventData* eventData = new EventData( Event_RestartLevel );
-		eventData->QueueEvent(0.5f);
+			EventData* eventData = new EventData( Event_RestartLevel );
+			eventData->QueueEvent(0.5f);
+		}
 	}
 }
 

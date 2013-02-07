@@ -18,6 +18,7 @@ enum EventType
 	Event_PostSolve,
 	Event_Simulate,
 
+	//Game related
 	Event_BallDied,
 	Event_NewGame,
 	Event_LevelCompleted,
@@ -26,7 +27,9 @@ enum EventType
 	Event_GameOver,
 	Event_Unload,
 	Event_ExitGame,
-	Event_StarInitialize,
+
+	//Gameplay related
+	Event_StarArrived,
 	NUM_EVENTS
 };
 

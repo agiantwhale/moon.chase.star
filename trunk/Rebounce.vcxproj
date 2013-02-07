@@ -85,7 +85,6 @@
     <ClCompile Include="GameSrc\Base\Vec2D.cpp" />
     <ClCompile Include="GameSrc\Entity\BGMEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\BlockEntity.cpp" />
-    <ClCompile Include="GameSrc\Entity\CameraMoveEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\Component\BodyWrapper.cpp" />
     <ClCompile Include="GameSrc\Entity\Component\ParticleWrapper.cpp" />
     <ClCompile Include="GameSrc\Entity\Component\SpriteWrapper.cpp" />
@@ -140,7 +139,6 @@
     <ClInclude Include="GameSrc\Base\Vec2D.hpp" />
     <ClInclude Include="GameSrc\Entity\BGMEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\BlockEntity.hpp" />
-    <ClInclude Include="GameSrc\Entity\CameraMoveEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\Component\BodyWrapper.hpp" />
     <ClInclude Include="GameSrc\Entity\Component\ParticleWrapper.hpp" />
     <ClInclude Include="GameSrc\Entity\Component\SpriteWrapper.hpp" />
@@ -159,7 +157,6 @@
     <ClInclude Include="GameSrc\Event\GUIEventData.h" />
     <ClInclude Include="GameSrc\Event\NewGameEventData.hpp" />
     <ClInclude Include="GameSrc\Event\SolveEventData.h" />
-    <ClInclude Include="GameSrc\Event\StarInitializeEventData.hpp" />
     <ClInclude Include="GameSrc\GUI\Log.hpp" />
     <ClInclude Include="GameSrc\GUI\MainMenu.hpp" />
     <ClInclude Include="GameSrc\GUI\PauseMenu.hpp" />

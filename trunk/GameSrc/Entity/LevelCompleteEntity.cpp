@@ -4,14 +4,15 @@
 REGISTER_ENTITY(LevelCompleteEntity,"LevelComplete")
 
 LevelCompleteEntity::LevelCompleteEntity() : BaseClass(),
-											 _triggerBody(this)
+											 _triggerBody(this),
+											 _acceptArrival(false)
 {
-
+	AddEventListenType(Event_StarArrived);
 }
 
 LevelCompleteEntity::~LevelCompleteEntity()
 {
-
+	RemoveEventListenType(Event_StarArrived);
 }
 
 void LevelCompleteEntity::Initialize( const TiXmlElement *propertyElement /*= NULL */ )
@@ -50,7 +51,7 @@ void LevelCompleteEntity::ProcessContact( const b2Contact* contact, const b2Fixt
 {
 	IPhysics *targetInterface = GetPhysicsInterface(contactFixture);
 
-	if(IsActive() && targetInterface && targetInterface->GetEntity()->GetEntityType() == 'BALL')
+	if(IsActive() && _acceptArrival && targetInterface && targetInterface->GetEntity()->GetEntityType() == 'BALL')
 	{
 		SetActive(false);
 
@@ -74,6 +75,12 @@ bool LevelCompleteEntity::HandleEvent( const EventData& theevent )
 				ProcessContact(contactInfo,target);
 			}
 
+			break;
+		}
+
+	case Event_StarArrived:
+		{
+			_acceptArrival = true;
 			break;
 		}
 

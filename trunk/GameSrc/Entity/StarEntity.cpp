@@ -5,6 +5,7 @@
 #include "../System/SceneManager.hpp"
 #include "../Entity/StarEntity.hpp"
 #include "../Task/Task.hpp"
+#include "../Event/EventData.hpp"
 
 REGISTER_ENTITY(StarEntity,"Star")
 
@@ -19,6 +20,7 @@ StarEntity::StarEntity()
 		_starSprite(this),
 		_starParticle(this),
 		_starBody(this),
+		_arrived(false),
 		_currentTime(0.f),
 		_totalTravelTime(0.f),
 		_previousPosition(0.f,0.f),
@@ -43,6 +45,13 @@ void StarEntity::Update( float deltaTime )
 
 	if(_currentTime>=_totalTravelTime)
 	{
+		if(!_arrived)
+		{
+			_arrived = true;
+			EventData* eventData = new EventData(Event_StarArrived);
+			eventData->TriggerEvent();
+		}
+
 		SetPosition(Vec2D(_xSpline(_totalTravelTime),_ySpline(_totalTravelTime)));
 		_emitter->setParticleLifetime(sf::seconds(ARRIVAL_LIFETIME));
 	}

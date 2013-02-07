@@ -47,6 +47,8 @@ void TeleportTask::End()
 	Vec2D exitPos = _teleportEntity->GetExitPosition();
 	_playerEntity->SetScale(Vec2D(1.0f));
 	_playerEntity->GetBallBody().GetBody()->SetActive(true);
+	_playerEntity->GetBallBody().GetBody()->SetAngularVelocity(0.0f);
+	_playerEntity->GetBallBody().GetBody()->SetLinearVelocity(b2Vec2(0.0f,0.0f));
 	_playerEntity->GetBallBody().GetBody()->SetTransform(exitPos,_playerEntity->GetBallBody().GetBody()->GetAngle());
 	_playerEntity->GetBallBody().GetBody()->SetAwake(true);
 	_playerEntity->GetBallBody().ResetTransform();

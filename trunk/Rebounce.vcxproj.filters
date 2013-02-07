@@ -78,9 +78,6 @@
     <ClCompile Include="GameSrc\Base\Vec2D.cpp">
       <Filter>GameSrc\Base</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\Entity\CameraMoveEntity.cpp">
-      <Filter>GameSrc\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\Entity\Entity.cpp">
       <Filter>GameSrc\Entity</Filter>
     </ClCompile>
@@ -239,9 +236,6 @@
     <ClInclude Include="GameSrc\Entity\BlockEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\Entity\CameraMoveEntity.hpp">
-      <Filter>GameSrc\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="GameSrc\Entity\Entity.hpp">
       <Filter>GameSrc\Entity</Filter>
     </ClInclude>
@@ -385,9 +379,6 @@
       <Filter>GameSrc\Tile</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Event\NewGameEventData.hpp">
-      <Filter>GameSrc\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Event\StarInitializeEventData.hpp">
       <Filter>GameSrc\Event</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\System\InputManager.hpp">

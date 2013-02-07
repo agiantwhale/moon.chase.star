@@ -2,6 +2,7 @@
 #include "../System/GUIManager.hpp"
 #include "../System/GraphicsManager.hpp"
 #include "../System/PhysicsManager.hpp"
+#include "../System/InputManager.hpp"
 #include "../Event/GUIEventData.h"
 #include "../App/Game.hpp"
 #include "../Event/AppEventData.hpp"
@@ -70,6 +71,8 @@ void PauseState::Enter( void )
 
 bool PauseState::Update( float deltaTime )
 {
+	InputManager::GetInstance()->Update( deltaTime );
+
 	return _endState;
 }
 
