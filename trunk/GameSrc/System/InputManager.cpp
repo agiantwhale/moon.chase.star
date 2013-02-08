@@ -117,13 +117,13 @@ void InputManager::Update(float dt)
 				if(_vibrateDuration > 0.f)
 				{
 					_vibrateDuration -= dt;
-					SetVibratationState();
 				}
 				else
 				{
 					ClearVibration();
-					SetVibratationState();
 				}
+
+				SetVibratationState();
 			}
 
 			break;
@@ -146,7 +146,7 @@ bool InputManager::HandleEvent( const EventData& theevent )
 	if( theevent.GetEventType() == Event_Unload )
 	{
 		ClearVibration();
-		return false;
+		SetVibratationState();
 	}
 
 	return false;
@@ -174,7 +174,6 @@ void InputManager::ClearVibration( void )
 {
 	_vibrateAmount = 0.0f;
 	_vibrateDuration = 0.0f;
-	SetVibratationState();
 }
 
 void InputManager::FeedOutput( float amount, float duration )

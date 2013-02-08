@@ -86,8 +86,6 @@ void Game::Initialize( void )
 	SetNextStateType(State_Intro);
 	_shouldSwitchState = true;
 
-	setFramerateLimit(30);
-
 	TRI_LOG_STR("Game initialized.");
 }
 

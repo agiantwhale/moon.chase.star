@@ -349,6 +349,11 @@ void PlayerEntity::Control( void )
 	const bool  leftInput = InputManager::GetInstance()->GetLeftInput(),
 				rightInput = InputManager::GetInstance()->GetRightInput();
 
+	/*
+	const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
+				rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+				*/
+
 	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
 	b2Vec2 ballPosition = _ballBody.GetBody()->GetPosition();
 
@@ -448,7 +453,7 @@ void PlayerEntity::UpdatePlayerState( void )
 
 	case kPlayer_Thrown:
 		{
-			if( InputManager::GetInstance()->GetDownInput() )
+			if( InputManager::GetInstance()->GetDownInput() /* sf::Keyboard::isKeyPressed(sf::Keyboard::Down) */ )
 			{
 				Fall();
 			}
