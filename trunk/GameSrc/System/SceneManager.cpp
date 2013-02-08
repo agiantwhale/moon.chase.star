@@ -14,7 +14,8 @@ SINGLETON_CONSTRUCTOR(SceneManager),
                       IEventListener("SceneManager"),
 					  _levelSize(),
                       _sceneLoaded(false),
-                      _sceneNum(0)
+                      _sceneNum(0),
+					  _backgroundMusic(nullptr)
 {
 	AddEventListenType(Event_Unload);
 }
@@ -29,7 +30,6 @@ bool SceneManager::HandleEvent( const EventData& newevent )
     if( newevent.GetEventType() == Event_Unload )
     {
         UnloadScene();
-        return false;
     }
 
     return false;
@@ -137,13 +137,20 @@ void SceneManager::LoadScene( unsigned int sceneNum )
     else
     {
         //Initialize all this later, after loading all crap from the scene file.
-
-
-
         int levelWidth = 0.0f, levelHeight = 0.0f;
         levelElement->QueryIntAttribute("width",&levelWidth);
         levelElement->QueryIntAttribute("height",&levelHeight);
 		_levelSize.Set(levelWidth,levelHeight);
+
+		std::string musicFileName;
+		levelElement->QueryStringAttribute("BackgroundMusic", &musicFileName);
+		if(!musicFileName.empty())
+		{
+			_backgroundMusic = new sf::Music();
+			_backgroundMusic->openFromFile(musicFileName);
+			_backgroundMusic->setLoop(true);
+			_backgroundMusic->play();
+		}
 
         //Collision
         TiXmlElement *collisionElement = levelElement->FirstChildElement("Collision");
@@ -226,6 +233,12 @@ void SceneManager::LoadScene( unsigned int sceneNum )
 
 void SceneManager::UnloadScene(void)
 {
+	if(_backgroundMusic)
+	{
+		delete _backgroundMusic;
+		_backgroundMusic = nullptr;
+	}
+
 	for(std::vector<Tile*>::iterator iter = _tileStack.begin(); iter != _tileStack.end(); iter++)
 	{
 		delete (*iter);

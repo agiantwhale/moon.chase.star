@@ -83,11 +83,11 @@
     <ClCompile Include="GameSrc\App\Game.cpp" />
     <ClCompile Include="GameSrc\App\main.cpp" />
     <ClCompile Include="GameSrc\Base\Vec2D.cpp" />
-    <ClCompile Include="GameSrc\Entity\BGMEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\BlockEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\Component\BodyWrapper.cpp" />
     <ClCompile Include="GameSrc\Entity\Component\ParticleWrapper.cpp" />
     <ClCompile Include="GameSrc\Entity\Component\SpriteWrapper.cpp" />
+    <ClCompile Include="GameSrc\Entity\DeadZoneEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\Entity.cpp" />
     <ClCompile Include="GameSrc\Entity\HullEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\LevelCompleteEntity.cpp" />
@@ -137,11 +137,11 @@
     <ClInclude Include="GameSrc\Base\Singleton.hpp" />
     <ClInclude Include="GameSrc\Base\Math.hpp" />
     <ClInclude Include="GameSrc\Base\Vec2D.hpp" />
-    <ClInclude Include="GameSrc\Entity\BGMEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\BlockEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\Component\BodyWrapper.hpp" />
     <ClInclude Include="GameSrc\Entity\Component\ParticleWrapper.hpp" />
     <ClInclude Include="GameSrc\Entity\Component\SpriteWrapper.hpp" />
+    <ClInclude Include="GameSrc\Entity\DeadZoneEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\Entity.hpp" />
     <ClInclude Include="GameSrc\Entity\HullEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\LevelCompleteEntity.hpp" />

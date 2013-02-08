@@ -48,6 +48,8 @@ private:
 	Vec2D _levelSize;
 	std::vector<Tile*> _tileStack;
 
+	sf::Music*	_backgroundMusic;
+
 	typedef std::unordered_map<std::string,ITransform*> TransformMap;
 	TransformMap _transformMap;
 };

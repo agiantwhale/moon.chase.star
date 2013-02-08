@@ -201,9 +201,6 @@
     <ClCompile Include="GameSrc\Entity\MovingPlatformEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\Entity\BGMEntity.cpp">
-      <Filter>GameSrc\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\Tile\BackgroundTile.cpp">
       <Filter>GameSrc\Tile</Filter>
     </ClCompile>
@@ -211,6 +208,9 @@
       <Filter>GameSrc\System</Filter>
     </ClCompile>
     <ClCompile Include="GameSrc\Entity\ZoneEntity.cpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\DeadZoneEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
     </ClCompile>
   </ItemGroup>
@@ -372,9 +372,6 @@
     <ClInclude Include="GameSrc\Entity\MovingPlatformEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\Entity\BGMEntity.hpp">
-      <Filter>GameSrc\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="GameSrc\Tile\BackgroundTile.hpp">
       <Filter>GameSrc\Tile</Filter>
     </ClInclude>
@@ -385,6 +382,9 @@
       <Filter>GameSrc\System</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Entity\ZoneEntity.hpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\DeadZoneEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
     </ClInclude>
   </ItemGroup>
