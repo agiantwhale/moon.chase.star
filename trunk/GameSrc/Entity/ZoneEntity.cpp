@@ -118,6 +118,7 @@ bool ZoneEntity::HandleEvent( const EventData& theevent )
 				if(targetInterface->GetEntity()->GetEntityType() == 'BALL')
 				{
 					_containsBall = false;
+					Release();
 				}
 			}
 
