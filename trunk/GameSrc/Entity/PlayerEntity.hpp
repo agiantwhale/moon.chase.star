@@ -2,7 +2,9 @@
 #define PLAYERENTITY_HPP
 
 #include <SFML/Audio.hpp>
+#include <list>
 #include "../Entity/Entity.hpp"
+#include "../Entity/ZoneEntity.hpp"
 #include "../Entity/Component/BodyWrapper.hpp"
 #include "../Entity/Component/SpriteWrapper.hpp"
 #include "../Entity/Component/ParticleWrapper.hpp"
@@ -50,6 +52,9 @@ private:
 	SpriteWrapper _ballSprite;
 	sf::Sound*	_bounceSound;
 	sf::Sound*	_throwSound;
+
+	typedef std::list<ZoneEntity*> ZoneEntityList;
+	ZoneEntityList _zoneEntityList;
 };
 
 class DummyBallEntity : public Entity

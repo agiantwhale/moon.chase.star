@@ -95,7 +95,8 @@ PlayerEntity::PlayerEntity() : Entity(), _ballBody(this), _ballSprite(this),
     _shouldBounce(false),
     _playerState(kPlayer_Moving),
 	_bounceSound(nullptr),
-	_throwSound(nullptr)
+	_throwSound(nullptr),
+	_zoneEntityList()
 {
 }
 
@@ -193,6 +194,24 @@ bool PlayerEntity::HandleEvent(const EventData& theevent)
 			if(_ballBody.IsContactRelated(contactInfo,target))
 			{
 				ProcessContact(contactInfo,target);
+			}
+
+			break;
+		}
+
+	case Event_EndContact:
+		{
+			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.GetContact();
+
+			const b2Fixture* target = nullptr;
+			if(_ballBody.IsContactRelated(contactInfo,target))
+			{
+				IPhysics* targetInterface = GetPhysicsInterface(target);
+				if(targetInterface->GetEntity()->GetEntityType() == 'ZONE')
+				{
+					_zoneEntityList.remove(static_cast<ZoneEntity*>(targetInterface->GetEntity()));
+				}
 			}
 
 			break;
@@ -307,6 +326,13 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
 
 				InputManager::GetInstance()->FeedOutput(0.6f,0.6f);
 
+				break;
+			}
+
+		case 'ZONE':
+			{
+				//implement sort of an interface to keep track of which zone the player entity is in.
+				_zoneEntityList.push_back(static_cast<ZoneEntity*>(targetInterface->GetEntity()));
 				break;
 			}
 
