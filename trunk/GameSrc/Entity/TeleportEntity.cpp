@@ -4,7 +4,7 @@
 
 REGISTER_ENTITY(TeleportEntity,"Teleport")
 
-const float ROTATION_PER_SECOND = 20.0f;
+const float ROTATION_PER_SECOND = 90.0f;
 const float TELEPORT_SIZE = 2.0f;
 
 TeleportEntity::TeleportEntity()
@@ -14,12 +14,10 @@ TeleportEntity::TeleportEntity()
 		_enterSprite(&_enterTransform),
 		_exitSprite(&_exitTransform)
 {
-
 }
 
 TeleportEntity::~TeleportEntity()
 {
-
 }
 
 void TeleportEntity::Update( float deltaTime )

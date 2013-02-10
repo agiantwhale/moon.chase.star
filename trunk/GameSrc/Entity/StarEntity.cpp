@@ -11,7 +11,7 @@ REGISTER_ENTITY(StarEntity,"Star")
 
 const float STAR_RADIUS = 0.5f;
 const float EMISSION_RATE = 200.0f;
-const float TRAVEL_SPEED = 7.0f;
+const float TRAVEL_SPEED = 8.0f;
 const float TRAVEL_LIFETIME = 3.0f;
 const float ARRIVAL_LIFETIME = 0.1f;
 
