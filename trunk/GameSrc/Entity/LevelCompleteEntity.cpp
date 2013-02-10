@@ -1,11 +1,14 @@
 #include "../Entity/LevelCompleteEntity.hpp"
+#include "../Entity/PlayerEntity.hpp"
 #include "../Event/ContactEventData.h"
+#include "../Task/LevelCompleteTask.hpp"
 
 REGISTER_ENTITY(LevelCompleteEntity,"LevelComplete")
 
 LevelCompleteEntity::LevelCompleteEntity() : BaseClass(),
 											 _triggerBody(this),
-											 _acceptArrival(false)
+											 _acceptArrival(false),
+											 _endFollowRoute()
 {
 	AddEventListenType(Event_StarArrived);
 }
@@ -44,6 +47,24 @@ void LevelCompleteEntity::Initialize( const TiXmlElement *propertyElement /*= NU
 
 			_triggerBody.ResetTransform();
 		}
+
+		{
+			float totalDistance = 0.0f;
+			const TiXmlElement* pathNode = propertyElement->FirstChildElement("node");
+			//_endFollowRoute.push_back(GetPosition());
+			while(pathNode)
+			{
+				float x = 0.f, y = 0.f;
+				pathNode->QueryFloatAttribute("x",&x);
+				pathNode->QueryFloatAttribute("y",&y);
+
+				Vec2D world((x - SCREENWIDTH/2) * UNRATIO, (y - SCREENHEIGHT/2) * UNRATIO * -1);
+
+				_endFollowRoute.push_back(world);
+
+				pathNode = pathNode->NextSiblingElement();
+			}
+		}
 	}
 }
 
@@ -55,8 +76,8 @@ void LevelCompleteEntity::ProcessContact( const b2Contact* contact, const b2Fixt
 	{
 		SetActive(false);
 
-		EventData* eventData = new EventData(Event_NextLevel);
-		eventData->QueueEvent(0.5f);
+		LevelCompleteTask* levelCompleteTask = new LevelCompleteTask(static_cast<PlayerEntity*>(targetInterface->GetEntity()),_endFollowRoute);
+		levelCompleteTask->AddTask();
 	}
 }
 

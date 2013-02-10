@@ -213,6 +213,9 @@
     <ClCompile Include="GameSrc\Entity\DeadZoneEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="GameSrc\Task\LevelCompleteTask.cpp">
+      <Filter>GameSrc\Task</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp">
@@ -386,6 +389,9 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Entity\DeadZoneEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Task\LevelCompleteTask.hpp">
+      <Filter>GameSrc\Task</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

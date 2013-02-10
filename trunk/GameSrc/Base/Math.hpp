@@ -319,7 +319,7 @@ namespace ublas = boost::numeric::ublas;
     };
 
 	template <typename T>
-	T lerp( T& val1, T& val2, float u)
+	T lerp( const T& val1, const T& val2, float u)
 	{
 		return val1 + u * (val2-val1);
 	}

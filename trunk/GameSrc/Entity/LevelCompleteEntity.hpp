@@ -1,8 +1,11 @@
 #ifndef LEVELCOMPLETEENTITY_HPP
 #define LEVELCOMPLETEENTITY_HPP
 
+#include "../Base/Math.hpp"
 #include "../Entity/Entity.hpp"
 #include "../Entity/Component/BodyWrapper.hpp"
+
+class PlayerEntity;
 
 class LevelCompleteEntity : public Entity
 {
@@ -14,8 +17,11 @@ public:
 	virtual bool HandleEvent( const EventData& theevent );
 
 private:
+	typedef std::vector<Vec2D> VectorStack;
+	VectorStack	_endFollowRoute;
+
 	BodyWrapper _triggerBody;
-	bool _acceptArrival;
+	bool		_acceptArrival;
 };
 
 #endif
