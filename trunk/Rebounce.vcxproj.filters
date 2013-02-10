@@ -389,15 +389,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Notes\Gameplay ideas.txt">
-      <Filter>Notes</Filter>
-    </None>
-    <None Include="Notes\BGMs to check out.txt">
-      <Filter>Notes</Filter>
-    </None>
-    <None Include="Notes\dev.log">
-      <Filter>Notes</Filter>
-    </None>
     <None Include="GameSrc\Entity\TeleportEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
     </None>
