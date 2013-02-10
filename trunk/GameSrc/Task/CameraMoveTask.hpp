@@ -9,7 +9,7 @@ class Camera;
 class CameraMoveTask : public Task
 {
 public:
-	CameraMoveTask( const Vec2D& finalDestination, unsigned int renderLayer, float affector );
+	CameraMoveTask( const Vec2D& moveDistance, unsigned int renderLayer, float affector );
 
 	virtual void Start();
 	virtual bool DoTask(float deltaTime);

@@ -1,4 +1,5 @@
 #include "../Entity/ZoneEntity.hpp"
+#include "../Base/Math.hpp"
 #include "../Event/ContactEventData.h"
 #include "../Task/CameraMoveTask.hpp"
 #include "../System/GraphicsManager.hpp"
@@ -86,16 +87,18 @@ bool ZoneEntity::HandleEvent( const EventData& theevent )
 
 					for(unsigned int i = 0; i < GraphicsManager::GetInstance()->GetRenderLayerStackSize(); i++ )
 					{
-						CameraMoveTask* cameraTask = nullptr;
+						Vec2D deltaDistance = (GetPosition()-GraphicsManager::GetInstance()->GetRenderLayer(i)->GetCamera().GetPosition());
+						float affector = 1.0f;
+
+						deltaDistance.x = signum<float>(deltaDistance.x) * SCREENWIDTH * UNRATIO;
+						deltaDistance.y = signum<float>(deltaDistance.y) * SCREENHEIGHT * UNRATIO;
 
 						if(i==0)
 						{
-							cameraTask = new CameraMoveTask(GetPosition(),i,0.5f);
+							affector = 0.5f;
 						}
-						else
-						{
-							cameraTask = new CameraMoveTask(GetPosition(),i,1.0f);
-						}
+
+						CameraMoveTask* cameraTask = new CameraMoveTask(deltaDistance * affector,i,affector);
 						cameraTask->AddTask();
 						_taskList.push_back(cameraTask);
 					}
