@@ -28,6 +28,7 @@
 SINGLETON_CONSTRUCTOR( Game ),
 	sf::RenderWindow(),
 	_isRunning( true ),
+	_isPaused( false ),
 	_frameClock(),
 	_gameClock(),
 	_shouldSwitchState(false),
@@ -98,9 +99,14 @@ void Game::Start( void )
 
     while(_isRunning)
     {
-		ChangeStates();
-        PollEvents();
-        Update();
+		PollEvents();
+
+		if(!_isPaused)
+		{
+			ChangeStates();
+			Update();
+		}
+
         Render();
     }
 }
@@ -114,6 +120,16 @@ void Game::PollEvents(void)
         {
             Quit();
         }
+
+		if(windowEvent.type == sf::Event::LostFocus)
+		{
+			_isPaused = true;
+		}
+
+		if(windowEvent.type == sf::Event::GainedFocus)
+		{
+			_isPaused = false;
+		}
 
 		EventData* eventData = new AppEventData(windowEvent);
 		eventData->TriggerEvent();

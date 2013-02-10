@@ -64,6 +64,7 @@ private:
     void Render(void);
 
     bool _isRunning;
+	bool _isPaused;
     bool _shouldSwitchState;
 
     StateType _currentStateType;

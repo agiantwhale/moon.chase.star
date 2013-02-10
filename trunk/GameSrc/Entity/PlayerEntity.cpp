@@ -262,7 +262,7 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
         {
 			_shouldBounce = false;
 
-            if( (slope <= JUMP_SLOPE || _ballBody.GetBody()->GetPosition().y < targetInterface->GetEntity()->GetPosition().y ) && _playerState == kPlayer_Thrown )
+            if( (slope < JUMP_SLOPE || _ballBody.GetBody()->GetPosition().y < targetInterface->GetEntity()->GetPosition().y ) && _playerState == kPlayer_Thrown )
             {
                 Fall();
             }
@@ -301,7 +301,7 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
 				{
 					Fall();
 				}
-				else if( slope >= 10.0f )
+				else if( slope >= JUMP_SLOPE )
 				{
 					_shouldBounce = true;
 				}

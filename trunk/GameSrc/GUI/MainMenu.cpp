@@ -32,7 +32,7 @@ GWEN_CONTROL_CONSTRUCTOR(MainMenuControl)
 	continueButton->SetText(L"Continue");
 	continueButton->SetSize(250,100);
 	continueButton->SetPos(960 + 35,360);
-	continueButton->onPress.Add(this,&MainMenuControl::OnContinue);
+	continueButton->onPress.Add(this,&MainMenuControl::OnCredits);
 
 	Gwen::Controls::Button* creditsButton = new Gwen::Controls::Button(this);
 	creditsButton->SetText(L"Credits");
