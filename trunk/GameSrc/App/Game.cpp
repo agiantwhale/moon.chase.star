@@ -1,6 +1,7 @@
 #include "../App/Game.hpp"
 
 #include <TinyXML/tinyxml.h>
+#include <time.h>
 
 //Event
 #include "../Event/AppEventData.hpp"
@@ -31,6 +32,7 @@ SINGLETON_CONSTRUCTOR( Game ),
 	_isPaused( false ),
 	_frameClock(),
 	_gameClock(),
+	_shouldTakeScreenshot(false),
 	_shouldSwitchState(false),
 	_currentStateType(State_UNDEFINED),
 	_nextStateType(State_UNDEFINED),
@@ -53,7 +55,7 @@ void Game::Initialize( void )
 		if(settingsElement)
 		{
 			settingsElement->QueryBoolAttribute("Fullscreen", &gameSettings.fullscreen);
-			settingsElement->QueryIntAttribute("MaxFramerate", &gameSettings.maxFramerate);
+			settingsElement->QueryBoolAttribute("VSync", &gameSettings.vSync);
 		}
 	}
 
@@ -64,10 +66,7 @@ void Game::Initialize( void )
 	}
 	create(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"moon.chase.star",screenSettings);
 
-	if(gameSettings.maxFramerate != 0)
-	{
-		setFramerateLimit(gameSettings.maxFramerate);
-	}
+	setVerticalSyncEnabled(gameSettings.vSync);
 
 	GUIManager::GetInstance()->SetUpGUI();
     PhysicsManager::GetInstance()->SetUpPhysics();
@@ -131,6 +130,14 @@ void Game::PollEvents(void)
 			_isPaused = false;
 		}
 
+		if(windowEvent.type == sf::Event::KeyReleased)
+		{
+			if( windowEvent.key.code == sf::Keyboard::F10 )
+			{
+				_shouldTakeScreenshot = true;
+			}
+		}
+
 		EventData* eventData = new AppEventData(windowEvent);
 		eventData->TriggerEvent();
     }
@@ -174,14 +181,24 @@ void Game::Render( void )
 
     _currentState->Render();
 
-	/*
-	static int screen = 0;
-	if( sf::Keyboard::isKeyPressed(sf::Keyboard::F10) )
+	if( _shouldTakeScreenshot )
 	{
-		screen++;
-		capture().saveToFile("Screenie" + boost::lexical_cast<string>(screen) + ".tga");
+		PauseFrameTimer();
+		_shouldTakeScreenshot = false;
+
+		time_t rawtime;
+		struct tm * timeinfo;
+		char buffer [80];
+
+		time ( &rawtime );
+		timeinfo = localtime ( &rawtime );
+
+		strftime (buffer,80,"screenshot_%Y_%d_%m_%H_%M_%S.png",timeinfo);
+
+		sf::Image screenshot = capture();
+		screenshot.saveToFile(buffer);
+		ResumeFrameTimer();
 	}
-	*/
 
     display();
 }

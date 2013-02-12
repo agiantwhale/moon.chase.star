@@ -15,7 +15,7 @@
 struct Settings
 {
 	bool fullscreen;
-	int maxFramerate;
+	bool vSync;
 };
 
 class Game : public Singleton<Game>, public sf::RenderWindow
@@ -65,6 +65,7 @@ private:
 
     bool _isRunning;
 	bool _isPaused;
+	bool _shouldTakeScreenshot;
     bool _shouldSwitchState;
 
     StateType _currentStateType;

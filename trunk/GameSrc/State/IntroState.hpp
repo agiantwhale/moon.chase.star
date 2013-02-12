@@ -1,7 +1,7 @@
 #ifndef INTROSTATE_HPP
 #define INTROSTATE_HPP
 
-#include <sfeMovie/Movie.hpp>
+#include <sfTheora.h>
 #include "../Interface/IState.hpp"
 
 class IntroState : public IState
@@ -16,7 +16,7 @@ public:
     virtual void Exit(void);
 
 private:
-	sfe::Movie	_introMovie;
+	sftheora::Video _introVideo;
 };
 
 #endif

@@ -42,6 +42,7 @@ void PhysicsManager::SetUpPhysics( void )
 	_debugDraw->SetFlags(b2Draw::e_shapeBit);
 
     _physicsWorld = new b2World( b2Vec2( 0, -GRAVITY_ACCELERATION ) );
+	_physicsWorld->SetAutoClearForces(false);
     _physicsWorld->SetContactListener(this);
     _physicsWorld->SetDebugDraw(_debugDraw);
 
@@ -102,7 +103,7 @@ void PhysicsManager::SingleStep( void )
 
     EventManager::GetInstance()->TriggerEvent(new EventData(Event_Simulate));
 
-    _physicsWorld->Step( physicsDT, 10, 10);
+    _physicsWorld->Step( physicsDT, 8, 3);
 }
 
 void PhysicsManager::SmoothStep( void )
