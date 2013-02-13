@@ -16,7 +16,7 @@ class ZoneEntity : public Entity
 
 public:
 	void Initialize( const TiXmlElement *propertyElement = nullptr );
-	bool HandleEvent(const EventData& theevent);
+	bool handleEvent(const EventData& theevent);
 	void PostLoad();
 
 private:

@@ -15,7 +15,7 @@ class PlayerEntity : public Entity
 
 public:
     virtual void Initialize( const TiXmlElement *propertyElement );
-    virtual bool HandleEvent(const EventData& theevent);
+    virtual bool handleEvent(const EventData& theevent);
     virtual void Update(float deltaTime);
 
 	void Kill();

@@ -18,10 +18,10 @@ LoadingState::LoadingState() :	GameState(),
 	_screenBase(nullptr),
 	_frameDrawn(false)
 {
-	AddEventListenType(Event_NewGame);
-	AddEventListenType(Event_RestartLevel);
-	AddEventListenType(Event_NextLevel);
-	AddEventListenType(Event_GUI);
+	addEventListenType(Event_NewGame);
+	addEventListenType(Event_RestartLevel);
+	addEventListenType(Event_NextLevel);
+	addEventListenType(Event_GUI);
 
 	_screenBase = new Gwen::Controls::Base(GUIManager::getInstance()->GetCanvas());
 	_screenBase->SetBounds(0,0,SCREENWIDTH,SCREENHEIGHT);
@@ -43,10 +43,10 @@ LoadingState::LoadingState() :	GameState(),
 
 LoadingState::~LoadingState()
 {
-	RemoveEventListenType(Event_NewGame);
-	RemoveEventListenType(Event_RestartLevel);
-	RemoveEventListenType(Event_NextLevel);
-	RemoveEventListenType(Event_GUI);
+	removeEventListenType(Event_NewGame);
+	removeEventListenType(Event_RestartLevel);
+	removeEventListenType(Event_NextLevel);
+	removeEventListenType(Event_GUI);
 }
 
 void LoadingState::enter( void )
@@ -57,7 +57,7 @@ void LoadingState::enter( void )
 	_screenBase->Show();
 }
 
-bool LoadingState::Update( float deltaTime )
+bool LoadingState::update( float deltaTime )
 {
 	if(_frameDrawn)
 	{
@@ -112,22 +112,22 @@ bool LoadingState::Update( float deltaTime )
 	return false;
 }
 
-void LoadingState::Render( void )
+void LoadingState::render( void )
 {
 	GUIManager::getInstance()->Render();
 
 	_frameDrawn = true;
 }
 
-void LoadingState::Exit( void )
+void LoadingState::exit( void )
 {
-	GameState::Exit();
+	GameState::exit();
 
 	_frameDrawn = false;
 	_screenBase->Hide();
 }
 
-bool LoadingState::HandleEvent( const EventData& theevent )
+bool LoadingState::handleEvent( const EventData& theevent )
 {
 	if(theevent.GetEventType() == Event_NewGame )
 	{

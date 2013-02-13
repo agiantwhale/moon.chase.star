@@ -55,7 +55,7 @@ void Entity::PostLoad(void)
 {
 }
 
-bool Entity::HandleEvent(const EventData& theevent)
+bool Entity::handleEvent(const EventData& theevent)
 {
     return false;
 }

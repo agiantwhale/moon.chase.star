@@ -15,7 +15,7 @@ class Tile;
 class PlayerEntity;
 class StarEntity;
 
-class SceneManager : public Singleton<SceneManager>, private IEventListener
+class SceneManager : public Singleton<SceneManager>, private EventListener
 {
     DEFINE_SINGLETON( SceneManager );
 

@@ -25,6 +25,9 @@
 #include <boost/numeric/ublas/lu.hpp>
 #include <exception>
 
+namespace sb
+{
+
 namespace ublas = boost::numeric::ublas;
     class Spline : private std::vector<std::pair<double, double> >
     { 
@@ -331,6 +334,8 @@ namespace ublas = boost::numeric::ublas;
 		if (n > 0) return 1;
 		return 0;
 	}
+
+}
 
 
 #endif

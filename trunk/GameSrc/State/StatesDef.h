@@ -1,17 +1,20 @@
-#ifndef STATESDEF_H
-#define STATESDEF_H
+#ifndef StatesDef_h__
+#define StatesDef_h__
 
-enum StateType
+namespace sb
 {
-	State_UNDEFINED = 0,
-	State_Intro,
-	State_MainMenu,
-	State_Transition,
-	State_Loading,
-	State_InGame,
-	State_Paused,
-	State_Credits,
-	NUM_STATES
-};
+	enum StateType
+	{
+		State_UNDEFINED = 0,
+		State_Intro,
+		State_MainMenu,
+		State_Transition,
+		State_Loading,
+		State_InGame,
+		State_Paused,
+		State_Credits,
+		NUM_STATES
+	};
+}
 
-#endif
+#endif // StatesDef_h__

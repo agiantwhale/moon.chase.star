@@ -11,7 +11,7 @@ SINGLETON_DESTRUCTOR( EventManager )
 {
 }
 
-void EventManager::AddListener(IEventListener* const listenerptr, const EventType& eventtype)
+void EventManager::AddListener(EventListener* const listenerptr, const EventType& eventtype)
 {
     EventListenersMap::const_iterator iter = _eventListnersMap.find( eventtype );
     if( iter == _eventListnersMap.end() )
@@ -22,7 +22,7 @@ void EventManager::AddListener(IEventListener* const listenerptr, const EventTyp
     iter->second->push_back( listenerptr );
 }
 
-void EventManager::RemoveListener(IEventListener* const listenerptr, const EventType& eventtype)
+void EventManager::RemoveListener(EventListener* const listenerptr, const EventType& eventtype)
 {
     EventListenersMap::const_iterator iter = _eventListnersMap.find( eventtype );
     if( iter == _eventListnersMap.end() )
@@ -55,8 +55,8 @@ void EventManager::TriggerEvent(EventData* newevent)
     EventListenerList* listenerList = iter->second;
     for( EventListenerList::iterator listenerIter = listenerList->begin(); listenerIter != listenerList->end(); listenerIter++ )
     {
-        IEventListener* listener = (*listenerIter);
-        if( listener->HandleEvent( *newevent ) )
+        EventListener* listener = (*listenerIter);
+        if( listener->handleEvent( *newevent ) )
             break;
     }
 

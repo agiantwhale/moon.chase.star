@@ -15,7 +15,7 @@ namespace sb
 	private:
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-		T	m_drawable;
+		const T&	m_drawable;
 	};
 
 	template < class T >

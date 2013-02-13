@@ -2,7 +2,7 @@
 #include "../Task/Task.hpp"
 #include "../Entity/ZoneEntity.hpp"
 
-SINGLETON_CONSTRUCTOR(TaskManager), IEventListener("TaskManager")
+SINGLETON_CONSTRUCTOR(TaskManager), EventListener("TaskManager")
 {
 	AddEventListenType(Event_Unload);
 	AddEventListenType(Event_RestartLevel);
@@ -52,7 +52,7 @@ void TaskManager::AddTask( Task* task )
 	task->_taskState = Task::kTask_Registered;
 }
 
-bool TaskManager::HandleEvent( const EventData& theevent )
+bool TaskManager::handleEvent( const EventData& theevent )
 {
 	if(theevent.GetEventType() == Event_Unload || theevent.GetEventType() == Event_RestartLevel)
 	{

@@ -4,7 +4,7 @@
 #include "../Base/Singleton.hpp"
 #include "../Interface/IEventListener.hpp"
 
-class InputManager : public Singleton<InputManager>, public IEventListener
+class InputManager : public Singleton<InputManager>, public EventListener
 {
 	DEFINE_SINGLETON(InputManager)
 
@@ -12,7 +12,7 @@ public:
 	void SetUpInput(void);
 	void Update(float dt);
 	void FeedOutput(float amount, float duration);
-	bool HandleEvent(const EventData& theevent);
+	bool handleEvent(const EventData& theevent);
 
 	bool GetLeftInput() const { return _leftInput; }
 	bool GetRightInput() const { return _rightInput; }

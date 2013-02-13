@@ -13,7 +13,7 @@ class StarEntity : public Entity
 
 public:
 	virtual void Update(float deltaTime);
-	virtual bool HandleEvent(const EventData& theevent);
+	virtual bool handleEvent(const EventData& theevent);
 	virtual void Initialize( const TiXmlElement *propertyElement /* = nullptr */ );
 
 private:

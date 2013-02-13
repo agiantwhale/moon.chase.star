@@ -10,12 +10,12 @@ LevelCompleteEntity::LevelCompleteEntity() : BaseClass(),
 											 _acceptArrival(false),
 											 _endFollowRoute()
 {
-	AddEventListenType(Event_StarArrived);
+	addEventListenType(Event_StarArrived);
 }
 
 LevelCompleteEntity::~LevelCompleteEntity()
 {
-	RemoveEventListenType(Event_StarArrived);
+	removeEventListenType(Event_StarArrived);
 }
 
 void LevelCompleteEntity::Initialize( const TiXmlElement *propertyElement /*= NULL */ )
@@ -81,7 +81,7 @@ void LevelCompleteEntity::ProcessContact( const b2Contact* contact, const b2Fixt
 	}
 }
 
-bool LevelCompleteEntity::HandleEvent( const EventData& theevent )
+bool LevelCompleteEntity::handleEvent( const EventData& theevent )
 {
 	switch (theevent.GetEventType())
 	{

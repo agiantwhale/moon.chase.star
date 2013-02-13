@@ -10,7 +10,7 @@
 
 class Task;
 
-class TaskManager : public Singleton<TaskManager>, public IEventListener
+class TaskManager : public Singleton<TaskManager>, public EventListener
 {
     DEFINE_SINGLETON( TaskManager )
 
@@ -22,7 +22,7 @@ public:
 	void AddTask(Task* task);
 	void RemoveTask(Task* task);
 private:
-	virtual bool HandleEvent(const EventData& theevent);
+	virtual bool handleEvent(const EventData& theevent);
 
     ToDoList _toDoList;
 };

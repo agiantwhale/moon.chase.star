@@ -1,54 +1,43 @@
-#include "../Base/Globals.hpp"
+#include <SFML/Graphics/View.hpp>
+
+#include "RenderLayer.hpp"
+#include "../Helper/Globals.h"
 #include "../App/Game.hpp"
-#include "../System/RenderLayer.hpp"
 
-void Camera::Transform( void ) const
+namespace sb
 {
-    sf::View cameraView;
-    cameraView.setCenter( SCREENWIDTH/2 + GetPosition().x * RATIO, SCREENHEIGHT/2 - GetPosition().y * RATIO);
-    cameraView.setRotation(GetRotation());
-    cameraView.setSize(sf::Vector2f(GetScale().x * SCREENWIDTH,GetScale().y * SCREENHEIGHT));
+	void Camera::transform( void ) const
+	{
+		sf::View cameraView;
+		cameraView.setCenter( SCREENWIDTH/2 + getPosition().x * RATIO, SCREENHEIGHT/2 - getPosition().y * RATIO);
+		cameraView.setRotation(getRotation());
+		cameraView.setSize(sf::Vector2f(getScale().x * SCREENWIDTH,getScale().y * SCREENHEIGHT));
 
-    Game::GetInstance()->setView(cameraView);
-}
+		Game::getInstance()->setView(cameraView);
+	}
 
-Camera::Camera() : ITransform()
-{
-	SetScale(Vec2D(1.0f,1.0f));
-}
+	void RenderLayer::render( void )
+	{
+		m_renderCamera.transform();
 
-RenderLayer::~RenderLayer()
-{
-    //This shouldn't usually be called since Renderable will be deleted anyways.
-    //Just for tiles.
-    /*
-    for( std::list<IRenderable*>::iterator iter = begin(); iter != end(); iter++ )
-    {
-    	IRenderable* renderable = (*iter);
-    	delete renderable;
-    }
-    */
-}
+		for( iterator iter = begin(); iter != end(); iter++ )
+		{
+			const sf::Drawable& drawable = (*iter);
+			Game::getInstance()->draw(drawable);
+		}
+	}
 
-void RenderLayer::Render( void )
-{
-    _renderCamera.Transform();
+	void RenderLayer::addDrawable( const sf::Drawable& drawable )
+	{
+		push_back(drawable);
+	}
 
-    for( iterator iter = begin(); iter != end(); iter++ )
-    {
-        IRenderable* renderable = (*iter);
-		if(!renderable->IsHidden())
-			renderable->Render();
-    }
-}
+	void RenderLayer::removeDrawable( const sf::Drawable& drawable )
+	{
+		if(!empty())
+		{
+			remove(drawable);
+		}
+	}
 
-void RenderLayer::AddRenderable( IRenderable* const renderable )
-{
-    push_back( renderable );
-}
-
-void RenderLayer::RemoveRenderable( IRenderable* const renderable )
-{
-    if( !empty() )
-        remove( renderable );
 }

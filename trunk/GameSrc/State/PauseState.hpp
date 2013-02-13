@@ -5,18 +5,18 @@
 #include "../Interface/IEventListener.hpp"
 #include "../GUI/PauseMenu.hpp"
 
-class PauseState : public GameState, public IEventListener
+class PauseState : public GameState, public EventListener
 {
 public:
 	PauseState();
 	virtual ~PauseState();
 
-	virtual bool HandleEvent(const EventData& theevent);
+	virtual bool handleEvent(const EventData& theevent);
 
 	virtual void enter(void);
-	virtual bool Update(float deltaTime);
-	virtual void Render(void);
-	virtual void Exit(void);
+	virtual bool update(float deltaTime);
+	virtual void render(void);
+	virtual void exit(void);
 
 private:
 	PauseMenuControl* _pauseMenuControl;

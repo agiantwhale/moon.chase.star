@@ -29,19 +29,19 @@ void IntroState::enter(void)
 	_introVideo.play();
 }
 
-bool IntroState::Update( float deltaTime )
+bool IntroState::update( float deltaTime )
 {
 	_introVideo.update(sf::seconds(deltaTime));
 
 	return _introVideo.isDone();
 }
 
-void IntroState::Render( void )
+void IntroState::render( void )
 {
 	Game::GetInstance()->draw(_introVideo);
 }
 
-void IntroState::Exit(void)
+void IntroState::exit(void)
 {
-	GameState::Exit();
+	GameState::exit();
 }

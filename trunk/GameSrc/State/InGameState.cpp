@@ -10,19 +10,19 @@
 #include "../Event/AppEventData.hpp"
 
 InGameState::InGameState() :	GameState(),
-								IEventListener("InGameState"),
+								EventListener("InGameState"),
 								_endState(false)
 {
-	AddEventListenType(Event_RestartLevel);
-	AddEventListenType(Event_NextLevel);
-	AddEventListenType(Event_App);
+	addEventListenType(Event_RestartLevel);
+	addEventListenType(Event_NextLevel);
+	addEventListenType(Event_App);
 }
 
 InGameState::~InGameState()
 {
-	RemoveEventListenType(Event_RestartLevel);
-	RemoveEventListenType(Event_NextLevel);
-	RemoveEventListenType(Event_App);
+	removeEventListenType(Event_RestartLevel);
+	removeEventListenType(Event_NextLevel);
+	removeEventListenType(Event_App);
 }
 
 void InGameState::enter()
@@ -34,13 +34,13 @@ void InGameState::enter()
 	_endState = false;
 }
 
-void InGameState::Render()
+void InGameState::render()
 {
     GraphicsManager::getInstance()->Render();
     //PhysicsManager::GetInstance()->Render();
 }
 
-bool InGameState::Update(float deltaTime)
+bool InGameState::update(float deltaTime)
 {
 	InputManager::getInstance()->Update( deltaTime );
     PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
@@ -51,24 +51,24 @@ bool InGameState::Update(float deltaTime)
     return _endState;
 }
 
-void InGameState::Exit()
+void InGameState::exit()
 {
-	GameState::Exit();
+	GameState::exit();
 
 	Game::GetInstance()->setMouseCursorVisible(true);
 
 	_endState = false;
 }
 
-bool InGameState::HandleEvent( const EventData& theevent )
+bool InGameState::handleEvent( const EventData& theevent )
 {
-	if((theevent.GetEventType() == Event_NextLevel || theevent.GetEventType() == Event_RestartLevel) && IsActive())
+	if((theevent.GetEventType() == Event_NextLevel || theevent.GetEventType() == Event_RestartLevel) && isActive())
 	{
 		Game::GetInstance()->SetNextStateType(State_Loading);
 		_endState = true;
 	}
 
-	if(theevent.GetEventType()==Event_App && IsActive())
+	if(theevent.GetEventType()==Event_App && isActive())
 	{
 		const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
 

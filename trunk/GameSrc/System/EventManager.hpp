@@ -21,13 +21,13 @@ class EventManager : public Singleton<EventManager>
     DEFINE_SINGLETON( EventManager )
 
 private:
-    typedef std::list<IEventListener*> EventListenerList;
+    typedef std::list<EventListener*> EventListenerList;
     typedef std::unordered_map<EventType, EventListenerList*> EventListenersMap;
     typedef std::list<EventData*> EventsList;
 
 public:
-    void AddListener(IEventListener* const listenerptr, const EventType& eventtype);
-    void RemoveListener(IEventListener* const listenerptr, const EventType& eventtype);
+    void AddListener(EventListener* const listenerptr, const EventType& eventtype);
+    void RemoveListener(EventListener* const listenerptr, const EventType& eventtype);
     void TriggerEvent(EventData* newevent);
 	void QueueEvent(EventData* newevent, float waitTime = 0.0f);;
     void AbortEvent(const EventType& typeToAbort, bool alloftype);

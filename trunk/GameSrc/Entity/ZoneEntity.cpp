@@ -59,7 +59,7 @@ void ZoneEntity::PostLoad()
 	}
 }
 
-bool ZoneEntity::HandleEvent( const EventData& theevent )
+bool ZoneEntity::handleEvent( const EventData& theevent )
 {
 	switch (theevent.GetEventType())
 	{

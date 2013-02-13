@@ -9,12 +9,12 @@
 #include <Gwen/Skin.h>
 #include <Gwen/Input/SFML.h>
 
-class GUIManager : public Singleton<GUIManager>, public IEventListener
+class GUIManager : public Singleton<GUIManager>, public EventListener
 {
     DEFINE_SINGLETON(GUIManager)
 
 public:
-	virtual bool HandleEvent(const EventData& theevent);
+	virtual bool handleEvent(const EventData& theevent);
     void SetUpGUI(void);
 	void Render(void);
 

@@ -8,12 +8,12 @@
 #include "../Event/AppEventData.hpp"
 
 PauseState::PauseState() :	GameState(),
-							IEventListener("PauseState"),
+							EventListener("PauseState"),
 							_pauseMenuControl(nullptr),
 							_endState(false)
 {
-	AddEventListenType(Event_GUI);
-	AddEventListenType(Event_App);
+	addEventListenType(Event_GUI);
+	addEventListenType(Event_App);
 
 	_pauseMenuControl = new PauseMenuControl(GUIManager::getInstance()->GetCanvas());
 	_pauseMenuControl->Hide();
@@ -21,11 +21,11 @@ PauseState::PauseState() :	GameState(),
 
 PauseState::~PauseState()
 {
-	RemoveEventListenType(Event_GUI);
-	RemoveEventListenType(Event_App);
+	removeEventListenType(Event_GUI);
+	removeEventListenType(Event_App);
 }
 
-bool PauseState::HandleEvent( const EventData& theevent )
+bool PauseState::handleEvent( const EventData& theevent )
 {
 	if( theevent.GetEventType() == Event_GUI)
 	{
@@ -46,7 +46,7 @@ bool PauseState::HandleEvent( const EventData& theevent )
 		}
 	}
 
-	if(theevent.GetEventType()==Event_App && IsActive())
+	if(theevent.GetEventType()==Event_App && isActive())
 	{
 		const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
 
@@ -69,22 +69,22 @@ void PauseState::enter( void )
 	_pauseMenuControl->Show();
 }
 
-bool PauseState::Update( float deltaTime )
+bool PauseState::update( float deltaTime )
 {
 	InputManager::getInstance()->Update( deltaTime );
 
 	return _endState;
 }
 
-void PauseState::Render( void )
+void PauseState::render( void )
 {
 	GraphicsManager::getInstance()->Render();
 	GUIManager::getInstance()->Render();
 }
 
-void PauseState::Exit( void )
+void PauseState::exit( void )
 {
-	GameState::Exit();
+	GameState::exit();
 
 	_endState = false;
 	_pauseMenuControl->Hide();

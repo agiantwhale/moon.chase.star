@@ -3,19 +3,19 @@
 #include "../System/GUIManager.hpp"
 
 MainMenuState::MainMenuState() :	GameState(),
-									IEventListener("MainMenuState"),
+									EventListener("MainMenuState"),
 									_menuWindow(nullptr),
 									_endState(false)
 {
 	_menuWindow = new MainMenuControl(GUIManager::getInstance()->GetCanvas());
 	_menuWindow->Hide();
 
-	AddEventListenType(Event_NewGame);
+	addEventListenType(Event_NewGame);
 }
 
 MainMenuState::~MainMenuState()
 {
-	RemoveEventListenType(Event_NewGame);
+	removeEventListenType(Event_NewGame);
 
 	delete _menuWindow;
 }
@@ -27,24 +27,24 @@ void MainMenuState::enter( void )
 	_menuWindow->Show();
 }
 
-bool MainMenuState::Update( float deltaTime )
+bool MainMenuState::update( float deltaTime )
 {
 	return _endState;
 }
 
-void MainMenuState::Render( void )
+void MainMenuState::render( void )
 {
 	GUIManager::getInstance()->Render();
 }
 
-void MainMenuState::Exit( void )
+void MainMenuState::exit( void )
 {
-	GameState::Exit();
+	GameState::exit();
 
 	_menuWindow->Hide();
 }
 
-bool MainMenuState::HandleEvent( const EventData& theevent )
+bool MainMenuState::handleEvent( const EventData& theevent )
 {
 	if(theevent.GetEventType() == Event_NewGame)
 	{

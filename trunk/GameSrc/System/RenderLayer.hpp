@@ -2,39 +2,34 @@
 #define RENDERLAYER_HPP
 
 #include <list>
+#include <sfml/Graphics/Transformable.hpp>
+#include <SFML/Graphics/Drawable.hpp>
 
-#include "../Interface/ITransform.hpp"
-#include "../Interface/IRenderable.hpp"
-
-class Camera : public ITransform
+namespace sb
 {
-public:
-	Camera();
+	class Camera : public sf::Transformable
+	{
+	public:
+		void transform( void ) const;
+	};
 
-    void Transform( void ) const;
-};
+	class RenderLayer : private std::list<const sf::Drawable&>
+	{
+	public:
+		RenderLayer() : m_renderCamera() {}
 
-class RenderLayer : private std::list<IRenderable* const>
-{
-public:
-    RenderLayer() : _renderCamera() {}
-    ~RenderLayer();
+		void render( void );
+		void addDrawable( const sf::Drawable& drawable );
+		void removeDrawable( const sf::Drawable& drawable );
 
-    void Render( void );
-    void AddRenderable( IRenderable* const renderable );
-    void RemoveRenderable( IRenderable* const renderable );
+		Camera& getCamera()
+		{
+			return m_renderCamera;
+		}
 
-    Camera& GetCamera()
-    {
-        return _renderCamera;
-    }
-    void SetCamera( const Camera& camera )
-    {
-        _renderCamera = camera;
-    }
-
-private:
-    Camera _renderCamera;
-};
+	private:
+		Camera m_renderCamera;
+	};
+}
 
 #endif

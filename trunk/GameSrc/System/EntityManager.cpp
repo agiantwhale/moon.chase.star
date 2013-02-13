@@ -88,21 +88,21 @@ void EntityList::PostLoad(void)
 }
 
 SINGLETON_CONSTRUCTOR( EntityManager ),
-                       IEventListener("EntityManager"),
+                       EventListener("EntityManager"),
                        _entityList()
 {
-	AddEventListenType(Event_Unload);
-	AddEventListenType(Event_RestartLevel);
+	addEventListenType(Event_Unload);
+	addEventListenType(Event_RestartLevel);
 }
 
 SINGLETON_DESTRUCTOR( EntityManager )
 {
-	RemoveEventListenType(Event_Unload);
-	RemoveEventListenType(Event_RestartLevel);
+	removeEventListenType(Event_Unload);
+	removeEventListenType(Event_RestartLevel);
     ReleaseAll();
 }
 
-bool EntityManager::HandleEvent( const EventData& newevent )
+bool EntityManager::handleEvent( const EventData& newevent )
 {
     if( newevent.GetEventType() == Event_Unload )
     {

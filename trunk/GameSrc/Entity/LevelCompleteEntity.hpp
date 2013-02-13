@@ -14,7 +14,7 @@ class LevelCompleteEntity : public Entity
 public:
 	virtual void Initialize( const TiXmlElement *propertyElement = NULL );
 	virtual void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
-	virtual bool HandleEvent( const EventData& theevent );
+	virtual bool handleEvent( const EventData& theevent );
 
 private:
 	typedef std::vector<Vec2D> VectorStack;

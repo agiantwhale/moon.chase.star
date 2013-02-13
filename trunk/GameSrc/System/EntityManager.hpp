@@ -27,7 +27,7 @@ public:
     void PostLoad(void);
 };
 
-class EntityManager : public Singleton<EntityManager>, private IEventListener
+class EntityManager : public Singleton<EntityManager>, private EventListener
 {
     DEFINE_SINGLETON( EntityManager )
 
@@ -39,7 +39,7 @@ public:
     void RegisterEntity( Entity* entity );
 
 private:
-	virtual bool HandleEvent( const EventData& newevent );
+	virtual bool handleEvent( const EventData& newevent );
 
 private:
     EntityList _entityList;

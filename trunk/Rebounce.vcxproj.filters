@@ -25,9 +25,6 @@
     <Filter Include="GameSrc\GUI">
       <UniqueIdentifier>{1c077cea-58ff-4901-bbec-cefc87937562}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameSrc\Interface">
-      <UniqueIdentifier>{40c2170a-782d-4cb8-a9a0-eff30fbe73b8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameSrc\State">
       <UniqueIdentifier>{0d6f0081-37e7-4ae1-80ba-7e1e1bacdaf8}</UniqueIdentifier>
     </Filter>
@@ -104,12 +101,6 @@
     </ClCompile>
     <ClCompile Include="GameSrc\GUI\MainMenu.cpp">
       <Filter>GameSrc\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\Interface\IState.cpp">
-      <Filter>GameSrc\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\Interface\IEventListener.cpp">
-      <Filter>GameSrc\Interface</Filter>
     </ClCompile>
     <ClCompile Include="GameSrc\State\LoadingState.cpp">
       <Filter>GameSrc\State</Filter>
@@ -207,6 +198,9 @@
     <ClCompile Include="GameSrc\Helper\BodyController.cpp">
       <Filter>GameSrc\Helper</Filter>
     </ClCompile>
+    <ClCompile Include="GameSrc\State\GameState.cpp">
+      <Filter>GameSrc\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp">
@@ -265,12 +259,6 @@
     </ClInclude>
     <ClInclude Include="GameSrc\GUI\Log.hpp">
       <Filter>GameSrc\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Interface\IEventListener.hpp">
-      <Filter>GameSrc\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Interface\IState.hpp">
-      <Filter>GameSrc\Interface</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\State\IntroState.hpp">
       <Filter>GameSrc\State</Filter>
@@ -380,6 +368,12 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Helper\Simulatable.hpp">
       <Filter>GameSrc\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\EventListener.hpp">
+      <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\State\GameState.hpp">
+      <Filter>GameSrc\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

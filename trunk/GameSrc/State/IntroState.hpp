@@ -11,9 +11,9 @@ public:
     virtual ~IntroState();
 
     virtual void enter(void);
-    virtual bool Update(float deltaTime);
-    virtual void Render(void);
-    virtual void Exit(void);
+    virtual bool update(float deltaTime);
+    virtual void render(void);
+    virtual void exit(void);
 
 private:
 	sftheora::Video _introVideo;

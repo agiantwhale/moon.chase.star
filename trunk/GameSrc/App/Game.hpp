@@ -12,69 +12,74 @@
 #include "../Interface/IState.hpp"
 #include "../Base/Singleton.hpp"
 
-struct Settings
+namespace sb
 {
-	bool fullscreen;
-	bool vSync;
-};
 
-class Game : public Singleton<Game>, public sf::RenderWindow
-{
-    DEFINE_SINGLETON( Game )
-
-public:
-    void initialize( void );
-    void start( void );
-    inline void quit(void)
-    {
-		close();
-        m_isRunning = false;
-    }
-
-    inline bool isRunning( void ) const
-    {
-        return m_isRunning;
-    }
-    inline float getTime(void) const
-    {
-        return m_gameClock.getElapsedTime().asSeconds();
-    }
-
-    inline void setNextStateType(StateType val)
-    {
-        m_nextStateType = val;
-    }
-
-	inline void pauseFrameTimer(void)
+	struct Settings
 	{
-		m_frameClock.stop();
-	}
+		bool fullscreen;
+		bool vSync;
+	};
 
-	inline void resumeFrameTimer(void)
+	class Game : public Singleton<Game>, public sf::RenderWindow
 	{
-		m_frameClock.start();
-	}
+		DEFINE_SINGLETON( Game )
 
-private:
-    typedef std::unordered_map<StateType,GameState*> StateMap;
+	public:
+		void initialize( void );
+		void start( void );
+		inline void quit(void)
+		{
+			close();
+			m_isRunning = false;
+		}
 
-    void pollEvents(void);
-    void changeStates(void);
-    void update(void);
-    void render(void);
+		inline bool isRunning( void ) const
+		{
+			return m_isRunning;
+		}
+		inline sf::Time getTime(void) const
+		{
+			return m_gameClock.getElapsedTime();
+		}
 
-    bool m_isRunning;
-	bool m_isPaused;
-	bool m_shouldTakeScreenshot;
-    bool m_shouldSwitchState;
+		inline void setNextStateType(StateType val)
+		{
+			m_nextStateType = val;
+		}
 
-    StateType m_currentStateType;
-    StateType m_nextStateType;
-    GameState* m_currentState;
-    StateMap m_stateMap;
+		inline void pauseFrameTimer(void)
+		{
+			m_frameClock.stop();
+		}
 
-    thor::StopWatch   m_frameClock;
-    sf::Clock		  m_gameClock;
-};
+		inline void resumeFrameTimer(void)
+		{
+			m_frameClock.start();
+		}
+
+	private:
+		typedef std::unordered_map<StateType,GameState*> StateMap;
+
+		void pollEvents(void);
+		void changeStates(void);
+		void update(void);
+		void render(void);
+
+		bool m_isRunning;
+		bool m_isPaused;
+		bool m_shouldTakeScreenshot;
+		bool m_shouldSwitchState;
+
+		StateType m_currentStateType;
+		StateType m_nextStateType;
+		GameState* m_currentState;
+		StateMap m_stateMap;
+
+		thor::StopWatch   m_frameClock;
+		sf::Clock		  m_gameClock;
+	};
+
+}
 
 #endif

@@ -12,12 +12,12 @@ SINGLETON_CONSTRUCTOR(InputManager),
 	_vibrateAmount(0.0f),
 	_vibrateDuration(0.0f)
 {
-	AddEventListenType(Event_Unload);
+	addEventListenType(Event_Unload);
 }
 
 SINGLETON_DESTRUCTOR(InputManager)
 {
-	RemoveEventListenType(Event_Unload);
+	removeEventListenType(Event_Unload);
 
 	if(_inputType == kInput_Xbox)
 	{
@@ -141,7 +141,7 @@ void InputManager::Update(float dt)
 	}
 }
 
-bool InputManager::HandleEvent( const EventData& theevent )
+bool InputManager::handleEvent( const EventData& theevent )
 {
 	if( theevent.GetEventType() == Event_Unload )
 	{

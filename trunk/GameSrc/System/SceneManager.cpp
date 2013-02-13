@@ -11,7 +11,7 @@
 #include "GraphicsManager.hpp"
 
 SINGLETON_CONSTRUCTOR(SceneManager),
-                      IEventListener("SceneManager"),
+                      EventListener("SceneManager"),
 					  _levelSize(),
                       _sceneLoaded(false),
                       _sceneNum(0),

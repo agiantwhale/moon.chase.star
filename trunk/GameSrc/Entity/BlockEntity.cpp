@@ -54,7 +54,7 @@ void BlockEntity::Initialize( const TiXmlElement *propertyElement )
     }
 }
 
-bool BlockEntity::HandleEvent(const EventData& theevent)
+bool BlockEntity::handleEvent(const EventData& theevent)
 {
     switch (theevent.GetEventType())
     {

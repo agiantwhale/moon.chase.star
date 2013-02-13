@@ -4,32 +4,36 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <SFML/Graphics/Drawable.hpp>
 
 #include "../Base/Singleton.hpp"
 #include "../System/RenderLayer.hpp"
-#include "../Interface/IEventListener.hpp"
+#include "../Event/EventListener.hpp"
 
-class GraphicsManager : public Singleton<GraphicsManager>, private IEventListener
+namespace sb
 {
-    DEFINE_SINGLETON( GraphicsManager );
+	class GraphicsManager : public Singleton<GraphicsManager>, private EventListener
+	{
+		DEFINE_SINGLETON( GraphicsManager );
 
-public:
-    void AddRenderable(IRenderable* const renderable);
-    void RemoveRenderable(IRenderable* const renderable);
+	public:
+		void addDrawable(const sf::Drawable& drawable, unsigned int layer);
+		void removeDrawable(const sf::Drawable& drawable, unsigned int layer);
 
-    RenderLayer* GetRenderLayer( unsigned int layer ) const;
-	unsigned int GetRenderLayerStackSize(void) const {return _renderLayerStack.size();}
+		RenderLayer* getRenderLayer( unsigned int layer ) const;
+		unsigned int getRenderLayerStackSize(void) const {return _renderLayerStack.size();}
 
-    void Render();
-    void Unload();
+		void render();
+		void unload();
 
-    void SetUpGraphics(void);
+		void setUpGraphics(void);
 
-private:
-	virtual bool HandleEvent( const EventData& newevent );
+	private:
+		virtual bool handleEvent( const EventData& newevent );
 
-    typedef std::vector<RenderLayer*> RenderLayerStack;
-	RenderLayerStack _renderLayerStack;
-};
+		typedef std::vector<RenderLayer*> RenderLayerStack;
+		RenderLayerStack m_renderLayerStack;
+	};
+}
 
 #endif

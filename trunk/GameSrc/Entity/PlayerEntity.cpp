@@ -180,7 +180,7 @@ void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
 	SceneManager::getInstance().SetPlayerEntity(this);
 }
 
-bool PlayerEntity::HandleEvent(const EventData& theevent)
+bool PlayerEntity::handleEvent(const EventData& theevent)
 {
     switch (theevent.GetEventType())
     {

@@ -16,12 +16,12 @@ using namespace std;
 class EntityManager;
 class EntityList;
 
-class Entity : public sf::Transformable, public IEventListener
+class Entity : public sf::Transformable, public EventListener
 {
 public:
     virtual void Update(float deltaTime);
     virtual void PostLoad(void);
-    virtual bool HandleEvent(const EventData& theevent);
+    virtual bool handleEvent(const EventData& theevent);
     virtual int GetEntityType( void ) const
     {
         return 'BASE';

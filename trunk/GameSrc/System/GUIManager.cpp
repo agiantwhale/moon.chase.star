@@ -14,18 +14,18 @@
 #include "../Event/AppEventData.hpp"
 
 SINGLETON_CONSTRUCTOR(GUIManager),
-					  IEventListener("GUIManager"),
+					  EventListener("GUIManager"),
                       _gwenRenderer(nullptr),
                       _gwenCanvas(nullptr),
                       _gwenSkin(nullptr),
                       _gwenInput(nullptr)
 {
-	AddEventListenType(Event_App);
+	addEventListenType(Event_App);
 }
 
 SINGLETON_DESTRUCTOR(GUIManager)
 {
-	RemoveEventListenType(Event_App);
+	removeEventListenType(Event_App);
 
     delete _gwenRenderer;
     delete _gwenCanvas;
@@ -58,7 +58,7 @@ void GUIManager::SetUpGUI(void)
 	TRI_LOG_STR("GUI initialized.");
 }
 
-bool GUIManager::HandleEvent( const EventData& theevent )
+bool GUIManager::handleEvent( const EventData& theevent )
 {
 	if( theevent.GetEventType() == Event_App)
 	{

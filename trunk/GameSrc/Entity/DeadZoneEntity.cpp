@@ -47,7 +47,7 @@ void DeadZoneEntity::Initialize( const TiXmlElement *propertyElement /*= nullptr
 	}
 }
 
-bool DeadZoneEntity::HandleEvent( const EventData& theevent )
+bool DeadZoneEntity::handleEvent( const EventData& theevent )
 {
 	switch (theevent.GetEventType())
 	{

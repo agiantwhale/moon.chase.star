@@ -11,7 +11,7 @@ class DeadZoneEntity : public Entity
 
 public:
 	void Initialize( const TiXmlElement *propertyElement = nullptr );
-	bool HandleEvent(const EventData& theevent);
+	bool handleEvent(const EventData& theevent);
 
 private:
 	BodyWrapper _zoneBody;
