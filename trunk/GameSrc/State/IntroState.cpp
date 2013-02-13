@@ -14,9 +14,9 @@ IntroState::~IntroState()
 {
 }
 
-void IntroState::Enter(void)
+void IntroState::enter(void)
 {
-	IState::Enter();
+	GameState::enter();
 
     Game::GetInstance()->SetNextStateType(State_MainMenu);
 
@@ -43,5 +43,5 @@ void IntroState::Render( void )
 
 void IntroState::Exit(void)
 {
-	IState::Exit();
+	GameState::Exit();
 }

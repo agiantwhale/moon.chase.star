@@ -2,12 +2,12 @@
 #include "../App/Game.hpp"
 #include "../System/GUIManager.hpp"
 
-MainMenuState::MainMenuState() :	IState(),
+MainMenuState::MainMenuState() :	GameState(),
 									IEventListener("MainMenuState"),
 									_menuWindow(nullptr),
 									_endState(false)
 {
-	_menuWindow = new MainMenuControl(GUIManager::GetInstance()->GetCanvas());
+	_menuWindow = new MainMenuControl(GUIManager::getInstance()->GetCanvas());
 	_menuWindow->Hide();
 
 	AddEventListenType(Event_NewGame);
@@ -20,9 +20,9 @@ MainMenuState::~MainMenuState()
 	delete _menuWindow;
 }
 
-void MainMenuState::Enter( void )
+void MainMenuState::enter( void )
 {
-	IState::Enter();
+	GameState::enter();
 
 	_menuWindow->Show();
 }
@@ -34,12 +34,12 @@ bool MainMenuState::Update( float deltaTime )
 
 void MainMenuState::Render( void )
 {
-	GUIManager::GetInstance()->Render();
+	GUIManager::getInstance()->Render();
 }
 
 void MainMenuState::Exit( void )
 {
-	IState::Exit();
+	GameState::Exit();
 
 	_menuWindow->Hide();
 }

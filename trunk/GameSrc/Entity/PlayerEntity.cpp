@@ -1,6 +1,7 @@
 #include <cmath>
 #include "../Entity/PlayerEntity.hpp"
 #include "../Entity/TeleportEntity.hpp"
+#include "../Entity/StarEntity.hpp"
 #include "../Task/TeleportTask.hpp"
 #include "../System/PhysicsManager.hpp"
 #include "../System/ResourceCache.hpp"
@@ -108,7 +109,7 @@ PlayerEntity::~PlayerEntity()
 
 void PlayerEntity::Update(float deltaTime)
 {
-	ITransform* starTransform = SceneManager::GetInstance()->FindTransform("Star");
+	ITransform* starTransform = SceneManager::getInstance()->GetStarEntity();
 	if(starTransform)
 	{
 		Vec2D deltaDistance = GetPosition() - starTransform->GetPosition();
@@ -116,10 +117,8 @@ void PlayerEntity::Update(float deltaTime)
 		{
 			SetActive(false);
 
-			EventManager::GetInstance()->AbortEvent(Event_NextLevel,true);
+			Kill();
 
-			EventData* eventData = new EventData( Event_RestartLevel );
-			eventData->QueueEvent(0.5f);
 		}
 	}
 }
@@ -178,7 +177,7 @@ void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
 		_throwSound->setVolume(30.f);
 	}
 
-	SceneManager::GetInstance()->RegisterTransform("Player",this);
+	SceneManager::getInstance().SetPlayerEntity(this);
 }
 
 bool PlayerEntity::HandleEvent(const EventData& theevent)
@@ -324,7 +323,7 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
 					tlptTask->AddTask();
 				}
 
-				InputManager::GetInstance()->FeedOutput(0.6f,0.6f);
+				InputManager::getInstance()->FeedOutput(0.6f,0.6f);
 
 				break;
 			}
@@ -372,8 +371,8 @@ void PlayerEntity::ProcessPreSolve( b2Contact* contact,const b2Fixture* target )
 
 void PlayerEntity::Control( void )
 {
-	const bool  leftInput = InputManager::GetInstance()->GetLeftInput(),
-				rightInput = InputManager::GetInstance()->GetRightInput();
+	const bool  leftInput = InputManager::getInstance()->GetLeftInput(),
+				rightInput = InputManager::getInstance()->GetRightInput();
 
 	/*
 	const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
@@ -417,7 +416,7 @@ void PlayerEntity::Throw( const b2Vec2& velocity )
 
 	_throwSound->play();
 
-	InputManager::GetInstance()->FeedOutput(0.5f, 0.2f);
+	InputManager::getInstance()->FeedOutput(0.5f, 0.2f);
 }
 
 void PlayerEntity::LimitHorizontalVelocity()
@@ -456,7 +455,7 @@ void PlayerEntity::Bounce( void )
 
 	_bounceSound->play();
 
-	InputManager::GetInstance()->FeedOutput(0.3f, 0.15f);
+	InputManager::getInstance()->FeedOutput(0.3f, 0.15f);
 }
 
 void PlayerEntity::UpdatePlayerState( void )
@@ -479,7 +478,7 @@ void PlayerEntity::UpdatePlayerState( void )
 
 	case kPlayer_Thrown:
 		{
-			if( InputManager::GetInstance()->GetDownInput() /* sf::Keyboard::isKeyPressed(sf::Keyboard::Down) */ )
+			if( InputManager::getInstance()->GetDownInput() /* sf::Keyboard::isKeyPressed(sf::Keyboard::Down) */ )
 			{
 				Fall();
 			}
@@ -493,4 +492,12 @@ void PlayerEntity::UpdatePlayerState( void )
 			break;
 		}
 	}
+}
+
+void PlayerEntity::Kill()
+{
+	EventManager::GetInstance()->AbortEvent(Event_NextLevel,true);
+
+	EventData* eventData = new EventData( Event_RestartLevel );
+	eventData->QueueEvent(0.5f);
 }

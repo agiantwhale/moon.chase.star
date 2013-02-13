@@ -22,31 +22,31 @@ protected:
     }
     virtual ~Singleton()
     {
-        instance = NULL;
+        m_instance = NULL;
     }
 
 public:
-    static T * GetInstance()
+    static T * getInstance()
     {
-        if (instance == NULL)
-            instance = new T;
-        return instance;
+        if (m_instance == NULL)
+            m_instance = new T;
+        return m_instance;
     };
 
-    static void DestroyInstance()
+    static void destroyInstance()
     {
-        if(instance)
+        if(m_instance)
         {
-            delete instance;
-            instance = NULL;
+            delete m_instance;
+            m_instance = NULL;
         }
     };
 
 private:
-    static T * instance;
+    static T * m_instance;
 };
 
-template<typename T> T* Singleton<T>::instance = NULL;
+template<typename T> T* Singleton<T>::m_instance = NULL;
 
 #define DEFINE_SINGLETON( ThisName )\
 	public:\

@@ -6,14 +6,14 @@
 #include "../Interface/IEventListener.hpp"
 #include "../GUI/MainMenu.hpp"
 
-class MainMenuState : public IState, public IEventListener
+class MainMenuState : public GameState, public IEventListener
 {
 public:
 	MainMenuState();
 	virtual ~MainMenuState();
 
 	virtual bool HandleEvent(const EventData& theevent);
-	virtual void Enter(void);
+	virtual void enter(void);
 	virtual bool Update(float deltaTime);
 	virtual void Render(void);
 	virtual void Exit(void);

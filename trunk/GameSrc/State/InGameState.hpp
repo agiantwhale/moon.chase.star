@@ -4,7 +4,7 @@
 #include "../Interface/IState.hpp"
 #include "../Interface/IEventListener.hpp"
 
-class InGameState : public IState, public IEventListener
+class InGameState : public GameState, public IEventListener
 {
 public:
     InGameState();
@@ -12,7 +12,7 @@ public:
 
 	virtual bool HandleEvent(const EventData& theevent);
 
-    virtual void Enter(void);
+    virtual void enter(void);
     virtual bool Update(float deltaTime);
     virtual void Render(void);
     virtual void Exit(void);

@@ -5,7 +5,7 @@
 #include "../Interface/IEventListener.hpp"
 #include "../GUI/PauseMenu.hpp"
 
-class PauseState : public IState, public IEventListener
+class PauseState : public GameState, public IEventListener
 {
 public:
 	PauseState();
@@ -13,7 +13,7 @@ public:
 
 	virtual bool HandleEvent(const EventData& theevent);
 
-	virtual void Enter(void);
+	virtual void enter(void);
 	virtual bool Update(float deltaTime);
 	virtual void Render(void);
 	virtual void Exit(void);

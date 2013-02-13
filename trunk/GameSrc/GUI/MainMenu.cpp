@@ -65,7 +65,7 @@ void MainMenuControl::OnNewGame( Gwen::Controls::Base* control )
 
 void MainMenuControl::OnContinue( Gwen::Controls::Base* control )
 {
-	EventData* eventData = new NewGameEventData(SceneManager::GetInstance()->GetLoadedSceneNumber());
+	EventData* eventData = new NewGameEventData(SceneManager::getInstance()->GetLoadedSceneNumber());
 	eventData->TriggerEvent();
 }
 

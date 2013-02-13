@@ -4,13 +4,13 @@
 #include <SFML/Graphics.hpp>
 #include "../State/StatesDef.h"
 
-class IState
+class GameState
 {
 public:
-    IState();
-    virtual ~IState();
+    GameState();
+    virtual ~GameState();
 
-    virtual void Enter( void );
+    virtual void enter( void );
     virtual bool Update( float deltaTime ) = 0;
     virtual void Render( void ) = 0;
     virtual void Exit( void );

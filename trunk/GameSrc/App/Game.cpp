@@ -28,15 +28,15 @@
 
 SINGLETON_CONSTRUCTOR( Game ),
 	sf::RenderWindow(),
-	_isRunning( true ),
-	_isPaused( false ),
-	_frameClock(),
-	_gameClock(),
-	_shouldTakeScreenshot(false),
-	_shouldSwitchState(false),
-	_currentStateType(State_UNDEFINED),
-	_nextStateType(State_UNDEFINED),
-	_currentState(nullptr)
+	m_isRunning( true ),
+	m_isPaused( false ),
+	m_frameClock(),
+	m_gameClock(),
+	m_shouldTakeScreenshot(false),
+	m_shouldSwitchState(false),
+	m_currentStateType(State_UNDEFINED),
+	m_nextStateType(State_UNDEFINED),
+	m_currentState(nullptr)
 {
 }
 
@@ -44,7 +44,7 @@ SINGLETON_DESTRUCTOR( Game )
 {
 }
 
-void Game::Initialize( void )
+void Game::initialize( void )
 {
 	Settings gameSettings;
 	gameSettings.fullscreen = false;
@@ -68,73 +68,73 @@ void Game::Initialize( void )
 
 	setVerticalSyncEnabled(gameSettings.vSync);
 
-	GUIManager::GetInstance()->SetUpGUI();
+	GUIManager::getInstance()->SetUpGUI();
     PhysicsManager::GetInstance()->SetUpPhysics();
-    GraphicsManager::GetInstance()->SetUpGraphics();
-	SceneManager::GetInstance()->SetUpScene();
-	InputManager::GetInstance()->SetUpInput();
+    GraphicsManager::getInstance()->SetUpGraphics();
+	SceneManager::getInstance()->SetUpScene();
+	InputManager::getInstance()->SetUpInput();
 
     Tile::RegisterTileset("Rect", "Resource/Ogmo/Tiles/Rect.png");
 	Tile::RegisterTileset("Back", "Resource/Ogmo/Tiles/Back.png");
 
-	_stateMap.insert(std::make_pair(State_Intro,new IntroState));
-	_stateMap.insert(std::make_pair(State_MainMenu,new MainMenuState));
-	_stateMap.insert(std::make_pair(State_InGame,new InGameState));
-	_stateMap.insert(std::make_pair(State_Loading,new LoadingState));
-	_stateMap.insert(std::make_pair(State_Paused,new PauseState));
+	m_stateMap.insert(std::make_pair(State_Intro,new IntroState));
+	m_stateMap.insert(std::make_pair(State_MainMenu,new MainMenuState));
+	m_stateMap.insert(std::make_pair(State_InGame,new InGameState));
+	m_stateMap.insert(std::make_pair(State_Loading,new LoadingState));
+	m_stateMap.insert(std::make_pair(State_Paused,new PauseState));
 
-	SetNextStateType(State_Intro);
-	_shouldSwitchState = true;
+	setNextStateType(State_Intro);
+	m_shouldSwitchState = true;
 
 	TRI_LOG_STR("Game initialized.");
 }
 
-void Game::Start( void )
+void Game::start( void )
 {
 	TRI_LOG_STR("Game started.");
 
-    _frameClock.restart();
-    _gameClock.restart();
+    m_frameClock.restart();
+    m_gameClock.restart();
 
-    while(_isRunning)
+    while(m_isRunning)
     {
-		PollEvents();
+		pollEvents();
 
-		if(!_isPaused)
+		if(!m_isPaused)
 		{
-			ChangeStates();
-			Update();
+			changeStates();
+			update();
 		}
 
-        Render();
+        render();
     }
 }
 
-void Game::PollEvents(void)
+void Game::pollEvents(void)
 {
     sf::Event windowEvent;
     while(pollEvent(windowEvent))
     {
         if(windowEvent.type == sf::Event::Closed)
         {
-            Quit();
+            quit();
         }
 
 		if(windowEvent.type == sf::Event::LostFocus)
 		{
-			_isPaused = true;
+			m_isPaused = true;
 		}
 
 		if(windowEvent.type == sf::Event::GainedFocus)
 		{
-			_isPaused = false;
+			m_isPaused = false;
 		}
 
 		if(windowEvent.type == sf::Event::KeyReleased)
 		{
 			if( windowEvent.key.code == sf::Keyboard::F10 )
 			{
-				_shouldTakeScreenshot = true;
+				m_shouldTakeScreenshot = true;
 			}
 		}
 
@@ -143,48 +143,48 @@ void Game::PollEvents(void)
     }
 }
 
-void Game::ChangeStates(void)
+void Game::changeStates(void)
 {
-    if(_shouldSwitchState)
+    if(m_shouldSwitchState)
     {
-        _shouldSwitchState = false;
+        m_shouldSwitchState = false;
 
-        if(_nextStateType != State_UNDEFINED)
+        if(m_nextStateType != State_UNDEFINED)
         {
-            _currentStateType = _nextStateType;
-			_nextStateType = State_UNDEFINED;
-			StateMap::const_iterator iter = _stateMap.find(_currentStateType);
+            m_currentStateType = m_nextStateType;
+			m_nextStateType = State_UNDEFINED;
+			StateMap::const_iterator iter = m_stateMap.find(m_currentStateType);
 
-            assert(iter != _stateMap.end());
+            assert(iter != m_stateMap.end());
 
-			if(_currentState)
+			if(m_currentState)
 			{
-				_currentState->Exit();
+				m_currentState->Exit();
 			}
-            _currentState = iter->second;
-            _currentState->Enter();
+            m_currentState = iter->second;
+            m_currentState->Enter();
         }
     }
 }
 
-void Game::Update(void)
+void Game::update(void)
 {
-    float deltaTime = _frameClock.getElapsedTime().asSeconds();
-	_frameClock.restart();
+    float deltaTime = m_frameClock.getElapsedTime().asSeconds();
+	m_frameClock.restart();
 
-    _shouldSwitchState = _currentState->Update(deltaTime);
+    m_shouldSwitchState = m_currentState->Update(deltaTime);
 }
 
-void Game::Render( void )
+void Game::render( void )
 {
     clear();
 
-    _currentState->Render();
+    m_currentState->Render();
 
-	if( _shouldTakeScreenshot )
+	if( m_shouldTakeScreenshot )
 	{
-		PauseFrameTimer();
-		_shouldTakeScreenshot = false;
+		pauseFrameTimer();
+		m_shouldTakeScreenshot = false;
 
 		time_t rawtime;
 		struct tm * timeinfo;
@@ -197,7 +197,7 @@ void Game::Render( void )
 
 		sf::Image screenshot = capture();
 		screenshot.saveToFile(buffer);
-		ResumeFrameTimer();
+		resumeFrameTimer();
 	}
 
     display();

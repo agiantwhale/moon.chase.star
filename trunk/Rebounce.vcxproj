@@ -82,7 +82,6 @@
   <ItemGroup>
     <ClCompile Include="GameSrc\App\Game.cpp" />
     <ClCompile Include="GameSrc\App\main.cpp" />
-    <ClCompile Include="GameSrc\Base\Vec2D.cpp" />
     <ClCompile Include="GameSrc\Entity\BlockEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\Component\BodyWrapper.cpp" />
     <ClCompile Include="GameSrc\Entity\Component\ParticleWrapper.cpp" />
@@ -101,9 +100,8 @@
     <ClCompile Include="GameSrc\GUI\Log.cpp" />
     <ClCompile Include="GameSrc\GUI\MainMenu.cpp" />
     <ClCompile Include="GameSrc\GUI\PauseMenu.cpp" />
+    <ClCompile Include="GameSrc\Helper\BodyController.cpp" />
     <ClCompile Include="GameSrc\Interface\IEventListener.cpp" />
-    <ClCompile Include="GameSrc\Interface\IPhysics.cpp" />
-    <ClCompile Include="GameSrc\Interface\IRenderable.cpp" />
     <ClCompile Include="GameSrc\Interface\IState.cpp" />
     <ClCompile Include="GameSrc\State\InGameState.cpp" />
     <ClCompile Include="GameSrc\State\IntroState.cpp" />
@@ -132,15 +130,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp" />
-    <ClInclude Include="GameSrc\Base\Callback.hpp" />
-    <ClInclude Include="GameSrc\Base\Delegate.hpp" />
     <ClInclude Include="GameSrc\Base\Globals.hpp" />
     <ClInclude Include="GameSrc\Base\Singleton.hpp" />
     <ClInclude Include="GameSrc\Base\Math.hpp" />
-    <ClInclude Include="GameSrc\Base\Vec2D.hpp" />
     <ClInclude Include="GameSrc\Entity\BlockEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\Component\BodyWrapper.hpp" />
     <ClInclude Include="GameSrc\Entity\Component\ParticleWrapper.hpp" />
+    <ClInclude Include="GameSrc\Entity\Component\BodyController.hpp" />
     <ClInclude Include="GameSrc\Entity\Component\SpriteWrapper.hpp" />
     <ClInclude Include="GameSrc\Entity\DeadZoneEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\Entity.hpp" />
@@ -161,11 +157,12 @@
     <ClInclude Include="GameSrc\GUI\Log.hpp" />
     <ClInclude Include="GameSrc\GUI\MainMenu.hpp" />
     <ClInclude Include="GameSrc\GUI\PauseMenu.hpp" />
+    <ClInclude Include="GameSrc\Helper\Conversion.hpp" />
+    <ClInclude Include="GameSrc\Helper\Globals.h" />
+    <ClInclude Include="GameSrc\Helper\Simulatable.hpp" />
+    <ClInclude Include="GameSrc\Helper\WorldDrawable.hpp" />
     <ClInclude Include="GameSrc\Interface\IEventListener.hpp" />
-    <ClInclude Include="GameSrc\Interface\IPhysics.hpp" />
-    <ClInclude Include="GameSrc\Interface\IRenderable.hpp" />
     <ClInclude Include="GameSrc\Interface\IState.hpp" />
-    <ClInclude Include="GameSrc\Interface\ITransform.hpp" />
     <ClInclude Include="GameSrc\State\InGameState.hpp" />
     <ClInclude Include="GameSrc\State\IntroState.hpp" />
     <ClInclude Include="GameSrc\State\LoadingState.hpp" />

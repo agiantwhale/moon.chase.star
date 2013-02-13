@@ -9,7 +9,7 @@
 #include "../system/InputManager.hpp"
 #include "../Event/AppEventData.hpp"
 
-InGameState::InGameState() :	IState(),
+InGameState::InGameState() :	GameState(),
 								IEventListener("InGameState"),
 								_endState(false)
 {
@@ -25,9 +25,9 @@ InGameState::~InGameState()
 	RemoveEventListenType(Event_App);
 }
 
-void InGameState::Enter()
+void InGameState::enter()
 {
-	IState::Enter();
+	GameState::enter();
 
 	Game::GetInstance()->setMouseCursorVisible(false);
 
@@ -36,24 +36,24 @@ void InGameState::Enter()
 
 void InGameState::Render()
 {
-    GraphicsManager::GetInstance()->Render();
+    GraphicsManager::getInstance()->Render();
     //PhysicsManager::GetInstance()->Render();
 }
 
 bool InGameState::Update(float deltaTime)
 {
-	InputManager::GetInstance()->Update( deltaTime );
+	InputManager::getInstance()->Update( deltaTime );
     PhysicsManager::GetInstance()->FixedUpdate( deltaTime );
 	EventManager::GetInstance()->Update( deltaTime );
-    EntityManager::GetInstance()->Update( deltaTime );
-	TaskManager::GetInstance()->Update( deltaTime );
+    EntityManager::getInstance()->Update( deltaTime );
+	TaskManager::getInstance()->Update( deltaTime );
 
     return _endState;
 }
 
 void InGameState::Exit()
 {
-	IState::Exit();
+	GameState::Exit();
 
 	Game::GetInstance()->setMouseCursorVisible(true);
 

@@ -4,13 +4,13 @@
 #include <sfTheora.h>
 #include "../Interface/IState.hpp"
 
-class IntroState : public IState
+class IntroState : public GameState
 {
 public:
     IntroState();
     virtual ~IntroState();
 
-    virtual void Enter(void);
+    virtual void enter(void);
     virtual bool Update(float deltaTime);
     virtual void Render(void);
     virtual void Exit(void);

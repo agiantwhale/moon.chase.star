@@ -25,10 +25,10 @@ void Task::End()
 
 void Task::AddTask()
 {
-	TaskManager::GetInstance()->AddTask(this);
+	TaskManager::getInstance()->AddTask(this);
 }
 
 void Task::RemoveTask()
 {
-	TaskManager::GetInstance()->RemoveTask(this);
+	TaskManager::getInstance()->RemoveTask(this);
 }

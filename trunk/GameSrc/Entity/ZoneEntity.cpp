@@ -47,14 +47,14 @@ void ZoneEntity::Initialize( const TiXmlElement *propertyElement /*= NULL */ )
 
 void ZoneEntity::PostLoad()
 {
-	ITransform* moonTransform = SceneManager::GetInstance()->FindTransform("Player");
+	ITransform* moonTransform = SceneManager::getInstance()->FindTransform("Player");
 
 	Vec2D moonPos = moonTransform->GetPosition();
 	if(_zoneBody.LookUpFixture("Zone")->TestPoint(moonPos))
 	{
-		for(unsigned int i = 0; i < GraphicsManager::GetInstance()->GetRenderLayerStackSize(); i++ )
+		for(unsigned int i = 0; i < GraphicsManager::getInstance()->GetRenderLayerStackSize(); i++ )
 		{
-			GraphicsManager::GetInstance()->GetRenderLayer(i)->GetCamera().SetPosition(GetPosition());
+			GraphicsManager::getInstance()->GetRenderLayer(i)->GetCamera().SetPosition(GetPosition());
 		}
 	}
 }
@@ -85,9 +85,9 @@ bool ZoneEntity::HandleEvent( const EventData& theevent )
 					}
 					_taskList.clear();
 
-					for(unsigned int i = 0; i < GraphicsManager::GetInstance()->GetRenderLayerStackSize(); i++ )
+					for(unsigned int i = 0; i < GraphicsManager::getInstance()->GetRenderLayerStackSize(); i++ )
 					{
-						Vec2D deltaDistance = (GetPosition()-GraphicsManager::GetInstance()->GetRenderLayer(i)->GetCamera().GetPosition());
+						Vec2D deltaDistance = (GetPosition()-GraphicsManager::getInstance()->GetRenderLayer(i)->GetCamera().GetPosition());
 						float affector = 1.0f;
 
 						deltaDistance.x = signum<float>(deltaDistance.x) * SCREENWIDTH * UNRATIO;

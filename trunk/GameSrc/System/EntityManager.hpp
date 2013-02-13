@@ -76,12 +76,12 @@ public:
         _entityClassName( entityClassName )
 
     {
-        EntityFactory::GetInstance()->RegisterBuilder( this );
+        EntityFactory::getInstance()->RegisterBuilder( this );
     }
 
     virtual ~EntityBuilder()
     {
-        EntityFactory::GetInstance()->DeregisterBuilder( this );
+        EntityFactory::getInstance()->DeregisterBuilder( this );
     }
 
     virtual std::string GetEntityClassName( void )

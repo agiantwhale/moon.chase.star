@@ -168,7 +168,7 @@ void StarEntity::Initialize( const TiXmlElement *propertyElement /* = nullptr */
 		}
 	}
 
-	SceneManager::GetInstance()->RegisterTransform("Star",this);
+	SceneManager::getInstance()->SetStarEntity(this);
 }
 
 bool StarEntity::HandleEvent(const EventData& theevent)

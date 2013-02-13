@@ -1,152 +1,148 @@
 #include <CxxTL/tri_logger.hpp>
 #include "../App/Game.hpp"
+#include "../Helper/Simulatable.hpp"
 #include "../System/PhysicsManager.hpp"
 #include "../System/Debug/PhysicsDebugDraw.hpp"
 #include "../System/EventManager.hpp"
 #include "../Event/ContactEventData.h"
 #include "../Event/SolveEventData.h"
 
-SINGLETON_CONSTRUCTOR( PhysicsManager ),
-                       _physicsWorld( nullptr ),
-                       _isPhysicsSetUp( false ),
-                       _remainderDT( 0.0f ),
-                       _remainderRatio( 0.0f ),
-                       _debugDraw(nullptr)
+namespace sb
 {
-    _physicsList.clear();
-}
+	SINGLETON_CONSTRUCTOR( PhysicsManager ),
+		m_physicsWorld( nullptr ),
+		m_isPhysicsSetUp( false ),
+		m_remainderDT( 0.0f ),
+		m_remainderRatio( 0.0f ),
+		m_debugDraw(nullptr)
+	{
+		m_simulatableList.clear();
+	}
 
-SINGLETON_DESTRUCTOR( PhysicsManager )
-{
-	delete _debugDraw;
-	delete _physicsWorld;
-}
+	SINGLETON_DESTRUCTOR( PhysicsManager )
+	{
+		delete m_debugDraw;
+		delete m_physicsWorld;
+	}
 
-void PhysicsManager::AddPhysicsWrapper( IPhysics *physics )
-{
-    if( physics == nullptr ) return;
+	void PhysicsManager::setUpPhysics( void )
+	{
+		m_debugDraw = new DebugDraw(*Game::getInstance());
+		m_debugDraw->SetFlags(b2Draw::e_shapeBit);
 
-    _physicsList.push_back( physics );
-}
+		m_physicsWorld = new b2World( b2Vec2( 0, -GRAVITY_ACCELERATION ) );
+		m_physicsWorld->SetAutoClearForces(false);
+		m_physicsWorld->SetContactListener(this);
+		m_physicsWorld->SetDebugDraw(m_debugDraw);
 
-void PhysicsManager::RemovePhysicsWrapper( IPhysics *physics )
-{
-    if( physics == nullptr ) return;
+		m_isPhysicsSetUp = true;
 
-    _physicsList.remove( physics );
-}
+		TRI_LOG_STR("Physics initialized.");
+	}
 
-void PhysicsManager::SetUpPhysics( void )
-{
-	_debugDraw = new DebugDraw(*Game::GetInstance());
-	_debugDraw->SetFlags(b2Draw::e_shapeBit);
+	void PhysicsManager::fixedUpdate( float deltaTime )
+	{
+		if( !m_isPhysicsSetUp )
+		{
+			TRI_LOG_STR("Physics isn't set up!");
+			return;
+		}
 
-    _physicsWorld = new b2World( b2Vec2( 0, -GRAVITY_ACCELERATION ) );
-	_physicsWorld->SetAutoClearForces(false);
-    _physicsWorld->SetContactListener(this);
-    _physicsWorld->SetDebugDraw(_debugDraw);
+		const float physicsDT = 1.0f/60.0f;
+		const int maxSteps = 5;
 
-    _isPhysicsSetUp = true;
+		m_remainderDT += deltaTime;
+		const int stepCount = static_cast<int>( floor(m_remainderDT/physicsDT) );
 
-	TRI_LOG_STR("Physics initialized.");
-}
+		if( stepCount > 0 )
+		{
+			m_remainderDT -= stepCount * physicsDT;
+		}
 
-void PhysicsManager::FixedUpdate( float deltaTime )
-{
-    if( !_isPhysicsSetUp )
-    {
-        TRI_LOG_STR("Physics isn't set up!");
-        return;
-    }
+		m_remainderRatio = m_remainderDT / physicsDT;
 
-    const float physicsDT = 1.0f/60.0f;
-    const int maxSteps = 5;
+		const int stepsClamped = min<int>(stepCount, maxSteps);
+		for (int i = 0; i < stepsClamped; ++ i)
+		{
+			sharpStep();
+			singleStep();
+		}
 
-    _remainderDT += deltaTime;
-    const int stepCount = static_cast<int>( floor(_remainderDT/physicsDT) );
+		m_physicsWorld->ClearForces();
 
-    if( stepCount > 0 )
-    {
-        _remainderDT -= stepCount * physicsDT;
-    }
+		smoothStep();
+	}
 
-    _remainderRatio = _remainderDT / physicsDT;
+	void PhysicsManager::renderPhysicsDebug(void)
+	{
+		m_physicsWorld->DrawDebugData();
+	}
 
-    const int stepsClamped = min<int>(stepCount, maxSteps);
-    for (int i = 0; i < stepsClamped; ++ i)
-    {
-        SharpStep();
-        SingleStep();
-    }
+	void PhysicsManager::singleStep( void )
+	{
+		const float physicsDT = 1.0f/60.0f;
 
-    _physicsWorld->ClearForces();
+		EventManager::getInstance()->TriggerEvent(new EventData(Event_Simulate));
 
-    SmoothStep();
-}
+		m_physicsWorld->Step( physicsDT, 8, 3);
+	}
 
-void PhysicsManager::Render(void)
-{
-    _physicsWorld->DrawDebugData();
-}
+	void PhysicsManager::smoothStep( void )
+	{
+		for( SimulatableList::iterator iter = m_simulatableList.begin();
+			iter != m_simulatableList.end(); iter++ )
+		{
+			Simulatable* simulatable = *iter;
+			simulatable->smoothenTransform(m_remainderRatio);
+			simulatable->updateTransform();
+		}
+	}
 
-void PhysicsManager::SingleStep( void )
-{
-    const float physicsDT = 1.0f/60.0f;
-    /*
-    for( PhysicsList::iterator iter = _physicsList.begin();
-    	iter != _physicsList.end(); iter++ )
-    {
-    	IPhysics* physics = *iter;
-    	physics->Simulate();
-    }
-    */
+	void PhysicsManager::sharpStep( void )
+	{
+		for( SimulatableList::iterator iter = m_simulatableList.begin();
+			iter != m_simulatableList.end(); iter++ )
+		{
+			Simulatable* simulatable = *iter;
+			simulatable->updateTransform();
+		}
+	}
 
-    EventManager::GetInstance()->TriggerEvent(new EventData(Event_Simulate));
+	void PhysicsManager::BeginContact(b2Contact* contact)
+	{
+		EventData* eventData = new ContactEventData(contact,Event_BeginContact);
+		eventData->TriggerEvent();
+	}
 
-    _physicsWorld->Step( physicsDT, 8, 3);
-}
+	void PhysicsManager::EndContact(b2Contact* contact)
+	{
+		EventData* eventData = new ContactEventData(contact,Event_EndContact);
+		eventData->TriggerEvent();
+	}
 
-void PhysicsManager::SmoothStep( void )
-{
-    for( PhysicsList::iterator iter = _physicsList.begin();
-            iter != _physicsList.end(); iter++ )
-    {
-        IPhysics* physics = *iter;
-        physics->SmoothenTransform( _remainderRatio );
-        physics->UpdateTransform();
-    }
-}
+	void PhysicsManager::PreSolve( b2Contact* contact, const b2Manifold* oldManifold )
+	{
+		EventData* eventData = new PreSolveEventData(contact,oldManifold);
+		eventData->TriggerEvent();
+	}
 
-void PhysicsManager::SharpStep( void )
-{
-    for( PhysicsList::iterator iter = _physicsList.begin();
-            iter != _physicsList.end(); iter++ )
-    {
-        IPhysics* physics = *iter;
-        physics->ResetTransform();
-    }
-}
+	void PhysicsManager::PostSolve( b2Contact* contact, const b2ContactImpulse* impulse )
+	{
+		EventData* eventData = new PostSolveEventData(contact,impulse);
+		eventData->TriggerEvent();
+	}
 
-void PhysicsManager::BeginContact(b2Contact* contact)
-{
-	EventData* eventData = new ContactEventData(contact,Event_BeginContact);
-	eventData->TriggerEvent();
-}
+	void PhysicsManager::addSimulatable( Simulatable* simulatable )
+	{
+		if(!simulatable) return;
 
-void PhysicsManager::EndContact(b2Contact* contact)
-{
-	EventData* eventData = new ContactEventData(contact,Event_EndContact);
-	eventData->TriggerEvent();
-}
+		m_simulatableList.push_back(simulatable);
+	}
 
-void PhysicsManager::PreSolve( b2Contact* contact, const b2Manifold* oldManifold )
-{
-	EventData* eventData = new PreSolveEventData(contact,oldManifold);
-	eventData->TriggerEvent();
-}
+	void PhysicsManager::removeSimulatable( Simulatable* simulatable )
+	{
+		if(!simulatable) return;
 
-void PhysicsManager::PostSolve( b2Contact* contact, const b2ContactImpulse* impulse )
-{
-	EventData* eventData = new PostSolveEventData(contact,impulse);
-	eventData->TriggerEvent();
+		m_simulatableList.remove(simulatable);
+	}
 }

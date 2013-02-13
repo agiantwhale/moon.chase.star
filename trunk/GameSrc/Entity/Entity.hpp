@@ -4,10 +4,10 @@
 #include <string>
 #include <boost\any.hpp>
 #include <TinyXML\tinyxml.h>
+#include <SFML\Graphics\Transformable.hpp>
 
 #include "../Base/Globals.hpp"
 #include "../Base/Vec2D.hpp"
-#include "../Interface/ITransform.hpp"
 #include "../Interface/IEventListener.hpp"
 #include "../System/EntityManager.hpp"
 
@@ -16,7 +16,7 @@ using namespace std;
 class EntityManager;
 class EntityList;
 
-class Entity : public ITransform, public IEventListener
+class Entity : public sf::Transformable, public IEventListener
 {
 public:
     virtual void Update(float deltaTime);
@@ -34,7 +34,7 @@ public:
 
 	void Register(void)
 	{
-		EntityManager::GetInstance()->RegisterEntity(this);
+		EntityManager::getInstance()->RegisterEntity(this);
 	}
 
     bool IsReleased( void ) const { return _released; }

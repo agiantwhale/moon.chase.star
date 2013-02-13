@@ -18,6 +18,8 @@ public:
     virtual bool HandleEvent(const EventData& theevent);
     virtual void Update(float deltaTime);
 
+	void Kill();
+
 	BodyWrapper& GetBallBody() { return _ballBody; }
 	SpriteWrapper& GetBallSprite() { return _ballSprite; }
 

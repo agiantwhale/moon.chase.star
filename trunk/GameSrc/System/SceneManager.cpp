@@ -50,8 +50,8 @@ void SceneManager::RestartScene(void)
         return;
     }
 
-    EntityFactory* entityFcty = EntityFactory::GetInstance();
-    EntityManager* entityMgr = EntityManager::GetInstance();
+    EntityFactory* entityFcty = EntityFactory::getInstance();
+    EntityManager* entityMgr = EntityManager::getInstance();
 
     TiXmlElement *levelElement = sceneDocument.FirstChildElement( "level" );
     if( !levelElement )
@@ -126,8 +126,8 @@ void SceneManager::LoadScene( unsigned int sceneNum )
 		_sceneNum = sceneNum;
 	}
 
-    EntityFactory* entityFcty = EntityFactory::GetInstance();
-    EntityManager* entityMgr = EntityManager::GetInstance();
+    EntityFactory* entityFcty = EntityFactory::getInstance();
+    EntityManager* entityMgr = EntityManager::getInstance();
 
     TiXmlElement *levelElement = sceneDocument.FirstChildElement( "level" );
     if( !levelElement )

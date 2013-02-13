@@ -61,11 +61,8 @@
     <Filter Include="Libs\GWEN\Renderers\SFML">
       <UniqueIdentifier>{182ccdca-6bcd-40cf-9fdb-15f346573ce4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameSrc\Kinect">
-      <UniqueIdentifier>{5605afd7-e8ab-4cb7-8fb3-2c1d61c4c2f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameSrc\Leap">
-      <UniqueIdentifier>{e0ebc5e4-eda4-4e06-aa2c-c456e9b7f31c}</UniqueIdentifier>
+    <Filter Include="GameSrc\Helper">
+      <UniqueIdentifier>{d3c747f5-9b12-4011-931f-73c3183cfec6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -74,9 +71,6 @@
     </ClCompile>
     <ClCompile Include="GameSrc\App\Game.cpp">
       <Filter>GameSrc\App</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\Base\Vec2D.cpp">
-      <Filter>GameSrc\Base</Filter>
     </ClCompile>
     <ClCompile Include="GameSrc\Entity\Entity.cpp">
       <Filter>GameSrc\Entity</Filter>
@@ -110,12 +104,6 @@
     </ClCompile>
     <ClCompile Include="GameSrc\GUI\MainMenu.cpp">
       <Filter>GameSrc\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\Interface\IPhysics.cpp">
-      <Filter>GameSrc\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\Interface\IRenderable.cpp">
-      <Filter>GameSrc\Interface</Filter>
     </ClCompile>
     <ClCompile Include="GameSrc\Interface\IState.cpp">
       <Filter>GameSrc\Interface</Filter>
@@ -216,21 +204,15 @@
     <ClCompile Include="GameSrc\Task\LevelCompleteTask.cpp">
       <Filter>GameSrc\Task</Filter>
     </ClCompile>
+    <ClCompile Include="GameSrc\Helper\BodyController.cpp">
+      <Filter>GameSrc\Helper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp">
       <Filter>GameSrc\App</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Base\Singleton.hpp">
-      <Filter>GameSrc\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Base\Vec2D.hpp">
-      <Filter>GameSrc\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Base\Callback.hpp">
-      <Filter>GameSrc\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Base\Delegate.hpp">
       <Filter>GameSrc\Base</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Base\Globals.hpp">
@@ -287,16 +269,7 @@
     <ClInclude Include="GameSrc\Interface\IEventListener.hpp">
       <Filter>GameSrc\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\Interface\IPhysics.hpp">
-      <Filter>GameSrc\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Interface\IRenderable.hpp">
-      <Filter>GameSrc\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="GameSrc\Interface\IState.hpp">
-      <Filter>GameSrc\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Interface\ITransform.hpp">
       <Filter>GameSrc\Interface</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\State\IntroState.hpp">
@@ -392,6 +365,21 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Task\LevelCompleteTask.hpp">
       <Filter>GameSrc\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Helper\WorldDrawable.hpp">
+      <Filter>GameSrc\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\Component\BodyController.hpp">
+      <Filter>GameSrc\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Helper\Conversion.hpp">
+      <Filter>GameSrc\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Helper\Globals.h">
+      <Filter>GameSrc\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Helper\Simulatable.hpp">
+      <Filter>GameSrc\Helper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,28 +1,16 @@
 #include "../../Entity/Component/SpriteWrapper.hpp"
-#include "../../App/Game.hpp"
 
-SpriteWrapper::SpriteWrapper(const ITransform* entity) : IRenderable(entity), _sprite(nullptr)
+void sb::WorldSprite::draw( sf::RenderTarget& target, sf::RenderStates states ) const
 {
-}
+	sf::Vector2f worldVector = getPosition();
+	sf::Vector2f screenVector( SCREENWIDTH/2, SCREENHEIGHT/2 );
 
-SpriteWrapper::~SpriteWrapper()
-{
-    delete _sprite;
-}
+	screenVector.x += worldVector.x * RATIO;
+	screenVector.y += worldVector.y * RATIO;
 
-void SpriteWrapper::Render()
-{
-    if(_sprite)
-    {
-        Vec2D screenPosition = WorldToScreen(GetTransform()->GetPosition());
-		Vec2D screenScale = GetTransform()->GetScale();
-		_sprite->setScale(screenScale);
-        _sprite->setPosition(screenPosition);
-        _sprite->setRotation(GetTransform()->GetRotation());
-        Game::GetInstance()->draw(*_sprite);
-    }
-    else
-    {
-        TRI_LOG_STR("Sprite is uninitialized.");
-    }
+	setPosition(screenVector);
+
+	sf::Sprite::draw(target,states);
+
+	setPosition(worldVector);
 }

@@ -4,51 +4,52 @@
 #include <list>
 
 #include "../Base/Singleton.hpp"
-#include "../Interface/IPhysics.hpp"
-#include "../System/Debug/PhysicsDebugDraw.hpp"
 
 using namespace std;
 
-class PhysicsManager : public Singleton<PhysicsManager>, private b2ContactListener
+class DebugDraw;
+
+namespace sb
 {
-    DEFINE_SINGLETON( PhysicsManager )
+	class Simulatable;
 
-public:
-    void AddPhysicsWrapper( IPhysics *physics );
-    void RemovePhysicsWrapper( IPhysics *physics );
+	class PhysicsManager : public Singleton<PhysicsManager>, private b2ContactListener
+	{
+		DEFINE_SINGLETON( PhysicsManager )
 
-    void SetUpPhysics( void );
-    void FixedUpdate( float deltaTime );
-    void Render( void );
+	public:
+		void addSimulatable( Simulatable* simulatable );
+		void removeSimulatable( Simulatable* simulatable );
 
-    inline b2World* GetWorld( void ) const
-    {
-        return _physicsWorld;
-    }
-    inline bool IsPhysicsSetUp( void ) const
-    {
-        return _isPhysicsSetUp;
-    }
+		void setUpPhysics( void );
+		void fixedUpdate( float deltaTime );
+		void renderPhysicsDebug( void );
 
-private:
-	virtual void BeginContact(b2Contact* contact);
-	virtual void EndContact(b2Contact* contact);
-	virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
-	virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
+		inline b2World* getPhysicsWorld( void ) const
+		{
+			return m_physicsWorld;
+		}
 
-    typedef std::list<IPhysics*> PhysicsList;
-    PhysicsList _physicsList;
+	private:
+		virtual void BeginContact(b2Contact* contact);
+		virtual void EndContact(b2Contact* contact);
+		virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
+		virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
 
-	DebugDraw* _debugDraw;
-    b2World* _physicsWorld;
-    bool _isPhysicsSetUp;
+		typedef std::list<Simulatable*> SimulatableList;
+		SimulatableList m_simulatableList;
 
-    void SingleStep( void );
-    void SmoothStep( void );
-    void SharpStep( void );
+		DebugDraw*	m_debugDraw;
+		b2World*	m_physicsWorld;
+		bool		m_isPhysicsSetUp;
 
-    float _remainderDT;
-    float _remainderRatio;
-};
+		void singleStep( void );
+		void smoothStep( void );
+		void sharpStep( void );
+
+		float m_remainderDT;
+		float m_remainderRatio;
+	};
+}
 
 #endif

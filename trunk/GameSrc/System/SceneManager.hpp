@@ -12,6 +12,8 @@
 #include "../Interface/ITransform.hpp"
 
 class Tile;
+class PlayerEntity;
+class StarEntity;
 
 class SceneManager : public Singleton<SceneManager>, private IEventListener
 {
@@ -36,8 +38,11 @@ public:
 	const Vec2D& GetLevelSize() const { return _levelSize; }
 	unsigned int GetLoadedSceneNumber() const { return _sceneNum; }
 
-	void RegisterTransform(const std::string& name, ITransform* transform);
-	ITransform* FindTransform(const std::string &name);
+	PlayerEntity* GetPlayerEntity() const { return _playerEntity; }
+	void SetPlayerEntity(PlayerEntity* val) { _playerEntity = val; }
+
+	StarEntity* GetStarEntity() const { return _starEntity; }
+	void SetStarEntity(StarEntity* val) { _starEntity = val; }
 
 private:
 	virtual bool HandleEvent( const EventData& newevent );
@@ -50,8 +55,8 @@ private:
 
 	sf::Music*	_backgroundMusic;
 
-	typedef std::unordered_map<std::string,ITransform*> TransformMap;
-	TransformMap _transformMap;
+	PlayerEntity* _playerEntity;
+	StarEntity*   _starEntity;
 };
 
 #endif

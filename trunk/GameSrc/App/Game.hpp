@@ -23,58 +23,58 @@ class Game : public Singleton<Game>, public sf::RenderWindow
     DEFINE_SINGLETON( Game )
 
 public:
-    void Initialize( void );
-    void Start( void );
-    inline void Quit(void)
+    void initialize( void );
+    void start( void );
+    inline void quit(void)
     {
 		close();
-        _isRunning = false;
+        m_isRunning = false;
     }
 
-    inline bool IsRunning( void ) const
+    inline bool isRunning( void ) const
     {
-        return _isRunning;
+        return m_isRunning;
     }
-    inline float GetTime(void) const
+    inline float getTime(void) const
     {
-        return _gameClock.getElapsedTime().asSeconds();
-    }
-
-    inline void SetNextStateType(StateType val)
-    {
-        _nextStateType = val;
+        return m_gameClock.getElapsedTime().asSeconds();
     }
 
-	inline void PauseFrameTimer(void)
+    inline void setNextStateType(StateType val)
+    {
+        m_nextStateType = val;
+    }
+
+	inline void pauseFrameTimer(void)
 	{
-		_frameClock.stop();
+		m_frameClock.stop();
 	}
 
-	inline void ResumeFrameTimer(void)
+	inline void resumeFrameTimer(void)
 	{
-		_frameClock.start();
+		m_frameClock.start();
 	}
 
 private:
-    typedef std::unordered_map<StateType,IState*> StateMap;
+    typedef std::unordered_map<StateType,GameState*> StateMap;
 
-    void PollEvents(void);
-    void ChangeStates(void);
-    void Update(void);
-    void Render(void);
+    void pollEvents(void);
+    void changeStates(void);
+    void update(void);
+    void render(void);
 
-    bool _isRunning;
-	bool _isPaused;
-	bool _shouldTakeScreenshot;
-    bool _shouldSwitchState;
+    bool m_isRunning;
+	bool m_isPaused;
+	bool m_shouldTakeScreenshot;
+    bool m_shouldSwitchState;
 
-    StateType _currentStateType;
-    StateType _nextStateType;
-    IState* _currentState;
-    StateMap _stateMap;
+    StateType m_currentStateType;
+    StateType m_nextStateType;
+    GameState* m_currentState;
+    StateMap m_stateMap;
 
-    thor::StopWatch   _frameClock;
-    sf::Clock		  _gameClock;
+    thor::StopWatch   m_frameClock;
+    sf::Clock		  m_gameClock;
 };
 
 #endif

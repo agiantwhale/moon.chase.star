@@ -12,7 +12,7 @@
 #include "../System/EventManager.hpp"
 #include "../System/GraphicsManager.hpp"
 
-LoadingState::LoadingState() :	IState(),
+LoadingState::LoadingState() :	GameState(),
 	_sceneNum(0),
 	_loadType(Load_UNDEFINED),
 	_screenBase(nullptr),
@@ -23,7 +23,7 @@ LoadingState::LoadingState() :	IState(),
 	AddEventListenType(Event_NextLevel);
 	AddEventListenType(Event_GUI);
 
-	_screenBase = new Gwen::Controls::Base(GUIManager::GetInstance()->GetCanvas());
+	_screenBase = new Gwen::Controls::Base(GUIManager::getInstance()->GetCanvas());
 	_screenBase->SetBounds(0,0,SCREENWIDTH,SCREENHEIGHT);
 
 	Gwen::Controls::Rectangle* rectangle = new Gwen::Controls::Rectangle(_screenBase);
@@ -49,9 +49,9 @@ LoadingState::~LoadingState()
 	RemoveEventListenType(Event_GUI);
 }
 
-void LoadingState::Enter( void )
+void LoadingState::enter( void )
 {
-	IState::Enter();
+	GameState::enter();
 
 	_frameDrawn = false;
 	_screenBase->Show();
@@ -66,7 +66,7 @@ bool LoadingState::Update( float deltaTime )
 		case Load_New:
 			{
 				Game::GetInstance()->SetNextStateType(State_InGame);
-				SceneManager::GetInstance()->LoadScene(_sceneNum);
+				SceneManager::getInstance()->LoadScene(_sceneNum);
 				return true;
 				break;
 			}
@@ -74,7 +74,7 @@ bool LoadingState::Update( float deltaTime )
 		case Load_Restart:
 			{
 				Game::GetInstance()->SetNextStateType(State_InGame);
-				SceneManager::GetInstance()->RestartScene();
+				SceneManager::getInstance()->RestartScene();
 				return true;
 				break;
 			}
@@ -96,7 +96,7 @@ bool LoadingState::Update( float deltaTime )
 				EventData* unloadEvent = new EventData(Event_Unload);
 				unloadEvent->TriggerEvent();
 
-				SceneManager::GetInstance()->LoadScene(_sceneNum);
+				SceneManager::getInstance()->LoadScene(_sceneNum);
 				Game::GetInstance()->SetNextStateType(State_InGame);
 				return true;
 				break;
@@ -114,14 +114,14 @@ bool LoadingState::Update( float deltaTime )
 
 void LoadingState::Render( void )
 {
-	GUIManager::GetInstance()->Render();
+	GUIManager::getInstance()->Render();
 
 	_frameDrawn = true;
 }
 
 void LoadingState::Exit( void )
 {
-	IState::Exit();
+	GameState::Exit();
 
 	_frameDrawn = false;
 	_screenBase->Hide();
@@ -139,7 +139,7 @@ bool LoadingState::HandleEvent( const EventData& theevent )
 
 	if(theevent.GetEventType() == Event_NextLevel)
 	{
-		_sceneNum = SceneManager::GetInstance()->GetLoadedSceneNumber() + 1;
+		_sceneNum = SceneManager::getInstance()->GetLoadedSceneNumber() + 1;
 
 		_loadType = Load_Next;
 	}

@@ -5,14 +5,14 @@
 #include "../Interface/IState.hpp"
 #include "../Interface/IEventListener.hpp"
 
-class LoadingState : public IState, public IEventListener
+class LoadingState : public GameState, public IEventListener
 {
 public:
 	LoadingState();
 	virtual ~LoadingState();
 
 	virtual bool HandleEvent(const EventData& theevent);
-	virtual void Enter(void);
+	virtual void enter(void);
 	virtual bool Update(float deltaTime);
 	virtual void Render(void);
 	virtual void Exit(void);

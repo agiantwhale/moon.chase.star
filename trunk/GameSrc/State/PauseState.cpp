@@ -7,7 +7,7 @@
 #include "../App/Game.hpp"
 #include "../Event/AppEventData.hpp"
 
-PauseState::PauseState() :	IState(),
+PauseState::PauseState() :	GameState(),
 							IEventListener("PauseState"),
 							_pauseMenuControl(nullptr),
 							_endState(false)
@@ -15,7 +15,7 @@ PauseState::PauseState() :	IState(),
 	AddEventListenType(Event_GUI);
 	AddEventListenType(Event_App);
 
-	_pauseMenuControl = new PauseMenuControl(GUIManager::GetInstance()->GetCanvas());
+	_pauseMenuControl = new PauseMenuControl(GUIManager::getInstance()->GetCanvas());
 	_pauseMenuControl->Hide();
 }
 
@@ -61,9 +61,9 @@ bool PauseState::HandleEvent( const EventData& theevent )
 	return false;
 }
 
-void PauseState::Enter( void )
+void PauseState::enter( void )
 {
-	IState::Enter();
+	GameState::enter();
 
 	_endState = false;
 	_pauseMenuControl->Show();
@@ -71,20 +71,20 @@ void PauseState::Enter( void )
 
 bool PauseState::Update( float deltaTime )
 {
-	InputManager::GetInstance()->Update( deltaTime );
+	InputManager::getInstance()->Update( deltaTime );
 
 	return _endState;
 }
 
 void PauseState::Render( void )
 {
-	GraphicsManager::GetInstance()->Render();
-	GUIManager::GetInstance()->Render();
+	GraphicsManager::getInstance()->Render();
+	GUIManager::getInstance()->Render();
 }
 
 void PauseState::Exit( void )
 {
-	IState::Exit();
+	GameState::Exit();
 
 	_endState = false;
 	_pauseMenuControl->Hide();

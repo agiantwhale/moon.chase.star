@@ -1,23 +1,20 @@
 #ifndef SPRITEWRAPPER_HPP
 #define SPRITEWRAPPER_HPP
 
-#include "../../Interface/IRenderable.hpp"
-#include "../../Entity/Entity.hpp"
 #include <SFML/Graphics.hpp>
 
-class SpriteWrapper : public IRenderable
+namespace sb
 {
-public:
-    SpriteWrapper(const ITransform* entity);
-    virtual ~SpriteWrapper();
+	class WorldSprite : public sf::Transformable
+	{
+	public:
+		WorldSprite();
+		explicit WorldSprite(const sf::Texture& texture);
+		WorldSprite(const sf::Texture& texture, const sf::IntRect& rectangle);
 
-    virtual void Render(void);
+	private:
 
-	sf::Sprite* GetSprite() const { return _sprite; }
-	void SetSprite(sf::Sprite* val) { _sprite = val; }
-
-protected:
-    sf::Sprite* _sprite;
-};
+	};
+}
 
 #endif

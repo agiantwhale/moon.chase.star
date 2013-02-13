@@ -7,7 +7,7 @@
 void BackgroundTile::Initialize( const TiXmlElement* element )
 {
 	_tileTexture = new sf::RenderTexture;
-	_tileTexture->create( SceneManager::GetInstance()->GetLevelSize().x, SceneManager::GetInstance()->GetLevelSize().y );
+	_tileTexture->create( SceneManager::getInstance()->GetLevelSize().x, SceneManager::getInstance()->GetLevelSize().y );
 	_tileTexture->clear( sf::Color::Transparent );
 
 	if(element)
@@ -36,6 +36,6 @@ void BackgroundTile::Initialize( const TiXmlElement* element )
 
 	_tileTexture->display();
 
-	SceneManager::GetInstance()->AddTile(this);
+	SceneManager::getInstance()->AddTile(this);
 }
 
