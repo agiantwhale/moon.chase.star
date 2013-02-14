@@ -23,7 +23,7 @@ LoadingState::LoadingState() :	GameState(),
 	addEventListenType(Event_NextLevel);
 	addEventListenType(Event_GUI);
 
-	_screenBase = new Gwen::Controls::Base(GUIManager::getInstance()->GetCanvas());
+	_screenBase = new Gwen::Controls::Base(GUIManager::getInstance()->getCanvas());
 	_screenBase->SetBounds(0,0,SCREENWIDTH,SCREENHEIGHT);
 
 	Gwen::Controls::Rectangle* rectangle = new Gwen::Controls::Rectangle(_screenBase);
@@ -57,7 +57,7 @@ void LoadingState::enter( void )
 	_screenBase->Show();
 }
 
-bool LoadingState::update( float deltaTime )
+bool LoadingState::update( sf::Time deltaTime )
 {
 	if(_frameDrawn)
 	{
@@ -66,7 +66,7 @@ bool LoadingState::update( float deltaTime )
 		case Load_New:
 			{
 				Game::GetInstance()->SetNextStateType(State_InGame);
-				SceneManager::getInstance()->LoadScene(_sceneNum);
+				SceneManager::getInstance()->loadScene(_sceneNum);
 				return true;
 				break;
 			}
@@ -74,7 +74,7 @@ bool LoadingState::update( float deltaTime )
 		case Load_Restart:
 			{
 				Game::GetInstance()->SetNextStateType(State_InGame);
-				SceneManager::getInstance()->RestartScene();
+				SceneManager::getInstance()->restartScene();
 				return true;
 				break;
 			}
@@ -82,7 +82,7 @@ bool LoadingState::update( float deltaTime )
 		case Load_Unload:
 			{
 				EventData* unloadEvent = new EventData(Event_Unload);
-				unloadEvent->TriggerEvent();
+				unloadEvent->triggerEvent();
 
 				ResourceCache::DestroyInstance();
 
@@ -94,9 +94,9 @@ bool LoadingState::update( float deltaTime )
 		case Load_Next:
 			{
 				EventData* unloadEvent = new EventData(Event_Unload);
-				unloadEvent->TriggerEvent();
+				unloadEvent->triggerEvent();
 
-				SceneManager::getInstance()->LoadScene(_sceneNum);
+				SceneManager::getInstance()->loadScene(_sceneNum);
 				Game::GetInstance()->SetNextStateType(State_InGame);
 				return true;
 				break;
@@ -114,7 +114,7 @@ bool LoadingState::update( float deltaTime )
 
 void LoadingState::render( void )
 {
-	GUIManager::getInstance()->Render();
+	GUIManager::getInstance()->render();
 
 	_frameDrawn = true;
 }
@@ -129,7 +129,7 @@ void LoadingState::exit( void )
 
 bool LoadingState::handleEvent( const EventData& theevent )
 {
-	if(theevent.GetEventType() == Event_NewGame )
+	if(theevent.getEventType() == Event_NewGame )
 	{
 		const NewGameEventData& eventData = static_cast<const NewGameEventData&>(theevent);
 		_sceneNum = eventData.GetSceneNumber();
@@ -137,19 +137,19 @@ bool LoadingState::handleEvent( const EventData& theevent )
 		_loadType = Load_New;
 	}
 
-	if(theevent.GetEventType() == Event_NextLevel)
+	if(theevent.getEventType() == Event_NextLevel)
 	{
-		_sceneNum = SceneManager::getInstance()->GetLoadedSceneNumber() + 1;
+		_sceneNum = SceneManager::getInstance()->getLoadedSceneNumber() + 1;
 
 		_loadType = Load_Next;
 	}
 
-	if(theevent.GetEventType() == Event_RestartLevel)
+	if(theevent.getEventType() == Event_RestartLevel)
 	{
 		_loadType = Load_Restart;
 	}
 
-	if(theevent.GetEventType() == Event_GUI)
+	if(theevent.getEventType() == Event_GUI)
 	{
 		const GUIEventData& eventData = static_cast<const GUIEventData&>(theevent);
 		std::string controlName = eventData.GetControl()->GetName();

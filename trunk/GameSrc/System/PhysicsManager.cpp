@@ -40,7 +40,7 @@ namespace sb
 		TRI_LOG_STR("Physics initialized.");
 	}
 
-	void PhysicsManager::fixedUpdate( float deltaTime )
+	void PhysicsManager::fixedUpdate( sf::Time deltaTime )
 	{
 		if( !m_isPhysicsSetUp )
 		{
@@ -82,7 +82,7 @@ namespace sb
 	{
 		const float physicsDT = 1.0f/60.0f;
 
-		EventManager::getInstance()->TriggerEvent(new EventData(Event_Simulate));
+		EventManager::getInstance()->triggerEvent(new EventData(Event_Simulate));
 
 		m_physicsWorld->Step( physicsDT, 8, 3);
 	}
@@ -111,25 +111,25 @@ namespace sb
 	void PhysicsManager::BeginContact(b2Contact* contact)
 	{
 		EventData* eventData = new ContactEventData(contact,Event_BeginContact);
-		eventData->TriggerEvent();
+		eventData->triggerEvent();
 	}
 
 	void PhysicsManager::EndContact(b2Contact* contact)
 	{
 		EventData* eventData = new ContactEventData(contact,Event_EndContact);
-		eventData->TriggerEvent();
+		eventData->triggerEvent();
 	}
 
 	void PhysicsManager::PreSolve( b2Contact* contact, const b2Manifold* oldManifold )
 	{
 		EventData* eventData = new PreSolveEventData(contact,oldManifold);
-		eventData->TriggerEvent();
+		eventData->triggerEvent();
 	}
 
 	void PhysicsManager::PostSolve( b2Contact* contact, const b2ContactImpulse* impulse )
 	{
 		EventData* eventData = new PostSolveEventData(contact,impulse);
-		eventData->TriggerEvent();
+		eventData->triggerEvent();
 	}
 
 	void PhysicsManager::addSimulatable( Simulatable* simulatable )

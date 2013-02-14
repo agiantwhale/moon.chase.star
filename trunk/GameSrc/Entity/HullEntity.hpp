@@ -9,7 +9,7 @@ class HullEntity : public Entity
     DEFINE_ENTITY( HullEntity, Entity, 'HULL')
 
 public:
-    virtual void Initialize( const TiXmlElement *propertyElement = NULL );
+    virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
 
 private:
     BodyWrapper _hullBody;

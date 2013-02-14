@@ -4,59 +4,64 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <SFML/System/ve>
 #include <SFML/Audio.hpp>
 #include <unordered_map>
-#include "../Base/Vec2D.hpp"
 #include "../Base/Singleton.hpp"
-#include "../Interface/IEventListener.hpp"
-#include "../Interface/ITransform.hpp"
+#include "../Event/EventListener.hpp"
 
 class Tile;
-class PlayerEntity;
-class StarEntity;
 
-class SceneManager : public Singleton<SceneManager>, private EventListener
+namespace sb
 {
-    DEFINE_SINGLETON( SceneManager );
+	class PlayerEntity;
+	class StarEntity;
 
-public:
-	void SetUpScene(void);
-	void SaveProgress(void);
-	void LoadScene( unsigned int sceneNum );
-    void RestartScene(void);
-    void UnloadScene( void );
-    inline bool IsSceneLoaded( void )
-    {
-        return _sceneLoaded;
-    }
-
-	void AddTile(Tile* tile)
+	class SceneManager : public Singleton<SceneManager>, private EventListener
 	{
-		_tileStack.push_back(tile);
-	}
+		DEFINE_SINGLETON( SceneManager );
 
-	const Vec2D& GetLevelSize() const { return _levelSize; }
-	unsigned int GetLoadedSceneNumber() const { return _sceneNum; }
+	public:
+		void setUpScene(void);
+		void saveProgress(void);
+		void loadScene( unsigned int sceneNum );
+		void restartScene(void);
+		void unloadScene( void );
+		inline bool isSceneLoaded( void )
+		{
+			return m_sceneLoaded;
+		}
 
-	PlayerEntity* GetPlayerEntity() const { return _playerEntity; }
-	void SetPlayerEntity(PlayerEntity* val) { _playerEntity = val; }
+		void addTile(Tile* tile)
+		{
+			m_tileStack.push_back(tile);
+		}
 
-	StarEntity* GetStarEntity() const { return _starEntity; }
-	void SetStarEntity(StarEntity* val) { _starEntity = val; }
+		const sf::Vector2i& getLevelSize() const { return m_levelSize; }
+		unsigned int getLoadedSceneNumber() const { return m_sceneNum; }
 
-private:
-	virtual bool HandleEvent( const EventData& newevent );
+		PlayerEntity* getPlayerEntity() const { return m_playerEntity; }
+		void setPlayerEntity(PlayerEntity* val) { m_playerEntity = val; }
 
-	unsigned int _sceneNum;
-	std::vector<std::string> _sceneFileNameStack;
-    bool _sceneLoaded;
-	Vec2D _levelSize;
-	std::vector<Tile*> _tileStack;
+		StarEntity* getStarEntity() const { return m_starEntity; }
+		void setStarEntity(StarEntity* val) { m_starEntity = val; }
 
-	sf::Music*	_backgroundMusic;
+	private:
+		virtual bool handleEvent( const EventData& newevent );
 
-	PlayerEntity* _playerEntity;
-	StarEntity*   _starEntity;
-};
+		unsigned int m_sceneNum;
+		std::vector<std::string> m_sceneFileNameStack;
+		bool m_sceneLoaded;
+		sf::Vector2i m_levelSize;
+		std::vector<Tile*> m_tileStack;
+
+		sf::Music*	m_backgroundMusic;
+
+		PlayerEntity* m_playerEntity;
+		StarEntity*   m_starEntity;
+	};
+}
+
+
 
 #endif

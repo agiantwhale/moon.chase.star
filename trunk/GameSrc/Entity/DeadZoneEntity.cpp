@@ -15,7 +15,7 @@ DeadZoneEntity::~DeadZoneEntity()
 
 }
 
-void DeadZoneEntity::Initialize( const TiXmlElement *propertyElement /*= nullptr */ )
+void DeadZoneEntity::initializeEntity( const TiXmlElement *propertyElement /*= nullptr */ )
 {
 	BaseClass::Initialize(propertyElement);
 
@@ -49,7 +49,7 @@ void DeadZoneEntity::Initialize( const TiXmlElement *propertyElement /*= nullptr
 
 bool DeadZoneEntity::handleEvent( const EventData& theevent )
 {
-	switch (theevent.GetEventType())
+	switch (theevent.getEventType())
 	{
 	case Event_BeginContact:
 		{

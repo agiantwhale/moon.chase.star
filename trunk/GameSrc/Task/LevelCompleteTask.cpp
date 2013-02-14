@@ -60,7 +60,7 @@ void LevelCompleteTask::Start()
 	}
 }
 
-bool LevelCompleteTask::DoTask( float deltaTime )
+bool LevelCompleteTask::DoTask( sf::Time deltaTime )
 {
 	if(Task::DoTask(deltaTime))
 		return true;
@@ -113,5 +113,5 @@ void LevelCompleteTask::End()
 	Task::End();
 
 	EventData* eventData = new EventData(Event_NextLevel);
-	eventData->QueueEvent(0.5f);
+	eventData->queueEvent(sf::Seconds(0.5f));
 }

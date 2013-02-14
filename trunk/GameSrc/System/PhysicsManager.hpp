@@ -2,7 +2,7 @@
 #define PHYSICSMANAGER_H
 
 #include <list>
-
+#include <Box2D/Box2D.h>
 #include "../Base/Singleton.hpp"
 
 using namespace std;
@@ -22,7 +22,7 @@ namespace sb
 		void removeSimulatable( Simulatable* simulatable );
 
 		void setUpPhysics( void );
-		void fixedUpdate( float deltaTime );
+		void fixedUpdate( sf::Time deltaTime );
 		void renderPhysicsDebug( void );
 
 		inline b2World* getPhysicsWorld( void ) const

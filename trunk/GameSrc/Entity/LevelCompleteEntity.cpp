@@ -18,9 +18,9 @@ LevelCompleteEntity::~LevelCompleteEntity()
 	removeEventListenType(Event_StarArrived);
 }
 
-void LevelCompleteEntity::Initialize( const TiXmlElement *propertyElement /*= NULL */ )
+void LevelCompleteEntity::initializeEntity( const TiXmlElement *propertyElement /*= NULL */ )
 {
-	BaseClass::Initialize(propertyElement);
+	BaseClass::initializeEntity(propertyElement);
 
 	SetPosition( GetPosition() + 0.5f * Vec2D(GetScale().x,-GetScale().y) * UNRATIO );
 
@@ -72,9 +72,9 @@ void LevelCompleteEntity::ProcessContact( const b2Contact* contact, const b2Fixt
 {
 	IPhysics *targetInterface = GetPhysicsInterface(contactFixture);
 
-	if(IsActive() && _acceptArrival && targetInterface && targetInterface->GetEntity()->GetEntityType() == 'BALL')
+	if(isActive() && _acceptArrival && targetInterface && targetInterface->GetEntity()->GetEntityType() == 'BALL')
 	{
-		SetActive(false);
+		setActive(false);
 
 		LevelCompleteTask* levelCompleteTask = new LevelCompleteTask(static_cast<PlayerEntity*>(targetInterface->GetEntity()),_endFollowRoute);
 		levelCompleteTask->AddTask();
@@ -83,7 +83,7 @@ void LevelCompleteEntity::ProcessContact( const b2Contact* contact, const b2Fixt
 
 bool LevelCompleteEntity::handleEvent( const EventData& theevent )
 {
-	switch (theevent.GetEventType())
+	switch (theevent.getEventType())
 	{
 	case Event_BeginContact:
 		{

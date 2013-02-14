@@ -20,15 +20,15 @@ TeleportEntity::~TeleportEntity()
 {
 }
 
-void TeleportEntity::Update( float deltaTime )
+void TeleportEntity::update( sf::Time deltaTime )
 {
 	_enterTransform.SetRotation(_enterTransform.GetRotation() + ROTATION_PER_SECOND * deltaTime);
 	_exitTransform.SetRotation(_exitTransform.GetRotation() - ROTATION_PER_SECOND * deltaTime);
 }
 
-void TeleportEntity::Initialize( const TiXmlElement *propertyElement /*= NULL */ )
+void TeleportEntity::initializeEntity( const TiXmlElement *propertyElement /*= NULL */ )
 {
-	BaseClass::Initialize(propertyElement);
+	BaseClass::initializeEntity(propertyElement);
 
 	{
 		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Entrance.png");

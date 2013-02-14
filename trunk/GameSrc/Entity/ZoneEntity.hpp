@@ -10,23 +10,22 @@ class Task;
 class CameraMoveTask;
 class TaskManager;
 
-class ZoneEntity : public Entity
+class ZoneEntity : public sb::Entity
 {
-	DEFINE_ENTITY( ZoneEntity, Entity, 'ZONE')
+	DEFINE_ENTITY( ZoneEntity, sb::Entity, 'ZONE')
 
 public:
-	void Initialize( const TiXmlElement *propertyElement = nullptr );
+	void initializeEntity( const TiXmlElement *propertyElement = nullptr );
 	bool handleEvent(const EventData& theevent);
-	void PostLoad();
+	void postLoad();
 
 private:
 	BodyWrapper _zoneBody;
 	bool		_containsBall;
 	static std::list<Task*> _taskList;
 
-	friend class SceneManager;
+	friend class sb::SceneManager;
 	friend class CameraMoveTask;
-	friend class TaskManager;
 };
 
 #endif

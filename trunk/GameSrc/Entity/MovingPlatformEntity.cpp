@@ -23,7 +23,7 @@ MovingPlatformEntity::~MovingPlatformEntity()
 
 }
 
-void MovingPlatformEntity::Update( float deltaTime )
+void MovingPlatformEntity::update( sf::Time deltaTime )
 {
 	if(_currentTravelTime <= 0.0f)
 	{
@@ -44,9 +44,9 @@ void MovingPlatformEntity::Update( float deltaTime )
 	_platformBody.GetBody()->SetAwake(true);
 }
 
-void MovingPlatformEntity::Initialize( const TiXmlElement *propertyElement /* = nullptr */ )
+void MovingPlatformEntity::initializeEntity( const TiXmlElement *propertyElement /* = nullptr */ )
 {
-	BaseClass::Initialize(propertyElement);
+	BaseClass::initializeEntity(propertyElement);
 
 	{
 		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Block.png");

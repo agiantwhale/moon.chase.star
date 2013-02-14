@@ -15,7 +15,7 @@ PauseState::PauseState() :	GameState(),
 	addEventListenType(Event_GUI);
 	addEventListenType(Event_App);
 
-	_pauseMenuControl = new PauseMenuControl(GUIManager::getInstance()->GetCanvas());
+	_pauseMenuControl = new PauseMenuControl(GUIManager::getInstance()->getCanvas());
 	_pauseMenuControl->Hide();
 }
 
@@ -27,7 +27,7 @@ PauseState::~PauseState()
 
 bool PauseState::handleEvent( const EventData& theevent )
 {
-	if( theevent.GetEventType() == Event_GUI)
+	if( theevent.getEventType() == Event_GUI)
 	{
 		const GUIEventData& eventData = static_cast<const GUIEventData&>(theevent);
 		std::string controlName = eventData.GetControl()->GetName();
@@ -46,7 +46,7 @@ bool PauseState::handleEvent( const EventData& theevent )
 		}
 	}
 
-	if(theevent.GetEventType()==Event_App && isActive())
+	if(theevent.getEventType()==Event_App && isActive())
 	{
 		const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
 
@@ -69,9 +69,9 @@ void PauseState::enter( void )
 	_pauseMenuControl->Show();
 }
 
-bool PauseState::update( float deltaTime )
+bool PauseState::update( sf::Time deltaTime )
 {
-	InputManager::getInstance()->Update( deltaTime );
+	InputManager::getInstance()->update( deltaTime );
 
 	return _endState;
 }
@@ -79,7 +79,7 @@ bool PauseState::update( float deltaTime )
 void PauseState::render( void )
 {
 	GraphicsManager::getInstance()->Render();
-	GUIManager::getInstance()->Render();
+	GUIManager::getInstance()->render();
 }
 
 void PauseState::exit( void )

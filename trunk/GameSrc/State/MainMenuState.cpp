@@ -7,7 +7,7 @@ MainMenuState::MainMenuState() :	GameState(),
 									_menuWindow(nullptr),
 									_endState(false)
 {
-	_menuWindow = new MainMenuControl(GUIManager::getInstance()->GetCanvas());
+	_menuWindow = new MainMenuControl(GUIManager::getInstance()->getCanvas());
 	_menuWindow->Hide();
 
 	addEventListenType(Event_NewGame);
@@ -27,14 +27,14 @@ void MainMenuState::enter( void )
 	_menuWindow->Show();
 }
 
-bool MainMenuState::update( float deltaTime )
+bool MainMenuState::update( sf::Time deltaTime )
 {
 	return _endState;
 }
 
 void MainMenuState::render( void )
 {
-	GUIManager::getInstance()->Render();
+	GUIManager::getInstance()->render();
 }
 
 void MainMenuState::exit( void )
@@ -46,7 +46,7 @@ void MainMenuState::exit( void )
 
 bool MainMenuState::handleEvent( const EventData& theevent )
 {
-	if(theevent.GetEventType() == Event_NewGame)
+	if(theevent.getEventType() == Event_NewGame)
 	{
 		Game::GetInstance()->SetNextStateType(State_Loading);
 		_endState = true;

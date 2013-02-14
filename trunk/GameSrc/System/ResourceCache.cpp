@@ -1,12 +1,14 @@
-#include "../App/Game.hpp"
-#include "../System/ResourceCache.hpp"
+#include "ResourceCache.hpp"
 
-SINGLETON_CONSTRUCTOR( ResourceCache )
+namespace sb
 {
-	setReleaseStrategy(thor::Resources::ExplicitRelease);
-	setLoadingFailureStrategy(thor::Resources::ReturnNullPointer);
-}
+	SINGLETON_CONSTRUCTOR( ResourceCache )
+	{
+		setReleaseStrategy(thor::Resources::ExplicitRelease);
+		setLoadingFailureStrategy(thor::Resources::ReturnNullPointer);
+	}
 
-SINGLETON_DESTRUCTOR( ResourceCache )
-{
+	SINGLETON_DESTRUCTOR( ResourceCache )
+	{
+	}
 }

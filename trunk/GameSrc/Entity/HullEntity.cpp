@@ -11,9 +11,9 @@ HullEntity::~HullEntity()
 {
 }
 
-void HullEntity::Initialize( const TiXmlElement *propertyElement )
+void HullEntity::initializeEntity( const TiXmlElement *propertyElement )
 {
-    BaseClass::Initialize(propertyElement);
+    BaseClass::initializeEntity(propertyElement);
 
     if( propertyElement )
     {

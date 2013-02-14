@@ -19,13 +19,13 @@ namespace sb
 	};
 
 	template < class T >
-	sb::WorldDrawable<T>::WorldDrawable( const T& drawable ) : sf::Transformable(), sf::Drawable(), m_drawable(drawable)
+	WorldDrawable<T>::WorldDrawable( const T& drawable ) : sf::Transformable(), sf::Drawable(), m_drawable(drawable)
 	{
 
 	}
 
 	template < class T >
-	void sb::WorldDrawable<T>::draw( sf::RenderTarget& target, sf::RenderStates states ) const
+	void WorldDrawable<T>::draw( sf::RenderTarget& target, sf::RenderStates states ) const
 	{
 		sf::Vector2f worldVector = getPosition();
 		sf::Vector2f screenVector( SCREENWIDTH/2, SCREENHEIGHT/2 );

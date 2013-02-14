@@ -5,27 +5,28 @@
 #include <SFML\Graphics.hpp>
 #include <string>
 #include <unordered_map>
-#include "../Interface/IRenderable.hpp"
-#include "../Interface/IEventListener.hpp"
+#include "../Base/Globals.hpp"
 
-class Tile : public IRenderable
+namespace sb
 {
-public:
-    Tile();
-    virtual ~Tile();
+	class Tile : public sf::Drawable
+	{
+	public:
+		Tile( const TiXmlElement* element, const sf::Vector2i& tileSize = sf::Vector2i(TILESIZE,TILESIZE) );
+		virtual ~Tile();
 
-    virtual void Render(void);
-    void Initialize( const TiXmlElement* element );
+		static void registerTileset( const std::string& tile, const std::string& tileset )
+		{
+			_tilesetMap.insert( std::make_pair( tile, tileset ) );
+		}
 
-    static void RegisterTileset( const std::string& tile, const std::string& tileset )
-    {
-        _tilesetMap.insert( std::make_pair( tile, tileset ) );
-    }
+	private:
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-protected:
-    sf::RenderTexture* _tileTexture;
+		sf::RenderTexture* m_tileTexture;
 
-    static std::unordered_map<std::string,std::string> _tilesetMap;
-};
+		static std::unordered_map<std::string,std::string> _tilesetMap;
+	};
+}
 
 #endif

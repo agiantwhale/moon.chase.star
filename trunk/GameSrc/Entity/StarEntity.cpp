@@ -37,9 +37,9 @@ StarEntity::~StarEntity()
 
 }
 
-void StarEntity::Update( float deltaTime )
+void StarEntity::update( sf::Time deltaTime )
 {
-	BaseClass::Update(deltaTime);
+	BaseClass::update(deltaTime);
 
 	_currentTime += deltaTime;
 
@@ -49,7 +49,7 @@ void StarEntity::Update( float deltaTime )
 		{
 			_arrived = true;
 			EventData* eventData = new EventData(Event_StarArrived);
-			eventData->TriggerEvent();
+			eventData->triggerEvent();
 		}
 
 		SetPosition(Vec2D(_xSpline(_totalTravelTime),_ySpline(_totalTravelTime)));
@@ -76,9 +76,9 @@ void StarEntity::Update( float deltaTime )
 	_starParticle.Update(deltaTime);
 }
 
-void StarEntity::Initialize( const TiXmlElement *propertyElement /* = nullptr */ )
+void StarEntity::initializeEntity( const TiXmlElement *propertyElement /* = nullptr */ )
 {
-	BaseClass::Initialize(propertyElement);
+	BaseClass::initializeEntity(propertyElement);
 
 	if( propertyElement )
 	{
@@ -168,12 +168,12 @@ void StarEntity::Initialize( const TiXmlElement *propertyElement /* = nullptr */
 		}
 	}
 
-	SceneManager::getInstance()->SetStarEntity(this);
+	SceneManager::getInstance()->setStarEntity(this);
 }
 
 bool StarEntity::handleEvent(const EventData& theevent)
 {
-	switch (theevent.GetEventType())
+	switch (theevent.getEventType())
 	{
 	case Event_Simulate:
 		{

@@ -10,8 +10,8 @@ class TeleportEntity : public Entity
 	DEFINE_ENTITY( TeleportEntity, Entity, 'TLPT')
 
 public:
-	virtual void Update(float deltaTime);
-	virtual void Initialize( const TiXmlElement *propertyElement = NULL );
+	virtual void update(sf::Time deltaTime);
+	virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
 
 	const Vec2D& GetExitPosition() {return _exitTransform.GetPosition();}
 private:

@@ -1,74 +1,73 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#ifndef Entity_h__
+#define Entity_h__
 
-#include <string>
-#include <boost\any.hpp>
 #include <TinyXML\tinyxml.h>
 #include <SFML\Graphics\Transformable.hpp>
+#include <SFML\System\Time.hpp>
 
 #include "../Base/Globals.hpp"
-#include "../Base/Vec2D.hpp"
-#include "../Interface/IEventListener.hpp"
+#include "../Event/EventListener.hpp"
 #include "../System/EntityManager.hpp"
 
-using namespace std;
-
-class EntityManager;
-class EntityList;
-
-class Entity : public sf::Transformable, public EventListener
+namespace sb
 {
-public:
-    virtual void Update(float deltaTime);
-    virtual void PostLoad(void);
-    virtual bool handleEvent(const EventData& theevent);
-    virtual int GetEntityType( void ) const
-    {
-        return 'BASE';
-    }
+	class EntityManager;
+	class EntityList;
 
-    void Release( void )
-    {
-        _released = true;
-    }
-
-	void Register(void)
+	class Entity : public sf::Transformable, public EventListener
 	{
-		EntityManager::getInstance()->RegisterEntity(this);
-	}
+	public:
+		virtual void update(sf::Time deltaTime);
+		virtual void postLoad(void);
+		virtual bool handleEvent(const EventData& theevent);
+		virtual int getEntityType( void ) const
+		{
+			return 'BASE';
+		}
 
-    bool IsReleased( void ) const { return _released; }
+		void releaseEntity( void )
+		{
+			m_released = true;
+		}
 
-    virtual void Initialize( const TiXmlElement *propertyElement = nullptr );
-    bool IsInitialized( void ) const { return _initialized; }
+		void registerEntity(void)
+		{
+			EntityManager::getInstance()->registerEntity(this);
+		}
 
-	bool IsActive() const { return _active; }
-	void SetActive(bool val) { _active = val; }
+		bool isReleased( void ) const { return m_released; }
 
-protected:
-    Entity();
-    virtual ~Entity();
+		virtual void initializeEntity( const TiXmlElement *propertyElement = nullptr );
+		bool isInitialized( void ) const { return m_initialized; }
 
-    bool _initialized;
-    bool _released;
-	bool _active;		//Inactive entities are not updated.
+		bool isActive() const { return m_active; }
+		void setActive(bool val) { m_active = val; }
 
-    friend class EntityManager;
-    friend class EntityList;
-};
+	protected:
+		Entity();
+		virtual ~Entity();
+
+		bool m_initialized;
+		bool m_released;
+		bool m_active;		//Inactive entities are not updated.
+
+		friend class EntityManager;
+		friend class EntityList;
+	};
+}
 
 #define DEFINE_ENTITY( ThisName, BaseName, EntType )\
 	public:\
 	enum\
-	{\
-		kEntity_##ThisName = EntType\
-	};\
+{\
+	kEntity_##ThisName = EntType\
+};\
 	typedef BaseName BaseClass;\
 	typedef ThisName ThisClass;\
-	friend class EntityBuilder<ThisName>;\
-	virtual int GetEntityType( void ) const { return EntType; }\
+	friend class sb::EntityBuilder<ThisName>;\
+	virtual int getEntityType( void ) const { return EntType; }\
 	protected:\
 	ThisName();\
 	virtual ~ThisName( void );
 
-#endif
+#endif // Entity_h__

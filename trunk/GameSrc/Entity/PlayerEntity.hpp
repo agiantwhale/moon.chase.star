@@ -14,9 +14,9 @@ class PlayerEntity : public Entity
     DEFINE_ENTITY(PlayerEntity,Entity,'BALL')
 
 public:
-    virtual void Initialize( const TiXmlElement *propertyElement );
+    virtual void initializeEntity( const TiXmlElement *propertyElement );
     virtual bool handleEvent(const EventData& theevent);
-    virtual void Update(float deltaTime);
+    virtual void update(sf::Time deltaTime);
 
 	void Kill();
 
@@ -64,8 +64,8 @@ class DummyBallEntity : public Entity
 	DEFINE_ENTITY(DummyBallEntity,Entity,'DMMY')
 
 public:
-	virtual void Initialize( const TiXmlElement *propertyElement );
-	virtual void Update(float deltaTime);
+	virtual void initializeEntity( const TiXmlElement *propertyElement );
+	virtual void update(sf::Time deltaTime);
 
 private:
 	BodyWrapper _ballBody;

@@ -1,42 +1,39 @@
-#ifndef EVENTMANAGER_HPP
-#define EVENTMANAGER_HPP
+#ifndef EventManager_h__
+#define EventManager_h__
 
 #include <list>
 #include <unordered_map>
 #include <queue>
-
+#include <SFML/System/Time.hpp>
+#include <Thor/Time/Timer.hpp>
 #include "../Base/Singleton.hpp"
-#include "../Interface/IEventListener.hpp"
+#include "../Event/EventListener.hpp"
 #include "../Event/EventData.hpp"
 
-//Used internally by EventManager
-struct EventQueue
+namespace sb
 {
-    EventData* event;
-    float wait;
-};
+	class EventManager : public Singleton<EventManager>
+	{
+		DEFINE_SINGLETON( EventManager )
 
-class EventManager : public Singleton<EventManager>
-{
-    DEFINE_SINGLETON( EventManager )
+	private:
+		typedef std::list<EventListener*> EventListenerList;
+		typedef std::unordered_map<EventType, EventListenerList*> EventListenersMap;
+		typedef std::list<EventData*> EventsList;
 
-private:
-    typedef std::list<EventListener*> EventListenerList;
-    typedef std::unordered_map<EventType, EventListenerList*> EventListenersMap;
-    typedef std::list<EventData*> EventsList;
+	public:
+		void addListener(EventListener* const listenerptr, const EventType& eventtype);
+		void removeListener(EventListener* const listenerptr, const EventType& eventtype);
+		void triggerEvent(EventData* newevent);
+		void queueEvent(EventData* newevent, sf::Time waitTime = sf::Time::Zero );
+		void abortEvent(const EventType& typeToAbort, bool alloftype);
+		void update( sf::Time deltaTime );
+		void emptyEventQueues();
 
-public:
-    void AddListener(EventListener* const listenerptr, const EventType& eventtype);
-    void RemoveListener(EventListener* const listenerptr, const EventType& eventtype);
-    void TriggerEvent(EventData* newevent);
-	void QueueEvent(EventData* newevent, float waitTime = 0.0f);;
-    void AbortEvent(const EventType& typeToAbort, bool alloftype);
-    void Update( float dt);
-    void EmptyEventQueues();
+	private:
+		EventListenersMap m_eventListnersMap;
+		std::list<std::pair<thor::Timer,EventData*>> m_eventsQueue;
+	};
+}
 
-private:
-    EventListenersMap _eventListnersMap;
-    std::list<EventQueue> _eventsQueue;
-};
-
-#endif
+#endif // EventManager_h__

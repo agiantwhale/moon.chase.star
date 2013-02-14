@@ -1,36 +1,29 @@
-#ifndef EVENTDATA_HPP
-#define EVENTDATA_HPP
+#ifndef EventData_h__
+#define EventData_h__
 
-#include "../Event/EventsDef.h"
+#include "EventsDef.h"
 
-class EventData
+namespace sb
 {
-public:
-    EventData(const EventType type );
-    virtual ~EventData();
+	class EventData
+	{
+	public:
+		EventData(EventType type);
+		virtual ~EventData();
 
-    inline const EventType& GetEventType() const
-    {
-        return _eventType;
-    }
-    inline float GetEventCreateTimeStamp() const
-    {
-        return _createTime;
-    }
-    inline float GetEventStartTimeStamp() const
-    {
-        return _startTime;
-    }
+		inline const EventType& getEventType() const
+		{
+			return m_eventType;
+		}
 
-	void TriggerEvent(void);
-	void QueueEvent(float waitTime = 0.0f);
-	void AbortEvent(bool allOfType = false);
-    void StartEvent(void);
+		void triggerEvent(void);
+		void queueEvent( sf::Time waitTime = sf::Time::Zero );
+		void abortEvent(bool allOfType = false);
 
-protected:
-    const float _createTime;	//Timestamp when event was created.
-    float _startTime;		//Timestamp when event was started.
-    const EventType _eventType;
-};
+	private:
+		EventType m_eventType;
+	};
+}
 
-#endif
+
+#endif // EventData_h__

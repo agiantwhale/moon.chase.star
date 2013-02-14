@@ -39,7 +39,7 @@ void CameraMoveTask::Start()
 	_moveSpeed.y *= signum<float>(deltaDistance.y);
 }
 
-bool CameraMoveTask::DoTask( float deltaTime )
+bool CameraMoveTask::DoTask( sf::Time deltaTime )
 {
 	if(Task::DoTask(deltaTime))
 		return true;

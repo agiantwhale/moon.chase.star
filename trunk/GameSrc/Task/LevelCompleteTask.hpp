@@ -16,7 +16,7 @@ public:
 	LevelCompleteTask(PlayerEntity* playerEntity, const VectorStack& path);
 
 	virtual void Start();
-	virtual bool DoTask(float deltaTime);
+	virtual bool DoTask(sf::Time deltaTime);
 	virtual void End();
 
 private:

@@ -1,30 +1,34 @@
-#ifndef TASKMANAGER_HPP
-#define TASKMANAGER_HPP
+#ifndef TaskManager_h__
+#define TaskManager_h__
 
 #include <list>
 #include <unordered_map>
 #include <queue>
 
 #include "../Base/Singleton.hpp"
-#include "../Interface/IEventListener.hpp"
+#include "../Event/EventListener.hpp"
 
-class Task;
-
-class TaskManager : public Singleton<TaskManager>, public EventListener
+namespace sb
 {
-    DEFINE_SINGLETON( TaskManager )
+	class Task;
 
-private:
-    typedef std::list<Task*> ToDoList;
+	class TaskManager : public Singleton<TaskManager>, public EventListener
+	{
+		DEFINE_SINGLETON( TaskManager )
 
-public:
-    void Update(float dt);
-	void AddTask(Task* task);
-	void RemoveTask(Task* task);
-private:
-	virtual bool handleEvent(const EventData& theevent);
+	private:
+		typedef std::list<Task*> ToDoList;
 
-    ToDoList _toDoList;
-};
+	public:
+		void update(float dt);
+		void addTask(Task* task);
+		void removeTask(Task* task);
+	private:
+		virtual bool handleEvent(const EventData& theevent);
 
-#endif
+		ToDoList _toDoList;
+	};
+}
+
+
+#endif // TaskManager_h__

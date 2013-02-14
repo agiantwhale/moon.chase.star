@@ -30,9 +30,9 @@ DummyBallEntity::~DummyBallEntity()
 
 }
 
-void DummyBallEntity::Initialize( const TiXmlElement *propertyElement )
+void DummyBallEntity::initializeEntity( const TiXmlElement *propertyElement )
 {
-	BaseClass::Initialize(propertyElement);
+	BaseClass::initializeEntity(propertyElement);
 
 	const float BALL_RADIUS = 0.5f;
 
@@ -73,11 +73,11 @@ void DummyBallEntity::Initialize( const TiXmlElement *propertyElement )
 	}
 }
 
-void DummyBallEntity::Update( float deltaTime )
+void DummyBallEntity::update( sf::Time deltaTime )
 {
 	if(GetPosition().y <= -13.0f)
 	{
-		Release();
+		release();
 	}
 }
 
@@ -107,15 +107,15 @@ PlayerEntity::~PlayerEntity()
 	delete _throwSound;
 }
 
-void PlayerEntity::Update(float deltaTime)
+void PlayerEntity::update(sf::Time deltaTime)
 {
-	ITransform* starTransform = SceneManager::getInstance()->GetStarEntity();
+	ITransform* starTransform = SceneManager::getInstance()->getStarEntity();
 	if(starTransform)
 	{
 		Vec2D deltaDistance = GetPosition() - starTransform->GetPosition();
 		if(Magnitude(deltaDistance) >= 45.0f)
 		{
-			SetActive(false);
+			setActive(false);
 
 			Kill();
 
@@ -123,9 +123,9 @@ void PlayerEntity::Update(float deltaTime)
 	}
 }
 
-void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
+void PlayerEntity::initializeEntity( const TiXmlElement *propertyElement )
 {
-    BaseClass::Initialize(propertyElement);
+    BaseClass::initializeEntity(propertyElement);
 
 
     {
@@ -177,12 +177,12 @@ void PlayerEntity::Initialize( const TiXmlElement *propertyElement )
 		_throwSound->setVolume(30.f);
 	}
 
-	SceneManager::getInstance().SetPlayerEntity(this);
+	SceneManager::getInstance().setPlayerEntity(this);
 }
 
 bool PlayerEntity::handleEvent(const EventData& theevent)
 {
-    switch (theevent.GetEventType())
+    switch (theevent.getEventType())
     {
     case Event_BeginContact:
 		{
@@ -323,7 +323,7 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
 					tlptTask->AddTask();
 				}
 
-				InputManager::getInstance()->FeedOutput(0.6f,0.6f);
+				InputManager::getInstance()->feedOutput(0.6f,0.6f);
 
 				break;
 			}
@@ -371,8 +371,8 @@ void PlayerEntity::ProcessPreSolve( b2Contact* contact,const b2Fixture* target )
 
 void PlayerEntity::Control( void )
 {
-	const bool  leftInput = InputManager::getInstance()->GetLeftInput(),
-				rightInput = InputManager::getInstance()->GetRightInput();
+	const bool  leftInput = InputManager::getInstance()->getLeftInput(),
+				rightInput = InputManager::getInstance()->getRightInput();
 
 	/*
 	const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
@@ -416,7 +416,7 @@ void PlayerEntity::Throw( const b2Vec2& velocity )
 
 	_throwSound->play();
 
-	InputManager::getInstance()->FeedOutput(0.5f, 0.2f);
+	InputManager::getInstance()->feedOutput(0.5f, 0.2f);
 }
 
 void PlayerEntity::LimitHorizontalVelocity()
@@ -455,7 +455,7 @@ void PlayerEntity::Bounce( void )
 
 	_bounceSound->play();
 
-	InputManager::getInstance()->FeedOutput(0.3f, 0.15f);
+	InputManager::getInstance()->feedOutput(0.3f, 0.15f);
 }
 
 void PlayerEntity::UpdatePlayerState( void )
@@ -478,7 +478,7 @@ void PlayerEntity::UpdatePlayerState( void )
 
 	case kPlayer_Thrown:
 		{
-			if( InputManager::getInstance()->GetDownInput() /* sf::Keyboard::isKeyPressed(sf::Keyboard::Down) */ )
+			if( InputManager::getInstance()->getDownInput() /* sf::Keyboard::isKeyPressed(sf::Keyboard::Down) */ )
 			{
 				Fall();
 			}
@@ -496,8 +496,8 @@ void PlayerEntity::UpdatePlayerState( void )
 
 void PlayerEntity::Kill()
 {
-	EventManager::GetInstance()->AbortEvent(Event_NextLevel,true);
+	sb::EventManager::getInstance()->abortEvent(Event_NextLevel,true);
 
 	EventData* eventData = new EventData( Event_RestartLevel );
-	eventData->QueueEvent(0.5f);
+	eventData->queueEvent(sf::seconds(0.5f));
 }

@@ -10,7 +10,7 @@ class BlockEntity : public Entity
     DEFINE_ENTITY( BlockEntity, Entity, 'BLCK')
 
 public:
-    virtual void Initialize( const TiXmlElement *propertyElement = NULL );
+    virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
     virtual void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
     virtual bool handleEvent(const EventData& theevent);
     virtual void Simulate(void);

@@ -7,11 +7,12 @@
 #include <SFML/Graphics/Drawable.hpp>
 
 #include "../Base/Singleton.hpp"
-#include "../System/RenderLayer.hpp"
 #include "../Event/EventListener.hpp"
 
 namespace sb
 {
+	class RenderLayer;
+
 	class GraphicsManager : public Singleton<GraphicsManager>, private EventListener
 	{
 		DEFINE_SINGLETON( GraphicsManager );
@@ -21,7 +22,7 @@ namespace sb
 		void removeDrawable(const sf::Drawable& drawable, unsigned int layer);
 
 		RenderLayer* getRenderLayer( unsigned int layer ) const;
-		unsigned int getRenderLayerStackSize(void) const {return _renderLayerStack.size();}
+		unsigned int getRenderLayerStackSize(void) const {return m_renderLayerStack.size();}
 
 		void render();
 		void unload();

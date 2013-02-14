@@ -18,9 +18,9 @@ ZoneEntity::~ZoneEntity()
 {
 }
 
-void ZoneEntity::Initialize( const TiXmlElement *propertyElement /*= NULL */ )
+void ZoneEntity::initializeEntity( const TiXmlElement *propertyElement /*= NULL */ )
 {
-	BaseClass::Initialize(propertyElement);
+	BaseClass::initializeEntity(propertyElement);
 
 	{
 		b2BodyDef bodyDefinition;
@@ -45,7 +45,7 @@ void ZoneEntity::Initialize( const TiXmlElement *propertyElement /*= NULL */ )
 	}
 }
 
-void ZoneEntity::PostLoad()
+void ZoneEntity::postLoad()
 {
 	ITransform* moonTransform = SceneManager::getInstance()->FindTransform("Player");
 
@@ -61,7 +61,7 @@ void ZoneEntity::PostLoad()
 
 bool ZoneEntity::handleEvent( const EventData& theevent )
 {
-	switch (theevent.GetEventType())
+	switch (theevent.getEventType())
 	{
 	case Event_BeginContact:
 		{
@@ -121,7 +121,7 @@ bool ZoneEntity::handleEvent( const EventData& theevent )
 				if(targetInterface->GetEntity()->GetEntityType() == 'BALL')
 				{
 					_containsBall = false;
-					Release();
+					release();
 				}
 			}
 

@@ -3,120 +3,114 @@
 #include "../Event/EventData.hpp"
 #include "../System/EventManager.hpp"
 
-SINGLETON_CONSTRUCTOR( EventManager )
+namespace sb
 {
-}
+	SINGLETON_CONSTRUCTOR( EventManager )
+	{
+	}
 
-SINGLETON_DESTRUCTOR( EventManager )
-{
-}
+	SINGLETON_DESTRUCTOR( EventManager )
+	{
+	}
 
-void EventManager::AddListener(EventListener* const listenerptr, const EventType& eventtype)
-{
-    EventListenersMap::const_iterator iter = _eventListnersMap.find( eventtype );
-    if( iter == _eventListnersMap.end() )
-    {
-        iter = _eventListnersMap.insert( std::make_pair( eventtype, new EventListenerList ) ).first;
-    }
+	void EventManager::addListener(EventListener* const listenerptr, const EventType& eventtype)
+	{
+		EventListenersMap::const_iterator iter = m_eventListnersMap.find( eventtype );
+		if( iter == m_eventListnersMap.end() )
+		{
+			iter = m_eventListnersMap.insert( std::make_pair( eventtype, new EventListenerList ) ).first;
+		}
 
-    iter->second->push_back( listenerptr );
-}
+		iter->second->push_back( listenerptr );
+	}
 
-void EventManager::RemoveListener(EventListener* const listenerptr, const EventType& eventtype)
-{
-    EventListenersMap::const_iterator iter = _eventListnersMap.find( eventtype );
-    if( iter == _eventListnersMap.end() )
-    {
-		TRI_LOG_STR("Attempted to remove unregistered event listener.");
-		TRI_LOG(listenerptr->GetHandlerName());
-        return;
-    }
+	void EventManager::removeListener(EventListener* const listenerptr, const EventType& eventtype)
+	{
+		EventListenersMap::const_iterator iter = m_eventListnersMap.find( eventtype );
+		if( iter == m_eventListnersMap.end() )
+		{
+			TRI_LOG_STR("Attempted to remove unregistered event listener.");
+			return;
+		}
 
-    EventListenerList* listenerList = iter->second;
-    listenerList->remove( listenerptr );
+		EventListenerList* listenerList = iter->second;
+		listenerList->remove( listenerptr );
 
-    if( listenerList->empty() )
-    {
-        delete listenerList;
-        _eventListnersMap.erase( iter );
-    }
-}
+		if( listenerList->empty() )
+		{
+			delete listenerList;
+			m_eventListnersMap.erase( iter );
+		}
+	}
 
-void EventManager::TriggerEvent(EventData* newevent)
-{
-    EventListenersMap::const_iterator iter = _eventListnersMap.find( newevent->GetEventType() );
-    if( iter == _eventListnersMap.end() )
-    {
-        return;
-    }
+	void EventManager::triggerEvent(EventData* newevent)
+	{
+		EventListenersMap::const_iterator iter = m_eventListnersMap.find( newevent->getEventType() );
+		if( iter == m_eventListnersMap.end() )
+		{
+			return;
+		}
 
-    newevent->StartEvent();
+		EventListenerList* listenerList = iter->second;
+		for( EventListenerList::iterator listenerIter = listenerList->begin(); listenerIter != listenerList->end(); listenerIter++ )
+		{
+			EventListener* listener = (*listenerIter);
+			if( listener->handleEvent( *newevent ) )
+				break;
+		}
 
-    EventListenerList* listenerList = iter->second;
-    for( EventListenerList::iterator listenerIter = listenerList->begin(); listenerIter != listenerList->end(); listenerIter++ )
-    {
-        EventListener* listener = (*listenerIter);
-        if( listener->handleEvent( *newevent ) )
-            break;
-    }
+		delete newevent;
+	}
 
-    delete newevent;
-}
+	void EventManager::queueEvent( EventData* newevent, sf::Time waitTime )
+	{
+		thor::Timer timer;
+		timer.restart(waitTime);
+		m_eventsQueue.push_back( std::make_pair(timer,newevent) );
+	}
 
-void EventManager::QueueEvent( EventData* newevent, float waitTime /*= 0.0f*/ )
-{
-    EventQueue eventQueue;
-    eventQueue.event = newevent;
-    eventQueue.wait = waitTime;
-    _eventsQueue.push_back( eventQueue );
-}
+	void EventManager::abortEvent(const EventType& typeToAbort, bool alloftype)
+	{
+		for( std::list<std::pair<thor::Timer,EventData*>>::iterator iter = m_eventsQueue.begin(); iter != m_eventsQueue.end(); )
+		{
+			if( iter->second->getEventType() ==  typeToAbort )
+			{
+				delete iter->second;
+				iter = m_eventsQueue.erase(iter);
 
-void EventManager::AbortEvent(const EventType& typeToAbort, bool alloftype)
-{
-    for( std::list<EventQueue>::iterator iter = _eventsQueue.begin(); iter != _eventsQueue.end(); )
-    {
-        EventQueue& queue = (*iter);
-        if( queue.event->GetEventType() ==  typeToAbort )
-        {
-            delete queue.event;
-            iter = _eventsQueue.erase(iter);
+				if( !alloftype )
+					break;
+			}
+			else
+			{
+				iter++;
+			}
+		}
+	}
 
-            if( !alloftype )
-                break;
-        }
-        else
-        {
-            iter++;
-        }
-    }
-}
+	void EventManager::update( sf::Time deltaTime )
+	{
+		for( std::list<std::pair<thor::Timer,EventData*>>::iterator iter = m_eventsQueue.begin(); iter != m_eventsQueue.end(); )
+		{
+			if( iter->first.isExpired() )
+			{
+				triggerEvent( iter->second );
+				iter = m_eventsQueue.erase(iter);
+			}
+			else
+			{
+				iter++;
+			}
+		}
+	}
 
-void EventManager::Update( float dt)
-{
-    for( std::list<EventQueue>::iterator iter = _eventsQueue.begin(); iter != _eventsQueue.end(); )
-    {
-        EventQueue& queue = (*iter);
-        queue.wait -= dt;
+	void EventManager::emptyEventQueues()
+	{
+		for( std::list<std::pair<thor::Timer,EventData*>>::iterator iter = m_eventsQueue.begin(); iter != m_eventsQueue.end(); iter++ )
+		{
+			delete iter->second;
+		}
 
-        if( queue.wait <= 0 )
-        {
-            TriggerEvent( queue.event );
-            iter = _eventsQueue.erase(iter);
-        }
-        else
-        {
-            iter++;
-        }
-    }
-}
-
-void EventManager::EmptyEventQueues()
-{
-    for( std::list<EventQueue>::iterator iter = _eventsQueue.begin(); iter != _eventsQueue.end(); iter++ )
-    {
-        EventQueue& queue = (*iter);
-        delete queue.event;
-    }
-
-    _eventsQueue.clear();
+		m_eventsQueue.clear();
+	}
 }

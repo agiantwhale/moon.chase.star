@@ -27,7 +27,7 @@ void TeleportTask::Start()
 	_teleportSound->play();
 }
 
-bool TeleportTask::DoTask( float deltaTime )
+bool TeleportTask::DoTask( sf::Time deltaTime )
 {
 	if(Task::DoTask(deltaTime))
 		return true;

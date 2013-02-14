@@ -1,7 +1,6 @@
+#include "GUIManager.hpp"
 #include "../Base/Globals.hpp"
 #include "../App/Game.hpp"
-#include "../System/GUIManager.hpp"
-#include "../GUI/Log.hpp"
 
 #include <Gwen/Gwen.h>
 #include <Gwen/Renderers/SFML.h>
@@ -9,62 +8,64 @@
 #include <Gwen/Skins/TexturedBase.h>
 #include <Gwen/Input/SFML.h>
 
-#include <Gwen/Controls/WindowControl.h>
-#include <Gwen/Controls/ListBox.h>
 #include "../Event/AppEventData.hpp"
 
-SINGLETON_CONSTRUCTOR(GUIManager),
-					  EventListener("GUIManager"),
-                      _gwenRenderer(nullptr),
-                      _gwenCanvas(nullptr),
-                      _gwenSkin(nullptr),
-                      _gwenInput(nullptr)
+namespace sb
 {
-	addEventListenType(Event_App);
-}
-
-SINGLETON_DESTRUCTOR(GUIManager)
-{
-	removeEventListenType(Event_App);
-
-    delete _gwenRenderer;
-    delete _gwenCanvas;
-    delete _gwenSkin;
-    delete _gwenInput;
-}
-
-void GUIManager::Render(void)
-{
-	Game::GetInstance()->setView(Game::GetInstance()->getDefaultView());
-
-	_gwenCanvas->RenderCanvas();
-}
-
-void GUIManager::SetUpGUI(void)
-{
-    _gwenRenderer = new Gwen::Renderer::SFML(*Game::GetInstance());
-
-    Gwen::Skin::TexturedBase* texturedSkin = new Gwen::Skin::TexturedBase(_gwenRenderer);
-    texturedSkin->Init( "Resource/Textures/GUISkin.png" );
-    texturedSkin->SetDefaultFont( L"Resource/Fonts/HeumToda.ttf", 20 );
-	_gwenSkin = texturedSkin;
-
-    _gwenCanvas = new Gwen::Controls::Canvas( _gwenSkin );
-    _gwenCanvas->SetSize( SCREENWIDTH, SCREENHEIGHT );
-
-    _gwenInput = new Gwen::Input::SFML;
-    _gwenInput->Initialize(_gwenCanvas);
-
-	TRI_LOG_STR("GUI initialized.");
-}
-
-bool GUIManager::handleEvent( const EventData& theevent )
-{
-	if( theevent.GetEventType() == Event_App)
+	SINGLETON_CONSTRUCTOR(GUIManager),
+		EventListener(),
+		m_gwenRenderer(nullptr),
+		m_gwenCanvas(nullptr),
+		m_gwenSkin(nullptr),
+		m_gwenInput(nullptr)
 	{
-		const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
-		_gwenInput->ProcessMessage(eventData.GetAppEvent());
+		addEventListenType(Event_App);
 	}
 
-	return false;
+	SINGLETON_DESTRUCTOR(GUIManager)
+	{
+		removeEventListenType(Event_App);
+
+		delete m_gwenRenderer;
+		delete m_gwenCanvas;
+		delete m_gwenSkin;
+		delete m_gwenInput;
+	}
+
+	void GUIManager::render(void)
+	{
+		Game::GetInstance()->setView(Game::GetInstance()->getDefaultView());
+
+		m_gwenCanvas->RenderCanvas();
+	}
+
+	void GUIManager::setUpGUI(void)
+	{
+		m_gwenRenderer = new Gwen::Renderer::SFML(*Game::GetInstance());
+
+		Gwen::Skin::TexturedBase* texturedSkin = new Gwen::Skin::TexturedBase(m_gwenRenderer);
+		texturedSkin->Init( "Resource/Textures/GUISkin.png" );
+		texturedSkin->SetDefaultFont( L"Resource/Fonts/HeumToda.ttf", 20 );
+		m_gwenSkin = texturedSkin;
+
+		m_gwenCanvas = new Gwen::Controls::Canvas( m_gwenSkin );
+		m_gwenCanvas->SetSize( SCREENWIDTH, SCREENHEIGHT );
+
+		m_gwenInput = new Gwen::Input::SFML;
+		m_gwenInput->Initialize(m_gwenCanvas);
+
+		TRI_LOG_STR("GUI initialized.");
+	}
+
+	bool GUIManager::handleEvent( const EventData& theevent )
+	{
+		if( theevent.getEventType() == Event_App)
+		{
+			const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
+			m_gwenInput->ProcessMessage(eventData.GetAppEvent());
+		}
+
+		return false;
+	}
 }
+

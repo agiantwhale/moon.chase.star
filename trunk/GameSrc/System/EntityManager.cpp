@@ -3,192 +3,189 @@
 #include "../System/EntityManager.hpp"
 #include "../Entity/Entity.hpp"
 
-EntityList::EntityList() :  std::map<int,Entity*>()
+namespace sb
 {
-    clear();
-}
-
-void EntityList::ReleaseAll(void)
-{
-    for( iterator iter = begin(); iter != end(); iter++ )
-    {
-        Entity *entity = (iter->second);
-        delete entity;
-    }
-
-    clear();
-}
-
-void EntityList::ReleaseAllExceptHull(void)
-{
-    for( iterator iter = begin(); iter != end(); )
-    {
-        Entity *entity = (iter->second);
-        if( entity->GetEntityType() != 'HULL' )
-        {
-            delete entity;
-            iter = erase(iter);
-        }
-        else
-        {
-            iter++;
-        }
-    }
-}
-
-void EntityList::Add( Entity *entity )
-{
-    if( entity == NULL ) return;
-
-    if(!entity->IsInitialized())
-    {
-        entity->Initialize();
-    }
-
-    insert( make_pair( size(), entity ) );
-}
-
-void EntityList::DelayedRelease( void )
-{
-    for( iterator iter = begin(); iter != end(); )
-    {
-        Entity *entity = (iter->second);
-        if( entity->IsReleased() )
-        {
-            iter = erase( iter );
-            delete entity;
-        }
-        else
-        {
-            iter++;
-        }
-    }
-}
-
-void EntityList::Update(float deltaTime )
-{
-    for( iterator iter = begin(); iter != end(); iter++ )
-    {
-        Entity *entity = (iter->second);
-
-		if(entity->IsActive())
-		{
-			entity->Update( deltaTime );
-		}
-    }
-}
-
-void EntityList::PostLoad(void)
-{
-    for( iterator iter = begin(); iter != end(); iter++ )
-    {
-        Entity *entity = (iter->second);
-        entity->PostLoad();
-    }
-}
-
-SINGLETON_CONSTRUCTOR( EntityManager ),
-                       EventListener("EntityManager"),
-                       _entityList()
-{
-	addEventListenType(Event_Unload);
-	addEventListenType(Event_RestartLevel);
-}
-
-SINGLETON_DESTRUCTOR( EntityManager )
-{
-	removeEventListenType(Event_Unload);
-	removeEventListenType(Event_RestartLevel);
-    ReleaseAll();
-}
-
-bool EntityManager::handleEvent( const EventData& newevent )
-{
-    if( newevent.GetEventType() == Event_Unload )
-    {
-        ReleaseAll();
-        return false;
-    }
-
-    if( newevent.GetEventType() == Event_RestartLevel )
-    {
-        ReleaseAllExceptHull();
-        return false;
-    }
-
-    return false;
-}
-
-void EntityManager::Update(float deltaTime)
-{
-    _entityList.Update(deltaTime);
-	_entityList.DelayedRelease();
-}
-
-void EntityManager::PostLoad(void)
-{
-    _entityList.PostLoad();
-}
-
-void EntityManager::ReleaseAll(void)
-{
-    _entityList.ReleaseAll();
-}
-
-void EntityManager::ReleaseAllExceptHull(void)
-{
-    _entityList.ReleaseAllExceptHull();
-}
-
-void EntityManager::RegisterEntity( Entity* entity )
-{
-    _entityList.Add(entity);
-}
-
-SINGLETON_CONSTRUCTOR( EntityFactory )
-{
-    _builderMap.clear();
-}
-
-SINGLETON_DESTRUCTOR( EntityFactory )
-{
-}
-
-Entity *EntityFactory::CreateEntity( const string& entityClassName )
-{
-    Entity *return_ptr = NULL;
-    BuilderMap::iterator iter = _builderMap.find( entityClassName );
-    if( iter != _builderMap.end() )
-    {
-        return_ptr = iter->second->CreateEntity();
-    }
-    else
-    {
-		TRI_LOG_STR("Entity class unregistered.");
-		TRI_LOG(entityClassName);
+	EntityList::EntityList() :  std::list<Entity*>()
+	{
+		clear();
 	}
 
-    return return_ptr;
-}
+	void EntityList::releaseAll(void)
+	{
+		for( iterator iter = begin(); iter != end(); iter++ )
+		{
+			Entity *entity = (*iter);
+			delete entity;
+		}
 
-void EntityFactory::RegisterBuilder( IEntityBuilder* builder )
-{
-    if( _builderMap.find( builder->GetEntityClassName() ) == _builderMap.end() )
-    {
-        _builderMap.insert( make_pair( builder->GetEntityClassName(), builder ) );
-    }
-    else
-    {
-		TRI_LOG_STR("Entity class is already registered.");
-		TRI_LOG(builder->GetEntityClassName());
-    }
-}
+		clear();
+	}
 
-void EntityFactory::DeregisterBuilder( IEntityBuilder* builder )
-{
-    BuilderMap::iterator iter = _builderMap.find( builder->GetEntityClassName() );
-    if( iter != _builderMap.end() )
-    {
-        _builderMap.erase( iter );
-    }
+	void EntityList::releaseAllExceptHull(void)
+	{
+		for( iterator iter = begin(); iter != end(); )
+		{
+			Entity *entity = (*iter);
+			if( entity->getEntityType() != 'HULL' )
+			{
+				delete entity;
+				iter = erase(iter);
+			}
+			else
+			{
+				iter++;
+			}
+		}
+	}
+
+	void EntityList::delayedRelease( void )
+	{
+		for( iterator iter = begin(); iter != end(); )
+		{
+			Entity *entity = (*iter);
+			if( entity->isReleased() )
+			{
+				iter = erase( iter );
+				delete entity;
+			}
+			else
+			{
+				iter++;
+			}
+		}
+	}
+
+	void EntityList::update(sf::Time deltaTime )
+	{
+		for( iterator iter = begin(); iter != end(); iter++ )
+		{
+			Entity *entity = (*iter);
+
+			if(entity->isActive())
+			{
+				entity->update( deltaTime );
+			}
+		}
+	}
+
+	void EntityList::postLoad(void)
+	{
+		for( iterator iter = begin(); iter != end(); iter++ )
+		{
+			Entity *entity = (*iter);
+			entity->postLoad();
+		}
+	}
+
+	SINGLETON_CONSTRUCTOR( EntityManager ),
+		EventListener("EntityManager"),
+		m_entityList()
+	{
+		addEventListenType(Event_Unload);
+		addEventListenType(Event_RestartLevel);
+	}
+
+	SINGLETON_DESTRUCTOR( EntityManager )
+	{
+		removeEventListenType(Event_Unload);
+		removeEventListenType(Event_RestartLevel);
+		releaseAll();
+	}
+
+	bool EntityManager::handleEvent( const EventData& newevent )
+	{
+		if( newevent.getEventType() == Event_Unload )
+		{
+			releaseAll();
+			return false;
+		}
+
+		if( newevent.getEventType() == Event_RestartLevel )
+		{
+			releaseAllExceptHull();
+			return false;
+		}
+
+		return false;
+	}
+
+	void EntityManager::update(sf::Time deltaTime)
+	{
+		m_entityList.update(deltaTime);
+		m_entityList.delayedRelease();
+	}
+
+	void EntityManager::postLoad(void)
+	{
+		m_entityList.postLoad();
+	}
+
+	void EntityManager::releaseAll(void)
+	{
+		m_entityList.releaseAll();
+	}
+
+	void EntityManager::releaseAllExceptHull(void)
+	{
+		m_entityList.releaseAllExceptHull();
+	}
+
+	void EntityManager::registerEntity( Entity* entity )
+	{
+		if(!entity->isInitialized())
+		{
+			entity->initializeEntity();
+		}
+
+		m_entityList.push_back(entity);
+	}
+
+	SINGLETON_CONSTRUCTOR( EntityFactory )
+	{
+		m_builderMap.clear();
+	}
+
+	SINGLETON_DESTRUCTOR( EntityFactory )
+	{
+	}
+
+	Entity *EntityFactory::createEntity( const std::string& entityClassName )
+	{
+		Entity *return_ptr = NULL;
+		BuilderMap::iterator iter = m_builderMap.find( entityClassName );
+		if( iter != m_builderMap.end() )
+		{
+			return_ptr = iter->second->createEntity();
+		}
+		else
+		{
+			TRI_LOG_STR("Entity class unregistered.");
+			TRI_LOG(entityClassName);
+		}
+
+		return return_ptr;
+	}
+
+	void EntityFactory::registerBuilder( EntityBuilder* builder )
+	{
+		if( m_builderMap.find( builder->getEntityClassName() ) == m_builderMap.end() )
+		{
+			m_builderMap.insert( std::make_pair( builder->getEntityClassName(), builder ) );
+		}
+		else
+		{
+			TRI_LOG_STR("Entity class is already registered.");
+			TRI_LOG(builder->getEntityClassName());
+		}
+	}
+
+	void EntityFactory::deregisterBuilder( EntityBuilder* builder )
+	{
+		BuilderMap::iterator iter = m_builderMap.find( builder->getEntityClassName() );
+		if( iter != m_builderMap.end() )
+		{
+			m_builderMap.erase( iter );
+		}
+	}
+
 }

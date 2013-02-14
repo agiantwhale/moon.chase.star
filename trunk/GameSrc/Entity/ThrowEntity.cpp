@@ -13,9 +13,9 @@ ThrowEntity::~ThrowEntity()
 {
 }
 
-void ThrowEntity::Initialize( const TiXmlElement *propertyElement )
+void ThrowEntity::initializeEntity( const TiXmlElement *propertyElement )
 {
-    BaseClass::Initialize(propertyElement);
+    BaseClass::initializeEntity(propertyElement);
 
 	const float THROW_SIZE = 2.0f;
 

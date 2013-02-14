@@ -10,7 +10,7 @@ class DeadZoneEntity : public Entity
 	DEFINE_ENTITY( DeadZoneEntity, Entity, 'DEAD')
 
 public:
-	void Initialize( const TiXmlElement *propertyElement = nullptr );
+	void initializeEntity( const TiXmlElement *propertyElement = nullptr );
 	bool handleEvent(const EventData& theevent);
 
 private:

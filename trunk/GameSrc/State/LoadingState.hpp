@@ -13,7 +13,7 @@ public:
 
 	virtual bool handleEvent(const EventData& theevent);
 	virtual void enter(void);
-	virtual bool update(float deltaTime);
+	virtual bool update(sf::Time deltaTime);
 	virtual void render(void);
 	virtual void exit(void);
 

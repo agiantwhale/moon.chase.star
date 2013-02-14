@@ -1,56 +1,58 @@
-#include "../Tile/Tile.hpp"
+#include "Tile.hpp"
 #include "../System/ResourceCache.hpp"
 #include "../System/EventManager.hpp"
 #include "../System/SceneManager.hpp"
 #include "../App/Game.hpp"
 
-std::unordered_map<std::string,std::string> Tile::_tilesetMap;
-
-Tile::Tile() :IRenderable( nullptr ), _tileTexture(nullptr)
+namespace sb
 {
-}
+	std::unordered_map<std::string,std::string> Tile::_tilesetMap;
 
-Tile::~Tile()
-{
-    delete _tileTexture;
-}
+	Tile::Tile( const TiXmlElement* element, const sf::Vector2i& tileSize )
+		:	sf::Drawable(),
+			m_tileTexture(nullptr)
+	{
+		m_tileTexture = new sf::RenderTexture;
+		m_tileTexture->create( SceneManager::getInstance()->getLevelSize().x, SceneManager::getInstance()->getLevelSize().y );
+		m_tileTexture->clear( sf::Color::Transparent );
 
-void Tile::Render(void)
-{
-    Game::GetInstance()->draw( sf::Sprite( _tileTexture->getTexture() ) );
-}
+		if(element)
+		{
+			const TiXmlElement *tileElement = element->FirstChildElement("tile");
+			thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>(_tilesetMap.find(element->Attribute("tileset"))->second);
+			std::shared_ptr<sf::Texture> texture = ResourceCache::getInstance()->acquire<sf::Texture>(key);
 
-void Tile::Initialize( const TiXmlElement* element )
-{
-    _tileTexture = new sf::RenderTexture;
-    _tileTexture->create( SceneManager::getInstance()->GetLevelSize().x, SceneManager::getInstance()->GetLevelSize().y );
-    _tileTexture->clear( sf::Color::Transparent );
+			while(tileElement)
+			{
+				double xValue = 0.0, yValue = 0.0;
+				tileElement->Attribute( "x", &xValue );
+				tileElement->Attribute( "y", &yValue );
 
-    if(element)
-    {
-        const TiXmlElement *tileElement = element->FirstChildElement("tile");
-		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>(_tilesetMap.find(element->Attribute("tileset"))->second);
-		std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);
+				int tileX = 0, tileY = 0;
+				tileElement->Attribute("tx",&tileX);
+				tileElement->Attribute("ty",&tileY);
 
-        while(tileElement)
-        {
-            double xValue = 0.0, yValue = 0.0;
-            tileElement->Attribute( "x", &xValue );
-            tileElement->Attribute( "y", &yValue );
+				sf::Sprite tile = sf::Sprite( *texture, sf::IntRect(tileX*tileSize.x, tileY*tileSize.y, tileSize.x, tileSize.y) );
+				tile.setPosition( sf::Vector2f( xValue * tileSize.x, yValue * tileSize.y ) );
+				m_tileTexture->draw( tile );
 
-            int tileX = 0, tileY = 0;
-            tileElement->Attribute("tx",&tileX);
-            tileElement->Attribute("ty",&tileY);
+				tileElement = tileElement->NextSiblingElement("tile");
+			}
+		}
 
-            sf::Sprite tile = sf::Sprite( *texture, sf::IntRect(tileX*TILESIZE, tileY*TILESIZE, TILESIZE, TILESIZE) );
-            tile.setPosition( sf::Vector2f( xValue * TILESIZE, yValue * TILESIZE ) );
-            _tileTexture->draw( tile );
+		m_tileTexture->display();
 
-            tileElement = tileElement->NextSiblingElement("tile");
-        }
-    }
+		SceneManager::getInstance()->addTile(this);
+	}
 
-    _tileTexture->display();
+	Tile::~Tile()
+	{
+		delete m_tileTexture;
+	}
 
-	SceneManager::getInstance()->AddTile(this);
+	void sb::Tile::draw( sf::RenderTarget& target, sf::RenderStates states ) const
+	{
+		target.draw(m_tileTexture,states);
+	}
+
 }

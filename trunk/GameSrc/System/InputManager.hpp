@@ -1,43 +1,48 @@
 #ifndef INPUTMANAGER_HPP
 #define INPUTMANAGER_HPP
 
+#include <SFML/System/Time.hpp>
+#include <Thor/Time/Timer.hpp>
 #include "../Base/Singleton.hpp"
-#include "../Interface/IEventListener.hpp"
+#include "../Event/EventListener.hpp"
 
-class InputManager : public Singleton<InputManager>, public EventListener
+namespace sb
 {
-	DEFINE_SINGLETON(InputManager)
-
-public:
-	void SetUpInput(void);
-	void Update(float dt);
-	void FeedOutput(float amount, float duration);
-	bool handleEvent(const EventData& theevent);
-
-	bool GetLeftInput() const { return _leftInput; }
-	bool GetRightInput() const { return _rightInput; }
-	bool GetDownInput() const { return _downInput; }
-	float GetAffectorRate() const { return _affectorRate; }
-
-private:
-	void ClearVibration(void);
-	void SetVibratationState(void);
-
-	enum InputType
+	class InputManager : public Singleton<InputManager>, public EventListener
 	{
-		kInput_Keyboard,
-		kInput_Xbox,
-		kInput_Kinect,
-		kInput_LEAP
-	} _inputType;
+		DEFINE_SINGLETON(InputManager)
 
-	float _affectorRate;
-	bool  _leftInput;
-	bool  _rightInput;
-	bool  _downInput;
+	public:
+		void setUpInput(void);
+		void update( sf::Time deltaTime );
+		void feedOutput( float amount, sf::Time duration );
+		bool handleEvent(const EventData& theevent);
 
-	float _vibrateAmount;
-	float _vibrateDuration;
-};
+		bool getLeftInput() const { return m_leftInput; }
+		bool getRightInput() const { return m_rightInput; }
+		bool getDownInput() const { return m_downInput; }
+		float getAffectorRate() const { return m_affectorRate; }
+
+	private:
+		void clearVibration(void);
+		void setVibratationState(void);
+
+		enum InputType
+		{
+			kInput_Keyboard,
+			kInput_Xbox,
+			kInput_Kinect,
+			kInput_LEAP
+		} m_inputType;
+
+		float m_affectorRate;
+		bool  m_leftInput;
+		bool  m_rightInput;
+		bool  m_downInput;
+
+		float m_vibrateAmount;
+		thor::Timer m_vibrateDuration;
+	};
+}
 
 #endif

@@ -2,9 +2,9 @@
 
 Entity::Entity() :
 	ITransform(),
-    _released( false ),
-	_active(true),
-    _initialized( false )
+    m_released( false ),
+	m_active(true),
+    m_initialized( false )
 {
 }
 
@@ -12,9 +12,9 @@ Entity::~Entity()
 {
 }
 
-void Entity::Initialize( const TiXmlElement *propertyElement )
+void Entity::initializeEntity( const TiXmlElement *propertyElement )
 {
-    _initialized = true;
+    m_initialized = true;
 
     if(propertyElement)
     {
@@ -47,11 +47,11 @@ void Entity::Initialize( const TiXmlElement *propertyElement )
     }
 }
 
-void Entity::Update( float deltaTime )
+void Entity::update( sf::Time deltaTime )
 {
 }
 
-void Entity::PostLoad(void)
+void Entity::postLoad(void)
 {
 }
 

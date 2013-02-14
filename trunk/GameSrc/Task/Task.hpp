@@ -22,7 +22,7 @@ public:
 
 	virtual void Start();
 	//Return true when task is over.
-	virtual bool DoTask(float deltaTime);
+	virtual bool DoTask(sf::Time deltaTime);
 	virtual void End();
 
 protected:

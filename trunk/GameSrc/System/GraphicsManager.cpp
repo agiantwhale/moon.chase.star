@@ -1,5 +1,6 @@
 #include <CxxTL/tri_logger.hpp>
 #include "GraphicsManager.hpp"
+#include "RenderLayer.hpp"
 #include "../App/Game.hpp"
 
 namespace sb
@@ -27,7 +28,7 @@ namespace sb
 
 	bool GraphicsManager::handleEvent( const EventData& newevent )
 	{
-		switch (newevent.GetEventType())
+		switch (newevent.getEventType())
 		{
 		case Event_Unload:
 			{
@@ -62,43 +63,41 @@ namespace sb
 		m_renderLayerStack.clear();
 	}
 
-	void GraphicsManager::AddRenderable(IRenderable* renderable)
+	void GraphicsManager::render(void)
 	{
-		unsigned int layer = renderable->GetRenderLayer();
-		while( (layer+1) > _renderLayerStack.size() )
-		{
-			_renderLayerStack.push_back(new RenderLayer);
-		}
-
-		_renderLayerStack.at(layer)->AddRenderable(renderable);
-	}
-
-	void GraphicsManager::RemoveRenderable(IRenderable* renderable)
-	{
-		unsigned int layer = renderable->GetRenderLayer();
-
-		if( layer < _renderLayerStack.size() )
-		{
-			_renderLayerStack.at(layer)->RemoveRenderable( renderable );
-		}
-	}
-
-	void GraphicsManager::Render(void)
-	{
-		for(RenderLayerStack::iterator iter = _renderLayerStack.begin(); iter != _renderLayerStack.end(); iter++)
+		for(RenderLayerStack::iterator iter = m_renderLayerStack.begin(); iter != m_renderLayerStack.end(); iter++)
 		{
 			RenderLayer* renderLayer = (*iter);
-			renderLayer->Render();
+			renderLayer->render();
 		}
 	}
 
-	RenderLayer* GraphicsManager::GetRenderLayer( unsigned int layer ) const
+	RenderLayer* GraphicsManager::getRenderLayer( unsigned int layer ) const
 	{
-		if( layer >= _renderLayerStack.size() )
+		if( layer >= m_renderLayerStack.size() )
 		{
 			TRI_LOG_STR("Attempted to access a non-existent layer!");
 		}
 
-		return _renderLayerStack.at( layer );
+		return m_renderLayerStack.at( layer );
 	}
+
+	void GraphicsManager::addDrawable( const sf::Drawable& drawable, unsigned int layer )
+	{
+		while( (layer+1) > m_renderLayerStack.size() )
+		{
+			m_renderLayerStack.push_back(new RenderLayer);
+		}
+
+		m_renderLayerStack.at(layer)->addDrawable(drawable);
+	}
+
+	void GraphicsManager::removeDrawable( const sf::Drawable& drawable, unsigned int layer )
+	{
+		if( layer < m_renderLayerStack.size() )
+		{
+			m_renderLayerStack.at(layer)->removeDrawable(drawable);
+		}
+	}
+
 }

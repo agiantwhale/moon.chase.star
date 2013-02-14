@@ -1,16 +1,16 @@
-#ifndef RESOURCECACHE_HPP
-#define RESOURCECACHE_HPP
+#ifndef ResourceCache_h__
+#define ResourceCache_h__
 
 #include <Thor/Resources.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 #include <string>
 #include "../Base/Singleton.hpp"
-#include "../Interface/IEventListener.hpp"
 
-class ResourceCache : public Singleton<ResourceCache>, public thor::MultiResourceCache
+namespace sb
 {
-	DEFINE_SINGLETON(ResourceCache)
-};
+	class ResourceCache : public Singleton<ResourceCache>, public thor::MultiResourceCache
+	{
+		DEFINE_SINGLETON(ResourceCache)
+	};
+}
 
-#endif // RESOURCEMANAGER_H_INCLUDED
+#endif // ResourceCache_h__

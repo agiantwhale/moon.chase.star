@@ -50,7 +50,7 @@ GWEN_CONTROL_CONSTRUCTOR(PauseMenuControl)
 void PauseMenuControl::OnButtonPressed( Gwen::Controls::Base* control )
 {
 	EventData* eventData = new GUIEventData(control);
-	eventData->TriggerEvent();
+	eventData->triggerEvent();
 }
 
 void PauseMenuControl::OnExit( Gwen::Controls::Base* control )

@@ -1,12 +1,15 @@
 #ifndef BACKGROUNDTILE_HPP
 #define BACKGROUNDTILE_HPP
 
-#include "../Tile/Tile.hpp"
+#include "Tile.hpp"
 
-class BackgroundTile : public Tile
+namespace sb
 {
-public:
-	void Initialize( const TiXmlElement* element );
-};
+	class BackgroundTile : public Tile
+	{
+	public:
+		BackgroundTile( const TiXmlElement* element );
+	};
+}
 
 #endif

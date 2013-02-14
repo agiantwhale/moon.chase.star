@@ -70,14 +70,14 @@ namespace sb
 
 		setVerticalSyncEnabled(gameSettings.vSync);
 
-		GUIManager::getInstance()->SetUpGUI();
+		GUIManager::getInstance()->setUpGUI();
 		PhysicsManager::GetInstance()->SetUpPhysics();
 		GraphicsManager::getInstance()->SetUpGraphics();
-		SceneManager::getInstance()->SetUpScene();
-		InputManager::getInstance()->SetUpInput();
+		SceneManager::getInstance()->setUpScene();
+		InputManager::getInstance()->setUpInput();
 
-		Tile::RegisterTileset("Rect", "Resource/Ogmo/Tiles/Rect.png");
-		Tile::RegisterTileset("Back", "Resource/Ogmo/Tiles/Back.png");
+		Tile::registerTileset("Rect", "Resource/Ogmo/Tiles/Rect.png");
+		Tile::registerTileset("Back", "Resource/Ogmo/Tiles/Back.png");
 
 		m_stateMap.insert(std::make_pair(State_Intro,new IntroState));
 		m_stateMap.insert(std::make_pair(State_MainMenu,new MainMenuState));
@@ -141,7 +141,7 @@ namespace sb
 			}
 
 			EventData* eventData = new AppEventData(windowEvent);
-			eventData->TriggerEvent();
+			eventData->triggerEvent();
 		}
 	}
 
@@ -171,7 +171,7 @@ namespace sb
 
 	void Game::update(void)
 	{
-		float deltaTime = m_frameClock.getElapsedTime().asSeconds();
+		sf::Time deltaTime = m_frameClock.getElapsedTime().asSeconds();
 		m_frameClock.restart();
 
 		m_shouldSwitchState = m_currentState->update(deltaTime);

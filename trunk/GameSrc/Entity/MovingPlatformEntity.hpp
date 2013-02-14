@@ -11,8 +11,8 @@ class MovingPlatformEntity : public Entity
 	DEFINE_ENTITY(MovingPlatformEntity,Entity,'MVPT')
 
 public:
-	virtual void Update(float deltaTime);
-	virtual void Initialize( const TiXmlElement *propertyElement /* = nullptr */ );
+	virtual void update(sf::Time deltaTime);
+	virtual void initializeEntity( const TiXmlElement *propertyElement /* = nullptr */ );
 
 	BodyWrapper GetPlatformBody() const { return _platformBody; }
 

@@ -10,7 +10,7 @@ class ThrowEntity : public Entity
     DEFINE_ENTITY( ThrowEntity, Entity, 'THRW')
 
 public:
-    virtual void Initialize( const TiXmlElement *propertyElement = NULL );
+    virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
 private:
     BodyWrapper _throwBody;
     SpriteWrapper _throwSprite;

@@ -16,7 +16,7 @@ BlockEntity::~BlockEntity()
 {
 }
 
-void BlockEntity::Initialize( const TiXmlElement *propertyElement )
+void BlockEntity::initializeEntity( const TiXmlElement *propertyElement )
 {
     BaseClass::Initialize(propertyElement);
 
@@ -56,7 +56,7 @@ void BlockEntity::Initialize( const TiXmlElement *propertyElement )
 
 bool BlockEntity::handleEvent(const EventData& theevent)
 {
-    switch (theevent.GetEventType())
+    switch (theevent.getEventType())
     {
     case Event_BeginContact:
     {

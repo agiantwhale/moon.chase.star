@@ -11,7 +11,7 @@ void Task::Start()
 	_taskState = kTask_Started;
 }
 
-bool Task::DoTask( float deltaTime )
+bool Task::DoTask( sf::Time deltaTime )
 {
 	_timeRemaining -= deltaTime;
 
@@ -25,10 +25,10 @@ void Task::End()
 
 void Task::AddTask()
 {
-	TaskManager::getInstance()->AddTask(this);
+	TaskManager::getInstance()->addTask(this);
 }
 
 void Task::RemoveTask()
 {
-	TaskManager::getInstance()->RemoveTask(this);
+	TaskManager::getInstance()->removeTask(this);
 }

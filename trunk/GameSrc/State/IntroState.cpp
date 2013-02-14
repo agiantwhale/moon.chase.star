@@ -29,7 +29,7 @@ void IntroState::enter(void)
 	_introVideo.play();
 }
 
-bool IntroState::update( float deltaTime )
+bool IntroState::update( sf::Time deltaTime )
 {
 	_introVideo.update(sf::seconds(deltaTime));
 

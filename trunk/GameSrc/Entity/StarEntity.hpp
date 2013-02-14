@@ -12,9 +12,9 @@ class StarEntity : public Entity
 	DEFINE_ENTITY(StarEntity,Entity,'STAR')
 
 public:
-	virtual void Update(float deltaTime);
+	virtual void update(sf::Time deltaTime);
 	virtual bool handleEvent(const EventData& theevent);
-	virtual void Initialize( const TiXmlElement *propertyElement /* = nullptr */ );
+	virtual void initializeEntity( const TiXmlElement *propertyElement /* = nullptr */ );
 
 private:
 	SpriteWrapper _starSprite;
