@@ -1,38 +1,44 @@
-#ifndef TASK_HPP
-#define TASK_HPP
+#ifndef Task_h__
+#define Task_h__
 
-class TaskManager;
+#include <Thor/Time/Timer.hpp>
+#include <SFML/System/Time.hpp>
 
-class Task
+namespace sb
 {
-public:
-	enum TaskState
+	class TaskManager;
+
+	class Task
 	{
-		kTask_Unregistered,
-		kTask_Registered,
-		kTask_Started,
-		kTask_Ended
+	public:
+		enum TaskState
+		{
+			kTask_Unregistered,
+			kTask_Registered,
+			kTask_Started,
+			kTask_Ended
+		};
+
+		Task(sf::Time taskDuration);
+		virtual ~Task() {}
+
+		void addTask();
+		void removeTask();
+
+		virtual void start();
+		//Return true when task is over.
+		virtual bool doTask(sf::Time deltaTime);
+		virtual void end();
+
+	protected:
+		float getTimeRemaining() const { return m_timeRemaining; }
+
+	private:
+		thor::Timer m_timeRemaining;
+		TaskState	m_taskState;
+
+		friend class TaskManager;
 	};
+}
 
-	Task(float taskDuration);
-	virtual ~Task() {}
-
-	void AddTask();
-	void RemoveTask();
-
-	virtual void Start();
-	//Return true when task is over.
-	virtual bool DoTask(sf::Time deltaTime);
-	virtual void End();
-
-protected:
-	float GetTimeRemaining() const { return _timeRemaining; }
-
-private:
-	float _timeRemaining;
-	TaskState	_taskState;
-
-	friend class TaskManager;
-};
-
-#endif
+#endif // Task_h__

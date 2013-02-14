@@ -5,10 +5,14 @@
 #include "../Entity/Entity.hpp"
 #include "../Entity/Component/BodyWrapper.hpp"
 
-class SceneManager;
-class Task;
+namespace sb
+{
+	class SceneManager;
+	class TaskManager;
+	class Task;
+}
+
 class CameraMoveTask;
-class TaskManager;
 
 class ZoneEntity : public sb::Entity
 {
@@ -25,6 +29,7 @@ private:
 	static std::list<Task*> _taskList;
 
 	friend class sb::SceneManager;
+	friend class sb::TaskManager;
 	friend class CameraMoveTask;
 };
 

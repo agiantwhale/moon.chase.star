@@ -19,7 +19,7 @@ TeleportTask::TeleportTask( float taskDuration, PlayerEntity* playerEntity, Tele
 
 void TeleportTask::Start()
 {
-	Task::Start();
+	Task::start();
 
 	_movementSpeed = (_teleportEntity->GetPosition() - _playerEntity->GetPosition())/_totalSeconds;
 	_playerEntity->GetBallBody().GetBody()->SetActive(false);
@@ -29,7 +29,7 @@ void TeleportTask::Start()
 
 bool TeleportTask::DoTask( sf::Time deltaTime )
 {
-	if(Task::DoTask(deltaTime))
+	if(Task::doTask(deltaTime))
 		return true;
 
 	float scale = std::max<float>(GetTimeRemaining()/_totalSeconds,0.0f);
@@ -42,7 +42,7 @@ bool TeleportTask::DoTask( sf::Time deltaTime )
 
 void TeleportTask::End()
 {
-	Task::End();
+	Task::end();
 
 	Vec2D exitPos = _teleportEntity->GetExitPosition();
 	_playerEntity->SetScale(Vec2D(1.0f));

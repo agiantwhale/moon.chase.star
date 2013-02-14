@@ -32,7 +32,7 @@ CameraMoveTask::CameraMoveTask( const Vec2D& moveDistance, unsigned int renderLa
 
 void CameraMoveTask::Start()
 {
-	Task::Start();
+	Task::start();
 
 	Vec2D deltaDistance = (_finalDestination - _initialPosition);
 	_moveSpeed.x *= signum<float>(deltaDistance.x);
@@ -41,7 +41,7 @@ void CameraMoveTask::Start()
 
 bool CameraMoveTask::DoTask( sf::Time deltaTime )
 {
-	if(Task::DoTask(deltaTime))
+	if(Task::doTask(deltaTime))
 		return true;
 
 	GraphicsManager::getInstance()->GetRenderLayer(_renderLayer)->GetCamera().SetPosition(GraphicsManager::getInstance()->GetRenderLayer(_renderLayer)->GetCamera().GetPosition()+_moveSpeed*_affector*deltaTime);
@@ -51,7 +51,7 @@ bool CameraMoveTask::DoTask( sf::Time deltaTime )
 
 void CameraMoveTask::End()
 {
-	Task::End();
+	Task::end();
 
 	ZoneEntity::_taskList.remove(this);
 	GraphicsManager::getInstance()->GetRenderLayer(_renderLayer)->GetCamera().SetPosition(_finalDestination);

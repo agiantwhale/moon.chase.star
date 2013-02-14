@@ -35,7 +35,7 @@ LevelCompleteTask::LevelCompleteTask(PlayerEntity* playerEntity, const VectorSta
 
 void LevelCompleteTask::Start()
 {
-	Task::Start();
+	Task::start();
 
 	_playerEntity->GetBallBody().GetBody()->SetActive(false);
 
@@ -62,7 +62,7 @@ void LevelCompleteTask::Start()
 
 bool LevelCompleteTask::DoTask( sf::Time deltaTime )
 {
-	if(Task::DoTask(deltaTime))
+	if(Task::doTask(deltaTime))
 		return true;
 
 	switch(_currentState)
@@ -110,7 +110,7 @@ bool LevelCompleteTask::DoTask( sf::Time deltaTime )
 
 void LevelCompleteTask::End()
 {
-	Task::End();
+	Task::end();
 
 	EventData* eventData = new EventData(Event_NextLevel);
 	eventData->queueEvent(sf::Seconds(0.5f));

@@ -1,34 +1,37 @@
-#include "../Task/Task.hpp"
+#include "Task.hpp"
 #include "../System/TaskManager.hpp"
 
-Task::Task( float taskDuration ) : _timeRemaining(taskDuration), _taskState(kTask_Unregistered)
+namespace sb
 {
+	Task::Task( sf::Time taskDuration ) : m_timeRemaining(), m_taskState(kTask_Unregistered)
+	{
+		m_timeRemaining.reset(taskDuration);
+	}
 
-}
+	void Task::start()
+	{
+		m_taskState = kTask_Started;
+		m_timeRemaining.start();
+	}
 
-void Task::Start()
-{
-	_taskState = kTask_Started;
-}
+	bool Task::doTask( sf::Time deltaTime )
+	{
+		return m_timeRemaining.isExpired();
+	}
 
-bool Task::DoTask( sf::Time deltaTime )
-{
-	_timeRemaining -= deltaTime;
+	void Task::end()
+	{
+		m_taskState = kTask_Ended;
+	}
 
-	return _timeRemaining <= 0;
-}
+	void Task::addTask()
+	{
+		TaskManager::getInstance()->addTask(this);
+	}
 
-void Task::End()
-{
-	_taskState = kTask_Ended;
-}
+	void Task::removeTask()
+	{
+		TaskManager::getInstance()->removeTask(this);
+	}
 
-void Task::AddTask()
-{
-	TaskManager::getInstance()->addTask(this);
-}
-
-void Task::RemoveTask()
-{
-	TaskManager::getInstance()->removeTask(this);
 }

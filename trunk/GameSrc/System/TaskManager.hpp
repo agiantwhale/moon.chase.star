@@ -4,7 +4,7 @@
 #include <list>
 #include <unordered_map>
 #include <queue>
-
+#include <SFML/System/Time.hpp>
 #include "../Base/Singleton.hpp"
 #include "../Event/EventListener.hpp"
 
@@ -20,13 +20,13 @@ namespace sb
 		typedef std::list<Task*> ToDoList;
 
 	public:
-		void update(float dt);
+		void update(sf::Time deltaTime);
 		void addTask(Task* task);
 		void removeTask(Task* task);
 	private:
 		virtual bool handleEvent(const EventData& theevent);
 
-		ToDoList _toDoList;
+		ToDoList m_toDoList;
 	};
 }
 
