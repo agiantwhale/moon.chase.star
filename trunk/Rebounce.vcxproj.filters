@@ -28,12 +28,6 @@
     <Filter Include="GameSrc\State">
       <UniqueIdentifier>{0d6f0081-37e7-4ae1-80ba-7e1e1bacdaf8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameSrc\System">
-      <UniqueIdentifier>{2cce8f52-7a29-4ec8-9a26-1183ed6a7e6a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameSrc\System\Debug">
-      <UniqueIdentifier>{f74451f1-bb4c-41ec-b833-3c31f0b068f9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameSrc\Task">
       <UniqueIdentifier>{e1356ead-b2a2-41eb-9de3-78a225ae8fe8}</UniqueIdentifier>
     </Filter>
@@ -60,6 +54,15 @@
     </Filter>
     <Filter Include="GameSrc\Helper">
       <UniqueIdentifier>{d3c747f5-9b12-4011-931f-73c3183cfec6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\Physics">
+      <UniqueIdentifier>{179e666c-9594-4b26-b907-a3d70ed40b20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\Physics\Debug">
+      <UniqueIdentifier>{6bf17b06-852b-457d-85e6-638fd7d2358e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\System">
+      <UniqueIdentifier>{190469fa-aeb6-465e-aa0b-72759ade0a80}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -117,33 +120,6 @@
     <ClCompile Include="GameSrc\State\IntroState.cpp">
       <Filter>GameSrc\State</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\System\EventManager.cpp">
-      <Filter>GameSrc\System</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\System\GraphicsManager.cpp">
-      <Filter>GameSrc\System</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\System\GUIManager.cpp">
-      <Filter>GameSrc\System</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\System\PhysicsManager.cpp">
-      <Filter>GameSrc\System</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\System\RenderLayer.cpp">
-      <Filter>GameSrc\System</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\System\SceneManager.cpp">
-      <Filter>GameSrc\System</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\System\TaskManager.cpp">
-      <Filter>GameSrc\System</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\System\EntityManager.cpp">
-      <Filter>GameSrc\System</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\System\Debug\PhysicsDebugDraw.cpp">
-      <Filter>GameSrc\System\Debug</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\Task\Task.cpp">
       <Filter>GameSrc\Task</Filter>
     </ClCompile>
@@ -158,9 +134,6 @@
     </ClCompile>
     <ClCompile Include="Libs\GWEN\Renderers\SFML\SFML.cpp">
       <Filter>Libs\GWEN\Renderers\SFML</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\System\ResourceCache.cpp">
-      <Filter>GameSrc\System</Filter>
     </ClCompile>
     <ClCompile Include="GameSrc\Entity\Component\ParticleWrapper.cpp">
       <Filter>GameSrc\Entity\Component</Filter>
@@ -183,9 +156,6 @@
     <ClCompile Include="GameSrc\Tile\BackgroundTile.cpp">
       <Filter>GameSrc\Tile</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\System\InputManager.cpp">
-      <Filter>GameSrc\System</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\Entity\ZoneEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
     </ClCompile>
@@ -200,6 +170,39 @@
     </ClCompile>
     <ClCompile Include="GameSrc\State\GameState.cpp">
       <Filter>GameSrc\State</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Event\EventManager.cpp">
+      <Filter>GameSrc\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Entity\EntityManager.cpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\GUI\GUIManager.cpp">
+      <Filter>GameSrc\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Physics\PhysicsManager.cpp">
+      <Filter>GameSrc\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Physics\Debug\PhysicsDebugDraw.cpp">
+      <Filter>GameSrc\Physics\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Task\TaskManager.cpp">
+      <Filter>GameSrc\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\GraphicsManager.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\InputManager.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\RenderLayer.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\ResourceCache.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\System\SceneManager.cpp">
+      <Filter>GameSrc\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -278,33 +281,6 @@
     <ClInclude Include="GameSrc\State\InGameState.hpp">
       <Filter>GameSrc\State</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\System\EntityManager.hpp">
-      <Filter>GameSrc\System</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\System\EventManager.hpp">
-      <Filter>GameSrc\System</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\System\GraphicsManager.hpp">
-      <Filter>GameSrc\System</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\System\GUIManager.hpp">
-      <Filter>GameSrc\System</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\System\PhysicsManager.hpp">
-      <Filter>GameSrc\System</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\System\RenderLayer.hpp">
-      <Filter>GameSrc\System</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\System\SceneManager.hpp">
-      <Filter>GameSrc\System</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\System\TaskManager.hpp">
-      <Filter>GameSrc\System</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\System\Debug\PhysicsDebugDraw.hpp">
-      <Filter>GameSrc\System\Debug</Filter>
-    </ClInclude>
     <ClInclude Include="GameSrc\Task\Task.hpp">
       <Filter>GameSrc\Task</Filter>
     </ClInclude>
@@ -316,9 +292,6 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Entity\ThrowEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\System\ResourceCache.hpp">
-      <Filter>GameSrc\System</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Entity\Component\ParticleWrapper.hpp">
       <Filter>GameSrc\Entity\Component</Filter>
@@ -341,9 +314,6 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Event\NewGameEventData.hpp">
       <Filter>GameSrc\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\System\InputManager.hpp">
-      <Filter>GameSrc\System</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Entity\ZoneEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
@@ -374,6 +344,39 @@
     </ClInclude>
     <ClInclude Include="GameSrc\State\GameState.hpp">
       <Filter>GameSrc\State</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\EventManager.hpp">
+      <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\EntityManager.hpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\GUI\GUIManager.hpp">
+      <Filter>GameSrc\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Physics\PhysicsManager.hpp">
+      <Filter>GameSrc\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Physics\Debug\PhysicsDebugDraw.hpp">
+      <Filter>GameSrc\Physics\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Task\TaskManager.hpp">
+      <Filter>GameSrc\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\GraphicsManager.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\InputManager.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\RenderLayer.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\ResourceCache.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\SceneManager.hpp">
+      <Filter>GameSrc\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,7 @@
 #include <Gwen/Controls/Canvas.h>
 #include <Gwen/Input/SFML.h>
 
-#include "../Interface/IState.hpp"
+#include "../State/GameState.hpp"
 #include "../Base/Singleton.hpp"
 
 namespace sb

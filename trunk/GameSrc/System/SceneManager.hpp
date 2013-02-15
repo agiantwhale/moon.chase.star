@@ -4,7 +4,7 @@
 #include <list>
 #include <vector>
 #include <string>
-#include <SFML/System/ve>
+#include <SFML/System/Vector2.hpp>
 #include <SFML/Audio.hpp>
 #include <unordered_map>
 #include "../Base/Singleton.hpp"
