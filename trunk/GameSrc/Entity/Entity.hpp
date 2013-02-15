@@ -7,7 +7,7 @@
 
 #include "../Base/Globals.hpp"
 #include "../Event/EventListener.hpp"
-#include "../System/EntityManager.hpp"
+#include "EntityManager.hpp"
 
 namespace sb
 {

@@ -16,11 +16,8 @@ namespace sb
 		BodyController(sf::Transformable& transformable);
 		virtual ~BodyController();
 
-		void setBody(b2Body* body);
-		b2Body* getBody();
-
-		void setOwnerEntity(Entity *entity);
-		Entity* getOwnerEntity();
+		b2Body* getBody() const { return m_body; }
+		void setBody(b2Body* val) { m_body = val; resetTransform(); }
 
 	private:
 		virtual void updateTransform( void );
@@ -29,8 +26,6 @@ namespace sb
 
 		sf::Transformable&	m_target;
 		b2Body*				m_body;
-		Entity*				m_ownerEntity;
-
 		b2Vec2				m_previousPosition;
 		b2Vec2				m_smoothPosition;
 		float				m_previousRotation;

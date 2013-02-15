@@ -1,25 +1,32 @@
-#ifndef BLOCKENTITY_HPP
-#define BLOCKENTITY_HPP
+#ifndef BlockEntity_h__
+#define BlockEntity_h__
 
-#include "../Entity/Entity.hpp"
-#include "../Entity/Component/SpriteWrapper.hpp"
-#include "../Entity/Component/BodyWrapper.hpp"
+#include <SFML/Graphics/Sprite.hpp>
 
-class BlockEntity : public Entity
+#include "Entity.hpp"
+#include "../Physics/BodyController.hpp"
+#include "../Helper/ScreenPositioner.h"
+
+namespace sf
 {
-    DEFINE_ENTITY( BlockEntity, Entity, 'BLCK')
+	class Sprite;
+}
 
-public:
-    virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
-    virtual void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
-    virtual bool handleEvent(const EventData& theevent);
-    virtual void Simulate(void);
+class BlockEntity : public sb::Entity
+{
+	DEFINE_ENTITY( BlockEntity, sb::Entity, 'BLCK')
 
 private:
-    bool _shouldFall;
+	virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
+	virtual void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
+	virtual bool handleEvent(const EventData& theevent);
+	virtual void simulate(void);
 
-    BodyWrapper _blockBody;
-    SpriteWrapper _blockSprite;
+	bool m_shouldFall;
+
+	sf::Sprite						m_blockSprite;
+	sb::BodyController				m_bodyController;
+	sb::ScreenPositioner			m_screenPositioner;
 };
 
-#endif
+#endif // BlockEntity_h__

@@ -16,9 +16,6 @@
     <Filter Include="GameSrc\Entity">
       <UniqueIdentifier>{97a308a5-8013-4614-8fae-982062a62721}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameSrc\Entity\Component">
-      <UniqueIdentifier>{c1a659ed-ec78-4ab5-8844-68348d2e06bf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameSrc\Event">
       <UniqueIdentifier>{f382c4ca-1797-4e03-be15-dce35743ef86}</UniqueIdentifier>
     </Filter>
@@ -87,12 +84,6 @@
     <ClCompile Include="GameSrc\Entity\BlockEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\Entity\Component\SpriteWrapper.cpp">
-      <Filter>GameSrc\Entity\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\Entity\Component\BodyWrapper.cpp">
-      <Filter>GameSrc\Entity\Component</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\Event\EventData.cpp">
       <Filter>GameSrc\Event</Filter>
     </ClCompile>
@@ -135,9 +126,6 @@
     <ClCompile Include="Libs\GWEN\Renderers\SFML\SFML.cpp">
       <Filter>Libs\GWEN\Renderers\SFML</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\Entity\Component\ParticleWrapper.cpp">
-      <Filter>GameSrc\Entity\Component</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\Entity\StarEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
     </ClCompile>
@@ -164,9 +152,6 @@
     </ClCompile>
     <ClCompile Include="GameSrc\Task\LevelCompleteTask.cpp">
       <Filter>GameSrc\Task</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSrc\Helper\BodyController.cpp">
-      <Filter>GameSrc\Helper</Filter>
     </ClCompile>
     <ClCompile Include="GameSrc\State\GameState.cpp">
       <Filter>GameSrc\State</Filter>
@@ -204,6 +189,9 @@
     <ClCompile Include="GameSrc\System\SceneManager.cpp">
       <Filter>GameSrc\System</Filter>
     </ClCompile>
+    <ClCompile Include="GameSrc\Physics\BodyController.cpp">
+      <Filter>GameSrc\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp">
@@ -229,12 +217,6 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Entity\PlayerEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Entity\Component\BodyWrapper.hpp">
-      <Filter>GameSrc\Entity\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Entity\Component\SpriteWrapper.hpp">
-      <Filter>GameSrc\Entity\Component</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Event\EventsDef.h">
       <Filter>GameSrc\Event</Filter>
@@ -293,9 +275,6 @@
     <ClInclude Include="GameSrc\Entity\ThrowEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\Entity\Component\ParticleWrapper.hpp">
-      <Filter>GameSrc\Entity\Component</Filter>
-    </ClInclude>
     <ClInclude Include="GameSrc\Entity\StarEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
     </ClInclude>
@@ -325,9 +304,6 @@
       <Filter>GameSrc\Task</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Helper\WorldDrawable.hpp">
-      <Filter>GameSrc\Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Entity\Component\BodyController.hpp">
       <Filter>GameSrc\Helper</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Helper\Conversion.hpp">
@@ -377,6 +353,18 @@
     </ClInclude>
     <ClInclude Include="GameSrc\System\SceneManager.hpp">
       <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Helper\Updateable.hpp">
+      <Filter>GameSrc\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Helper\ScreenPositioner.h">
+      <Filter>GameSrc\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Physics\BodyController.hpp">
+      <Filter>GameSrc\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Physics\Simulatable.hpp">
+      <Filter>GameSrc\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

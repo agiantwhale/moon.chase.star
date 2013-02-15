@@ -1,6 +1,6 @@
 #include "Tile.hpp"
+#include "../Event/EventManager.hpp"
 #include "../System/ResourceCache.hpp"
-#include "../System/EventManager.hpp"
 #include "../System/SceneManager.hpp"
 #include "../App/Game.hpp"
 

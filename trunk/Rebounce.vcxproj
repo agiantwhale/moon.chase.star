@@ -83,9 +83,6 @@
     <ClCompile Include="GameSrc\App\Game.cpp" />
     <ClCompile Include="GameSrc\App\main.cpp" />
     <ClCompile Include="GameSrc\Entity\BlockEntity.cpp" />
-    <ClCompile Include="GameSrc\Entity\Component\BodyWrapper.cpp" />
-    <ClCompile Include="GameSrc\Entity\Component\ParticleWrapper.cpp" />
-    <ClCompile Include="GameSrc\Entity\Component\SpriteWrapper.cpp" />
     <ClCompile Include="GameSrc\Entity\DeadZoneEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\Entity.cpp" />
     <ClCompile Include="GameSrc\Entity\EntityManager.cpp" />
@@ -103,7 +100,7 @@
     <ClCompile Include="GameSrc\GUI\Log.cpp" />
     <ClCompile Include="GameSrc\GUI\MainMenu.cpp" />
     <ClCompile Include="GameSrc\GUI\PauseMenu.cpp" />
-    <ClCompile Include="GameSrc\Helper\BodyController.cpp" />
+    <ClCompile Include="GameSrc\Physics\BodyController.cpp" />
     <ClCompile Include="GameSrc\Physics\Debug\PhysicsDebugDraw.cpp" />
     <ClCompile Include="GameSrc\Physics\PhysicsManager.cpp" />
     <ClCompile Include="GameSrc\State\GameState.cpp" />
@@ -133,10 +130,6 @@
     <ClInclude Include="GameSrc\Base\Singleton.hpp" />
     <ClInclude Include="GameSrc\Base\Math.hpp" />
     <ClInclude Include="GameSrc\Entity\BlockEntity.hpp" />
-    <ClInclude Include="GameSrc\Entity\Component\BodyWrapper.hpp" />
-    <ClInclude Include="GameSrc\Entity\Component\ParticleWrapper.hpp" />
-    <ClInclude Include="GameSrc\Entity\Component\BodyController.hpp" />
-    <ClInclude Include="GameSrc\Entity\Component\SpriteWrapper.hpp" />
     <ClInclude Include="GameSrc\Entity\DeadZoneEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\Entity.hpp" />
     <ClInclude Include="GameSrc\Entity\EntityManager.hpp" />
@@ -162,10 +155,14 @@
     <ClInclude Include="GameSrc\GUI\PauseMenu.hpp" />
     <ClInclude Include="GameSrc\Helper\Conversion.hpp" />
     <ClInclude Include="GameSrc\Helper\Globals.h" />
+    <ClInclude Include="GameSrc\Helper\ScreenPositioner.h" />
     <ClInclude Include="GameSrc\Helper\Simulatable.hpp" />
+    <ClInclude Include="GameSrc\Helper\Updateable.hpp" />
     <ClInclude Include="GameSrc\Helper\WorldDrawable.hpp" />
+    <ClInclude Include="GameSrc\Physics\BodyController.hpp" />
     <ClInclude Include="GameSrc\Physics\Debug\PhysicsDebugDraw.hpp" />
     <ClInclude Include="GameSrc\Physics\PhysicsManager.hpp" />
+    <ClInclude Include="GameSrc\Physics\Simulatable.hpp" />
     <ClInclude Include="GameSrc\State\GameState.hpp" />
     <ClInclude Include="GameSrc\State\InGameState.hpp" />
     <ClInclude Include="GameSrc\State\IntroState.hpp" />
