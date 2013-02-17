@@ -34,12 +34,15 @@ StarEntity::StarEntity()
 		m_ySpline(),
 		m_emitter(nullptr)
 {
-
+	addEventListenType(Event_Simulate);
 }
 
 StarEntity::~StarEntity()
 {
+	removeEventListenType(Event_Simulate);
+
 	sb::GraphicsManager::getInstance()->removeDrawable(*m_starParticle,3);
+	sb::PhysicsManager::getInstance()->removeSimulatable(&m_starBody);
 	delete m_starParticle;
 }
 
@@ -65,11 +68,9 @@ void StarEntity::update( sf::Time deltaTime )
 		setPosition(sf::Vector2f(m_xSpline(passedTime),m_ySpline(passedTime)));
 
 		sf::Vector2f position = sb::Translate::Position(getPosition());
-		sf::Vector2f velocity = (getPosition() - m_previousPosition) / deltaTime.asSeconds();
-		velocity *= RATIO;
-		velocity.x *= -1;
+		sf::Vector2f velocity = sb::Translate::Velocity( (getPosition() - m_previousPosition) / deltaTime.asSeconds());
 
-		m_emitter->setParticleVelocity(thor::Distributions::deflect(velocity, 20.f) );
+		m_emitter->setParticleVelocity(thor::Distributions::deflect(velocity, 20.0f) );
 		m_emitter->setParticlePosition(position);
 
 		m_previousPosition = getPosition();
@@ -105,6 +106,8 @@ void StarEntity::initializeEntity( const TiXmlElement *propertyElement /* = null
 			starBody->CreateFixture(&fixtureDefinition);
 
 			m_starBody.setBody(starBody);
+
+			sb::PhysicsManager::getInstance()->addSimulatable(&m_starBody);
 		}
 
 		{

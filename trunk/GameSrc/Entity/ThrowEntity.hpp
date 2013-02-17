@@ -11,9 +11,11 @@ class ThrowEntity : public sb::Entity
 	DEFINE_ENTITY( ThrowEntity, sb::Entity, 'THRW')
 
 private:
+	virtual void update(sf::Time deltaTime);
 	virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
 
 	sb::BodyController	m_throwBody;
+	sb::ScreenTranslator m_throwTranslator;
 	sf::Sprite			m_throwSprite;
 };
 

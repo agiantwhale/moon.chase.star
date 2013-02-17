@@ -55,6 +55,7 @@ private:
     bool    m_shouldBounce;
 
 	sb::BodyController m_ballBody;
+	sb::ScreenTranslator	m_ballTranslator;
 	sf::Sprite	m_ballSprite;
 	sf::Sound	m_bounceSound;
 	sf::Sound	m_throwSound;

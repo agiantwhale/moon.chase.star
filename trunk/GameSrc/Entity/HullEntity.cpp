@@ -10,7 +10,7 @@ HullEntity::HullEntity() : BaseClass(), m_hullBody(*this)
 
 HullEntity::~HullEntity()
 {
-
+	sb::PhysicsManager::getInstance()->removeSimulatable(&m_hullBody);
 }
 
 
@@ -52,6 +52,8 @@ void HullEntity::initializeEntity( const TiXmlElement *propertyElement /* = NULL
 			hullBody->CreateFixture(&fixtureDef);
 
 			m_hullBody.setBody(hullBody);
+
+			sb::PhysicsManager::getInstance()->addSimulatable(&m_hullBody);
 		}
 	}
 }

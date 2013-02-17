@@ -8,10 +8,14 @@ DeadZoneEntity::DeadZoneEntity()
 	:	BaseClass(),
 		m_zoneBody(*this)
 {
+	addEventListenType(Event_BeginContact);
 }
 
 DeadZoneEntity::~DeadZoneEntity()
 {
+	removeEventListenType(Event_BeginContact);
+
+	sb::PhysicsManager::getInstance()->removeSimulatable(&m_zoneBody);
 }
 
 void DeadZoneEntity::initializeEntity( const TiXmlElement *propertyElement /*= nullptr */ )
@@ -42,6 +46,8 @@ void DeadZoneEntity::initializeEntity( const TiXmlElement *propertyElement /*= n
 			zoneBody->CreateFixture(&fixtureDefinition);
 
 			m_zoneBody.setBody(zoneBody);
+
+			sb::PhysicsManager::getInstance()->addSimulatable(&m_zoneBody);
 		}
 	}
 }
@@ -58,11 +64,8 @@ bool DeadZoneEntity::handleEvent( const sb::EventData& theevent )
 			const b2Fixture* target = nullptr;
 			if( m_zoneBody.checkContact(contactInfo,target))
 			{
-				Entity* targetEntity = static_cast<Entity*>(target->GetBody()->GetUserData());
-				if( targetEntity->getEntityType() == 'BALL' )
-				{
-					targetEntity->releaseEntity();
-				}
+				sb::Entity* entity = sb::getOwnerEntity(target);
+				entity->releaseEntity();
 			}
 
 			break;

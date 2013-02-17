@@ -20,7 +20,9 @@ namespace sb
 						  m_levelSize(),
 						  m_sceneLoaded(false),
 						  m_sceneNum(0),
-						  m_backgroundMusic(nullptr)
+						  m_backgroundMusic(nullptr),
+						  m_playerEntity(nullptr),
+						  m_starEntity(nullptr)
 	{
 		addEventListenType(Event_Unload);
 	}

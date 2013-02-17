@@ -18,6 +18,7 @@ class BlockEntity : public sb::Entity
 	DEFINE_ENTITY( BlockEntity, sb::Entity, 'BLCK')
 
 private:
+	virtual void update(sf::Time deltaTime);
 	virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
 	virtual void processContact(const b2Contact* contact, const b2Fixture* contactFixture );
 	virtual bool handleEvent(const sb::EventData& theevent);
@@ -27,7 +28,7 @@ private:
 
 	sf::Sprite						m_blockSprite;
 	sb::BodyController				m_bodyController;
-	sb::ScreenTranslator			m_screenPositioner;
+	sb::ScreenTranslator			m_screenTranslator;
 };
 
 #endif // BlockEntity_h__

@@ -16,10 +16,16 @@ ZoneEntity::ZoneEntity()
 		m_zoneBody(*this),
 		m_containsBall(false)
 {
+	addEventListenType(Event_BeginContact);
+	addEventListenType(Event_EndContact);
 }
 
 ZoneEntity::~ZoneEntity()
 {
+	removeEventListenType(Event_BeginContact);
+	removeEventListenType(Event_EndContact);
+
+	sb::PhysicsManager::getInstance()->removeSimulatable(&m_zoneBody);
 }
 
 void ZoneEntity::initializeEntity( const TiXmlElement *propertyElement /*= NULL */ )
@@ -46,6 +52,8 @@ void ZoneEntity::initializeEntity( const TiXmlElement *propertyElement /*= NULL 
 		zoneBody->CreateFixture(&fixtureDef);
 
 		m_zoneBody.setBody(zoneBody);
+
+		sb::PhysicsManager::getInstance()->addSimulatable(&m_zoneBody);
 	}
 }
 

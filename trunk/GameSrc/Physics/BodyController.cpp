@@ -27,7 +27,7 @@ namespace sb
 	void BodyController::updateTransform( void )
 	{
 		assert(m_body != nullptr);
-		if(m_body) return;
+		if(!m_body) return;
 
 		if(m_body && m_body->IsActive())
 		{
@@ -39,7 +39,7 @@ namespace sb
 	void BodyController::smoothenTransform( float remainderRatio )
 	{
 		assert(m_body != nullptr);
-		if(m_body) return;
+		if(!m_body) return;
 
 		const float oneMinusRatio = 1.0f - remainderRatio;
 
@@ -50,7 +50,7 @@ namespace sb
 	void BodyController::resetTransform( void )
 	{
 		assert(m_body != nullptr);
-		if(m_body) return;
+		if(!m_body) return;
 
 		m_smoothPosition = m_previousPosition = m_body->GetPosition();
 		m_smoothRotation = m_previousRotation = m_body->GetAngle();

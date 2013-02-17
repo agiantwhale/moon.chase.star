@@ -25,6 +25,7 @@ MovingPlatformEntity::MovingPlatformEntity()
 MovingPlatformEntity::~MovingPlatformEntity()
 {
 	sb::GraphicsManager::getInstance()->removeDrawable(m_platformSprite,2);
+	sb::PhysicsManager::getInstance()->removeSimulatable(&m_platformBody);
 }
 
 void MovingPlatformEntity::update( sf::Time deltaTime )
@@ -85,6 +86,8 @@ void MovingPlatformEntity::initializeEntity( const TiXmlElement *propertyElement
 		platformBody->CreateFixture(&fixtureDefinition);
 
 		m_platformBody.setBody(platformBody);
+
+		sb::PhysicsManager::getInstance()->addSimulatable(&m_platformBody);
 	}
 
 	if(propertyElement)

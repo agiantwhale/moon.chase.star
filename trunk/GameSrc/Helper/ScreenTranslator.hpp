@@ -19,7 +19,8 @@ namespace sb
 		inline sf::Vector2f Position(const sf::Vector2f worldPosition)
 		{
 			sf::Vector2f screenPosition = sf::Vector2f( SCREENWIDTH/2, SCREENHEIGHT/2 );
-			screenPosition += worldPosition * RATIO;
+			screenPosition.x += worldPosition.x * RATIO;
+			screenPosition.y -= worldPosition.y * RATIO;
 
 			return screenPosition;
 		}
@@ -35,7 +36,7 @@ namespace sb
 		inline sf::Vector2f Velocity(const sf::Vector2f worldVelocity)
 		{
 			sf::Vector2f screenVelocity = worldVelocity;
-			screenVelocity.y *= -1.f;
+			screenVelocity.x *= -1.f;
 			screenVelocity *= RATIO;
 
 			return screenVelocity;

@@ -48,18 +48,18 @@ namespace sb
 			return;
 		}
 
-		const sf::Time physicsDT = sf::seconds(1.f/60.f);
+		const float physicsDT = 1.0f/60.0f;
 		const int maxSteps = 5;
 
 		m_remainderDT += deltaTime;
-		const int stepCount = static_cast<int>( floor(m_remainderDT.asSeconds()/physicsDT.asSeconds()) );
+		const int stepCount = static_cast<int>( floor(m_remainderDT.asSeconds()/physicsDT) );
 
 		if( stepCount > 0 )
 		{
-			m_remainderDT -= sf::seconds(stepCount * physicsDT.asSeconds());
+			m_remainderDT -= sf::seconds(stepCount * physicsDT);
 		}
 
-		m_remainderRatio = m_remainderDT.asSeconds() / physicsDT.asSeconds();
+		m_remainderRatio = m_remainderDT.asSeconds() / physicsDT;
 
 		const int stepsClamped = min<int>(stepCount, maxSteps);
 		for (int i = 0; i < stepsClamped; ++ i)
@@ -104,7 +104,7 @@ namespace sb
 			iter != m_simulatableList.end(); iter++ )
 		{
 			Simulatable* simulatable = *iter;
-			simulatable->updateTransform();
+			simulatable->resetTransform();
 		}
 	}
 

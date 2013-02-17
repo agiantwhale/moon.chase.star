@@ -13,9 +13,6 @@
     <Filter Include="GameSrc\Base">
       <UniqueIdentifier>{b622e875-05b2-4e66-accf-2cc1f2c11d9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameSrc\Entity">
-      <UniqueIdentifier>{97a308a5-8013-4614-8fae-982062a62721}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameSrc\Event">
       <UniqueIdentifier>{f382c4ca-1797-4e03-be15-dce35743ef86}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,9 @@
     </Filter>
     <Filter Include="GameSrc\System">
       <UniqueIdentifier>{190469fa-aeb6-465e-aa0b-72759ade0a80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSrc\Entity">
+      <UniqueIdentifier>{97a308a5-8013-4614-8fae-982062a62721}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

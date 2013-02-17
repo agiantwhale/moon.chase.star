@@ -11,12 +11,16 @@ LevelCompleteEntity::LevelCompleteEntity() : BaseClass(),
 											 m_acceptArrival(false),
 											 m_endFollowRoute()
 {
+	addEventListenType(Event_BeginContact);
 	addEventListenType(Event_StarArrived);
 }
 
 LevelCompleteEntity::~LevelCompleteEntity()
 {
+	removeEventListenType(Event_BeginContact);
 	removeEventListenType(Event_StarArrived);
+
+	sb::PhysicsManager::getInstance()->removeSimulatable(&m_triggerBody);
 }
 
 void LevelCompleteEntity::initializeEntity( const TiXmlElement *propertyElement /*= NULL */ )
@@ -47,6 +51,8 @@ void LevelCompleteEntity::initializeEntity( const TiXmlElement *propertyElement 
 			triggerBody->CreateFixture(&fixtureDefinition);
 			
 			m_triggerBody.setBody(triggerBody);
+
+			sb::PhysicsManager::getInstance()->addSimulatable(&m_triggerBody);
 		}
 
 		{

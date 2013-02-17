@@ -30,17 +30,28 @@ const float JUMP_SLOPE = 0.25f;
 REGISTER_ENTITY( PlayerEntity, "Ball" )
 
 PlayerEntity::PlayerEntity() : Entity(), m_ballBody(*this), m_ballSprite(),
+	m_ballTranslator(*this),
     m_shouldBounce(false),
     m_playerState(kPlayer_Moving),
 	m_bounceSound(),
 	m_throwSound(),
 	m_zoneEntityList()
 {
+	addEventListenType(Event_BeginContact);
+	addEventListenType(Event_EndContact);
+	addEventListenType(Event_PreSolve);
+	addEventListenType(Event_Simulate);
 }
 
 PlayerEntity::~PlayerEntity()
 {
+	removeEventListenType(Event_BeginContact);
+	removeEventListenType(Event_EndContact);
+	removeEventListenType(Event_PreSolve);
+	removeEventListenType(Event_Simulate);
+
 	sb::GraphicsManager::getInstance()->removeDrawable(m_ballSprite,2);
+	sb::PhysicsManager::getInstance()->removeSimulatable(&m_ballBody);
 }
 
 void PlayerEntity::update(sf::Time deltaTime)
@@ -56,18 +67,22 @@ void PlayerEntity::update(sf::Time deltaTime)
 			kill();
 		}
 	}
+
+	sf::Vector2f position = getPosition();
+
+	m_ballTranslator.translate(m_ballSprite);
 }
 
 void PlayerEntity::initializeEntity( const TiXmlElement *propertyElement )
 {
     BaseClass::initializeEntity(propertyElement);
 
-
     {
 		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Ball.png");
 		std::shared_ptr<sf::Texture> texture = sb::ResourceCache::getInstance()->acquire<sf::Texture>(key);
 		m_ballSprite.setTexture(*texture);
 		m_ballSprite.setTextureRect(sf::IntRect(0,0,32,32));
+		m_ballSprite.setOrigin(sf::Vector2f(16.f,16.f));
 
 		sb::GraphicsManager::getInstance()->addDrawable(m_ballSprite,2);
     }
@@ -93,9 +108,11 @@ void PlayerEntity::initializeEntity( const TiXmlElement *propertyElement )
 		fixtureDefinition.restitution = 0.5f;
         fixtureDefinition.shape = &circle;
 
-       ballBody->CreateFixture(&fixtureDefinition);
+		ballBody->CreateFixture(&fixtureDefinition);
 
-	   m_ballBody.setBody(ballBody);
+		m_ballBody.setBody(ballBody);
+
+		sb::PhysicsManager::getInstance()->addSimulatable(&m_ballBody);
     }
 
 	{
@@ -117,6 +134,11 @@ void PlayerEntity::initializeEntity( const TiXmlElement *propertyElement )
 
 bool PlayerEntity::handleEvent(const sb::EventData& theevent)
 {
+	if(BaseClass::handleEvent(theevent))
+	{
+		return true;
+	}
+
     switch (theevent.getEventType())
     {
     case Event_BeginContact:

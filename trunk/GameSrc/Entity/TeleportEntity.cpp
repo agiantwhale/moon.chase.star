@@ -12,8 +12,9 @@ const float TELEPORT_SIZE = 2.0f;
 
 TeleportEntity::TeleportEntity()
 	:	BaseClass(),
+		m_entranceTransform(),
 		m_exitTransform(),
-		m_entranceTranslator(*this),
+		m_entranceTranslator(m_entranceTransform),
 		m_exitTranslator(m_exitTransform),
 		m_triggerBody(*this),
 		m_enterSprite(),
@@ -23,12 +24,15 @@ TeleportEntity::TeleportEntity()
 
 TeleportEntity::~TeleportEntity()
 {
+	sb::GraphicsManager::getInstance()->removeDrawable(m_enterSprite,2);
+	sb::GraphicsManager::getInstance()->removeDrawable(m_exitSprite,2);
+	sb::PhysicsManager::getInstance()->removeSimulatable(&m_triggerBody);
 }
 
 void TeleportEntity::update( sf::Time deltaTime )
 {
-	setRotation(getRotation() + ROTATION_PER_SECOND * deltaTime.asSeconds());
-	m_exitTransform.setRotation(getRotation() + ROTATION_PER_SECOND * deltaTime.asSeconds());
+	m_entranceTransform.setRotation(m_entranceTransform.getRotation() + ROTATION_PER_SECOND * deltaTime.asSeconds());
+	m_exitTransform.setRotation(m_exitTransform.getRotation() - ROTATION_PER_SECOND * deltaTime.asSeconds());
 
 	m_entranceTranslator.translate(m_enterSprite);
 	m_exitTranslator.translate(m_exitSprite);
@@ -60,7 +64,12 @@ void TeleportEntity::initializeEntity( const TiXmlElement *propertyElement /*= N
 	if(propertyElement)
 	{
 		{
-			for(const TiXmlElement* exitNode = propertyElement->FirstChildElement("node"); exitNode != nullptr; exitNode = exitNode->NextSiblingElement())
+			m_entranceTransform.setPosition(getPosition());
+		}
+
+		{
+			const TiXmlElement* exitNode = propertyElement->FirstChildElement("node");
+			if(exitNode)
 			{
 				float x = 0.f, y = 0.f;
 				exitNode->QueryFloatAttribute("x",&x);
@@ -91,6 +100,7 @@ void TeleportEntity::initializeEntity( const TiXmlElement *propertyElement /*= N
 			teleportBody->CreateFixture(&fixtureDefinition);
 
 			m_triggerBody.setBody(teleportBody);
+			sb::PhysicsManager::getInstance()->addSimulatable(&m_triggerBody);
 		}
 	}
 }

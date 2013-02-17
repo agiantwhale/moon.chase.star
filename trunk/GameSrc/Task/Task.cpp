@@ -5,7 +5,11 @@ namespace sb
 {
 	Task::Task( sf::Time taskDuration ) : m_timeRemaining(), m_taskState(kTask_Unregistered)
 	{
-		m_timeRemaining.reset(taskDuration);
+		if(taskDuration > sf::Time::Zero)
+		{
+			m_timeRemaining.reset(taskDuration);
+		}
+		
 	}
 
 	void Task::start()

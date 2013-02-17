@@ -9,7 +9,7 @@
 
 REGISTER_ENTITY( ThrowEntity, "Throw")
 
-ThrowEntity::ThrowEntity() : BaseClass(), m_throwBody(*this), m_throwSprite()
+ThrowEntity::ThrowEntity() : BaseClass(), m_throwBody(*this), m_throwTranslator(*this), m_throwSprite()
 {
 }
 
@@ -28,6 +28,7 @@ void ThrowEntity::initializeEntity( const TiXmlElement *propertyElement )
 		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Throw.png");
 		std::shared_ptr<sf::Texture> texture = sb::ResourceCache::getInstance()->acquire<sf::Texture>(key);
 		m_throwSprite.setTexture(*texture);
+		m_throwSprite.setOrigin(32,32);
 
 		sb::GraphicsManager::getInstance()->addDrawable(m_throwSprite,2);
     }
@@ -54,4 +55,11 @@ void ThrowEntity::initializeEntity( const TiXmlElement *propertyElement )
 
 		m_throwBody.setBody(throwBody);
     }
+}
+
+void ThrowEntity::update( sf::Time deltaTime )
+{
+	BaseClass::update(deltaTime);
+
+	m_throwTranslator.translate(m_throwSprite);
 }

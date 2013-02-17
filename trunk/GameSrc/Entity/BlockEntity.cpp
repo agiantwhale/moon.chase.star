@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "BlockEntity.hpp"
+#include "PlayerEntity.hpp"
 #include "../System/GraphicsManager.hpp"
 #include "../Physics/PhysicsManager.hpp"
 #include "../System/ResourceCache.hpp"
@@ -10,12 +11,19 @@ REGISTER_ENTITY(BlockEntity,"Block")
 
 const float BLOCK_SIZE = 2.0f;
 
-BlockEntity::BlockEntity() : BaseClass(), m_shouldFall(false), m_blockSprite(), m_bodyController(*this), m_screenPositioner(*this)
-{}
+BlockEntity::BlockEntity() : BaseClass(), m_shouldFall(false), m_blockSprite(), m_bodyController(*this), m_screenTranslator(*this)
+{
+	addEventListenType(Event_BeginContact);
+	addEventListenType(Event_Simulate);
+}
 
 BlockEntity::~BlockEntity()
 {
+	removeEventListenType(Event_BeginContact);
+	removeEventListenType(Event_Simulate);
+
 	sb::GraphicsManager::getInstance()->removeDrawable(m_blockSprite,2);
+	sb::PhysicsManager::getInstance()->removeSimulatable(&m_bodyController);
 }
 
 void BlockEntity::initializeEntity( const TiXmlElement *propertyElement /* = NULL */ )
@@ -53,6 +61,8 @@ void BlockEntity::initializeEntity( const TiXmlElement *propertyElement /* = NUL
 		blockBody->CreateFixture(&fixtureDefinition);
 
 		m_bodyController.setBody(blockBody);
+
+		sb::PhysicsManager::getInstance()->addSimulatable(&m_bodyController);
 	}
 }
 
@@ -92,9 +102,15 @@ void BlockEntity::simulate( void )
 
 void BlockEntity::processContact( const b2Contact* contact, const b2Fixture* contactFixture )
 {
-	Entity* entity = static_cast<Entity*>(contact->GetFixtureA()->GetBody()->GetUserData());
-	if( entity->getEntityType() == 'BALL')
+	Entity* entity = sb::getOwnerEntity(contactFixture);
+	PlayerEntity* playerEntity = sb::entity_cast<PlayerEntity>(entity);
+	if( playerEntity)
 	{
 		m_shouldFall = true;
 	}
+}
+
+void BlockEntity::update( sf::Time deltaTime )
+{
+	m_screenTranslator.translate(m_blockSprite);
 }

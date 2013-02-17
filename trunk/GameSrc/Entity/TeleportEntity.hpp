@@ -17,6 +17,7 @@ private:
 	virtual void update(sf::Time deltaTime);
 	virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
 
+	sf::Transformable		m_entranceTransform;
 	sf::Transformable		m_exitTransform;
 	sb::ScreenTranslator	m_entranceTranslator;
 	sb::ScreenTranslator	m_exitTranslator;
