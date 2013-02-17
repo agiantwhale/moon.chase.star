@@ -1,58 +1,61 @@
 #include "../Base/Math.hpp"
+#include "CameraMoveTask.hpp"
 #include "../Entity/ZoneEntity.hpp"
-#include "../Task/CameraMoveTask.hpp"
+#include "../system/RenderLayer.hpp"
 #include "../System/GraphicsManager.hpp"
 
 const float HORIZONTAL_TRAVEL_SPEED = 20.0f;
 const float VERTICAL_TRAVEL_SPEED = 22.5f;
 
-float CalculateTravelTime(const Vec2D& deltaDistance, float affector)
+sf::Time CalculateTravelTime(const sf::Vector2f& deltaDistance, float affector)
 {
+	float totalTravelTime = 0.f;
+
 	if(deltaDistance.x != 0)
 	{
-		return std::abs(deltaDistance.x) / (HORIZONTAL_TRAVEL_SPEED*affector);
+		totalTravelTime = std::abs(deltaDistance.x) / (HORIZONTAL_TRAVEL_SPEED*affector);
 	}
 
 	if(deltaDistance.y != 0)
 	{
-		return std::abs(deltaDistance.y) / (VERTICAL_TRAVEL_SPEED*affector);
+		totalTravelTime = std::abs(deltaDistance.y) / (VERTICAL_TRAVEL_SPEED*affector);
 	}
 
-	return 0;
+	return sf::seconds(totalTravelTime);
 }
 
-CameraMoveTask::CameraMoveTask( const Vec2D& moveDistance, unsigned int renderLayer, float affector ) : Task( CalculateTravelTime(moveDistance, affector) ),
-																													_renderLayer(renderLayer),
-																													_initialPosition(GraphicsManager::getInstance()->GetRenderLayer(_renderLayer)->GetCamera().GetPosition()),
-																													_finalDestination(_initialPosition + moveDistance),
-																													_affector(affector),
-																													_moveSpeed(HORIZONTAL_TRAVEL_SPEED,VERTICAL_TRAVEL_SPEED)
+CameraMoveTask::CameraMoveTask( const sf::Vector2f& moveDistance, unsigned int renderLayer, float affector ) : Task( CalculateTravelTime(moveDistance, affector) ),
+																													m_renderLayer(renderLayer),
+																													m_initialPosition(sb::GraphicsManager::getInstance()->getRenderLayer(m_renderLayer)->getCamera().getPosition()),
+																													m_finalDestination(m_initialPosition + moveDistance),
+																													m_affector(affector),
+																													m_moveSpeed(HORIZONTAL_TRAVEL_SPEED,VERTICAL_TRAVEL_SPEED)
 {
 }
 
-void CameraMoveTask::Start()
+void CameraMoveTask::start()
 {
-	Task::start();
+	sb::Task::start();
 
-	Vec2D deltaDistance = (_finalDestination - _initialPosition);
-	_moveSpeed.x *= signum<float>(deltaDistance.x);
-	_moveSpeed.y *= signum<float>(deltaDistance.y);
+	sf::Vector2f deltaDistance = (m_finalDestination - m_initialPosition);
+	m_moveSpeed.x *= sb::signum<float>(deltaDistance.x);
+	m_moveSpeed.y *= sb::signum<float>(deltaDistance.y);
 }
 
-bool CameraMoveTask::DoTask( sf::Time deltaTime )
+bool CameraMoveTask::doTask( sf::Time deltaTime )
 {
-	if(Task::doTask(deltaTime))
+	if(sb::Task::doTask(deltaTime))
 		return true;
 
-	GraphicsManager::getInstance()->GetRenderLayer(_renderLayer)->GetCamera().SetPosition(GraphicsManager::getInstance()->GetRenderLayer(_renderLayer)->GetCamera().GetPosition()+_moveSpeed*_affector*deltaTime);
+	sb::GraphicsManager::getInstance()->getRenderLayer(m_renderLayer)->getCamera().setPosition(sb::GraphicsManager::getInstance()->getRenderLayer(m_renderLayer)->getCamera().getPosition()+m_moveSpeed*m_affector*deltaTime.asSeconds());
 
 	return false;
 }
 
-void CameraMoveTask::End()
+void CameraMoveTask::end()
 {
 	Task::end();
 
-	ZoneEntity::_taskList.remove(this);
-	GraphicsManager::getInstance()->GetRenderLayer(_renderLayer)->GetCamera().SetPosition(_finalDestination);
+	ZoneEntity::m_taskList.remove(this);
+	sb::GraphicsManager::getInstance()->getRenderLayer(m_renderLayer)->getCamera().setPosition(m_finalDestination);
 }

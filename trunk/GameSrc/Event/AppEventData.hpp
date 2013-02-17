@@ -1,20 +1,24 @@
-#ifndef APPEVENTDATA_HPP
-#define APPEVENTDATA_HPP
+#ifndef AppEventData_h__
+#define AppEventData_h__
 
-#include <SFML/Graphics.hpp>
-#include "../Event/EventData.hpp"
+#include <SFML/Window/Event.hpp>
+#include "EventData.hpp"
 
-class AppEventData : public EventData
+namespace sb
 {
-public:
-	AppEventData(sf::Event& appEvent) : EventData(Event_App), _appEvent(appEvent)
+	class AppEventData : public EventData
 	{
-	}
+	public:
+		AppEventData(sf::Event& appEvent) : EventData(Event_App), m_appEvent(appEvent)
+		{
+		}
 
-	sf::Event& GetAppEvent(void) const {return _appEvent;}
+		sf::Event& getAppEvent(void) const {return m_appEvent;}
 
-private:
-	sf::Event& _appEvent;
-};
+	private:
+		sf::Event& m_appEvent;
+	};
+}
 
-#endif
+
+#endif // AppEventData_h__

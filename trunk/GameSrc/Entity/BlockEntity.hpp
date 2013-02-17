@@ -4,8 +4,9 @@
 #include <SFML/Graphics/Sprite.hpp>
 
 #include "Entity.hpp"
+#include "../Event/EventData.hpp"
 #include "../Physics/BodyController.hpp"
-#include "../Helper/ScreenPositioner.h"
+#include "../Helper/ScreenTranslator.hpp"
 
 namespace sf
 {
@@ -18,15 +19,15 @@ class BlockEntity : public sb::Entity
 
 private:
 	virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
-	virtual void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
-	virtual bool handleEvent(const EventData& theevent);
+	virtual void processContact(const b2Contact* contact, const b2Fixture* contactFixture );
+	virtual bool handleEvent(const sb::EventData& theevent);
 	virtual void simulate(void);
 
 	bool m_shouldFall;
 
 	sf::Sprite						m_blockSprite;
 	sb::BodyController				m_bodyController;
-	sb::ScreenPositioner			m_screenPositioner;
+	sb::ScreenTranslator			m_screenPositioner;
 };
 
 #endif // BlockEntity_h__

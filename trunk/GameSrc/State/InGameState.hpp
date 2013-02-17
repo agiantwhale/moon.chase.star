@@ -20,7 +20,7 @@ namespace sb
 		virtual void exit(void);
 
 	private:
-		bool _endState;
+		bool m_endState;
 	};
 }
 

@@ -1,5 +1,6 @@
 #include "../Base/Globals.hpp"
 #include "BodyController.hpp"
+#include "PhysicsManager.hpp"
 
 namespace sb
 {
@@ -17,7 +18,10 @@ namespace sb
 
 	BodyController::~BodyController()
 	{
-
+		if(m_body)
+		{
+			PhysicsManager::getInstance()->getPhysicsWorld()->DestroyBody(m_body);
+		}
 	}
 
 	void BodyController::updateTransform( void )
@@ -50,6 +54,25 @@ namespace sb
 
 		m_smoothPosition = m_previousPosition = m_body->GetPosition();
 		m_smoothRotation = m_previousRotation = m_body->GetAngle();
+	}
+
+	bool BodyController::checkContact( const b2Contact* contact, const b2Fixture*& targetFixture ) const
+	{
+		bool returnValue = false;
+
+		if(contact->GetFixtureA()->GetBody() == m_body)
+		{
+			targetFixture = contact->GetFixtureB();
+			returnValue = true;
+		}
+
+		if(contact->GetFixtureB()->GetBody() == m_body)
+		{
+			targetFixture = contact->GetFixtureA();
+			returnValue = true;
+		}
+
+		return returnValue;
 	}
 
 }

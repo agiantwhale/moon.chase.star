@@ -1,6 +1,7 @@
 #ifndef PHYSICSMANAGER_H
 #define PHYSICSMANAGER_H
 
+#include <sfml/System/Time.hpp>
 #include <list>
 #include <Box2D/Box2D.h>
 #include "../Base/Singleton.hpp"
@@ -47,7 +48,7 @@ namespace sb
 		void smoothStep( void );
 		void sharpStep( void );
 
-		float m_remainderDT;
+		sf::Time m_remainderDT;
 		float m_remainderRatio;
 	};
 }

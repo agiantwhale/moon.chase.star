@@ -1,16 +1,21 @@
-#include "../Entity/ThrowEntity.hpp"
+#include "ThrowEntity.hpp"
+#include <Thor/Math.hpp>
+#include "../Helper/Conversion.hpp"
+#include "../Physics/PhysicsManager.hpp"
+#include "../System/GraphicsManager.hpp"
 #include "../System/ResourceCache.hpp"
-#include "../Event/ContactEventData.h"
-#include "../Event/SolveEventData.h"
+#include "../Event/ContactEventData.hpp"
+#include "../Event/SolveEventData.hpp"
 
 REGISTER_ENTITY( ThrowEntity, "Throw")
 
-ThrowEntity::ThrowEntity() : BaseClass(), _throwBody(this), _throwSprite(this)
+ThrowEntity::ThrowEntity() : BaseClass(), m_throwBody(*this), m_throwSprite()
 {
 }
 
 ThrowEntity::~ThrowEntity()
 {
+	sb::GraphicsManager::getInstance()->removeDrawable(m_throwSprite,2);
 }
 
 void ThrowEntity::initializeEntity( const TiXmlElement *propertyElement )
@@ -21,22 +26,20 @@ void ThrowEntity::initializeEntity( const TiXmlElement *propertyElement )
 
     {
 		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Throw.png");
-		std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);
+		std::shared_ptr<sf::Texture> texture = sb::ResourceCache::getInstance()->acquire<sf::Texture>(key);
+		m_throwSprite.setTexture(*texture);
 
-		sf::Sprite* throwSprite = new sf::Sprite(*texture);
-        throwSprite->setOrigin(sf::Vector2f(0.5f*THROW_SIZE*RATIO,0.5f*THROW_SIZE*RATIO));
-        _throwSprite.SetSprite( throwSprite );
-        _throwSprite.RegisterRenderable( 2 );
+		sb::GraphicsManager::getInstance()->addDrawable(m_throwSprite,2);
     }
 
     {
         b2BodyDef bodyDefinition;
-        bodyDefinition.userData = (IPhysics*)this;
-        bodyDefinition.position = b2Vec2(GetPosition().x, GetPosition().y);
-        bodyDefinition.angle = GetRotation();
+        bodyDefinition.userData = (Entity*)this;
+        bodyDefinition.position = ToVector(getPosition());
+        bodyDefinition.angle = getRotation();
         bodyDefinition.type = b2_staticBody;
 
-        _throwBody.CreateBody( bodyDefinition );
+        b2Body* throwBody = sb::PhysicsManager::getInstance()->getPhysicsWorld()->CreateBody(&bodyDefinition);
 
         b2PolygonShape boxShape;
         boxShape.SetAsBox( 0.5f*THROW_SIZE, 0.5f*THROW_SIZE );
@@ -47,8 +50,8 @@ void ThrowEntity::initializeEntity( const TiXmlElement *propertyElement )
         fixtureDefinition.friction = 0.0f;
         fixtureDefinition.restitution = 0.5f;
 
-        _throwBody.CreateFixture( fixtureDefinition, "Throw" );
+        throwBody->CreateFixture(&fixtureDefinition);
 
-        _throwBody.ResetTransform();
+		m_throwBody.setBody(throwBody);
     }
 }

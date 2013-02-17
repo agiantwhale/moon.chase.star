@@ -1,20 +1,18 @@
-#ifndef ZONEENTITY_HPP
-#define ZONEENTITY_HPP
+#ifndef DeadZoneEntity_h__
+#define DeadZoneEntity_h__
 
-#include <list>
-#include "../Entity/Entity.hpp"
-#include "../Entity/Component/BodyWrapper.hpp"
+#include "Entity.hpp"
+#include "../Physics/BodyController.hpp"
 
-class DeadZoneEntity : public Entity
+class DeadZoneEntity : public sb::Entity
 {
-	DEFINE_ENTITY( DeadZoneEntity, Entity, 'DEAD')
-
-public:
-	void initializeEntity( const TiXmlElement *propertyElement = nullptr );
-	bool handleEvent(const EventData& theevent);
+	DEFINE_ENTITY( DeadZoneEntity, sb::Entity, 'DEAD')
 
 private:
-	BodyWrapper _zoneBody;
+	void initializeEntity( const TiXmlElement *propertyElement = nullptr );
+	bool handleEvent(const sb::EventData& theevent);
+
+	sb::BodyController	m_zoneBody;
 };
 
-#endif
+#endif // DeadZoneEntity_h__

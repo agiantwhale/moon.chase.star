@@ -19,11 +19,13 @@ namespace sb
 		b2Body* getBody() const { return m_body; }
 		void setBody(b2Body* val) { m_body = val; resetTransform(); }
 
-	private:
+		bool checkContact(const b2Contact* contact, const b2Fixture*& targetFixture) const;
+
 		virtual void updateTransform( void );
 		virtual void smoothenTransform( float remainderRatio );
 		virtual void resetTransform( void );
 
+	private:
 		sf::Transformable&	m_target;
 		b2Body*				m_body;
 		b2Vec2				m_previousPosition;
@@ -31,6 +33,16 @@ namespace sb
 		float				m_previousRotation;
 		float				m_smoothRotation;
 	};
+
+	inline Entity* getOwnerEntity(const b2Fixture* fixture)
+	{
+		return static_cast<Entity*>(fixture->GetBody()->GetUserData());
+	}
+
+	inline Entity* getOwnerEntity(const b2Body* body)
+	{
+		return static_cast<Entity*>(body->GetUserData());
+	}
 }
 
 #endif // BodyController_h__

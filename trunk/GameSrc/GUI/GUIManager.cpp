@@ -34,14 +34,14 @@ namespace sb
 
 	void GUIManager::render(void)
 	{
-		Game::GetInstance()->setView(Game::GetInstance()->getDefaultView());
+		Game::getInstance()->setView(Game::getInstance()->getDefaultView());
 
 		m_gwenCanvas->RenderCanvas();
 	}
 
 	void GUIManager::setUpGUI(void)
 	{
-		m_gwenRenderer = new Gwen::Renderer::SFML(*Game::GetInstance());
+		m_gwenRenderer = new Gwen::Renderer::SFML(*Game::getInstance());
 
 		Gwen::Skin::TexturedBase* texturedSkin = new Gwen::Skin::TexturedBase(m_gwenRenderer);
 		texturedSkin->Init( "Resource/Textures/GUISkin.png" );
@@ -62,7 +62,7 @@ namespace sb
 		if( theevent.getEventType() == Event_App)
 		{
 			const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
-			m_gwenInput->ProcessMessage(eventData.GetAppEvent());
+			m_gwenInput->ProcessMessage(eventData.getAppEvent());
 		}
 
 		return false;

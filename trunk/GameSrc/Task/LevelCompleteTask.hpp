@@ -2,41 +2,36 @@
 #define LEVELCOMPLETETASK_HPP
 
 #include <vector>
+#include <SFML/System/Vector2.hpp>
 #include "../Task/Task.hpp"
-#include "../Base/Vec2D.hpp"
 #include "../Base/Math.hpp"
 
-typedef std::vector<Vec2D> VectorStack;
+typedef std::vector<sf::Vector2f> VectorStack;
 
 class PlayerEntity;
 
-class LevelCompleteTask : public Task
+class LevelCompleteTask : public sb::Task
 {
 public:
 	LevelCompleteTask(PlayerEntity* playerEntity, const VectorStack& path);
 
-	virtual void Start();
-	virtual bool DoTask(sf::Time deltaTime);
-	virtual void End();
+	virtual void start();
+	virtual bool doTask(sf::Time deltaTime);
+	virtual void end();
 
 private:
-	PlayerEntity* _playerEntity;
-	VectorStack _path;
+	PlayerEntity* m_playerEntity;
+	VectorStack m_path;
 
-	float _totalTime;
-	float _elapsedTime;
-	Spline _xSpline;
-	Spline _ySpline;
-
-	float _totalLerpTime;
-	float _lerpTimer;
+	float m_totalTime;
+	sb::Spline m_xSpline;
+	sb::Spline m_ySpline;
 
 	enum
 	{
-		kLevelComplete_Lerp,
 		kLevelComplete_Spline,
 		kLevelComplete_Arrived
-	} _currentState;
+	} m_currentState;
 };
 
 #endif

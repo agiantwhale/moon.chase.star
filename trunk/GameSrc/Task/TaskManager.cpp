@@ -64,7 +64,7 @@ namespace sb
 				delete task;
 			}
 
-			ZoneEntity::_taskList.clear();
+			ZoneEntity::m_taskList.clear();
 
 			m_toDoList.clear();
 		}

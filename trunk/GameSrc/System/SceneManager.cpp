@@ -3,11 +3,11 @@
 #include <TinyXML\tinyxml.h>
 
 #include "SceneManager.hpp"
-#include "EntityManager.hpp"
 #include "GraphicsManager.hpp"
 
 #include "../App/Game.hpp"
 #include "../Base/Globals.hpp"
+#include "../Entity/EntityManager.hpp"
 #include "../Entity/Entity.hpp"
 #include "../Tile/Tile.hpp"
 #include "../Tile/BackgroundTile.hpp"
@@ -181,7 +181,7 @@ namespace sb
 			if(tilesElement)
 			{
 				Tile* tile = new Tile(tilesElement);
-				GraphicsManager::getInstance()->addDrawable(tile,1);
+				GraphicsManager::getInstance()->addDrawable(*tile,1);
 			}
 
 			//Tiles
@@ -189,7 +189,7 @@ namespace sb
 			if(backgroundTilesElement)
 			{
 				BackgroundTile* tile = new BackgroundTile( backgroundTilesElement );
-				GraphicsManager::getInstance()->addDrawable(tile,0);
+				GraphicsManager::getInstance()->addDrawable(*tile,0);
 			}
 
 			//Objects

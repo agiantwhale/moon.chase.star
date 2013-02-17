@@ -1,18 +1,18 @@
 #include <CxxTL/tri_logger.hpp>
 #include "../App/Game.hpp"
-#include "../Helper/Simulatable.hpp"
-#include "../System/PhysicsManager.hpp"
-#include "../System/Debug/PhysicsDebugDraw.hpp"
-#include "../System/EventManager.hpp"
-#include "../Event/ContactEventData.h"
-#include "../Event/SolveEventData.h"
+#include "Simulatable.hpp"
+#include "PhysicsManager.hpp"
+#include "Debug/PhysicsDebugDraw.hpp"
+#include "../Event/EventManager.hpp"
+#include "../Event/ContactEventData.hpp"
+#include "../Event/SolveEventData.hpp"
 
 namespace sb
 {
 	SINGLETON_CONSTRUCTOR( PhysicsManager ),
 		m_physicsWorld( nullptr ),
 		m_isPhysicsSetUp( false ),
-		m_remainderDT( 0.0f ),
+		m_remainderDT(),
 		m_remainderRatio( 0.0f ),
 		m_debugDraw(nullptr)
 	{
@@ -48,18 +48,18 @@ namespace sb
 			return;
 		}
 
-		const float physicsDT = 1.0f/60.0f;
+		const sf::Time physicsDT = sf::seconds(1.f/60.f);
 		const int maxSteps = 5;
 
 		m_remainderDT += deltaTime;
-		const int stepCount = static_cast<int>( floor(m_remainderDT/physicsDT) );
+		const int stepCount = static_cast<int>( floor(m_remainderDT.asSeconds()/physicsDT.asSeconds()) );
 
 		if( stepCount > 0 )
 		{
-			m_remainderDT -= stepCount * physicsDT;
+			m_remainderDT -= sf::seconds(stepCount * physicsDT.asSeconds());
 		}
 
-		m_remainderRatio = m_remainderDT / physicsDT;
+		m_remainderRatio = m_remainderDT.asSeconds() / physicsDT.asSeconds();
 
 		const int stepsClamped = min<int>(stepCount, maxSteps);
 		for (int i = 0; i < stepsClamped; ++ i)

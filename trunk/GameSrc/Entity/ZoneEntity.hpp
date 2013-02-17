@@ -1,9 +1,10 @@
-#ifndef ZONEENTITY_HPP
-#define ZONEENTITY_HPP
+#ifndef ZoneEntity_h__
+#define ZoneEntity_h__
 
 #include <list>
-#include "../Entity/Entity.hpp"
-#include "../Entity/Component/BodyWrapper.hpp"
+#include "Entity.hpp"
+#include "../Task/Task.hpp"
+#include "../Physics/BodyController.hpp"
 
 namespace sb
 {
@@ -20,17 +21,17 @@ class ZoneEntity : public sb::Entity
 
 public:
 	void initializeEntity( const TiXmlElement *propertyElement = nullptr );
-	bool handleEvent(const EventData& theevent);
+	bool handleEvent(const sb::EventData& theevent);
 	void postLoad();
 
 private:
-	BodyWrapper _zoneBody;
-	bool		_containsBall;
-	static std::list<Task*> _taskList;
+	sb::BodyController	m_zoneBody;
+	bool				m_containsBall;
+	static std::list<sb::Task*> m_taskList;
 
 	friend class sb::SceneManager;
 	friend class sb::TaskManager;
 	friend class CameraMoveTask;
 };
 
-#endif
+#endif // ZoneEntity_h__

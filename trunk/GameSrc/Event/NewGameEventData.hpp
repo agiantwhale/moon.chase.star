@@ -2,20 +2,25 @@
 #define NEWGAMEEVENTDATA_HPP
 
 #include <string>
-#include "../Event/EventData.hpp"
+#include "EventData.hpp"
 
-class NewGameEventData : public EventData
+
+namespace sb
 {
-public:
-	NewGameEventData(unsigned int sceneNum) : EventData(Event_NewGame), _sceneNum(sceneNum)
+	class NewGameEventData : public EventData
 	{
-	}
+	public:
+		NewGameEventData(unsigned int sceneNum) : EventData(Event_NewGame), m_sceneNum(sceneNum)
+		{
+		}
 
-	unsigned int GetSceneNumber() const { return _sceneNum; }
+		unsigned int getSceneNumber() const { return m_sceneNum; }
 
-private:
-	unsigned int _sceneNum;
-};
+	private:
+		unsigned int m_sceneNum;
+	};
+}
+
 
 
 #endif

@@ -22,21 +22,21 @@ namespace sb
 
 		for( iterator iter = begin(); iter != end(); iter++ )
 		{
-			const sf::Drawable& drawable = (*iter);
-			Game::getInstance()->draw(drawable);
+			const sf::Drawable* drawable = (*iter);
+			Game::getInstance()->draw(*drawable);
 		}
 	}
 
 	void RenderLayer::addDrawable( const sf::Drawable& drawable )
 	{
-		push_back(drawable);
+		push_back(&drawable);
 	}
 
 	void RenderLayer::removeDrawable( const sf::Drawable& drawable )
 	{
 		if(!empty())
 		{
-			remove(drawable);
+			remove(&drawable);
 		}
 	}
 

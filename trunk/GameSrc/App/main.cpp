@@ -6,8 +6,8 @@
 
 int main(int argc,char *argv[])
 {
-    Game::GetInstance()->Initialize();
-    Game::GetInstance()->Start();
-	SceneManager::getInstance()->saveProgress();
+	sb::Game::getInstance()->initialize();
+	sb::Game::getInstance()->start();
+	sb::SceneManager::getInstance()->saveProgress();
     return 0;
 }

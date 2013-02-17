@@ -90,9 +90,6 @@
     <ClCompile Include="GameSrc\GUI\PauseMenu.cpp">
       <Filter>GameSrc\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\GUI\Log.cpp">
-      <Filter>GameSrc\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\GUI\MainMenu.cpp">
       <Filter>GameSrc\GUI</Filter>
     </ClCompile>
@@ -192,6 +189,9 @@
     <ClCompile Include="GameSrc\Physics\BodyController.cpp">
       <Filter>GameSrc\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="GameSrc\Event\EventListener.cpp">
+      <Filter>GameSrc\Event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp">
@@ -224,13 +224,7 @@
     <ClInclude Include="GameSrc\Event\GUIEventData.h">
       <Filter>GameSrc\Event</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\Event\SolveEventData.h">
-      <Filter>GameSrc\Event</Filter>
-    </ClInclude>
     <ClInclude Include="GameSrc\Event\AppEventData.hpp">
-      <Filter>GameSrc\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Event\ContactEventData.h">
       <Filter>GameSrc\Event</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Event\EventData.hpp">
@@ -240,9 +234,6 @@
       <Filter>GameSrc\GUI</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\GUI\PauseMenu.hpp">
-      <Filter>GameSrc\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\GUI\Log.hpp">
       <Filter>GameSrc\GUI</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\State\IntroState.hpp">
@@ -303,16 +294,10 @@
     <ClInclude Include="GameSrc\Task\LevelCompleteTask.hpp">
       <Filter>GameSrc\Task</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\Helper\WorldDrawable.hpp">
-      <Filter>GameSrc\Helper</Filter>
-    </ClInclude>
     <ClInclude Include="GameSrc\Helper\Conversion.hpp">
       <Filter>GameSrc\Helper</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Helper\Globals.h">
-      <Filter>GameSrc\Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Helper\Simulatable.hpp">
       <Filter>GameSrc\Helper</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Event\EventListener.hpp">
@@ -354,17 +339,20 @@
     <ClInclude Include="GameSrc\System\SceneManager.hpp">
       <Filter>GameSrc\System</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\Helper\Updateable.hpp">
-      <Filter>GameSrc\Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSrc\Helper\ScreenPositioner.h">
-      <Filter>GameSrc\Helper</Filter>
-    </ClInclude>
     <ClInclude Include="GameSrc\Physics\BodyController.hpp">
       <Filter>GameSrc\Physics</Filter>
     </ClInclude>
     <ClInclude Include="GameSrc\Physics\Simulatable.hpp">
       <Filter>GameSrc\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\ContactEventData.hpp">
+      <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Helper\ScreenTranslator.hpp">
+      <Filter>GameSrc\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Event\SolveEventData.hpp">
+      <Filter>GameSrc\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,62 +1,58 @@
-#include "../Task/TeleportTask.hpp"
+#include "TeleportTask.hpp"
+#include "../Helper/Conversion.hpp"
 #include "../System/ResourceCache.hpp"
+#include "../Entity/PlayerEntity.hpp"
+#include "../Entity/TeleportEntity.hpp"
 #include <algorithm>
 
-TeleportTask::TeleportTask( float taskDuration, PlayerEntity* playerEntity, TeleportEntity* teleportEntity )
-	:	Task(taskDuration),
-		_totalSeconds(taskDuration),
-		_playerEntity(playerEntity),
-		_teleportEntity(teleportEntity),
-		_movementSpeed(0.f,0.f),
-		_teleportSound(nullptr)
+TeleportTask::TeleportTask( sf::Time taskDuration, PlayerEntity* playerEntity, TeleportEntity* teleportEntity )
+	:	sb::Task(taskDuration),
+		m_playerEntity(playerEntity),
+		m_teleportEntity(teleportEntity),
+		m_movementSpeed(0.f,0.f),
+		m_teleportSound(),
+		m_totalTime(taskDuration)
 {
 	{
 		thor::ResourceKey<sf::SoundBuffer> key = thor::Resources::fromFile<sf::SoundBuffer>("Resource/Sounds/teleport.wav");
-		std::shared_ptr<sf::SoundBuffer> buffer = ResourceCache::GetInstance()->acquire<sf::SoundBuffer>(key);
-		_teleportSound = new sf::Sound(*buffer);
+		std::shared_ptr<sf::SoundBuffer> buffer = sb::ResourceCache::getInstance()->acquire<sf::SoundBuffer>(key);
+		m_teleportSound.setBuffer(*buffer);
 	}
 }
 
-void TeleportTask::Start()
+void TeleportTask::start()
 {
-	Task::start();
+	sb::Task::start();
 
-	_movementSpeed = (_teleportEntity->GetPosition() - _playerEntity->GetPosition())/_totalSeconds;
-	_playerEntity->GetBallBody().GetBody()->SetActive(false);
-
-	_teleportSound->play();
+	m_movementSpeed = (m_teleportEntity->getPosition() - m_playerEntity->getPosition())/m_totalTime.asSeconds();
+	m_playerEntity->getBallBody()->SetActive(false);
+	m_teleportSound.play();
 }
 
-bool TeleportTask::DoTask( sf::Time deltaTime )
+bool TeleportTask::doTask( sf::Time deltaTime )
 {
-	if(Task::doTask(deltaTime))
+	if(sb::Task::doTask(deltaTime))
 		return true;
 
-	float scale = std::max<float>(GetTimeRemaining()/_totalSeconds,0.0f);
+	float scale = std::max<float>(getRemainingTime()/m_totalTime.asSeconds(),0.0f);
 
-	_playerEntity->SetScale(Vec2D(scale));
-	_playerEntity->SetPosition(_playerEntity->GetPosition() + _movementSpeed * deltaTime);
+	m_playerEntity->setScale(scale,scale);
+	m_playerEntity->setPosition(m_playerEntity->getPosition() + m_movementSpeed * deltaTime.asSeconds());
 
 	return false;
 }
 
-void TeleportTask::End()
+void TeleportTask::end()
 {
-	Task::end();
+	sb::Task::end();
 
-	Vec2D exitPos = _teleportEntity->GetExitPosition();
-	_playerEntity->SetScale(Vec2D(1.0f));
-	_playerEntity->GetBallBody().GetBody()->SetActive(true);
-	_playerEntity->GetBallBody().GetBody()->SetAngularVelocity(0.0f);
-	_playerEntity->GetBallBody().GetBody()->SetLinearVelocity(b2Vec2(0.0f,0.0f));
-	_playerEntity->GetBallBody().GetBody()->SetTransform(exitPos,_playerEntity->GetBallBody().GetBody()->GetAngle());
-	_playerEntity->GetBallBody().GetBody()->SetAwake(true);
-	_playerEntity->GetBallBody().ResetTransform();
-	_playerEntity->GetBallBody().UpdateTransform();
-	_playerEntity->Fall();
-}
-
-TeleportTask::~TeleportTask()
-{
-	delete _teleportSound;
+	sf::Vector2f exitPos = m_teleportEntity->getExitPosition();
+	m_playerEntity->setScale(1.f,1.f);
+	m_playerEntity->getBallBody()->SetActive(true);
+	m_playerEntity->getBallBody()->SetAngularVelocity(0.0f);
+	m_playerEntity->getBallBody()->SetLinearVelocity(b2Vec2(0.0f,0.0f));
+	m_playerEntity->getBallBody()->SetTransform(ToVector(exitPos),m_playerEntity->getBallBody()->GetAngle());
+	m_playerEntity->getBallBody()->SetAwake(true);
+	m_playerEntity->resetBodyPosition();
+	m_playerEntity->fall();
 }

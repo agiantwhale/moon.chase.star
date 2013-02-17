@@ -1,5 +1,9 @@
-#include "../Entity/MovingPlatformEntity.hpp"
+#include <Thor/Vectors.hpp>
+#include "MovingPlatformEntity.hpp"
+#include "../Helper/Conversion.hpp"
 #include "../System/ResourceCache.hpp"
+#include "../System/GraphicsManager.hpp"
+#include "../Physics/PhysicsManager.hpp"
 
 REGISTER_ENTITY(MovingPlatformEntity,"MovingPlatform")
 
@@ -7,41 +11,42 @@ const float BLOCK_SIZE = 2.0f;
 
 MovingPlatformEntity::MovingPlatformEntity()
 	:	BaseClass(),
-		_platformSprite(this),
-		_platformBody(this),
-		_platformRoute(),
-		_platformRouteIterator(),
-		_travelSpeed(0.0f),
-		_totalTravelTime(0.0f),
-		_currentTravelTime(0.0f)
+		m_platformSprite(),
+		m_platformBody(*this),
+		m_platformScreenTranslator(*this),
+		m_platformRoute(),
+		m_platformRouteIterator(),
+		m_travelSpeed(0.0f),
+		m_moveTimer()
 {
 
 }
 
 MovingPlatformEntity::~MovingPlatformEntity()
 {
-
+	sb::GraphicsManager::getInstance()->removeDrawable(m_platformSprite,2);
 }
 
 void MovingPlatformEntity::update( sf::Time deltaTime )
 {
-	if(_currentTravelTime <= 0.0f)
+	if(m_moveTimer.isExpired())
 	{
-		Vec2D currentDestination = *_platformRouteIterator;
-		Vec2D nextDestination = GetNextPlatformDestination();
-		_currentTravelTime = Magnitude(nextDestination - currentDestination) / _travelSpeed;
-		_platformBody.GetBody()->SetTransform(currentDestination,_platformBody.GetBody()->GetAngle());
-		_platformBody.GetBody()->SetAwake(true);
+		sf::Vector2f currentDestination = *m_platformRouteIterator;
+		sf::Vector2f nextDestination = getNextPlatformDestination();
+		float travelTime = thor::length<float>(nextDestination - currentDestination) / m_travelSpeed;
+		m_moveTimer.restart(sf::seconds(travelTime));
+		m_platformBody.getBody()->SetTransform(ToVector(currentDestination),0.f);
+		m_platformBody.getBody()->SetAwake(true);
 	}
 
-	_currentTravelTime -= deltaTime;
-	Vec2D destination = *(_platformRouteIterator);
-	Vec2D velocity = destination - GetPosition();
-	velocity.Normalize();
-	velocity *= _travelSpeed;
+	sf::Vector2f destination = *(m_platformRouteIterator);
+	sf::Vector2f velocity = thor::unitVector(destination - getPosition()) * m_travelSpeed;
 
-	_platformBody.GetBody()->SetLinearVelocity(velocity);
-	_platformBody.GetBody()->SetAwake(true);
+	m_platformBody.getBody()->SetLinearVelocity(ToVector(velocity));
+	m_platformBody.getBody()->SetAwake(true);
+
+	//Updates the platform sprite position to the appropriate screen position
+	m_platformScreenTranslator.translate(m_platformSprite);
 }
 
 void MovingPlatformEntity::initializeEntity( const TiXmlElement *propertyElement /* = nullptr */ )
@@ -50,23 +55,23 @@ void MovingPlatformEntity::initializeEntity( const TiXmlElement *propertyElement
 
 	{
 		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Block.png");
-		std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);
-		sf::Sprite* blockSprite = new sf::Sprite(*texture);
-		blockSprite->setOrigin(sf::Vector2f(0.5f*BLOCK_SIZE*RATIO,0.5f*BLOCK_SIZE*RATIO));
-		_platformSprite.SetSprite( blockSprite );
-		_platformSprite.RegisterRenderable( 2 );
+		std::shared_ptr<sf::Texture> texture = sb::ResourceCache::getInstance()->acquire<sf::Texture>(key);
+		m_platformSprite.setTexture(*texture);
+		m_platformSprite.setOrigin(sf::Vector2f(BLOCK_SIZE,BLOCK_SIZE) * 0.5f * RATIO);
+
+		sb::GraphicsManager::getInstance()->addDrawable(m_platformSprite,2);
 	}
 
 	{
 		b2BodyDef bodyDefinition;
-		bodyDefinition.userData = (IPhysics*)this;
-		bodyDefinition.position = b2Vec2(GetPosition().x, GetPosition().y);
+		bodyDefinition.userData = (Entity*)this;
+		bodyDefinition.position = ToVector(getPosition());
 		bodyDefinition.angle = 0.0f;
 		bodyDefinition.type = b2_kinematicBody;
 		bodyDefinition.gravityScale = 9.0f;
 		bodyDefinition.fixedRotation = true;
 
-		_platformBody.CreateBody( bodyDefinition );
+		b2Body* platformBody = sb::PhysicsManager::getInstance()->getPhysicsWorld()->CreateBody(&bodyDefinition);
 
 		b2PolygonShape boxShape;
 		boxShape.SetAsBox( 0.5f*BLOCK_SIZE, 0.5f*BLOCK_SIZE );
@@ -77,53 +82,48 @@ void MovingPlatformEntity::initializeEntity( const TiXmlElement *propertyElement
 		fixtureDefinition.friction = 0.5f;
 		fixtureDefinition.restitution = 0.0f;
 
-		_platformBody.CreateFixture( fixtureDefinition, "Block" );
+		platformBody->CreateFixture(&fixtureDefinition);
 
-		_platformBody.ResetTransform();
+		m_platformBody.setBody(platformBody);
 	}
 
 	if(propertyElement)
 	{
 		{
-			propertyElement->QueryFloatAttribute("TravelSpeed",&_travelSpeed);
+			propertyElement->QueryFloatAttribute("TravelSpeed",&m_travelSpeed);
 		}
 
 		{
 			float totalDistance = 0.0f;
-			const TiXmlElement* pathNode = propertyElement->FirstChildElement("node");
-			_platformRoute.push_back(GetPosition());
-			while(pathNode)
+			m_platformRoute.push_back(getPosition());
+			for(const TiXmlElement* pathNode = propertyElement->FirstChildElement("node"); pathNode != nullptr; pathNode = pathNode->NextSiblingElement())
 			{
 				float x = 0.f, y = 0.f;
 				pathNode->QueryFloatAttribute("x",&x);
 				pathNode->QueryFloatAttribute("y",&y);
 
-				Vec2D world((x - SCREENWIDTH/2) * UNRATIO, (y - SCREENHEIGHT/2) * UNRATIO * -1);
+				sf::Vector2f world((x - SCREENWIDTH/2) * UNRATIO, (y - SCREENHEIGHT/2) * UNRATIO * -1);
 
-				totalDistance += Magnitude(world - _platformRoute.back());
+				totalDistance += thor::length<float>(world - m_platformRoute.back());
 
-				_platformRoute.push_back(world);
-
-				pathNode = pathNode->NextSiblingElement();
+				m_platformRoute.push_back(world);
 			}
-
-			_totalTravelTime = totalDistance / _travelSpeed;
 		}
 
 		{
-			_platformRouteIterator = _platformRoute.begin();
+			m_platformRouteIterator = m_platformRoute.begin();
 		}
 	}
 }
 
-const Vec2D& MovingPlatformEntity::GetNextPlatformDestination()
+const sf::Vector2f& MovingPlatformEntity::getNextPlatformDestination()
 {
-	_platformRouteIterator++;
+	m_platformRouteIterator++;
 
-	if(_platformRouteIterator == _platformRoute.end())
+	if(m_platformRouteIterator == m_platformRoute.end())
 	{
-		_platformRouteIterator = _platformRoute.begin();
+		m_platformRouteIterator = m_platformRoute.begin();
 	}
 
-	return *_platformRouteIterator;
+	return *m_platformRouteIterator;
 }

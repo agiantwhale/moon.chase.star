@@ -1,69 +1,67 @@
-#include "../Entity/DeadZoneEntity.hpp"
-#include "../Event/ContactEventData.h"
+#include "DeadZoneEntity.hpp"
+#include "../Physics/PhysicsManager.hpp"
+#include "../Event/ContactEventData.hpp"
 
 REGISTER_ENTITY(DeadZoneEntity,"DeadZone")
 
 DeadZoneEntity::DeadZoneEntity()
 	:	BaseClass(),
-		_zoneBody(this)
+		m_zoneBody(*this)
 {
-
 }
 
 DeadZoneEntity::~DeadZoneEntity()
 {
-
 }
 
 void DeadZoneEntity::initializeEntity( const TiXmlElement *propertyElement /*= nullptr */ )
 {
-	BaseClass::Initialize(propertyElement);
+	BaseClass::initializeEntity(propertyElement);
 
-	SetPosition( GetPosition() + 0.5f * Vec2D(GetScale().x,-GetScale().y) * UNRATIO );
+	setPosition( getPosition() + 0.5f * sf::Vector2f(getScale().x,-getScale().y) * UNRATIO );
 
 	if( propertyElement )
 	{
 		{
 			b2BodyDef bodyDefinition;
-			bodyDefinition.userData = (IPhysics*)this;
-			bodyDefinition.position = b2Vec2(GetPosition().x, GetPosition().y);
+			bodyDefinition.userData = (Entity*)this;
+			bodyDefinition.position = b2Vec2(getPosition().x, getPosition().y);
 			bodyDefinition.angle = 0.0f;
 			bodyDefinition.fixedRotation = true;
 			bodyDefinition.type = b2_staticBody;
 
-			_zoneBody.CreateBody( bodyDefinition );
+			b2Body* zoneBody = sb::PhysicsManager::getInstance()->getPhysicsWorld()->CreateBody(&bodyDefinition);
 
 			b2PolygonShape boxShape;
-			boxShape.SetAsBox( 0.5f * GetScale().x * UNRATIO, 0.5f * GetScale().y * UNRATIO );
+			boxShape.SetAsBox( 0.5f * getScale().x * UNRATIO, 0.5f * getScale().y * UNRATIO );
 
 			b2FixtureDef fixtureDefinition;
 			fixtureDefinition.shape = &boxShape;
 			fixtureDefinition.isSensor = true;
 
-			_zoneBody.CreateFixture( fixtureDefinition, "Trigger" );
+			zoneBody->CreateFixture(&fixtureDefinition);
 
-			_zoneBody.ResetTransform();
+			m_zoneBody.setBody(zoneBody);
 		}
 	}
 }
 
-bool DeadZoneEntity::handleEvent( const EventData& theevent )
+bool DeadZoneEntity::handleEvent( const sb::EventData& theevent )
 {
 	switch (theevent.getEventType())
 	{
 	case Event_BeginContact:
 		{
-			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
-			const b2Contact* contactInfo = contactData.GetContact();
+			const sb::ContactEventData& contactData = static_cast<const sb::ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.getContact();
 
 			const b2Fixture* target = nullptr;
-			if(_zoneBody.IsContactRelated(contactInfo,target))
+			if( m_zoneBody.checkContact(contactInfo,target))
 			{
-				IPhysics *targetInterface = GetPhysicsInterface(target);
-
-				if(targetInterface->GetEntity()->GetEntityType() != 'BALL')
+				Entity* targetEntity = static_cast<Entity*>(target->GetBody()->GetUserData());
+				if( targetEntity->getEntityType() == 'BALL' )
 				{
-					targetInterface->GetEntity()->Release();
+					targetEntity->releaseEntity();
 				}
 			}
 

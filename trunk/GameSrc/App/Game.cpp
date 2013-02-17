@@ -8,8 +8,8 @@
 
 //Managers
 #include "../System/GraphicsManager.hpp"
-#include "../System/PhysicsManager.hpp"
-#include "../System/GUIManager.hpp"
+#include "../Physics/PhysicsManager.hpp"
+#include "../GUI/GUIManager.hpp"
 #include "../System/SceneManager.hpp"
 #include "../system/InputManager.hpp"
 
@@ -71,8 +71,8 @@ namespace sb
 		setVerticalSyncEnabled(gameSettings.vSync);
 
 		GUIManager::getInstance()->setUpGUI();
-		PhysicsManager::GetInstance()->SetUpPhysics();
-		GraphicsManager::getInstance()->SetUpGraphics();
+		PhysicsManager::getInstance()->setUpPhysics();
+		GraphicsManager::getInstance()->setUpGraphics();
 		SceneManager::getInstance()->setUpScene();
 		InputManager::getInstance()->setUpInput();
 
@@ -164,14 +164,14 @@ namespace sb
 					m_currentState->exit();
 				}
 				m_currentState = iter->second;
-				m_currentState->Enter();
+				m_currentState->enter();
 			}
 		}
 	}
 
 	void Game::update(void)
 	{
-		sf::Time deltaTime = m_frameClock.getElapsedTime().asSeconds();
+		sf::Time deltaTime = m_frameClock.getElapsedTime();
 		m_frameClock.restart();
 
 		m_shouldSwitchState = m_currentState->update(deltaTime);

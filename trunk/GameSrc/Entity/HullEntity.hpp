@@ -1,18 +1,17 @@
-#ifndef HULLENTITY_HPP
-#define HULLENTITY_HPP
+#ifndef HullEntity_h__
+#define HullEntity_h__
 
 #include "../Entity/Entity.hpp"
-#include "../Entity/Component/BodyWrapper.hpp"
+#include "../Physics/BodyController.hpp"
 
-class HullEntity : public Entity
+class HullEntity : public sb::Entity
 {
-    DEFINE_ENTITY( HullEntity, Entity, 'HULL')
-
-public:
-    virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
+	DEFINE_ENTITY( HullEntity, sb::Entity, 'HULL')
 
 private:
-    BodyWrapper _hullBody;
+	virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
+
+	sb::BodyController m_hullBody;
 };
 
-#endif
+#endif // HullEntity_h__

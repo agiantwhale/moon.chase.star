@@ -10,12 +10,12 @@
 #include "../Base/Singleton.hpp"
 #include "../Event/EventListener.hpp"
 
-class Tile;
+class PlayerEntity;
+class StarEntity;
 
 namespace sb
 {
-	class PlayerEntity;
-	class StarEntity;
+	class Tile;
 
 	class SceneManager : public Singleton<SceneManager>, private EventListener
 	{

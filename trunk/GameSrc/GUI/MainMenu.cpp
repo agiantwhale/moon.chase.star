@@ -26,49 +26,49 @@ GWEN_CONTROL_CONSTRUCTOR(MainMenuControl)
 	newGameButton->SetText(L"New Game");
 	newGameButton->SetSize(250,100);
 	newGameButton->SetPos(960 + 35,250);
-	newGameButton->onPress.Add(this,&MainMenuControl::OnNewGame);
+	newGameButton->onPress.Add(this,&MainMenuControl::onNewGame);
 
 	Gwen::Controls::Button* continueButton = new Gwen::Controls::Button(this);
 	continueButton->SetText(L"Continue");
 	continueButton->SetSize(250,100);
 	continueButton->SetPos(960 + 35,360);
-	continueButton->onPress.Add(this,&MainMenuControl::OnContinue);
+	continueButton->onPress.Add(this,&MainMenuControl::onContinue);
 
 	Gwen::Controls::Button* creditsButton = new Gwen::Controls::Button(this);
 	creditsButton->SetText(L"Credits");
 	creditsButton->SetSize(250,100);
 	creditsButton->SetPos(960 + 35,470);
 	creditsButton->SetName("Credits");
-	creditsButton->onPress.Add(this,&MainMenuControl::OnCredits);
+	creditsButton->onPress.Add(this,&MainMenuControl::onCredits);
 
 	Gwen::Controls::Button* exitButton = new Gwen::Controls::Button(this);
 	exitButton->SetText(L"End Game");
 	exitButton->SetSize(250,100);
 	exitButton->SetPos(960 + 35,580);
-	exitButton->onPress.Add(this,&MainMenuControl::OnExit);
+	exitButton->onPress.Add(this,&MainMenuControl::onExit);
 }
 
 /*
 	Shouldn't the below functions be refactored?
 */
 
-void MainMenuControl::OnExit( Gwen::Controls::Base* control )
+void MainMenuControl::onExit( Gwen::Controls::Base* control )
 {
-	Game::GetInstance()->Quit();
+	sb::Game::getInstance()->quit();
 }
 
-void MainMenuControl::OnNewGame( Gwen::Controls::Base* control )
+void MainMenuControl::onNewGame( Gwen::Controls::Base* control )
 {
-	EventData* eventData = new NewGameEventData(0);
+	sb::EventData* eventData = new sb::NewGameEventData(0);
 	eventData->triggerEvent();
 }
 
-void MainMenuControl::OnContinue( Gwen::Controls::Base* control )
+void MainMenuControl::onContinue( Gwen::Controls::Base* control )
 {
-	EventData* eventData = new NewGameEventData(SceneManager::getInstance()->getLoadedSceneNumber());
+	sb::EventData* eventData = new sb::NewGameEventData(sb::SceneManager::getInstance()->getLoadedSceneNumber());
 	eventData->triggerEvent();
 }
 
-void MainMenuControl::OnCredits( Gwen::Controls::Base* control )
+void MainMenuControl::onCredits( Gwen::Controls::Base* control )
 {
 }

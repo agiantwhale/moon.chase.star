@@ -1,28 +1,30 @@
-#ifndef TELEPORTTASK_HPP
-#define TELEPORTTASK_HPP
+#ifndef TeleportTask_h__
+#define TeleportTask_h__
 
+#include <SFML/System/Vector2.hpp>
 #include <SFML/Audio.hpp>
-#include "../Base/Vec2D.hpp"
-#include "../Task/Task.hpp"
-#include "../Entity/PlayerEntity.hpp"
-#include "../Entity/TeleportEntity.hpp"
+#include <SFML/System/Time.hpp>
+#include <Thor/Time/Timer.hpp>
+#include "Task.hpp"
 
-class TeleportTask : public Task
+class PlayerEntity;
+class TeleportEntity;
+
+class TeleportTask : public sb::Task
 {
 public:
-	TeleportTask( float taskDuration, PlayerEntity* playerEntity, TeleportEntity* teleportEntity );
-	~TeleportTask();
+	TeleportTask( sf::Time taskDuration, PlayerEntity* playerEntity, TeleportEntity* teleportEntity );
 
-	virtual void Start();
-	virtual bool DoTask(float deltaTIme);
-	virtual void End();
+	virtual void start();
+	virtual bool doTask(sf::Time deltaTIme);
+	virtual void end();
 
 private:
-	float		_totalSeconds;
-	PlayerEntity*	_playerEntity;
-	TeleportEntity* _teleportEntity;
-	Vec2D		_movementSpeed;
-	sf::Sound*	_teleportSound;
+	PlayerEntity*		m_playerEntity;
+	TeleportEntity*		m_teleportEntity;
+	sf::Vector2f		m_movementSpeed;
+	sf::Sound			m_teleportSound;
+	sf::Time			m_totalTime;
 };
 
-#endif
+#endif // TeleportTask_h__

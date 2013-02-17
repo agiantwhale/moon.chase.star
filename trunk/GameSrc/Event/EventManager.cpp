@@ -1,7 +1,7 @@
 #include <CxxTL/tri_logger.hpp>
 #include "../Base/Globals.hpp"
-#include "../Event/EventData.hpp"
-#include "../System/EventManager.hpp"
+#include "EventData.hpp"
+#include "EventManager.hpp"
 
 namespace sb
 {

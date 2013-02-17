@@ -13,7 +13,7 @@ namespace sb
 		void transform( void ) const;
 	};
 
-	class RenderLayer : private std::list<const sf::Drawable&>
+	class RenderLayer : private std::list<const sf::Drawable*>
 	{
 	public:
 		RenderLayer() : m_renderCamera() {}

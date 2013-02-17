@@ -31,7 +31,8 @@ namespace sb
 		virtual void end();
 
 	protected:
-		float getTimeRemaining() const { return m_timeRemaining; }
+		const thor::Timer& getTaskTimer() const { return m_timeRemaining; }
+		float getRemainingTime() const { return m_timeRemaining.getRemainingTime().asSeconds(); }
 
 	private:
 		thor::Timer m_timeRemaining;

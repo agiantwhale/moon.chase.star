@@ -24,6 +24,10 @@ namespace sb
 		{
 			return 'BASE';
 		}
+		static int getEntityIdentifier(void)
+		{
+			return 'BASE';
+		}
 
 		void releaseEntity( void )
 		{
@@ -54,20 +58,28 @@ namespace sb
 		friend class EntityManager;
 		friend class EntityList;
 	};
+
+	template< class T >
+	T* entity_cast( Entity* p )
+	{
+		if ( p && p->getEntityType() == T::getEntityIdentifier() )
+		{
+			return static_cast<T*>(p);
+		}
+
+		return nullptr;	
+	}
 }
 
-#define DEFINE_ENTITY( ThisName, BaseName, EntType )\
-	public:\
-	enum\
-{\
-	kEntity_##ThisName = EntType\
-};\
-	typedef BaseName BaseClass;\
-	typedef ThisName ThisClass;\
-	friend class sb::EntityBuilder<ThisName>;\
-	virtual int getEntityType( void ) const { return EntType; }\
-	protected:\
-	ThisName();\
-	virtual ~ThisName( void );
+#define DEFINE_ENTITY( ThisName, BaseName, EntType )						\
+	public:																	\
+	typedef BaseName BaseClass;												\
+	typedef ThisName ThisClass;												\
+	friend class sb::EntityClassBuilder<ThisName>;							\
+	virtual int getEntityType( void ) const { return EntType; }				\
+	static	int getEntityIdentifier(void) { return EntType; }				\
+	protected:																\
+	ThisName();																\
+	virtual ~ThisName( void );												\
 
 #endif // Entity_h__

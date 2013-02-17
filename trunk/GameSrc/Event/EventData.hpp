@@ -1,6 +1,7 @@
 #ifndef EventData_h__
 #define EventData_h__
 
+#include <SFML/System/Time.hpp>
 #include "EventsDef.h"
 
 namespace sb

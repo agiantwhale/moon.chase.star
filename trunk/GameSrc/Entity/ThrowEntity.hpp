@@ -1,19 +1,20 @@
-#ifndef BLOCKENTITY_HPP
-#define BLOCKENTITY_HPP
+#ifndef ThrowEntity_h__
+#define ThrowEntity_h__
 
-#include "../Entity/Entity.hpp"
-#include "../Entity/Component/BodyWrapper.hpp"
-#include "../Entity/Component/SpriteWrapper.hpp"
+#include <SFML/Graphics.hpp>
+#include "Entity.hpp"
+#include "../Physics/BodyController.hpp"
+#include "../Helper/ScreenTranslator.hpp"
 
-class ThrowEntity : public Entity
+class ThrowEntity : public sb::Entity
 {
-    DEFINE_ENTITY( ThrowEntity, Entity, 'THRW')
+	DEFINE_ENTITY( ThrowEntity, sb::Entity, 'THRW')
 
-public:
-    virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
 private:
-    BodyWrapper _throwBody;
-    SpriteWrapper _throwSprite;
+	virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
+
+	sb::BodyController	m_throwBody;
+	sf::Sprite			m_throwSprite;
 };
 
-#endif
+#endif // ThrowEntity_h__

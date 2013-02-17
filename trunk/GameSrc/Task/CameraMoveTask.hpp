@@ -1,26 +1,26 @@
-#ifndef CAMERAMOVETASK_HPP
-#define CAMERAMOVETASK_HPP
+#ifndef CameraMoveTask_h__
+#define CameraMoveTask_h__
 
-#include "../Base/Vec2D.hpp"
-#include "../Task/Task.hpp"
+#include <SFML/System/Vector2.hpp>
+#include "Task.hpp"
 
 class Camera;
 
-class CameraMoveTask : public Task
+class CameraMoveTask : public sb::Task
 {
 public:
-	CameraMoveTask( const Vec2D& moveDistance, unsigned int renderLayer, float affector );
+	CameraMoveTask( const sf::Vector2f& moveDistance, unsigned int renderLayer, float affector );
 
-	virtual void Start();
-	virtual bool DoTask(sf::Time deltaTime);
-	virtual void End();
+	virtual void start();
+	virtual bool doTask(sf::Time deltaTime);
+	virtual void end();
 
 private:
-	unsigned int _renderLayer;
-	Vec2D _initialPosition;
-	Vec2D _finalDestination;
-	Vec2D _moveSpeed;
-	float _affector;
+	unsigned int m_renderLayer;
+	sf::Vector2f m_initialPosition;
+	sf::Vector2f m_finalDestination;
+	sf::Vector2f m_moveSpeed;
+	float			m_affector;
 };
 
-#endif
+#endif // CameraMoveTask_h__

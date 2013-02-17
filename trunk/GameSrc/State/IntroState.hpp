@@ -1,22 +1,26 @@
-#ifndef INTROSTATE_HPP
-#define INTROSTATE_HPP
+#ifndef IntroState_h__
+#define IntroState_h__
 
 #include <sfTheora.h>
-#include "../Interface/IState.hpp"
+#include "GameState.hpp"
 
-class IntroState : public GameState
+namespace sb
 {
-public:
-    IntroState();
-    virtual ~IntroState();
+	class IntroState : public GameState
+	{
+	public:
+		IntroState();
+		virtual ~IntroState();
 
-    virtual void enter(void);
-    virtual bool update(sf::Time deltaTime);
-    virtual void render(void);
-    virtual void exit(void);
+		virtual void enter(void);
+		virtual bool update(sf::Time deltaTime);
+		virtual void render(void);
+		virtual void exit(void);
 
-private:
-	sftheora::Video _introVideo;
-};
+	private:
+		sftheora::Video m_introVideo;
+	};
+}
 
-#endif
+
+#endif // IntroState_h__

@@ -1,36 +1,41 @@
-#ifndef STARENTITY_HPP
-#define STARENTITY_HPP
+#ifndef StarEntity_h__
+#define StarEntity_h__
 
+#include <SFML/Graphics/Sprite.hpp>
+#include <Thor/Particles.hpp>
+#include <Thor/Particles/Emitter.hpp>
+#include <Thor/Time/StopWatch.hpp>
+#include <Thor/Time/Timer.hpp>
 #include "../Base/Math.hpp"
-#include "../Entity/Entity.hpp"
-#include "../Entity/Component/SpriteWrapper.hpp"
-#include "../Entity/Component/ParticleWrapper.hpp"
-#include "../Entity/Component/BodyWrapper.hpp"
+#include "Entity.hpp"
+#include "../Physics/BodyController.hpp"
+#include "../Helper/ScreenTranslator.hpp"
 
-class StarEntity : public Entity
+class StarEntity : public sb::Entity
 {
-	DEFINE_ENTITY(StarEntity,Entity,'STAR')
+	DEFINE_ENTITY(StarEntity,sb::Entity,'STAR')
 
 public:
 	virtual void update(sf::Time deltaTime);
-	virtual bool handleEvent(const EventData& theevent);
+	virtual bool handleEvent(const sb::EventData& theevent);
 	virtual void initializeEntity( const TiXmlElement *propertyElement /* = nullptr */ );
 
 private:
-	SpriteWrapper _starSprite;
-	ParticleWrapper _starParticle;
-	BodyWrapper		_starBody;
+	sf::Sprite				m_starSprite;
+	thor::ParticleSystem*	m_starParticle;
+	sb::BodyController		m_starBody;
+	sb::ScreenTranslator	m_starTranslator;
 
-	bool	_arrived;
-	float _currentTime;
-	float _totalTravelTime;
-	Vec2D _previousPosition;
-	Vec2D _particleVelocity;
+	bool					m_arrived;
+	float					m_totalTime;
+	thor::Timer				m_arrivalTimer;
+	sf::Vector2f			m_previousPosition;
+	sf::Vector2f			m_particleVelocity;
 
-	Spline _xSpline;
-	Spline _ySpline;
+	sb::Spline m_xSpline;
+	sb::Spline m_ySpline;
 
-	thor::UniversalEmitter::Ptr _emitter;
+	thor::UniversalEmitter::Ptr m_emitter;
 };
 
-#endif
+#endif // StarEntity_h__

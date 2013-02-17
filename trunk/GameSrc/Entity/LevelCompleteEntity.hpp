@@ -1,27 +1,26 @@
-#ifndef LEVELCOMPLETEENTITY_HPP
-#define LEVELCOMPLETEENTITY_HPP
+#ifndef LevelCompleteEntity_h__
+#define LevelCompleteEntity_h__
 
+#include "Entity.hpp"
+#include "../Physics/BodyController.hpp"
 #include "../Base/Math.hpp"
-#include "../Entity/Entity.hpp"
-#include "../Entity/Component/BodyWrapper.hpp"
 
 class PlayerEntity;
 
-class LevelCompleteEntity : public Entity
+class LevelCompleteEntity : public sb::Entity
 {
-	DEFINE_ENTITY(LevelCompleteEntity,Entity,'LVL')
-
-public:
-	virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
-	virtual void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
-	virtual bool handleEvent( const EventData& theevent );
+	DEFINE_ENTITY(LevelCompleteEntity,sb::Entity,'LVLC')
 
 private:
-	typedef std::vector<Vec2D> VectorStack;
-	VectorStack	_endFollowRoute;
+	virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
+	virtual void processContact(const b2Contact* contact, const b2Fixture* contactFixture );
+	virtual bool handleEvent( const sb::EventData& theevent );
 
-	BodyWrapper _triggerBody;
-	bool		_acceptArrival;
+	typedef std::vector<sf::Vector2f> VectorStack;
+	VectorStack	m_endFollowRoute;
+
+	sb::BodyController	m_triggerBody;
+	bool		m_acceptArrival;
 };
 
-#endif
+#endif // LevelCompleteEntity_h__

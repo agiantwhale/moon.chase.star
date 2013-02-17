@@ -1,14 +1,15 @@
-#include "../Entity/LevelCompleteEntity.hpp"
-#include "../Entity/PlayerEntity.hpp"
-#include "../Event/ContactEventData.h"
+#include "LevelCompleteEntity.hpp"
+#include "PlayerEntity.hpp"
+#include "../Physics/PhysicsManager.hpp"
+#include "../Event/ContactEventData.hpp"
 #include "../Task/LevelCompleteTask.hpp"
 
 REGISTER_ENTITY(LevelCompleteEntity,"LevelComplete")
 
 LevelCompleteEntity::LevelCompleteEntity() : BaseClass(),
-											 _triggerBody(this),
-											 _acceptArrival(false),
-											 _endFollowRoute()
+											 m_triggerBody(*this),
+											 m_acceptArrival(false),
+											 m_endFollowRoute()
 {
 	addEventListenType(Event_StarArrived);
 }
@@ -22,78 +23,75 @@ void LevelCompleteEntity::initializeEntity( const TiXmlElement *propertyElement 
 {
 	BaseClass::initializeEntity(propertyElement);
 
-	SetPosition( GetPosition() + 0.5f * Vec2D(GetScale().x,-GetScale().y) * UNRATIO );
+	setPosition( getPosition() + 0.5f * sf::Vector2f(getScale().x,-getScale().y) * UNRATIO );
 
 	if( propertyElement )
 	{
 		{
 			b2BodyDef bodyDefinition;
-			bodyDefinition.userData = (IPhysics*)this;
-			bodyDefinition.position = b2Vec2(GetPosition().x, GetPosition().y);
+			bodyDefinition.userData = (Entity*)this;
+			bodyDefinition.position = b2Vec2(getPosition().x, getPosition().y);
 			bodyDefinition.angle = 0.0f;
 			bodyDefinition.fixedRotation = true;
 			bodyDefinition.type = b2_staticBody;
 
-			_triggerBody.CreateBody( bodyDefinition );
+			b2Body* triggerBody = sb::PhysicsManager::getInstance()->getPhysicsWorld()->CreateBody(&bodyDefinition);
 
 			b2PolygonShape boxShape;
-			boxShape.SetAsBox( 0.5f * GetScale().x * UNRATIO, 0.5f * GetScale().y * UNRATIO );
+			boxShape.SetAsBox( 0.5f * getScale().x * UNRATIO, 0.5f * getScale().y * UNRATIO );
 
 			b2FixtureDef fixtureDefinition;
 			fixtureDefinition.shape = &boxShape;
 			fixtureDefinition.isSensor = true;
 
-			_triggerBody.CreateFixture( fixtureDefinition, "Trigger" );
-
-			_triggerBody.ResetTransform();
+			triggerBody->CreateFixture(&fixtureDefinition);
+			
+			m_triggerBody.setBody(triggerBody);
 		}
 
 		{
 			float totalDistance = 0.0f;
-			const TiXmlElement* pathNode = propertyElement->FirstChildElement("node");
-			//_endFollowRoute.push_back(GetPosition());
-			while(pathNode)
+			for(const TiXmlElement* pathNode = propertyElement->FirstChildElement("node"); pathNode != nullptr; pathNode = pathNode->NextSiblingElement())
 			{
 				float x = 0.f, y = 0.f;
 				pathNode->QueryFloatAttribute("x",&x);
 				pathNode->QueryFloatAttribute("y",&y);
 
-				Vec2D world((x - SCREENWIDTH/2) * UNRATIO, (y - SCREENHEIGHT/2) * UNRATIO * -1);
+				sf::Vector2f world((x - SCREENWIDTH/2) * UNRATIO, (y - SCREENHEIGHT/2) * UNRATIO * -1);
 
-				_endFollowRoute.push_back(world);
-
-				pathNode = pathNode->NextSiblingElement();
+				m_endFollowRoute.push_back(world);
 			}
 		}
 	}
 }
 
-void LevelCompleteEntity::ProcessContact( const b2Contact* contact, const b2Fixture* contactFixture )
+void LevelCompleteEntity::processContact( const b2Contact* contact, const b2Fixture* contactFixture )
 {
-	IPhysics *targetInterface = GetPhysicsInterface(contactFixture);
+	Entity* targetEntity = static_cast<Entity*>(contactFixture->GetBody()->GetUserData());
+	PlayerEntity* playerEntity = sb::entity_cast<PlayerEntity>(targetEntity);
 
-	if(isActive() && _acceptArrival && targetInterface && targetInterface->GetEntity()->GetEntityType() == 'BALL')
+	if(isActive() && m_acceptArrival && playerEntity)
 	{
 		setActive(false);
 
-		LevelCompleteTask* levelCompleteTask = new LevelCompleteTask(static_cast<PlayerEntity*>(targetInterface->GetEntity()),_endFollowRoute);
-		levelCompleteTask->AddTask();
+		LevelCompleteTask* levelCompleteTask = new LevelCompleteTask(sb::entity_cast<PlayerEntity>(targetEntity),m_endFollowRoute);
+		levelCompleteTask->addTask();
 	}
 }
 
-bool LevelCompleteEntity::handleEvent( const EventData& theevent )
+bool LevelCompleteEntity::handleEvent( const sb::EventData& theevent )
 {
 	switch (theevent.getEventType())
 	{
 	case Event_BeginContact:
 		{
-			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
-			const b2Contact* contactInfo = contactData.GetContact();
+			const sb::ContactEventData& contactData = static_cast<const sb::ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.getContact();
 
 			const b2Fixture* target = nullptr;
-			if(_triggerBody.IsContactRelated(contactInfo,target))
+			if(m_triggerBody.checkContact(contactInfo,target))
 			{
-				ProcessContact(contactInfo,target);
+				processContact(contactInfo, target);
 			}
 
 			break;
@@ -101,7 +99,7 @@ bool LevelCompleteEntity::handleEvent( const EventData& theevent )
 
 	case Event_StarArrived:
 		{
-			_acceptArrival = true;
+			m_acceptArrival = true;
 			break;
 		}
 

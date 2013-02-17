@@ -30,31 +30,31 @@ GWEN_CONTROL_CONSTRUCTOR(PauseMenuControl)
 	resumeButton->SetSize(250,100);
 	resumeButton->SetPos(960 + 35,360);
 	resumeButton->SetName("ResumeButton");
-	resumeButton->onPress.Add(this,&PauseMenuControl::OnButtonPressed);
+	resumeButton->onPress.Add(this,&PauseMenuControl::onButtonPressed);
 
 	Gwen::Controls::Button* mainMenuButton = new Gwen::Controls::Button(this);
 	mainMenuButton->SetText(L"To Main Menu");
 	mainMenuButton->SetSize(250,100);
 	mainMenuButton->SetPos(960 + 35,470);
 	mainMenuButton->SetName("MainMenuButton");
-	mainMenuButton->onPress.Add(this,&PauseMenuControl::OnButtonPressed);
+	mainMenuButton->onPress.Add(this,&PauseMenuControl::onButtonPressed);
 
 	Gwen::Controls::Button* exitButton = new Gwen::Controls::Button(this);
 	exitButton->SetText(L"End Game");
 	exitButton->SetSize(250,100);
 	exitButton->SetPos(960 + 35,580);
 	exitButton->SetName("ExitButton");
-	exitButton->onPress.Add(this,&PauseMenuControl::OnExit);
+	exitButton->onPress.Add(this,&PauseMenuControl::onExit);
 }
 
-void PauseMenuControl::OnButtonPressed( Gwen::Controls::Base* control )
+void PauseMenuControl::onButtonPressed( Gwen::Controls::Base* control )
 {
-	EventData* eventData = new GUIEventData(control);
+	sb::EventData* eventData = new sb::GUIEventData(control);
 	eventData->triggerEvent();
 }
 
-void PauseMenuControl::OnExit( Gwen::Controls::Base* control )
+void PauseMenuControl::onExit( Gwen::Controls::Base* control )
 {
-	Game::GetInstance()->Quit();
+	sb::Game::getInstance()->quit();
 }
 

@@ -1,20 +1,24 @@
-#ifndef GUIEVENTDATA_HPP
-#define GUIEVENTDATA_HPP
+#ifndef GUIEventData_h__
+#define GUIEventData_h__
 
 #include <Gwen/Gwen.h>
-#include "../Event/EventData.hpp"
+#include "EventData.hpp"
 
-class GUIEventData : public EventData
+namespace sb
 {
-public:
-	GUIEventData(Gwen::Controls::Base* control) : EventData(Event_GUI), _control(control)
+	class GUIEventData : public EventData
 	{
-	}
+	public:
+		GUIEventData(Gwen::Controls::Base* control) : EventData(Event_GUI), m_control(control)
+		{
+		}
 
-	Gwen::Controls::Base* GetControl() const { return _control; }
+		Gwen::Controls::Base* getControl() const { return m_control; }
 
-private:
-	Gwen::Controls::Base* _control;
-};
+	private:
+		Gwen::Controls::Base* m_control;
+	};
+}
 
-#endif
+
+#endif // GUIEventData_h__

@@ -1,5 +1,5 @@
-#include "../Event/EventData.hpp"
-#include "../System/EventManager.hpp"
+#include "EventData.hpp"
+#include "EventManager.hpp"
 
 namespace sb
 {

@@ -10,8 +10,8 @@ class PauseMenuControl : public Gwen::Controls::Base
 	GWEN_CONTROL(PauseMenuControl,Gwen::Controls::Base);
 
 public:
-	void OnButtonPressed(Gwen::Controls::Base* control);
-	void OnExit(Gwen::Controls::Base* control);
+	void onButtonPressed(Gwen::Controls::Base* control);
+	void onExit(Gwen::Controls::Base* control);
 };
 
 #endif

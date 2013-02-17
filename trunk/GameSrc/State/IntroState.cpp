@@ -3,45 +3,48 @@
 #include "../State/IntroState.hpp"
 #include "../Base/Globals.hpp"
 #include "../App/Game.hpp"
-#include "../System/GUIManager.hpp"
+#include "../GUI/GUIManager.hpp"
 
-IntroState::IntroState()
-	:	_introVideo()
+namespace sb
 {
-}
-
-IntroState::~IntroState()
-{
-}
-
-void IntroState::enter(void)
-{
-	GameState::enter();
-
-    Game::GetInstance()->SetNextStateType(State_MainMenu);
-
-	_introVideo.load("Resource/Videos/Intro.ogv");
-	if( _introVideo.hasError() )
+	IntroState::IntroState()
+		:	m_introVideo()
 	{
-		TRI_LOG_STR("Unable to load intro video file!");
 	}
 
-	_introVideo.play();
-}
+	IntroState::~IntroState()
+	{
+	}
 
-bool IntroState::update( sf::Time deltaTime )
-{
-	_introVideo.update(sf::seconds(deltaTime));
+	void IntroState::enter(void)
+	{
+		GameState::enter();
 
-	return _introVideo.isDone();
-}
+		Game::getInstance()->setNextStateType(State_MainMenu);
 
-void IntroState::render( void )
-{
-	Game::GetInstance()->draw(_introVideo);
-}
+		m_introVideo.load("Resource/Videos/Intro.ogv");
+		if( m_introVideo.hasError() )
+		{
+			TRI_LOG_STR("Unable to load intro video file!");
+		}
 
-void IntroState::exit(void)
-{
-	GameState::exit();
+		m_introVideo.play();
+	}
+
+	bool IntroState::update( sf::Time deltaTime )
+	{
+		m_introVideo.update(deltaTime);
+
+		return m_introVideo.isDone();
+	}
+
+	void IntroState::render( void )
+	{
+		Game::getInstance()->draw(m_introVideo);
+	}
+
+	void IntroState::exit(void)
+	{
+		GameState::exit();
+	}
 }

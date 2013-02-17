@@ -1,26 +1,29 @@
-#ifndef MAINMENUSTATE_HPP
-#define MAINMENUSTATE_HPP
+#ifndef MainMenuState_h__
+#define MainMenuState_h__
 
 #include <SFML/Graphics.hpp>
-#include "../Interface/IState.hpp"
-#include "../Interface/IEventListener.hpp"
+#include "GameState.hpp"
+#include "../Event/EventListener.hpp"
 #include "../GUI/MainMenu.hpp"
 
-class MainMenuState : public GameState, public EventListener
+namespace sb
 {
-public:
-	MainMenuState();
-	virtual ~MainMenuState();
+	class MainMenuState : public sb::GameState, public sb::EventListener
+	{
+	public:
+		MainMenuState();
+		virtual ~MainMenuState();
 
-	virtual bool handleEvent(const EventData& theevent);
-	virtual void enter(void);
-	virtual bool update(sf::Time deltaTime);
-	virtual void render(void);
-	virtual void exit(void);
+		virtual bool handleEvent(const EventData& theevent);
+		virtual void enter(void);
+		virtual bool update(sf::Time deltaTime);
+		virtual void render(void);
+		virtual void exit(void);
 
-private:
-	MainMenuControl* _menuWindow;
-	bool _endState;
-};
+	private:
+		MainMenuControl* m_menuWindow;
+		bool m_endState;
+	};
+}
 
 #endif // MainMenuState_h__

@@ -22,13 +22,13 @@ protected:
     }
     virtual ~Singleton()
     {
-        m_instance = NULL;
+        m_instance = nullptr;
     }
 
 public:
     static T * getInstance()
     {
-        if (m_instance == NULL)
+        if (m_instance == nullptr)
             m_instance = new T;
         return m_instance;
     };
@@ -38,7 +38,7 @@ public:
         if(m_instance)
         {
             delete m_instance;
-            m_instance = NULL;
+            m_instance = nullptr;
         }
     };
 
@@ -46,7 +46,7 @@ private:
     static T * m_instance;
 };
 
-template<typename T> T* Singleton<T>::m_instance = NULL;
+template<typename T> T* Singleton<T>::m_instance = nullptr;
 
 #define DEFINE_SINGLETON( ThisName )\
 	public:\

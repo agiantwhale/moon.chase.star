@@ -20,7 +20,7 @@ namespace sb
 	protected:
 		inline bool isActive(void) const
 		{
-			return _active;
+			return m_active;
 		}
 
 	private:

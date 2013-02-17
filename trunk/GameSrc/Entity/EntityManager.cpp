@@ -1,7 +1,7 @@
 #include <CxxTL/tri_logger.hpp>
 #include "../App/Game.hpp"
-#include "../System/EntityManager.hpp"
-#include "../Entity/Entity.hpp"
+#include "EntityManager.hpp"
+#include "Entity.hpp"
 
 namespace sb
 {
@@ -78,7 +78,7 @@ namespace sb
 	}
 
 	SINGLETON_CONSTRUCTOR( EntityManager ),
-		EventListener("EntityManager"),
+		EventListener(),
 		m_entityList()
 	{
 		addEventListenType(Event_Unload);

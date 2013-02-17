@@ -23,7 +23,8 @@ namespace sb
 	private:
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-		sf::RenderTexture* m_tileTexture;
+		sf::RenderTexture	m_tileTexture;
+		sf::Sprite			m_tileSprite;
 
 		static std::unordered_map<std::string,std::string> _tilesetMap;
 	};

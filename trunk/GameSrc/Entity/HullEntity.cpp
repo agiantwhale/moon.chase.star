@@ -1,56 +1,57 @@
-#include "../Entity/HullEntity.hpp"
-#include <CxxTL/tri_logger.hpp>
+#include "HullEntity.hpp"
+#include "../Physics/PhysicsManager.hpp"
 
-REGISTER_ENTITY( HullEntity, "Hull")
+REGISTER_ENTITY( HullEntity, "Hull" )
 
-HullEntity::HullEntity() : BaseClass(), _hullBody(this)
+HullEntity::HullEntity() : BaseClass(), m_hullBody(*this)
 {
+
 }
 
 HullEntity::~HullEntity()
 {
+
 }
 
-void HullEntity::initializeEntity( const TiXmlElement *propertyElement )
+
+void HullEntity::initializeEntity( const TiXmlElement *propertyElement /* = NULL */ )
 {
-    BaseClass::initializeEntity(propertyElement);
+	assert( propertyElement != nullptr ); //Property element can't be nullptr for hull entity, we MUST read data off from it!
 
-    if( propertyElement )
-    {
-        double sizeX = 0.0f, sizeY = 0.0f;
-        propertyElement->Attribute("w",&sizeX );
-        propertyElement->Attribute("h",&sizeY );
-        const float hullX = sizeX * UNRATIO;
-        const float hullY = sizeY * UNRATIO;
+	BaseClass::initializeEntity(propertyElement);
 
-        SetPosition( GetPosition() + Vec2D(hullX*0.5f,hullY*-0.5f) );
+	if(propertyElement)
+	{
+		double sizeX = 0.0f, sizeY = 0.0f;
+		propertyElement->Attribute("w",&sizeX );
+		propertyElement->Attribute("h",&sizeY );
+		const float hullX = sizeX * UNRATIO;
+		const float hullY = sizeY * UNRATIO;
 
-        {
-            b2BodyDef bodyDefinition;
-            bodyDefinition.userData = (IPhysics*)this;
-            bodyDefinition.position = b2Vec2(GetPosition().x, GetPosition().y);
-            bodyDefinition.angle = 0.0f;
-            bodyDefinition.fixedRotation = true;
-            bodyDefinition.type = b2_staticBody;
+		setPosition( getPosition() + sf::Vector2f( hullX*0.5f,hullY*-0.5f ) );
 
-            _hullBody.CreateBody( bodyDefinition );
+		{
+			b2BodyDef bodyDefinition;
+			bodyDefinition.userData = (Entity*)this;
+			bodyDefinition.position = b2Vec2(getPosition().x, getPosition().y);
+			bodyDefinition.angle = 0.0f;
+			bodyDefinition.fixedRotation = true;
+			bodyDefinition.type = b2_staticBody;
 
-            b2PolygonShape boxShape;
-            boxShape.SetAsBox( 0.5f * hullX, 0.5f * hullY );
+			b2Body* hullBody = sb::PhysicsManager::getInstance()->getPhysicsWorld()->CreateBody(&bodyDefinition);
 
-            b2FixtureDef fixtureDef;
-            fixtureDef.density = 1.0f;
-            fixtureDef.restitution = 0.5f;
-            fixtureDef.friction = 0.0f;
-            fixtureDef.shape = &boxShape;
+			b2PolygonShape boxShape;
+			boxShape.SetAsBox( 0.5f * hullX, 0.5f * hullY );
 
-            _hullBody.CreateFixture( fixtureDef, "Hull" );
+			b2FixtureDef fixtureDef;
+			fixtureDef.density = 1.0f;
+			fixtureDef.restitution = 0.5f;
+			fixtureDef.friction = 0.0f;
+			fixtureDef.shape = &boxShape;
 
-            _hullBody.ResetTransform();
-        }
-    }
-    else
-    {
-        TRI_LOG_STR("Wrong hull entity initialization method.");
-    }
+			hullBody->CreateFixture(&fixtureDef);
+
+			m_hullBody.setBody(hullBody);
+		}
+	}
 }

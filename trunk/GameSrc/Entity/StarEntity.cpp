@@ -1,9 +1,13 @@
 #include <Thor/Graphics.hpp>
 #include <Thor/Animation.hpp>
+#include <Thor/Vectors.hpp>
 #include <Thor/Math.hpp>
+#include "StarEntity.hpp"
+#include "../Helper/Conversion.hpp"
+#include "../Physics/PhysicsManager.hpp"
 #include "../System/ResourceCache.hpp"
 #include "../System/SceneManager.hpp"
-#include "../Entity/StarEntity.hpp"
+#include "../System/GraphicsManager.hpp"
 #include "../Task/Task.hpp"
 #include "../Event/EventData.hpp"
 
@@ -17,63 +21,62 @@ const float ARRIVAL_LIFETIME = 0.1f;
 
 StarEntity::StarEntity()
 	:	BaseClass(),
-		_starSprite(this),
-		_starParticle(this),
-		_starBody(this),
-		_arrived(false),
-		_currentTime(0.f),
-		_totalTravelTime(0.f),
-		_previousPosition(0.f,0.f),
-		_particleVelocity(0.f,0.f),
-		_xSpline(),
-		_ySpline(),
-		_emitter(nullptr)
+		m_starSprite(),
+		m_starParticle(nullptr),
+		m_starTranslator(*this),
+		m_starBody(*this),
+		m_arrived(false),
+		m_totalTime(0.f),
+		m_arrivalTimer(),
+		m_previousPosition(),
+		m_particleVelocity(),
+		m_xSpline(),
+		m_ySpline(),
+		m_emitter(nullptr)
 {
 
 }
 
 StarEntity::~StarEntity()
 {
-
+	sb::GraphicsManager::getInstance()->removeDrawable(*m_starParticle,3);
+	delete m_starParticle;
 }
 
 void StarEntity::update( sf::Time deltaTime )
 {
 	BaseClass::update(deltaTime);
 
-	_currentTime += deltaTime;
-
-	if(_currentTime>=_totalTravelTime)
+	if(m_arrivalTimer.isExpired())
 	{
-		if(!_arrived)
+		if(!m_arrived)
 		{
-			_arrived = true;
-			EventData* eventData = new EventData(Event_StarArrived);
+			m_arrived = true;
+			sb::EventData* eventData = new sb::EventData(Event_StarArrived);
 			eventData->triggerEvent();
 		}
 
-		SetPosition(Vec2D(_xSpline(_totalTravelTime),_ySpline(_totalTravelTime)));
-		_emitter->setParticleLifetime(sf::seconds(ARRIVAL_LIFETIME));
+		setPosition(sf::Vector2f(m_xSpline(m_totalTime),m_ySpline(m_totalTime)));
+		m_emitter->setParticleLifetime(sf::seconds(ARRIVAL_LIFETIME));
 	}
 	else
 	{
-		SetPosition(Vec2D(_xSpline(_currentTime),_ySpline(_currentTime)));
+		float passedTime = m_totalTime - m_arrivalTimer.getRemainingTime().asSeconds();
+		setPosition(sf::Vector2f(m_xSpline(passedTime),m_ySpline(passedTime)));
 
-		Vec2D position = WorldToScreen(GetPosition());
-		Vec2D velocity = (GetPosition() - _previousPosition)/deltaTime;
+		sf::Vector2f position = sb::Translate::Position(getPosition());
+		sf::Vector2f velocity = (getPosition() - m_previousPosition) / deltaTime.asSeconds();
 		velocity *= RATIO;
 		velocity.x *= -1;
 
-		//_emitter->setParticleRotationSpeed(20.f);
-		_emitter->setParticleVelocity(thor::Distributions::deflect(velocity, 20.f) );
-		_emitter->setParticlePosition(position);
-		//_emitter->setParticlePosition(thor::Distributions::circle(position,STAR_RADIUS*RATIO * 0.2));
+		m_emitter->setParticleVelocity(thor::Distributions::deflect(velocity, 20.f) );
+		m_emitter->setParticlePosition(position);
 
-		_previousPosition = GetPosition();
-		_particleVelocity = velocity;
+		m_previousPosition = getPosition();
+		m_particleVelocity = velocity;
 	}
 
-	_starParticle.Update(deltaTime);
+	m_starParticle->update(deltaTime);
 }
 
 void StarEntity::initializeEntity( const TiXmlElement *propertyElement /* = nullptr */ )
@@ -84,13 +87,13 @@ void StarEntity::initializeEntity( const TiXmlElement *propertyElement /* = null
 	{
 		{
 			b2BodyDef bodyDefinition;
-			bodyDefinition.userData = (IPhysics*)this;
-			bodyDefinition.position = b2Vec2(GetPosition().x, GetPosition().y);
+			bodyDefinition.userData = (Entity*)this;
+			bodyDefinition.position = ToVector(getPosition());
 			bodyDefinition.angle = 0.0f;
 			bodyDefinition.fixedRotation = true;
 			bodyDefinition.type = b2_dynamicBody;
 
-			_starBody.CreateBody( bodyDefinition );
+			b2Body* starBody = sb::PhysicsManager::getInstance()->getPhysicsWorld()->CreateBody(&bodyDefinition);
 
 			b2PolygonShape boxShape;
 			boxShape.SetAsBox( 0.5f * UNRATIO, 0.5f * UNRATIO );
@@ -99,49 +102,35 @@ void StarEntity::initializeEntity( const TiXmlElement *propertyElement /* = null
 			fixtureDefinition.shape = &boxShape;
 			fixtureDefinition.isSensor = true;
 
-			_starBody.CreateFixture( fixtureDefinition, "Star" );
+			starBody->CreateFixture(&fixtureDefinition);
 
-			_starBody.ResetTransform();
+			m_starBody.setBody(starBody);
 		}
 
 		{
 			thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Particles/whiteSpark.png");
-			std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);
-			thor::ParticleSystem* particleSystem = new thor::ParticleSystem(texture);
+			std::shared_ptr<sf::Texture> texture = sb::ResourceCache::getInstance()->acquire<sf::Texture>(key);
+			m_starParticle = new thor::ParticleSystem(texture);
 
 			// Create emitter
-			_emitter = thor::UniversalEmitter::create();
-			_emitter->setEmissionRate(EMISSION_RATE);
-			_emitter->setParticleLifetime(sf::seconds(TRAVEL_LIFETIME));
-			_emitter->setParticlePosition(WorldToScreen(GetPosition()));
+			m_emitter = thor::UniversalEmitter::create();
+			m_emitter->setEmissionRate(EMISSION_RATE);
+			m_emitter->setParticleLifetime(sf::seconds(TRAVEL_LIFETIME));
+			m_emitter->setParticlePosition(sb::Translate::Position(getPosition()));
 
-			particleSystem->addEmitter(_emitter);
+			m_starParticle->addEmitter(m_emitter);
 
-			// Build color gradient (green -> teal -> blue)
-			/*
-			thor::ColorGradient gradient = thor::createGradient
-				(sf::Color(255, 255, 255))		(1)
-				(sf::Color(0, 0, 0));
-
-			// Create color and fade in/out animations
-			thor::ColorAnimation colorizer(gradient);
-			*/
 			thor::FadeAnimation fader(0.f, 1.f);
 
-			// Add particle affectors
-			//particleSystem->addAffector( thor::AnimationAffector::create(colorizer) );
-			particleSystem->addAffector( thor::AnimationAffector::create(fader) );
-			particleSystem->addAffector( thor::TorqueAffector::create(100.f) );
-			//particleSystem->addAffector( thor::ForceAffector::create(sf::Vector2f(0.f, 9.8f * RATIO * 0.01f))  );
+			m_starParticle->addAffector( thor::AnimationAffector::create(fader) );
+			m_starParticle->addAffector( thor::TorqueAffector::create(100.f) );
 
-			_starParticle.SetParticleSystem(particleSystem);
-			_starParticle.RegisterRenderable(5);
+			sb::GraphicsManager::getInstance()->addDrawable(*m_starParticle,3);
 		}
 
 		{
-			const TiXmlElement* pathNode = propertyElement->FirstChildElement("node");
-			float previousX = GetPosition().x, previousY = GetPosition().y;
-			while(pathNode)
+			sf::Vector2f previousPos = getPosition();
+			for(const TiXmlElement* pathNode = propertyElement->FirstChildElement("node"); pathNode != nullptr; pathNode = pathNode->NextSiblingElement())
 			{
 				float x = 0.f, y = 0.f;
 				pathNode->QueryFloatAttribute("x",&x);
@@ -150,36 +139,36 @@ void StarEntity::initializeEntity( const TiXmlElement *propertyElement /* = null
 				x = (x - SCREENWIDTH/2) * UNRATIO;
 				y = (y - SCREENHEIGHT/2) * UNRATIO * -1;
 
+				sf::Vector2f currentPos(x,y);
+
 				{
-					_totalTravelTime += Magnitude(Vec2D(x-previousX,y-previousY))/TRAVEL_SPEED;
-					_xSpline.addPoint(_totalTravelTime,x);
-					_ySpline.addPoint(_totalTravelTime,y);
+					m_totalTime += thor::length<float>(currentPos - previousPos)/TRAVEL_SPEED;
+					m_xSpline.addPoint(m_totalTime,x);
+					m_ySpline.addPoint(m_totalTime,y);
 				}
 
-				previousX = x;
-				previousY = y;
-
-				pathNode = pathNode->NextSiblingElement();
+				previousPos = currentPos;
 			}
+			m_arrivalTimer.restart(sf::seconds(m_totalTime));
 		}
 
 		{
-			_previousPosition = GetPosition();
+			m_previousPosition = getPosition();
 		}
 	}
 
-	SceneManager::getInstance()->setStarEntity(this);
+	sb::SceneManager::getInstance()->setStarEntity(this);
 }
 
-bool StarEntity::handleEvent(const EventData& theevent)
+bool StarEntity::handleEvent(const sb::EventData& theevent)
 {
 	switch (theevent.getEventType())
 	{
 	case Event_Simulate:
 		{
-			Vec2D position = GetPosition();
-			_starBody.GetBody()->SetTransform(position,0);
-			_starBody.GetBody()->SetAwake(true);
+			sf::Vector2f position = getPosition();
+			m_starBody.getBody()->SetTransform(ToVector(position),0);
+			m_starBody.getBody()->SetAwake(true);
 			break;
 		}
 

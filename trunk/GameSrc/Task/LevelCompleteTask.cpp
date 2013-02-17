@@ -1,99 +1,78 @@
-#include "../Task/LevelCompleteTask.hpp"
+#include <Thor/Vectors.hpp>
+#include "LevelCompleteTask.hpp"
 #include "../Event/EventData.hpp"
 #include "../Entity/PlayerEntity.hpp"
 #include "../Base/Math.hpp"
 
 const float MOVE_SPEED = 3.0f;
 
-float CalculateTravelTime(const Vec2D& initialPosition, const VectorStack& path)
+sf::Time CalculateTravelTime(const sf::Vector2f& initialPosition, const VectorStack& path)
 {
 	float totalTravelLength = 0.0f;
-	Vec2D previousNode = initialPosition;
+	sf::Vector2f previousNode = initialPosition;
 	for(VectorStack::const_iterator iter = path.begin(); iter != path.end(); iter++)
 	{
-		Vec2D currentNode = (*iter);
-		totalTravelLength += Magnitude(currentNode - previousNode);
+		sf::Vector2f currentNode = (*iter);
+		totalTravelLength += thor::length<float>(currentNode - previousNode);
 		previousNode = currentNode;
 	}
 
-	return totalTravelLength/MOVE_SPEED;
+	return sf::seconds(totalTravelLength/MOVE_SPEED);
 }
 
 LevelCompleteTask::LevelCompleteTask(PlayerEntity* playerEntity, const VectorStack& path)
-	:	Task(CalculateTravelTime(playerEntity->GetPosition(), path)),
-		_playerEntity(playerEntity),
-		_path(path),
-		_totalTime(0.0f),
-		_elapsedTime(0.0f),
-		_xSpline(),
-		_ySpline(),
-		_totalLerpTime(0.0f),
-		_lerpTimer(0.0f),
-		_currentState(kLevelComplete_Spline)
+	:	sb::Task(CalculateTravelTime(playerEntity->getPosition(), path)),
+		m_playerEntity(playerEntity),
+		m_path(path),
+		m_totalTime(0.f),
+		m_xSpline(),
+		m_ySpline(),
+		m_currentState(kLevelComplete_Spline)
 {
 }
 
-void LevelCompleteTask::Start()
+void LevelCompleteTask::start()
 {
-	Task::start();
+	sb::Task::start();
 
-	_playerEntity->GetBallBody().GetBody()->SetActive(false);
+	m_playerEntity->getBallBody()->SetActive(false);
 
 	//_totalLerpTime = Magnitude(_playerEntity->GetPosition() - (*_path.begin())) / MOVE_SPEED;
 	//_lerpTimer = _totalLerpTime;
 
-	_xSpline.addPoint(_totalTime,_playerEntity->GetPosition().x);
-	_ySpline.addPoint(_totalTime,_playerEntity->GetPosition().y);
+	m_xSpline.addPoint(m_totalTime,m_playerEntity->getPosition().x);
+	m_ySpline.addPoint(m_totalTime,m_playerEntity->getPosition().y);
 
-	Vec2D previousNode = _playerEntity->GetPosition();
-	for(VectorStack::const_iterator iter = _path.begin(); iter != _path.end(); iter++)
+	sf::Vector2f previousNode = m_playerEntity->getPosition();
+	for(VectorStack::const_iterator iter = m_path.begin(); iter != m_path.end(); iter++)
 	{
-		Vec2D currentNode = (*iter);
+		sf::Vector2f currentNode = (*iter);
 
 		{
-			_totalTime += Magnitude(currentNode - previousNode)/MOVE_SPEED;
-			_xSpline.addPoint(_totalTime,currentNode.x);
-			_ySpline.addPoint(_totalTime,currentNode.y);
+			m_totalTime += thor::length<float>(currentNode - previousNode)/MOVE_SPEED;
+			m_xSpline.addPoint(m_totalTime,currentNode.x);
+			m_ySpline.addPoint(m_totalTime,currentNode.y);
 		}
 
 		previousNode = currentNode;
 	}
 }
 
-bool LevelCompleteTask::DoTask( sf::Time deltaTime )
+bool LevelCompleteTask::doTask( sf::Time deltaTime )
 {
-	if(Task::doTask(deltaTime))
+	if(sb::Task::doTask(deltaTime))
 		return true;
 
-	switch(_currentState)
+	switch(m_currentState)
 	{
-	case kLevelComplete_Lerp:
-		{
-			if(_lerpTimer > 0.0f)
-			{
-				_lerpTimer -= deltaTime;
-			}
-			else
-			{
-				_currentState = kLevelComplete_Spline;
-				break;
-			}
-
-			_playerEntity->SetPosition(lerp<Vec2D>(_playerEntity->GetPosition(), (*_path.begin()), (1.0f - _lerpTimer/_totalLerpTime) ));
-			break;
-		}
-
 	case kLevelComplete_Spline:
 		{
-			_elapsedTime += deltaTime;
-
-			if(_elapsedTime >= _totalTime)
+			if(getTaskTimer().isExpired())
 			{
-				_currentState = kLevelComplete_Arrived;
-				_elapsedTime = _totalTime;
+				m_currentState = kLevelComplete_Arrived;
 			}
 
-			_playerEntity->SetPosition(Vec2D(_xSpline(_elapsedTime),_ySpline(_elapsedTime)));
+			m_playerEntity->setPosition( m_xSpline(m_totalTime-getRemainingTime()), m_ySpline(m_totalTime-getRemainingTime()) );
 
 			break;
 		}
@@ -108,10 +87,10 @@ bool LevelCompleteTask::DoTask( sf::Time deltaTime )
 	return false;
 }
 
-void LevelCompleteTask::End()
+void LevelCompleteTask::end()
 {
-	Task::end();
+	sb::Task::end();
 
-	EventData* eventData = new EventData(Event_NextLevel);
-	eventData->queueEvent(sf::Seconds(0.5f));
+	sb::EventData* eventData = new sb::EventData(Event_NextLevel);
+	eventData->queueEvent(sf::seconds(0.5f));
 }

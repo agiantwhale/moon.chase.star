@@ -1,85 +1,22 @@
 #include <cmath>
-#include "../Entity/PlayerEntity.hpp"
-#include "../Entity/TeleportEntity.hpp"
-#include "../Entity/StarEntity.hpp"
+#include <Thor/Vectors.hpp>
+#include "../Base/Math.hpp"
+#include "../Helper/Conversion.hpp"
+#include "PlayerEntity.hpp"
+#include "TeleportEntity.hpp"
+#include "ThrowEntity.hpp"
+#include "StarEntity.hpp"
+#include "ZoneEntity.hpp"
 #include "../Task/TeleportTask.hpp"
-#include "../System/PhysicsManager.hpp"
+#include "../Physics/PhysicsManager.hpp"
 #include "../System/ResourceCache.hpp"
-#include "../System/EventManager.hpp"
+#include "../Event/EventManager.hpp"
 #include "../System/InputManager.hpp"
 #include "../System/SceneManager.hpp"
-#include "../Event/ContactEventData.h"
-#include "../Event/SolveEventData.h"
-#include "CxxTL/tri_logger.hpp"
+#include "../System/GraphicsManager.hpp"
+#include "../Event/ContactEventData.hpp"
+#include "../Event/SolveEventData.hpp"
 #include "../Event/AppEventData.hpp"
-
-template <typename T> int sgn(T val)
-{
-    return (T(0) < val) - (val < T(0));
-}
-
-REGISTER_ENTITY( DummyBallEntity, "Dummy")
-
-DummyBallEntity::DummyBallEntity() : Entity(), _ballBody(this), _ballSprite(this)
-{
-
-}
-
-DummyBallEntity::~DummyBallEntity()
-{
-
-}
-
-void DummyBallEntity::initializeEntity( const TiXmlElement *propertyElement )
-{
-	BaseClass::initializeEntity(propertyElement);
-
-	const float BALL_RADIUS = 0.5f;
-
-	{
-		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Ball.png");
-		std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);
-		sf::Sprite* ballSprite = new sf::Sprite(*texture,sf::IntRect(0,0,32,32));
-		ballSprite->setOrigin(sf::Vector2f(BALL_RADIUS*RATIO,BALL_RADIUS*RATIO));
-		_ballSprite.SetSprite( ballSprite );
-		_ballSprite.RegisterRenderable( 2 );
-	}
-
-	//BodyComponent
-	{
-		b2BodyDef bodyDefinition;
-		bodyDefinition.userData = (IPhysics*)this;
-		bodyDefinition.position = b2Vec2(GetPosition().x, GetPosition().y);
-		bodyDefinition.angle = 0.0f;
-		bodyDefinition.fixedRotation = true;
-		bodyDefinition.type = b2_dynamicBody;
-		bodyDefinition.gravityScale = 6.0f;
-		bodyDefinition.bullet = true;
-
-		_ballBody.CreateBody( bodyDefinition );
-
-		b2CircleShape circle;
-		circle.m_radius = BALL_RADIUS;
-
-		b2FixtureDef fixtureDefinition;
-		fixtureDefinition.restitution = 0.7f;
-		fixtureDefinition.friction = 0.1f;
-		fixtureDefinition.density = 1.0f;
-		fixtureDefinition.shape = &circle;
-
-		_ballBody.CreateFixture( fixtureDefinition, "Ball" );
-
-		_ballBody.ResetTransform();
-	}
-}
-
-void DummyBallEntity::update( sf::Time deltaTime )
-{
-	if(GetPosition().y <= -13.0f)
-	{
-		release();
-	}
-}
 
 //PlayerEntity related constants
 const float BALL_RADIUS = 0.5f;
@@ -92,33 +29,31 @@ const float JUMP_SLOPE = 0.25f;
 
 REGISTER_ENTITY( PlayerEntity, "Ball" )
 
-PlayerEntity::PlayerEntity() : Entity(), _ballBody(this), _ballSprite(this),
-    _shouldBounce(false),
-    _playerState(kPlayer_Moving),
-	_bounceSound(nullptr),
-	_throwSound(nullptr),
-	_zoneEntityList()
+PlayerEntity::PlayerEntity() : Entity(), m_ballBody(*this), m_ballSprite(),
+    m_shouldBounce(false),
+    m_playerState(kPlayer_Moving),
+	m_bounceSound(),
+	m_throwSound(),
+	m_zoneEntityList()
 {
 }
 
 PlayerEntity::~PlayerEntity()
 {
-	delete _bounceSound;
-	delete _throwSound;
+	sb::GraphicsManager::getInstance()->removeDrawable(m_ballSprite,2);
 }
 
 void PlayerEntity::update(sf::Time deltaTime)
 {
-	ITransform* starTransform = SceneManager::getInstance()->getStarEntity();
+	sf::Transformable* starTransform = sb::SceneManager::getInstance()->getStarEntity();
 	if(starTransform)
 	{
-		Vec2D deltaDistance = GetPosition() - starTransform->GetPosition();
-		if(Magnitude(deltaDistance) >= 45.0f)
+		sf::Vector2f deltaDistance = getPosition() - starTransform->getPosition();
+		if(thor::length<float>(deltaDistance) >= 45.0f)
 		{
 			setActive(false);
 
-			Kill();
-
+			kill();
 		}
 	}
 }
@@ -130,25 +65,25 @@ void PlayerEntity::initializeEntity( const TiXmlElement *propertyElement )
 
     {
 		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Ball.png");
-		std::shared_ptr<sf::Texture> texture = ResourceCache::GetInstance()->acquire<sf::Texture>(key);
-		sf::Sprite* ballSprite = new sf::Sprite(*texture, sf::IntRect(0,0,32,32));
-        ballSprite->setOrigin(sf::Vector2f(BALL_RADIUS*RATIO,BALL_RADIUS*RATIO));
-        _ballSprite.SetSprite( ballSprite );
-        _ballSprite.RegisterRenderable( 2 );
+		std::shared_ptr<sf::Texture> texture = sb::ResourceCache::getInstance()->acquire<sf::Texture>(key);
+		m_ballSprite.setTexture(*texture);
+		m_ballSprite.setTextureRect(sf::IntRect(0,0,32,32));
+
+		sb::GraphicsManager::getInstance()->addDrawable(m_ballSprite,2);
     }
 
     //BodyComponent
     {
         b2BodyDef bodyDefinition;
-        bodyDefinition.userData = (IPhysics*)this;
-        bodyDefinition.position = b2Vec2(GetPosition().x, GetPosition().y);
+        bodyDefinition.userData = (Entity*)this;
+        bodyDefinition.position = ToVector(getPosition());
         bodyDefinition.angle = 0.0f;
         bodyDefinition.fixedRotation = true;
         bodyDefinition.type = b2_dynamicBody;
         bodyDefinition.gravityScale = 6.0f;
         bodyDefinition.bullet = true;
 
-        _ballBody.CreateBody( bodyDefinition );
+		b2Body* ballBody = sb::PhysicsManager::getInstance()->getPhysicsWorld()->CreateBody(&bodyDefinition);
 
         b2CircleShape circle;
         circle.m_radius = BALL_RADIUS;
@@ -158,41 +93,41 @@ void PlayerEntity::initializeEntity( const TiXmlElement *propertyElement )
 		fixtureDefinition.restitution = 0.5f;
         fixtureDefinition.shape = &circle;
 
-        _ballBody.CreateFixture( fixtureDefinition, "Ball" );
+       ballBody->CreateFixture(&fixtureDefinition);
 
-        _ballBody.ResetTransform();
+	   m_ballBody.setBody(ballBody);
     }
 
 	{
 		thor::ResourceKey<sf::SoundBuffer> key = thor::Resources::fromFile<sf::SoundBuffer>("Resource/Sounds/jump.wav");
-		std::shared_ptr<sf::SoundBuffer> buffer = ResourceCache::GetInstance()->acquire<sf::SoundBuffer>(key);
-		_bounceSound = new sf::Sound(*buffer);
-		_bounceSound->setVolume(10.f);
+		std::shared_ptr<sf::SoundBuffer> buffer = sb::ResourceCache::getInstance()->acquire<sf::SoundBuffer>(key);
+		m_bounceSound.setBuffer(*buffer);
+		m_bounceSound.setVolume(10.f);
 	}
 
 	{
 		thor::ResourceKey<sf::SoundBuffer> key = thor::Resources::fromFile<sf::SoundBuffer>("Resource/Sounds/throw.wav");
-		std::shared_ptr<sf::SoundBuffer> buffer = ResourceCache::GetInstance()->acquire<sf::SoundBuffer>(key);
-		_throwSound = new sf::Sound(*buffer);
-		_throwSound->setVolume(30.f);
+		std::shared_ptr<sf::SoundBuffer> buffer = sb::ResourceCache::getInstance()->acquire<sf::SoundBuffer>(key);
+		m_throwSound.setBuffer(*buffer);
+		m_throwSound.setVolume(50.f);
 	}
 
-	SceneManager::getInstance().setPlayerEntity(this);
+	sb::SceneManager::getInstance()->setPlayerEntity(this);
 }
 
-bool PlayerEntity::handleEvent(const EventData& theevent)
+bool PlayerEntity::handleEvent(const sb::EventData& theevent)
 {
     switch (theevent.getEventType())
     {
     case Event_BeginContact:
 		{
-			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
-			const b2Contact* contactInfo = contactData.GetContact();
+			const sb::ContactEventData& contactData = static_cast<const sb::ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.getContact();
 
 			const b2Fixture* target = nullptr;
-			if(_ballBody.IsContactRelated(contactInfo,target))
+			if(m_ballBody.checkContact(contactInfo,target))
 			{
-				ProcessContact(contactInfo,target);
+				processContact(contactInfo,target);
 			}
 
 			break;
@@ -200,16 +135,18 @@ bool PlayerEntity::handleEvent(const EventData& theevent)
 
 	case Event_EndContact:
 		{
-			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
-			const b2Contact* contactInfo = contactData.GetContact();
+			const sb::ContactEventData& contactData = static_cast<const sb::ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.getContact();
 
 			const b2Fixture* target = nullptr;
-			if(_ballBody.IsContactRelated(contactInfo,target))
+			if( m_ballBody.checkContact(contactInfo,target))
 			{
-				IPhysics* targetInterface = GetPhysicsInterface(target);
-				if(targetInterface->GetEntity()->GetEntityType() == 'ZONE')
+				sb::Entity* entity = static_cast<sb::Entity*>(target->GetBody()->GetUserData());
+				ZoneEntity* zoneEntity = sb::entity_cast<ZoneEntity>(entity);
+
+				if(zoneEntity)
 				{
-					_zoneEntityList.remove(static_cast<ZoneEntity*>(targetInterface->GetEntity()));
+					m_zoneEntityList.remove(zoneEntity);
 				}
 			}
 
@@ -218,21 +155,21 @@ bool PlayerEntity::handleEvent(const EventData& theevent)
 
     case Event_Simulate:
 		{
-			UpdatePlayerState();
+			updatePlayerState();
 			break;
 		}
 
 	case Event_PreSolve:
 		{
-			const PreSolveEventData& eventData = static_cast<const PreSolveEventData&>(theevent);
+			const sb::PreSolveEventData& eventData = static_cast<const sb::PreSolveEventData&>(theevent);
 			b2Contact* contactInfo = eventData.GetContact();
 
 			const b2Fixture* target = nullptr;
-			if(_ballBody.IsContactRelated(contactInfo,target))
+			if(m_ballBody.checkContact(contactInfo,target))
 			{
-				ProcessPreSolve(contactInfo,target);
+				processPreSolve(contactInfo,target);
 			}
-
+			
 			break;
 		}
 
@@ -243,7 +180,7 @@ bool PlayerEntity::handleEvent(const EventData& theevent)
     return false;
 }
 
-void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture )
+void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* contactFixture )
 {
     b2WorldManifold manifold;
     contact->GetWorldManifold(&manifold);
@@ -251,79 +188,79 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
     b2Vec2 normal = manifold.normal;
     float slope = std::abs(normal.y/normal.x);
 
-    IPhysics *targetInterface = GetPhysicsInterface(contactFixture);
+    sb::Entity* entity = static_cast<sb::Entity*>(contactFixture->GetBody()->GetUserData());
 
-    if(targetInterface)
+    if(entity)
     {
-        switch(targetInterface->GetEntity()->GetEntityType())
+        switch(entity->getEntityType())
         {
         case 'THRW':
         {
-			_shouldBounce = false;
+			m_shouldBounce = false;
 
-            if( (slope < JUMP_SLOPE || _ballBody.GetBody()->GetPosition().y < targetInterface->GetEntity()->GetPosition().y ) && _playerState == kPlayer_Thrown )
+            if( (slope < JUMP_SLOPE || getPosition().y < entity->getPosition().y ) && m_playerState == kPlayer_Thrown )
             {
-                Fall();
+                fall();
             }
             break;
         }
 
         case 'HULL':
         {
-            if( _playerState == kPlayer_Thrown )
+            if( m_playerState == kPlayer_Thrown )
             {
-                Fall();
+                fall();
             }
-            else if( slope >= JUMP_SLOPE && (GetPosition().y > targetInterface->GetEntity()->GetPosition().y) )
+            else if( slope >= JUMP_SLOPE && (getPosition().y > entity->getPosition().y) )
             {
-                _shouldBounce = true;
+                m_shouldBounce = true;
             }
             break;
         }
 
 		case 'BLCK':
 			{
-				if( _playerState == kPlayer_Thrown )
+				if( m_playerState == kPlayer_Thrown )
 				{
-					Fall();
+					fall();
 				}
 				else if( slope >= JUMP_SLOPE )
 				{
-					_shouldBounce = true;
+					m_shouldBounce = true;
 				}
 				break;
 			}
 
 		case 'MVPT':
 			{
-				if( _playerState == kPlayer_Thrown )
+				if( m_playerState == kPlayer_Thrown )
 				{
-					Fall();
+					fall();
 				}
 				else if( slope >= JUMP_SLOPE )
 				{
-					_shouldBounce = true;
+					m_shouldBounce = true;
 				}
 				break;
 			}
 
 		case 'TLPT':
 			{
-				if( _playerState == kPlayer_Thrown )
+				if( m_playerState == kPlayer_Thrown )
 				{
-					Fall();
+					fall();
 				}
 
-				if(_playerState != kPlayer_Teleport)
+				if(m_playerState != kPlayer_Teleport)
 				{
-					_playerState = kPlayer_Teleport;
+					m_playerState = kPlayer_Teleport;
 
-					TeleportEntity* tlptEntity = static_cast<TeleportEntity*>(targetInterface->GetEntity());
-					TeleportTask* tlptTask = new TeleportTask(1.0f, this, tlptEntity);
-					tlptTask->AddTask();
+					TeleportEntity* tlptEntity = sb::entity_cast<TeleportEntity>(entity);
+					TeleportTask* tlptTask = new TeleportTask(sf::seconds(1.f), this, tlptEntity);
+					tlptTask->addTask();
 				}
 
-				InputManager::getInstance()->feedOutput(0.6f,0.6f);
+				sb::InputManager::getInstance()->feedOutput(0.6f,sf::seconds(.6f));
 
 				break;
 			}
@@ -331,20 +268,20 @@ void PlayerEntity::ProcessContact(const b2Contact* contact, const b2Fixture* con
 		case 'ZONE':
 			{
 				//implement sort of an interface to keep track of which zone the player entity is in.
-				_zoneEntityList.push_back(static_cast<ZoneEntity*>(targetInterface->GetEntity()));
+				m_zoneEntityList.push_back(sb::entity_cast<ZoneEntity>(entity));
 				break;
 			}
 
         default:
         {
-            _shouldBounce = false;
+            m_shouldBounce = false;
             break;
         }
         }
     }
 }
 
-void PlayerEntity::ProcessPreSolve( b2Contact* contact,const b2Fixture* target )
+void PlayerEntity::processPreSolve( b2Contact* contact,const b2Fixture* target )
 {
 	const float THROW_VELOCITY = 40.0f;
 
@@ -354,150 +291,150 @@ void PlayerEntity::ProcessPreSolve( b2Contact* contact,const b2Fixture* target )
 	b2Vec2 normal = manifold.normal;
 	float slope = std::abs(normal.y/normal.x);
 
-	IPhysics *physicsInterface = GetPhysicsInterface(target);
+	sb::Entity* entity = static_cast<sb::Entity*>(target->GetBody()->GetUserData());
+	ThrowEntity* throwEntity = sb::entity_cast<ThrowEntity>(entity);
 
-	if(physicsInterface && physicsInterface->GetEntity()->GetEntityType() == 'THRW'
+	if( throwEntity
 		&& slope >= JUMP_SLOPE
-		&& target->GetBody()->GetPosition().y < _ballBody.GetBody()->GetPosition().y
-		&& _playerState == kPlayer_Moving )
+		&& throwEntity->getPosition().y < getPosition().y
+		&& m_playerState == kPlayer_Moving )
 	{
-		_shouldBounce = false;
+		m_shouldBounce = false;
 		//contact->SetEnabled(false);
-		b2Vec2 unit = target->GetBody()->GetWorldVector(b2Vec2(0,1.0f));
-		unit *= THROW_VELOCITY;
-		Throw(unit);
+		sf::Vector2f throwVelocity = ToVector(target->GetBody()->GetWorldVector(b2Vec2(0,1.0f))) * THROW_VELOCITY;
+		shoot(throwVelocity);
 	}
 }
 
-void PlayerEntity::Control( void )
+void PlayerEntity::control( void )
 {
-	const bool  leftInput = InputManager::getInstance()->getLeftInput(),
-				rightInput = InputManager::getInstance()->getRightInput();
+	const bool  leftInput = sb::InputManager::getInstance()->getLeftInput(),
+				rightInput = sb::InputManager::getInstance()->getRightInput();
 
 	/*
 	const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
 				rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
 				*/
 
-	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
-	b2Vec2 ballPosition = _ballBody.GetBody()->GetPosition();
+	b2Vec2 ballVelocity = m_ballBody.getBody()->GetLinearVelocity();
+	b2Vec2 ballPosition = m_ballBody.getBody()->GetPosition();
 
 	if( leftInput && ballVelocity.x > -MAX_HORI_VELOCITY )
 	{
-		_ballBody.GetBody()->ApplyLinearImpulse( b2Vec2( -MOVE_IMPULSE, 0 ), ballPosition );
+		m_ballBody.getBody()->ApplyLinearImpulse( b2Vec2( -MOVE_IMPULSE, 0 ), ballPosition );
 	}
 
 	if( rightInput && ballVelocity.x < MAX_HORI_VELOCITY )
 	{
-		_ballBody.GetBody()->ApplyLinearImpulse( b2Vec2( MOVE_IMPULSE, 0 ), ballPosition );
+		m_ballBody.getBody()->ApplyLinearImpulse( b2Vec2( MOVE_IMPULSE, 0 ), ballPosition );
 	}
 }
 
-void PlayerEntity::Fall( void )
+void PlayerEntity::fall( void )
 {
-	_playerState = kPlayer_Moving;
-	_ballBody.GetBody()->SetGravityScale(6.0f);
+	m_playerState = kPlayer_Moving;
+	m_ballBody.getBody()->SetGravityScale(6.0f);
 
-	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
+	b2Vec2 ballVelocity = m_ballBody.getBody()->GetLinearVelocity();
 	if( ballVelocity.y > MAX_VERTI_VELOCITY )
 	{
 		ballVelocity.y = MAX_VERTI_VELOCITY;
-		_ballBody.GetBody()->SetLinearVelocity( ballVelocity );
+		m_ballBody.getBody()->SetLinearVelocity( ballVelocity );
 	}
 }
 
-void PlayerEntity::Throw( const b2Vec2& velocity )
+void PlayerEntity::shoot( const sf::Vector2f& velocity )
 {
-	_playerState = kPlayer_Thrown;
-	_ballBody.GetBody()->SetGravityScale(0.0f);
-	_ballBody.GetBody()->SetLinearVelocity(velocity);
+	m_playerState = kPlayer_Thrown;
+	m_ballBody.getBody()->SetGravityScale(0.0f);
+	m_ballBody.getBody()->SetLinearVelocity(ToVector(velocity));
 
-	LimitHorizontalVelocity();
+	limitHorizontalVelocity();
 
-	_throwSound->play();
+	m_throwSound.play();
 
-	InputManager::getInstance()->feedOutput(0.5f, 0.2f);
+	sb::InputManager::getInstance()->feedOutput(0.5f, sf::seconds(0.2f));
 }
 
-void PlayerEntity::LimitHorizontalVelocity()
+void PlayerEntity::limitHorizontalVelocity()
 {
-	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
+	b2Vec2 ballVelocity = m_ballBody.getBody()->GetLinearVelocity();
 
 	if( std::abs( ballVelocity.x ) > MAX_HORI_VELOCITY )
 	{
-		ballVelocity.x = sgn<float>(ballVelocity.x) * MAX_HORI_VELOCITY;
-		_ballBody.GetBody()->SetLinearVelocity( ballVelocity );
+		ballVelocity.x = sb::signum<float>(ballVelocity.x) * MAX_HORI_VELOCITY;
+		m_ballBody.getBody()->SetLinearVelocity( ballVelocity );
 	}
 }
 
-void PlayerEntity::LimitVerticalVelocity()
+void PlayerEntity::limitVerticalVelocity()
 {
-	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
+	b2Vec2 ballVelocity = m_ballBody.getBody()->GetLinearVelocity();
 
 	//Should this only limit when the velocity is bigger than MAX_VERTI_VELOCITY when going up?
 	if( std::abs( ballVelocity.y ) > MAX_VERTI_VELOCITY )
 	{
-		ballVelocity.y = sgn<float>(ballVelocity.y) * MAX_VERTI_VELOCITY;
-		_ballBody.GetBody()->SetLinearVelocity( ballVelocity );
+		ballVelocity.y = sb::signum<float>(ballVelocity.y) * MAX_VERTI_VELOCITY;
+		m_ballBody.getBody()->SetLinearVelocity( ballVelocity );
 	}
 }
 
-void PlayerEntity::Bounce( void )
+void PlayerEntity::bounce( void )
 {
-	_shouldBounce = false;
+	m_shouldBounce = false;
 
-	b2Vec2 ballVelocity = _ballBody.GetBody()->GetLinearVelocity();
-	b2Vec2 ballPosition = _ballBody.GetBody()->GetPosition();
+	b2Vec2 ballVelocity = m_ballBody.getBody()->GetLinearVelocity();
+	b2Vec2 ballPosition = m_ballBody.getBody()->GetPosition();
 
-	_ballBody.GetBody()->SetLinearVelocity( b2Vec2(ballVelocity.x, 0) );
-	_ballBody.GetBody()->SetTransform(ballPosition + b2Vec2(0,0.1f), _ballBody.GetBody()->GetAngle());
-	_ballBody.GetBody()->ApplyLinearImpulse(b2Vec2(0,JUMP_IMPULSE), _ballBody.GetBody()->GetPosition());
+	m_ballBody.getBody()->SetLinearVelocity( b2Vec2(ballVelocity.x, 0) );
+	m_ballBody.getBody()->SetTransform(ballPosition + b2Vec2(0,0.1f), m_ballBody.getBody()->GetAngle());
+	m_ballBody.getBody()->ApplyLinearImpulse(b2Vec2(0,JUMP_IMPULSE), m_ballBody.getBody()->GetPosition());
 
-	_bounceSound->play();
+	m_bounceSound.play();
 
-	InputManager::getInstance()->feedOutput(0.3f, 0.15f);
+	sb::InputManager::getInstance()->feedOutput(0.3f, sf::seconds(0.15f));
 }
 
-void PlayerEntity::UpdatePlayerState( void )
+void PlayerEntity::updatePlayerState( void )
 {
-	switch(_playerState)
+	switch(m_playerState)
 	{
 	case kPlayer_Moving:
 		{
-			Control();
+			control();
 
-			if(_shouldBounce)
+			if(m_shouldBounce)
 			{
-				Bounce();
+				bounce();
 			}
 
-			LimitHorizontalVelocity();
+			limitHorizontalVelocity();
 
 			break;
 		}
 
 	case kPlayer_Thrown:
 		{
-			if( InputManager::getInstance()->getDownInput() /* sf::Keyboard::isKeyPressed(sf::Keyboard::Down) */ )
+			if( sb::InputManager::getInstance()->getDownInput() /* sf::Keyboard::isKeyPressed(sf::Keyboard::Down) */ )
 			{
-				Fall();
+				fall();
 			}
 			else
 			{
-				LimitVerticalVelocity();
+				limitVerticalVelocity();
 			}
 
-			LimitHorizontalVelocity();
+			limitHorizontalVelocity();
 
 			break;
 		}
 	}
 }
 
-void PlayerEntity::Kill()
+void PlayerEntity::kill()
 {
 	sb::EventManager::getInstance()->abortEvent(Event_NextLevel,true);
 
-	EventData* eventData = new EventData( Event_RestartLevel );
+	sb::EventData* eventData = new sb::EventData( Event_RestartLevel );
 	eventData->queueEvent(sf::seconds(0.5f));
 }

@@ -1,16 +1,20 @@
-#include "../Entity/ZoneEntity.hpp"
+#include "ZoneEntity.hpp"
+#include "PlayerEntity.hpp"
+#include "../Helper/Conversion.hpp"
 #include "../Base/Math.hpp"
-#include "../Event/ContactEventData.h"
+#include "../Event/ContactEventData.hpp"
 #include "../Task/CameraMoveTask.hpp"
+#include "../Physics/PhysicsManager.hpp"
 #include "../System/GraphicsManager.hpp"
+#include "../System/RenderLayer.hpp"
 #include "../System/SceneManager.hpp"
 
-std::list<Task*> ZoneEntity::_taskList;
+std::list<sb::Task*> ZoneEntity::m_taskList;
 
 ZoneEntity::ZoneEntity()
 	:	BaseClass(),
-		_zoneBody(this),
-		_containsBall(false)
+		m_zoneBody(*this),
+		m_containsBall(false)
 {
 }
 
@@ -24,13 +28,13 @@ void ZoneEntity::initializeEntity( const TiXmlElement *propertyElement /*= NULL 
 
 	{
 		b2BodyDef bodyDefinition;
-		bodyDefinition.userData = (IPhysics*)this;
-		bodyDefinition.position = b2Vec2(GetPosition().x, GetPosition().y);
+		bodyDefinition.userData = (Entity*)this;
+		bodyDefinition.position = ToVector(getPosition());
 		bodyDefinition.angle = 0.0f;
 		bodyDefinition.fixedRotation = true;
 		bodyDefinition.type = b2_staticBody;
 
-		_zoneBody.CreateBody( bodyDefinition );
+		b2Body* zoneBody = sb::PhysicsManager::getInstance()->getPhysicsWorld()->CreateBody(&bodyDefinition);
 
 		b2PolygonShape boxShape;
 		boxShape.SetAsBox( 0.5f * SCREENWIDTH * UNRATIO, 0.5f * SCREENHEIGHT * UNRATIO );
@@ -39,59 +43,60 @@ void ZoneEntity::initializeEntity( const TiXmlElement *propertyElement /*= NULL 
 		fixtureDef.isSensor = true;
 		fixtureDef.shape = &boxShape;
 
-		_zoneBody.CreateFixture( fixtureDef, "Zone" );
+		zoneBody->CreateFixture(&fixtureDef);
 
-		_zoneBody.ResetTransform();
+		m_zoneBody.setBody(zoneBody);
 	}
 }
 
 void ZoneEntity::postLoad()
 {
-	ITransform* moonTransform = SceneManager::getInstance()->FindTransform("Player");
+	sf::Vector2f moonPos = sb::SceneManager::getInstance()->getPlayerEntity()->getPosition();
 
-	Vec2D moonPos = moonTransform->GetPosition();
-	if(_zoneBody.LookUpFixture("Zone")->TestPoint(moonPos))
+	if(m_zoneBody.getBody()->GetFixtureList()->TestPoint(ToVector(moonPos)))
 	{
-		for(unsigned int i = 0; i < GraphicsManager::getInstance()->GetRenderLayerStackSize(); i++ )
+		for(unsigned int i = 0; i < sb::GraphicsManager::getInstance()->getRenderLayerStackSize(); i++ )
 		{
-			GraphicsManager::getInstance()->GetRenderLayer(i)->GetCamera().SetPosition(GetPosition());
+			sb::GraphicsManager::getInstance()->getRenderLayer(i)->getCamera().setPosition(getPosition());
 		}
 	}
 }
 
-bool ZoneEntity::handleEvent( const EventData& theevent )
+bool ZoneEntity::handleEvent( const sb::EventData& theevent )
 {
 	switch (theevent.getEventType())
 	{
 	case Event_BeginContact:
 		{
-			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
-			const b2Contact* contactInfo = contactData.GetContact();
+			const sb::ContactEventData& contactData = static_cast<const sb::ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.getContact();
 
 			const b2Fixture* target = nullptr;
-			if(_zoneBody.IsContactRelated(contactInfo,target))
+
+			if(m_zoneBody.checkContact(contactInfo,target))
 			{
-				IPhysics *targetInterface = GetPhysicsInterface(target);
+				sb::Entity* entity = static_cast<sb::Entity*>(target->GetBody()->GetUserData());
+				PlayerEntity* playerEntity = sb::entity_cast<PlayerEntity>(entity);
 
-				if(targetInterface->GetEntity()->GetEntityType() == 'BALL')
+				if(playerEntity)
 				{
-					_containsBall = true;
+					m_containsBall = true;
 
-					for(std::list<Task*>::iterator iter = _taskList.begin(); iter != _taskList.end(); iter++ )
+					for(std::list<sb::Task*>::iterator iter = m_taskList.begin(); iter != m_taskList.end(); iter++ )
 					{
-						Task* moveTask = (*iter);
-						moveTask->RemoveTask();
+						sb::Task* moveTask = (*iter);
+						moveTask->removeTask();
 						delete moveTask;
 					}
-					_taskList.clear();
+					m_taskList.clear();
 
-					for(unsigned int i = 0; i < GraphicsManager::getInstance()->GetRenderLayerStackSize(); i++ )
+					for(unsigned int i = 0; i < sb::GraphicsManager::getInstance()->getRenderLayerStackSize(); i++ )
 					{
-						Vec2D deltaDistance = (GetPosition()-GraphicsManager::getInstance()->GetRenderLayer(i)->GetCamera().GetPosition());
+						sf::Vector2f deltaDistance = (getPosition()-sb::GraphicsManager::getInstance()->getRenderLayer(i)->getCamera().getPosition());
 						float affector = 1.0f;
 
-						deltaDistance.x = signum<float>(deltaDistance.x) * SCREENWIDTH * UNRATIO;
-						deltaDistance.y = signum<float>(deltaDistance.y) * SCREENHEIGHT * UNRATIO;
+						deltaDistance.x = sb::signum<float>(deltaDistance.x) * SCREENWIDTH * UNRATIO;
+						deltaDistance.y = sb::signum<float>(deltaDistance.y) * SCREENHEIGHT * UNRATIO;
 
 						if(i==0)
 						{
@@ -99,8 +104,8 @@ bool ZoneEntity::handleEvent( const EventData& theevent )
 						}
 
 						CameraMoveTask* cameraTask = new CameraMoveTask(deltaDistance * affector,i,affector);
-						cameraTask->AddTask();
-						_taskList.push_back(cameraTask);
+						cameraTask->addTask();
+						m_taskList.push_back(cameraTask);
 					}
 				}
 			}
@@ -110,21 +115,22 @@ bool ZoneEntity::handleEvent( const EventData& theevent )
 
 	case Event_EndContact:
 		{
-			const ContactEventData& contactData = static_cast<const ContactEventData&>(theevent);
-			const b2Contact* contactInfo = contactData.GetContact();
+			const sb::ContactEventData& contactData = static_cast<const sb::ContactEventData&>(theevent);
+			const b2Contact* contactInfo = contactData.getContact();
 
 			const b2Fixture* target = nullptr;
-			if(_zoneBody.IsContactRelated(contactInfo,target))
+			if(m_zoneBody.checkContact(contactInfo,target))
 			{
-				IPhysics *targetInterface = GetPhysicsInterface(target);
+				sb::Entity* entity = sb::getOwnerEntity(target);
+				PlayerEntity* playerEntity = sb::entity_cast<PlayerEntity>(entity);
 
-				if(targetInterface->GetEntity()->GetEntityType() == 'BALL')
+				if(playerEntity)
 				{
-					_containsBall = false;
-					release();
+					m_containsBall = false;
+					releaseEntity();
 				}
 			}
-
+			
 			break;
 		}
 	}

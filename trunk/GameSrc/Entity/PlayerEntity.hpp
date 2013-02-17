@@ -1,75 +1,66 @@
-#ifndef PLAYERENTITY_HPP
-#define PLAYERENTITY_HPP
+#ifndef PlayerEntity_h__
+#define PlayerEntity_h__
 
+#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <list>
-#include "../Entity/Entity.hpp"
-#include "../Entity/ZoneEntity.hpp"
-#include "../Entity/Component/BodyWrapper.hpp"
-#include "../Entity/Component/SpriteWrapper.hpp"
-#include "../Entity/Component/ParticleWrapper.hpp"
+#include "Entity.hpp"
+#include "../Physics/BodyController.hpp"
+#include "../Helper/ScreenTranslator.hpp"
 
-class PlayerEntity : public Entity
+class ZoneEntity;
+
+class PlayerEntity : public sb::Entity
 {
-    DEFINE_ENTITY(PlayerEntity,Entity,'BALL')
+    DEFINE_ENTITY(PlayerEntity,sb::Entity,'BALL')
 
 public:
-    virtual void initializeEntity( const TiXmlElement *propertyElement );
-    virtual bool handleEvent(const EventData& theevent);
-    virtual void update(sf::Time deltaTime);
+	b2Body* getBallBody() const { return m_ballBody.getBody(); }
 
-	void Kill();
+	void kill(void);
+	void fall(void);
+	void control(void);
+	void bounce(void);
+	void shoot(const sf::Vector2f& velocity);
 
-	BodyWrapper& GetBallBody() { return _ballBody; }
-	SpriteWrapper& GetBallSprite() { return _ballSprite; }
-
-	void Fall(void);
-	void Control(void);
-	void Bounce(void);
-	void Throw(const b2Vec2& velocity);
+	void resetBodyPosition()
+	{
+		m_ballBody.resetTransform();
+		m_ballBody.updateTransform();
+	}
 
 private:
+    virtual void initializeEntity( const TiXmlElement *propertyElement );
+    virtual bool handleEvent(const sb::EventData& theevent);
+    virtual void update(sf::Time deltaTime);
+
 	//Updates player state
-	void UpdatePlayerState(void);
+	void updatePlayerState(void);
 
 	//Ball control related functions
-	void LimitHorizontalVelocity(void);
-	void LimitVerticalVelocity(void);
+	void limitHorizontalVelocity(void);
+	void limitVerticalVelocity(void);
 
 	//Hooks
-	void ProcessContact(const b2Contact* contact, const b2Fixture* contactFixture );
-	void ProcessPreSolve(b2Contact* contact,const b2Fixture* target);
+	void processContact(const b2Contact* contact, const b2Fixture* contactFixture );
+	void processPreSolve(b2Contact* contact,const b2Fixture* target);
 
 	enum PlayerState
 	{
 		kPlayer_Moving,
 		kPlayer_Thrown,
 		kPlayer_Teleport
-	};
+	} m_playerState;
 
-    PlayerState _playerState;
-    bool    _shouldBounce;
+    bool    m_shouldBounce;
 
-    BodyWrapper _ballBody;
-	SpriteWrapper _ballSprite;
-	sf::Sound*	_bounceSound;
-	sf::Sound*	_throwSound;
+	sb::BodyController m_ballBody;
+	sf::Sprite	m_ballSprite;
+	sf::Sound	m_bounceSound;
+	sf::Sound	m_throwSound;
 
 	typedef std::list<ZoneEntity*> ZoneEntityList;
-	ZoneEntityList _zoneEntityList;
+	ZoneEntityList m_zoneEntityList;
 };
 
-class DummyBallEntity : public Entity
-{
-	DEFINE_ENTITY(DummyBallEntity,Entity,'DMMY')
-
-public:
-	virtual void initializeEntity( const TiXmlElement *propertyElement );
-	virtual void update(sf::Time deltaTime);
-
-private:
-	BodyWrapper _ballBody;
-	SpriteWrapper _ballSprite;
-};
-
-#endif
+#endif // PlayerEntity_h__
