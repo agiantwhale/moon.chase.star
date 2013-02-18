@@ -16,6 +16,7 @@ ThrowEntity::ThrowEntity() : BaseClass(), m_throwBody(*this), m_throwTranslator(
 ThrowEntity::~ThrowEntity()
 {
 	sb::GraphicsManager::getInstance()->removeDrawable(m_throwSprite,2);
+	sb::PhysicsManager::getInstance()->removeSimulatable(&m_throwBody);
 }
 
 void ThrowEntity::initializeEntity( const TiXmlElement *propertyElement )
@@ -37,7 +38,7 @@ void ThrowEntity::initializeEntity( const TiXmlElement *propertyElement )
         b2BodyDef bodyDefinition;
         bodyDefinition.userData = (Entity*)this;
         bodyDefinition.position = ToVector(getPosition());
-        bodyDefinition.angle = getRotation();
+        bodyDefinition.angle = getRotation() * DEGTORAD * -1.f;
         bodyDefinition.type = b2_staticBody;
 
         b2Body* throwBody = sb::PhysicsManager::getInstance()->getPhysicsWorld()->CreateBody(&bodyDefinition);
@@ -54,6 +55,8 @@ void ThrowEntity::initializeEntity( const TiXmlElement *propertyElement )
         throwBody->CreateFixture(&fixtureDefinition);
 
 		m_throwBody.setBody(throwBody);
+
+		sb::PhysicsManager::getInstance()->addSimulatable(&m_throwBody);
     }
 }
 

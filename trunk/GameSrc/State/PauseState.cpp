@@ -37,6 +37,10 @@ namespace sb
 			if( controlName == "ResumeButton")
 			{
 				Game::getInstance()->setNextStateType(State_InGame);
+
+				EventData* event = new EventData(Event_ResumeGame);
+				event->triggerEvent();
+
 				m_endState = true;
 
 			}
@@ -56,6 +60,10 @@ namespace sb
 				eventData.getAppEvent().key.code == sf::Keyboard::Escape )
 			{
 				Game::getInstance()->setNextStateType(State_InGame);
+
+				EventData* event = new EventData(Event_ResumeGame);
+				event->triggerEvent();
+
 				m_endState = true;
 			}
 		}
@@ -69,6 +77,9 @@ namespace sb
 
 		m_endState = false;
 		m_pauseMenuControl->Show();
+
+		EventData* event = new EventData(Event_PauseGame);
+		event->triggerEvent();
 	}
 
 	bool PauseState::update( sf::Time deltaTime )

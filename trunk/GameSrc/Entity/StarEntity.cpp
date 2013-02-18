@@ -35,12 +35,17 @@ StarEntity::StarEntity()
 		m_emitter(nullptr)
 {
 	addEventListenType(Event_Simulate);
+	addEventListenType(Event_PauseGame);
+	addEventListenType(Event_ResumeGame);
 }
 
 StarEntity::~StarEntity()
 {
 	removeEventListenType(Event_Simulate);
+	removeEventListenType(Event_PauseGame);
+	removeEventListenType(Event_ResumeGame);
 
+	sb::GraphicsManager::getInstance()->removeDrawable(m_starSprite,3);
 	sb::GraphicsManager::getInstance()->removeDrawable(*m_starParticle,3);
 	sb::PhysicsManager::getInstance()->removeSimulatable(&m_starBody);
 	delete m_starParticle;
@@ -78,6 +83,7 @@ void StarEntity::update( sf::Time deltaTime )
 	}
 
 	m_starParticle->update(deltaTime);
+	m_starTranslator.translate(m_starSprite);
 }
 
 void StarEntity::initializeEntity( const TiXmlElement *propertyElement /* = nullptr */ )
@@ -108,6 +114,15 @@ void StarEntity::initializeEntity( const TiXmlElement *propertyElement /* = null
 			m_starBody.setBody(starBody);
 
 			sb::PhysicsManager::getInstance()->addSimulatable(&m_starBody);
+		}
+
+		{
+			thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Star.png");
+			std::shared_ptr<sf::Texture> texture = sb::ResourceCache::getInstance()->acquire<sf::Texture>(key);
+			m_starSprite.setTexture(*texture);
+			m_starSprite.setOrigin(32,32);
+
+			sb::GraphicsManager::getInstance()->addDrawable(m_starSprite,3);
 		}
 
 		{
@@ -172,6 +187,18 @@ bool StarEntity::handleEvent(const sb::EventData& theevent)
 			sf::Vector2f position = getPosition();
 			m_starBody.getBody()->SetTransform(ToVector(position),0);
 			m_starBody.getBody()->SetAwake(true);
+			break;
+		}
+
+	case Event_PauseGame:
+		{
+			m_arrivalTimer.stop();
+			break;
+		}
+
+	case Event_ResumeGame:
+		{
+			m_arrivalTimer.start();
 			break;
 		}
 

@@ -19,6 +19,8 @@ enum EventType
 	Event_Simulate,
 
 	//Game related
+	Event_PauseGame,
+	Event_ResumeGame,
 	Event_BallDied,
 	Event_NewGame,
 	Event_LevelCompleted,

@@ -11,6 +11,7 @@
 #include "../Event/NewGameEventData.hpp"
 #include "../Event/EventManager.hpp"
 #include "../System/GraphicsManager.hpp"
+#include "../Physics/PhysicsManager.hpp"
 
 namespace sb
 {
@@ -77,6 +78,7 @@ namespace sb
 				{
 					Game::getInstance()->setNextStateType(State_InGame);
 					SceneManager::getInstance()->restartScene();
+					PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(b2Vec2(0,-GRAVITY_ACCELERATION));
 					return true;
 					break;
 				}
@@ -87,6 +89,7 @@ namespace sb
 					unloadEvent->triggerEvent();
 
 					ResourceCache::destroyInstance();
+					PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(b2Vec2(0,-GRAVITY_ACCELERATION));
 
 					Game::getInstance()->setNextStateType(State_MainMenu);
 					return true;

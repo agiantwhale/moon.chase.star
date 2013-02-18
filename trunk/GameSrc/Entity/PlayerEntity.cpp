@@ -68,8 +68,6 @@ void PlayerEntity::update(sf::Time deltaTime)
 		}
 	}
 
-	sf::Vector2f position = getPosition();
-
 	m_ballTranslator.translate(m_ballSprite);
 }
 
@@ -219,11 +217,15 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
         case 'THRW':
         {
 			m_shouldBounce = false;
+			m_throwSound.play();
 
+			/*
             if( (slope < JUMP_SLOPE || getPosition().y < entity->getPosition().y ) && m_playerState == kPlayer_Thrown )
             {
                 fall();
             }
+			*/
+
             break;
         }
 
@@ -294,6 +296,13 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 				break;
 			}
 
+		case 'DEAD':
+			{
+				//implement sort of an interface to keep track of which zone the player entity is in.
+				kill();
+				break;
+			}
+
         default:
         {
             m_shouldBounce = false;
@@ -317,9 +326,9 @@ void PlayerEntity::processPreSolve( b2Contact* contact,const b2Fixture* target )
 	ThrowEntity* throwEntity = sb::entity_cast<ThrowEntity>(entity);
 
 	if( throwEntity
-		&& slope >= JUMP_SLOPE
-		&& throwEntity->getPosition().y < getPosition().y
-		&& m_playerState == kPlayer_Moving )
+		//&& slope >= JUMP_SLOPE
+		//&& throwEntity->getPosition().y < getPosition().y
+		/*&& m_playerState == kPlayer_Moving */ )
 	{
 		m_shouldBounce = false;
 		//contact->SetEnabled(false);
@@ -357,12 +366,15 @@ void PlayerEntity::fall( void )
 	m_playerState = kPlayer_Moving;
 	m_ballBody.getBody()->SetGravityScale(6.0f);
 
+	/*
 	b2Vec2 ballVelocity = m_ballBody.getBody()->GetLinearVelocity();
 	if( ballVelocity.y > MAX_VERTI_VELOCITY )
 	{
 		ballVelocity.y = MAX_VERTI_VELOCITY;
 		m_ballBody.getBody()->SetLinearVelocity( ballVelocity );
 	}
+	*/
+	m_ballBody.getBody()->SetLinearVelocity(b2Vec2(0.f,0.f));
 }
 
 void PlayerEntity::shoot( const sf::Vector2f& velocity )
@@ -372,8 +384,6 @@ void PlayerEntity::shoot( const sf::Vector2f& velocity )
 	m_ballBody.getBody()->SetLinearVelocity(ToVector(velocity));
 
 	limitHorizontalVelocity();
-
-	m_throwSound.play();
 
 	sb::InputManager::getInstance()->feedOutput(0.5f, sf::seconds(0.2f));
 }
@@ -430,7 +440,7 @@ void PlayerEntity::updatePlayerState( void )
 				bounce();
 			}
 
-			limitHorizontalVelocity();
+			limitGravitationalVelocity();
 
 			break;
 		}
@@ -446,7 +456,7 @@ void PlayerEntity::updatePlayerState( void )
 				limitVerticalVelocity();
 			}
 
-			limitHorizontalVelocity();
+			limitGravitationalVelocity();
 
 			break;
 		}
@@ -459,4 +469,19 @@ void PlayerEntity::kill()
 
 	sb::EventData* eventData = new sb::EventData( Event_RestartLevel );
 	eventData->queueEvent(sf::seconds(0.5f));
+}
+
+void PlayerEntity::limitGravitationalVelocity( void )
+{
+	sf::Vector2f gravity = ToVector(sb::PhysicsManager::getInstance()->getPhysicsWorld()->GetGravity());
+
+	if(sb::signum<float>(gravity.x) != 0)
+	{
+		limitVerticalVelocity();
+	}
+
+	if(sb::signum<float>(gravity.y) != 0)
+	{
+		limitHorizontalVelocity();
+	}
 }

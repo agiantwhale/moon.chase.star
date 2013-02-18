@@ -31,8 +31,8 @@ TeleportEntity::~TeleportEntity()
 
 void TeleportEntity::update( sf::Time deltaTime )
 {
-	m_entranceTransform.setRotation(m_entranceTransform.getRotation() + ROTATION_PER_SECOND * deltaTime.asSeconds());
-	m_exitTransform.setRotation(m_exitTransform.getRotation() - ROTATION_PER_SECOND * deltaTime.asSeconds());
+	m_entranceTransform.setRotation(m_entranceTransform.getRotation() - ROTATION_PER_SECOND * deltaTime.asSeconds());
+	m_exitTransform.setRotation(m_exitTransform.getRotation() + ROTATION_PER_SECOND * deltaTime.asSeconds());
 
 	m_entranceTranslator.translate(m_enterSprite);
 	m_exitTranslator.translate(m_exitSprite);
@@ -46,8 +46,8 @@ void TeleportEntity::initializeEntity( const TiXmlElement *propertyElement /*= N
 		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Entrance.png");
 		std::shared_ptr<sf::Texture> texture = sb::ResourceCache::getInstance()->acquire<sf::Texture>(key);
 		m_enterSprite.setTexture(*texture);
-		m_enterSprite.setOrigin(0.5f*TELEPORT_SIZE*RATIO, 0.5*TELEPORT_SIZE*RATIO);
-
+		//m_enterSprite.setOrigin(0.5f*TELEPORT_SIZE*RATIO, 0.5*TELEPORT_SIZE*RATIO);
+		m_enterSprite.setOrigin(32,28.5);
 		sb::GraphicsManager::getInstance()->addDrawable(m_enterSprite,2);
 	}
 
@@ -55,8 +55,8 @@ void TeleportEntity::initializeEntity( const TiXmlElement *propertyElement /*= N
 		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Exit.png");
 		std::shared_ptr<sf::Texture> texture = sb::ResourceCache::getInstance()->acquire<sf::Texture>(key);
 		m_exitSprite.setTexture(*texture);
-		m_exitSprite.setOrigin(0.5f*TELEPORT_SIZE*RATIO, 0.5*TELEPORT_SIZE*RATIO);
-
+		//m_exitSprite.setOrigin(0.5f*TELEPORT_SIZE*RATIO, 0.5*TELEPORT_SIZE*RATIO);
+		m_exitSprite.setOrigin(32,31);
 		sb::GraphicsManager::getInstance()->addDrawable(m_exitSprite,2);
 	}
 

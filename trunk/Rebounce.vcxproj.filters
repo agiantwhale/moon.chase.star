@@ -192,6 +192,9 @@
     <ClCompile Include="GameSrc\Event\EventListener.cpp">
       <Filter>GameSrc\Event</Filter>
     </ClCompile>
+    <ClCompile Include="GameSrc\Entity\GravityEntity.cpp">
+      <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp">
@@ -353,6 +356,9 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Event\SolveEventData.hpp">
       <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Entity\GravityEntity.hpp">
+      <Filter>GameSrc\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

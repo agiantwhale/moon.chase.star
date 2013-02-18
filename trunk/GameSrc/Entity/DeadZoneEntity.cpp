@@ -1,4 +1,5 @@
 #include "DeadZoneEntity.hpp"
+#include "PlayerEntity.hpp"
 #include "../Physics/PhysicsManager.hpp"
 #include "../Event/ContactEventData.hpp"
 
@@ -65,7 +66,12 @@ bool DeadZoneEntity::handleEvent( const sb::EventData& theevent )
 			if( m_zoneBody.checkContact(contactInfo,target))
 			{
 				sb::Entity* entity = sb::getOwnerEntity(target);
-				entity->releaseEntity();
+				PlayerEntity* playerEntity = sb::entity_cast<PlayerEntity>(entity);
+
+				if(!playerEntity)
+				{
+					entity->releaseEntity();
+				}
 			}
 
 			break;

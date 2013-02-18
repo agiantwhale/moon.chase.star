@@ -39,7 +39,7 @@ namespace sb
 	void InGameState::render()
 	{
 		sb::GraphicsManager::getInstance()->render();
-		sb::PhysicsManager::getInstance()->renderPhysicsDebug();
+		//sb::PhysicsManager::getInstance()->renderPhysicsDebug();
 	}
 
 	bool InGameState::update(sf::Time deltaTime)

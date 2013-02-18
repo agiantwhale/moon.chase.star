@@ -31,7 +31,7 @@ void BlockEntity::initializeEntity( const TiXmlElement *propertyElement /* = NUL
 	BaseClass::initializeEntity(propertyElement);
 
 	{
-		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Block.png");
+		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Falling.png");
 		std::shared_ptr<sf::Texture> texture = sb::ResourceCache::getInstance()->acquire<sf::Texture>(key);
 		m_blockSprite.setTexture(*texture);
 		m_blockSprite.setOrigin(sf::Vector2f(0.5f*BLOCK_SIZE*RATIO,0.5f*BLOCK_SIZE*RATIO));

@@ -38,6 +38,7 @@ private:
 	void updatePlayerState(void);
 
 	//Ball control related functions
+	void limitGravitationalVelocity(void);
 	void limitHorizontalVelocity(void);
 	void limitVerticalVelocity(void);
 

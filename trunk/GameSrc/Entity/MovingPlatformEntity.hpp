@@ -15,6 +15,7 @@ class MovingPlatformEntity : public sb::Entity
 private:
 	virtual void update(sf::Time deltaTime);
 	virtual void initializeEntity( const TiXmlElement *propertyElement /* = nullptr */ );
+	virtual bool handleEvent(const sb::EventData& theevent);
 
 	//b2Body* getPlatformBody() const { return m_platformBody.getBody(); }
 

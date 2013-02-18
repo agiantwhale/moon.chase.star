@@ -19,11 +19,15 @@ MovingPlatformEntity::MovingPlatformEntity()
 		m_travelSpeed(0.0f),
 		m_moveTimer()
 {
-
+	addEventListenType(Event_PauseGame);
+	addEventListenType(Event_ResumeGame);
 }
 
 MovingPlatformEntity::~MovingPlatformEntity()
 {
+	removeEventListenType(Event_PauseGame);
+	removeEventListenType(Event_ResumeGame);
+
 	sb::GraphicsManager::getInstance()->removeDrawable(m_platformSprite,2);
 	sb::PhysicsManager::getInstance()->removeSimulatable(&m_platformBody);
 }
@@ -55,7 +59,7 @@ void MovingPlatformEntity::initializeEntity( const TiXmlElement *propertyElement
 	BaseClass::initializeEntity(propertyElement);
 
 	{
-		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Block.png");
+		thor::ResourceKey<sf::Texture> key = thor::Resources::fromFile<sf::Texture>("Resource/Ogmo/Entities/Moving.png");
 		std::shared_ptr<sf::Texture> texture = sb::ResourceCache::getInstance()->acquire<sf::Texture>(key);
 		m_platformSprite.setTexture(*texture);
 		m_platformSprite.setOrigin(sf::Vector2f(BLOCK_SIZE,BLOCK_SIZE) * 0.5f * RATIO);
@@ -129,4 +133,29 @@ const sf::Vector2f& MovingPlatformEntity::getNextPlatformDestination()
 	}
 
 	return *m_platformRouteIterator;
+}
+
+bool MovingPlatformEntity::handleEvent( const sb::EventData& theevent )
+{
+	switch (theevent.getEventType())
+	{
+	case Event_PauseGame:
+		{
+			m_moveTimer.stop();
+			break;
+		}
+
+	case Event_ResumeGame:
+		{
+			m_moveTimer.start();
+			break;
+		}
+
+	default:
+		{
+			break;
+		}
+	}
+
+	return false;
 }

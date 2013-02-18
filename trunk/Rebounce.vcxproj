@@ -86,6 +86,7 @@
     <ClCompile Include="GameSrc\Entity\DeadZoneEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\Entity.cpp" />
     <ClCompile Include="GameSrc\Entity\EntityManager.cpp" />
+    <ClCompile Include="GameSrc\Entity\GravityEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\HullEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\LevelCompleteEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\MovingPlatformEntity.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="GameSrc\Entity\DeadZoneEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\Entity.hpp" />
     <ClInclude Include="GameSrc\Entity\EntityManager.hpp" />
+    <ClInclude Include="GameSrc\Entity\GravityEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\HullEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\LevelCompleteEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\MovingPlatformEntity.hpp" />
