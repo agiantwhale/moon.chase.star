@@ -1,3 +1,4 @@
+#include <Thor/Math.hpp>
 #include "Entity.hpp"
 
 namespace sb
@@ -43,6 +44,7 @@ namespace sb
 			{
 				float r = 0.f;
 				propertyElement->QueryFloatAttribute("angle",&r);
+				r = thor::toDegree<float>(r);
 
 				setRotation(r);
 			}

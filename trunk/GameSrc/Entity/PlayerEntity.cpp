@@ -415,8 +415,35 @@ void PlayerEntity::bounce( void )
 {
 	m_shouldBounce = false;
 
+	b2Vec2 worldGravity = sb::PhysicsManager::getInstance()->getPhysicsWorld()->GetGravity();
+	worldGravity.Normalize();
+
+	enum 
+	{
+		Gravity_Vertical,
+		Gravity_Horizontal
+	} gravityType;
+
+	if(sb::signum<float>(worldGravity.x) != 0)
+	{
+		gravityType = Gravity_Vertical;
+	}
+
+	if(sb::signum<float>(worldGravity.y) != 0)
+	{
+		gravityType = Gravity_Horizontal;
+	}
+
 	b2Vec2 ballVelocity = m_ballBody.getBody()->GetLinearVelocity();
 	b2Vec2 ballPosition = m_ballBody.getBody()->GetPosition();
+
+	switch(gravityType)
+	{
+	case Gravity_Vertical:
+		{
+			break;
+		}
+	}
 
 	m_ballBody.getBody()->SetLinearVelocity( b2Vec2(ballVelocity.x, 0) );
 	m_ballBody.getBody()->SetTransform(ballPosition + b2Vec2(0,0.1f), m_ballBody.getBody()->GetAngle());

@@ -9,5 +9,6 @@ int main(int argc,char *argv[])
 	sb::Game::getInstance()->initialize();
 	sb::Game::getInstance()->start();
 	sb::SceneManager::getInstance()->saveProgress();
+
     return 0;
 }

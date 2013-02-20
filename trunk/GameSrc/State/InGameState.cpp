@@ -1,3 +1,4 @@
+#include <CxxTL/tri_logger.hpp>
 #include "InGameState.hpp"
 #include "../App/Game.hpp"
 #include "../System/GraphicsManager.hpp"

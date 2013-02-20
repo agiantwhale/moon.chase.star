@@ -64,7 +64,7 @@ void GravityEntity::initializeEntity( const TiXmlElement *propertyElement /*= NU
 		b2BodyDef bodyDefinition;
 		bodyDefinition.userData = (Entity*)this;
 		bodyDefinition.position = ToVector(getPosition());
-		bodyDefinition.angle = getRotation() * DEGTORAD * -1.f;
+		bodyDefinition.angle = getRotation() * DEGTORAD;
 		bodyDefinition.type = b2_staticBody;
 
 		b2Body* throwBody = sb::PhysicsManager::getInstance()->getPhysicsWorld()->CreateBody(&bodyDefinition);
