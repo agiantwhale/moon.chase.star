@@ -360,6 +360,9 @@
     <ClInclude Include="GameSrc\Entity\GravityEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="GameSrc\Event\GravityChangeEventData.hpp">
+      <Filter>GameSrc\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="GameSrc\Entity\TeleportEntity.hpp">

@@ -11,6 +11,7 @@ namespace sb
 		m_leftInput(false),
 		m_rightInput(false),
 		m_downInput(false),
+		m_upInput(false),
 		m_vibrateAmount(0.0f),
 		m_vibrateDuration()
 	{
@@ -48,6 +49,7 @@ namespace sb
 		m_leftInput = false;
 		m_rightInput = false;
 		m_downInput = false;
+		m_upInput = false;
 
 		/*
 		{
@@ -69,6 +71,7 @@ namespace sb
 				m_leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
 				m_rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
 				m_downInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+				m_upInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
 				break;
 			}
 
@@ -103,6 +106,15 @@ namespace sb
 						}
 
 						if(state.Gamepad.sThumbRY < 0)
+						{
+							m_downInput = true;
+						}
+
+						if(state.Gamepad.sThumbRY > 0)
+						{
+							m_upInput = true;
+						}
+						else if(state.Gamepad.sThumbRY < 0)
 						{
 							m_downInput = true;
 						}

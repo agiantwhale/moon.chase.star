@@ -7,6 +7,7 @@
 #include "../System/ResourceCache.hpp"
 #include "../System/SceneManager.hpp"
 #include "../Event/ContactEventData.hpp"
+#include "../Event/GravityChangeEventData.hpp"
 
 REGISTER_ENTITY(GravityEntity,"Gravity")
 
@@ -16,7 +17,8 @@ GravityEntity::GravityEntity()	:
 	m_gravityTranslator(*this),
 	m_gravitySprite(),
 	m_gravitySound(),
-	m_changeGravity(false)
+	m_changeGravity(false),
+	m_gravityDirection(sb::PhysicsManager::Gravity_Up)
 {
 	addEventListenType(Event_BeginContact);
 	addEventListenType(Event_Simulate);
@@ -41,6 +43,40 @@ void GravityEntity::update( sf::Time deltaTime )
 void GravityEntity::initializeEntity( const TiXmlElement *propertyElement /*= NULL */ )
 {
 	BaseClass::initializeEntity(propertyElement);
+
+	sf::Vector2f finalGravity = thor::rotatedVector<float>(sf::Vector2f(0,GRAVITY_ACCELERATION), getRotation() * -1.f );
+
+	//HACKHACK!!
+	if(std::abs(finalGravity.x) <= 5.0f)
+	{
+		finalGravity.x = 0.f;
+	}
+
+	if(std::abs(finalGravity.y) <= 5.0f)
+	{
+		finalGravity.y = 0.f;
+	}
+
+	if( finalGravity.x < 0.f )
+	{
+		m_gravityDirection = sb::PhysicsManager::Gravity_Right;
+	}
+
+	if( finalGravity.x > 0.f )
+	{
+		m_gravityDirection = sb::PhysicsManager::Gravity_Left;
+	}
+
+	if( finalGravity.y > 0.f )
+	{
+		m_gravityDirection = sb::PhysicsManager::Gravity_Up;
+	}
+
+	if( finalGravity.y < 0.f )
+	{
+		m_gravityDirection = sb::PhysicsManager::Gravity_Down;
+	}
+
 
 	const float GRAVITY_SIZE = 2.0f;
 
@@ -101,7 +137,7 @@ bool GravityEntity::handleEvent( const sb::EventData& theevent )
 				sb::Entity* entity = sb::getOwnerEntity(fixture);
 				PlayerEntity* playerEntity = sb::entity_cast<PlayerEntity>(entity);
 
-				if(playerEntity)
+				if(playerEntity && m_gravityDirection != sb::PhysicsManager::getInstance()->getGravityDirection() )
 				{
 					m_changeGravity = true;
 					m_gravitySound.play();
@@ -132,6 +168,7 @@ void GravityEntity::simulate()
 	{
 		m_changeGravity = false;
 
+		/*
 		sf::Vector2f finalGravity = thor::rotatedVector<float>(sf::Vector2f(0,GRAVITY_ACCELERATION), getRotation() * -1.f );
 
 		//HACKHACK!!
@@ -144,8 +181,12 @@ void GravityEntity::simulate()
 		{
 			finalGravity.y = 0.f;
 		}
+		*/
 
-		sb::PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(ToVector(finalGravity));
+		//sb::PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(ToVector(finalGravity));
+
+		sb::EventData* eventData = new GravityChangeEventData(m_gravityDirection);
+		eventData->triggerEvent();
 		sb::SceneManager::getInstance()->getPlayerEntity()->fall();
 	}
 }

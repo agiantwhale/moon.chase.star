@@ -32,6 +32,8 @@ enum EventType
 
 	//Gameplay related
 	Event_StarArrived,
+	Event_GravityChange,
+
 	NUM_EVENTS
 };
 

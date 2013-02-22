@@ -7,6 +7,7 @@
 #include "ThrowEntity.hpp"
 #include "StarEntity.hpp"
 #include "ZoneEntity.hpp"
+#include "GravityEntity.hpp"
 #include "../Task/TeleportTask.hpp"
 #include "../Physics/PhysicsManager.hpp"
 #include "../System/ResourceCache.hpp"
@@ -23,8 +24,7 @@ const float BALL_RADIUS = 0.5f;
 const float KILL_TIME = 1.5f;
 const float JUMP_IMPULSE = 18.0f;
 const float MOVE_IMPULSE = 0.5f;
-const float MAX_HORI_VELOCITY = 9.0f;
-const float MAX_VERTI_VELOCITY = 7.0f;
+const float MAX_MOVE_VELOCITY = 9.0f;
 const float JUMP_SLOPE = 0.25f;
 
 REGISTER_ENTITY( PlayerEntity, "Ball" )
@@ -210,6 +210,63 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 
     sb::Entity* entity = static_cast<sb::Entity*>(contactFixture->GetBody()->GetUserData());
 
+	const sb::PhysicsManager::GravityDirection gravityDirection = sb::PhysicsManager::getInstance()->getGravityDirection();
+
+	/*
+	if( (gravityDirection == sb::PhysicsManager::Gravity_Up || gravityDirection == sb::PhysicsManager::Gravity_Down) && slope >= JUMP_SLOPE )
+	{
+		m_shouldBounce = true;
+	}
+
+	if( (gravityDirection == sb::PhysicsManager::Gravity_Left || gravityDirection == sb::PhysicsManager::Gravity_Right) && slope <= 1/JUMP_SLOPE )
+	{
+		m_shouldBounce = true;
+	}
+	*/
+
+	switch (gravityDirection)
+	{
+	case sb::PhysicsManager::Gravity_Down:
+		{
+			if( slope >= JUMP_SLOPE && getPosition().y > entity->getPosition().y)
+			{
+				m_shouldBounce = true;
+			}
+
+			break;
+		}
+
+	case sb::PhysicsManager::Gravity_Up:
+		{
+			if( slope >= JUMP_SLOPE && getPosition().y < entity->getPosition().y)
+			{
+				m_shouldBounce = true;
+			}
+
+			break;
+		}
+
+	case sb::PhysicsManager::Gravity_Left:
+		{
+			if( slope <= 1/JUMP_SLOPE && getPosition().x > entity->getPosition().x)
+			{
+				m_shouldBounce = true;
+			}
+
+			break;
+		}
+
+	case sb::PhysicsManager::Gravity_Right:
+		{
+			if( slope <= 1/JUMP_SLOPE && getPosition().x < entity->getPosition().x)
+			{
+				m_shouldBounce = true;
+			}
+
+			break;
+		}
+	}
+
     if(entity)
     {
         switch(entity->getEntityType())
@@ -233,12 +290,17 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
         {
             if( m_playerState == kPlayer_Thrown )
             {
+				m_shouldBounce = false;
                 fall();
             }
+			
+			/*
             else if( slope >= JUMP_SLOPE && (getPosition().y > entity->getPosition().y) )
             {
                 m_shouldBounce = true;
             }
+			*/
+
             break;
         }
 
@@ -246,12 +308,17 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 			{
 				if( m_playerState == kPlayer_Thrown )
 				{
+					m_shouldBounce = false;
 					fall();
 				}
+
+				/*
 				else if( slope >= JUMP_SLOPE )
 				{
 					m_shouldBounce = true;
 				}
+				*/
+
 				break;
 			}
 
@@ -259,17 +326,41 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 			{
 				if( m_playerState == kPlayer_Thrown )
 				{
+					m_shouldBounce = false;
 					fall();
 				}
+
+				/*
 				else if( slope >= JUMP_SLOPE )
 				{
 					m_shouldBounce = true;
 				}
+				*/
+
+				/*
+				else
+				{
+					const sb::PhysicsManager::GravityDirection gravityDirection = sb::PhysicsManager::getInstance()->getGravityDirection();
+
+					if( (gravityDirection == sb::PhysicsManager::Gravity_Up || gravityDirection == sb::PhysicsManager::Gravity_Down) && slope >= JUMP_SLOPE )
+					{
+						m_shouldBounce = true;
+					}
+
+					if( (gravityDirection == sb::PhysicsManager::Gravity_Left || gravityDirection == sb::PhysicsManager::Gravity_Right) && slope <= 1/JUMP_SLOPE )
+					{
+						m_shouldBounce = true;
+					}
+				}
+				*/
+
 				break;
 			}
 
 		case 'TLPT':
 			{
+				m_shouldBounce = false;
+
 				if( m_playerState == kPlayer_Thrown )
 				{
 					fall();
@@ -292,6 +383,7 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 		case 'ZONE':
 			{
 				//implement sort of an interface to keep track of which zone the player entity is in.
+				m_shouldBounce = false;
 				m_zoneEntityList.push_back(sb::entity_cast<ZoneEntity>(entity));
 				break;
 			}
@@ -299,13 +391,25 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 		case 'DEAD':
 			{
 				//implement sort of an interface to keep track of which zone the player entity is in.
+				m_shouldBounce = false;
 				kill();
+				break;
+			}
+
+		case 'GRAV':
+			{
+				GravityEntity* gravityEntity = sb::entity_cast<GravityEntity>(entity);
+
+				if( m_shouldBounce && gravityEntity->getGravityDirection() != sb::PhysicsManager::getInstance()->getGravityDirection() )
+				{
+					m_shouldBounce = false;
+				}
+
 				break;
 			}
 
         default:
         {
-            m_shouldBounce = false;
             break;
         }
         }
@@ -339,25 +443,40 @@ void PlayerEntity::processPreSolve( b2Contact* contact,const b2Fixture* target )
 
 void PlayerEntity::control( void )
 {
-	const bool  leftInput = sb::InputManager::getInstance()->getLeftInput(),
-				rightInput = sb::InputManager::getInstance()->getRightInput();
+	const sb::PhysicsManager::GravityDirection gravityDirection = sb::PhysicsManager::getInstance()->getGravityDirection();
 
-	/*
-	const bool  leftInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
-				rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-				*/
+	const bool  leftInput = sb::InputManager::getInstance()->getLeftInput(),
+				rightInput = sb::InputManager::getInstance()->getRightInput(),
+				upInput = sb::InputManager::getInstance()->getUpInput(),
+				downInput = sb::InputManager::getInstance()->getDownInput();
 
 	b2Vec2 ballVelocity = m_ballBody.getBody()->GetLinearVelocity();
 	b2Vec2 ballPosition = m_ballBody.getBody()->GetPosition();
 
-	if( leftInput && ballVelocity.x > -MAX_HORI_VELOCITY )
+	if( gravityDirection == sb::PhysicsManager::Gravity_Up || gravityDirection == sb::PhysicsManager::Gravity_Down )
 	{
-		m_ballBody.getBody()->ApplyLinearImpulse( b2Vec2( -MOVE_IMPULSE, 0 ), ballPosition );
+		if( leftInput && ballVelocity.x > -MAX_MOVE_VELOCITY )
+		{
+			m_ballBody.getBody()->ApplyLinearImpulse( b2Vec2( -MOVE_IMPULSE, 0 ), ballPosition );
+		}
+
+		if( rightInput && ballVelocity.x < MAX_MOVE_VELOCITY )
+		{
+			m_ballBody.getBody()->ApplyLinearImpulse( b2Vec2( MOVE_IMPULSE, 0 ), ballPosition );
+		}
 	}
 
-	if( rightInput && ballVelocity.x < MAX_HORI_VELOCITY )
+	if( gravityDirection == sb::PhysicsManager::Gravity_Left || gravityDirection == sb::PhysicsManager::Gravity_Right )
 	{
-		m_ballBody.getBody()->ApplyLinearImpulse( b2Vec2( MOVE_IMPULSE, 0 ), ballPosition );
+		if( downInput && ballVelocity.y > -MAX_MOVE_VELOCITY )
+		{
+			m_ballBody.getBody()->ApplyLinearImpulse( b2Vec2( 0, -MOVE_IMPULSE ), ballPosition );
+		}
+
+		if( upInput && ballVelocity.y < MAX_MOVE_VELOCITY )
+		{
+			m_ballBody.getBody()->ApplyLinearImpulse( b2Vec2( 0, MOVE_IMPULSE ), ballPosition );
+		}
 	}
 }
 
@@ -392,9 +511,9 @@ void PlayerEntity::limitHorizontalVelocity()
 {
 	b2Vec2 ballVelocity = m_ballBody.getBody()->GetLinearVelocity();
 
-	if( std::abs( ballVelocity.x ) > MAX_HORI_VELOCITY )
+	if( std::abs( ballVelocity.x ) > MAX_MOVE_VELOCITY )
 	{
-		ballVelocity.x = sb::signum<float>(ballVelocity.x) * MAX_HORI_VELOCITY;
+		ballVelocity.x = sb::signum<float>(ballVelocity.x) * MAX_MOVE_VELOCITY;
 		m_ballBody.getBody()->SetLinearVelocity( ballVelocity );
 	}
 }
@@ -404,9 +523,9 @@ void PlayerEntity::limitVerticalVelocity()
 	b2Vec2 ballVelocity = m_ballBody.getBody()->GetLinearVelocity();
 
 	//Should this only limit when the velocity is bigger than MAX_VERTI_VELOCITY when going up?
-	if( std::abs( ballVelocity.y ) > MAX_VERTI_VELOCITY )
+	if( std::abs( ballVelocity.y ) > MAX_MOVE_VELOCITY )
 	{
-		ballVelocity.y = sb::signum<float>(ballVelocity.y) * MAX_VERTI_VELOCITY;
+		ballVelocity.y = sb::signum<float>(ballVelocity.y) * MAX_MOVE_VELOCITY;
 		m_ballBody.getBody()->SetLinearVelocity( ballVelocity );
 	}
 }
@@ -415,24 +534,8 @@ void PlayerEntity::bounce( void )
 {
 	m_shouldBounce = false;
 
-	b2Vec2 worldGravity = sb::PhysicsManager::getInstance()->getPhysicsWorld()->GetGravity();
-	worldGravity.Normalize();
-
-	enum 
-	{
-		Gravity_Vertical,
-		Gravity_Horizontal
-	} gravityType;
-
-	if(sb::signum<float>(worldGravity.x) != 0)
-	{
-		gravityType = Gravity_Vertical;
-	}
-
-	if(sb::signum<float>(worldGravity.y) != 0)
-	{
-		gravityType = Gravity_Horizontal;
-	}
+	/*
+	sb::PhysicsManager::GravityDirection
 
 	b2Vec2 ballVelocity = m_ballBody.getBody()->GetLinearVelocity();
 	b2Vec2 ballPosition = m_ballBody.getBody()->GetPosition();
@@ -443,11 +546,60 @@ void PlayerEntity::bounce( void )
 		{
 			break;
 		}
+
+	case Gravity_Horizontal:
+		{
+
+			break;
+		}
+	}
+	*/
+
+	const sb::PhysicsManager::GravityDirection gravityDirection = sb::PhysicsManager::getInstance()->getGravityDirection();
+
+	b2Vec2 ballVelocity = m_ballBody.getBody()->GetLinearVelocity();
+	b2Vec2 ballPosition = m_ballBody.getBody()->GetPosition();
+	b2Vec2 ballImpulse = b2Vec2(0.f,0.f);
+
+
+	switch (gravityDirection)
+	{
+	case sb::PhysicsManager::Gravity_Down:
+		{
+			ballVelocity.y = 0;
+			ballPosition += b2Vec2(0.f,.1f);
+			ballImpulse.y = JUMP_IMPULSE;
+			break;
+		}
+
+	case sb::PhysicsManager::Gravity_Up:
+		{
+			ballVelocity.y = 0;
+			ballPosition += b2Vec2(0.f,-.1f);
+			ballImpulse.y = -JUMP_IMPULSE;
+			break;
+		}
+
+	case sb::PhysicsManager::Gravity_Left:
+		{
+			ballVelocity.x = 0;
+			ballPosition += b2Vec2(.1f,0.f);
+			ballImpulse.x = JUMP_IMPULSE;
+			break;
+		}
+
+	case sb::PhysicsManager::Gravity_Right:
+		{
+			ballVelocity.x = 0;
+			ballPosition += b2Vec2(-.1f,0.f);
+			ballImpulse.x = -JUMP_IMPULSE;
+			break;
+		}
 	}
 
-	m_ballBody.getBody()->SetLinearVelocity( b2Vec2(ballVelocity.x, 0) );
-	m_ballBody.getBody()->SetTransform(ballPosition + b2Vec2(0,0.1f), m_ballBody.getBody()->GetAngle());
-	m_ballBody.getBody()->ApplyLinearImpulse(b2Vec2(0,JUMP_IMPULSE), m_ballBody.getBody()->GetPosition());
+	m_ballBody.getBody()->SetLinearVelocity( ballVelocity );
+	m_ballBody.getBody()->SetTransform(ballPosition, m_ballBody.getBody()->GetAngle());
+	m_ballBody.getBody()->ApplyLinearImpulse(ballImpulse, m_ballBody.getBody()->GetPosition());
 
 	m_bounceSound.play();
 
@@ -481,9 +633,10 @@ void PlayerEntity::updatePlayerState( void )
 			else
 			{
 				limitVerticalVelocity();
+				limitHorizontalVelocity();
 			}
 
-			limitGravitationalVelocity();
+			//limitGravitationalVelocity();
 
 			break;
 		}
@@ -500,15 +653,15 @@ void PlayerEntity::kill()
 
 void PlayerEntity::limitGravitationalVelocity( void )
 {
-	sf::Vector2f gravity = ToVector(sb::PhysicsManager::getInstance()->getPhysicsWorld()->GetGravity());
+	sb::PhysicsManager::GravityDirection gravityDirection = sb::PhysicsManager::getInstance()->getGravityDirection();
 
-	if(sb::signum<float>(gravity.x) != 0)
-	{
-		limitVerticalVelocity();
-	}
-
-	if(sb::signum<float>(gravity.y) != 0)
+	if( gravityDirection == sb::PhysicsManager::Gravity_Down || gravityDirection == sb::PhysicsManager::Gravity_Up )
 	{
 		limitHorizontalVelocity();
+	}
+
+	if( gravityDirection == sb::PhysicsManager::Gravity_Left || gravityDirection == sb::PhysicsManager::Gravity_Right )
+	{
+		limitVerticalVelocity();
 	}
 }

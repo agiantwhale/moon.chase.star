@@ -14,6 +14,7 @@
     <ProjectGuid>{EC57C99D-9869-4CF1-BDC6-2424BF15F5C5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Rebounce</RootNamespace>
+    <ProjectName>MCS</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -149,6 +150,7 @@
     <ClInclude Include="GameSrc\Event\EventListener.hpp" />
     <ClInclude Include="GameSrc\Event\EventManager.hpp" />
     <ClInclude Include="GameSrc\Event\EventsDef.h" />
+    <ClInclude Include="GameSrc\Event\GravityChangeEventData.hpp" />
     <ClInclude Include="GameSrc\Event\GUIEventData.h" />
     <ClInclude Include="GameSrc\Event\NewGameEventData.hpp" />
     <ClInclude Include="GameSrc\Event\SolveEventData.hpp" />

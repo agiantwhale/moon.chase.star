@@ -6,6 +6,7 @@
 #include "../Event/EventManager.hpp"
 #include "../Event/ContactEventData.hpp"
 #include "../Event/SolveEventData.hpp"
+#include "../Event/GravityChangeEventData.hpp"
 
 namespace sb
 {
@@ -14,13 +15,18 @@ namespace sb
 		m_isPhysicsSetUp( false ),
 		m_remainderDT(),
 		m_remainderRatio( 0.0f ),
-		m_debugDraw(nullptr)
+		m_debugDraw(nullptr),
+		m_gravityDirection(Gravity_Down)
 	{
+		addEventListenType(Event_NewGame);
+		addEventListenType(Event_GravityChange);
 		m_simulatableList.clear();
 	}
 
 	SINGLETON_DESTRUCTOR( PhysicsManager )
 	{
+		addEventListenType(Event_NewGame);
+		removeEventListenType(Event_GravityChange);
 		delete m_debugDraw;
 		delete m_physicsWorld;
 	}
@@ -145,4 +151,57 @@ namespace sb
 
 		m_simulatableList.remove(simulatable);
 	}
+
+	bool PhysicsManager::handleEvent( const EventData& theevent )
+	{
+		if(theevent.getEventType() == Event_GravityChange)
+		{
+			const GravityChangeEventData& gravityEvent = static_cast<const GravityChangeEventData&>(theevent);
+			setGravityDirection(gravityEvent.getGravityDirection());
+		}
+
+		if(theevent.getEventType() == Event_NewGame)
+		{
+			setGravityDirection(Gravity_Down);
+		}
+
+		return false;
+	}
+
+	void PhysicsManager::setGravityDirection( GravityDirection val )
+	{
+		m_gravityDirection = val;
+		b2Vec2 gravityDirection;
+		gravityDirection.SetZero();
+
+		switch(val)
+		{
+		case Gravity_Down:
+			{
+				gravityDirection.y = -GRAVITY_ACCELERATION;
+				break;
+			}
+
+		case Gravity_Up:
+			{
+				gravityDirection.y = GRAVITY_ACCELERATION;
+				break;
+			}
+
+		case Gravity_Left:
+			{
+				gravityDirection.x = -GRAVITY_ACCELERATION;
+				break;
+			}
+
+		case Gravity_Right:
+			{
+				gravityDirection.x = GRAVITY_ACCELERATION;
+				break;
+			}
+		}
+
+		m_physicsWorld->SetGravity(gravityDirection);
+	}
+
 }
