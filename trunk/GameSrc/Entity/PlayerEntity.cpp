@@ -647,6 +647,9 @@ void PlayerEntity::kill()
 {
 	sb::EventManager::getInstance()->abortEvent(Event_NextLevel,true);
 
+	sb::EventData* gameOverEvent = new sb::EventData( Event_GameOver );
+	gameOverEvent->queueEvent(sf::seconds(0.5f));
+
 	sb::EventData* eventData = new sb::EventData( Event_RestartLevel );
 	eventData->queueEvent(sf::seconds(0.5f));
 }

@@ -18,14 +18,14 @@ namespace sb
 		m_debugDraw(nullptr),
 		m_gravityDirection(Gravity_Down)
 	{
-		addEventListenType(Event_NewGame);
+		addEventListenType(Event_GameOver);
 		addEventListenType(Event_GravityChange);
 		m_simulatableList.clear();
 	}
 
 	SINGLETON_DESTRUCTOR( PhysicsManager )
 	{
-		addEventListenType(Event_NewGame);
+		addEventListenType(Event_GameOver);
 		removeEventListenType(Event_GravityChange);
 		delete m_debugDraw;
 		delete m_physicsWorld;
@@ -160,7 +160,7 @@ namespace sb
 			setGravityDirection(gravityEvent.getGravityDirection());
 		}
 
-		if(theevent.getEventType() == Event_NewGame)
+		if(theevent.getEventType() == Event_GameOver)
 		{
 			setGravityDirection(Gravity_Down);
 		}
