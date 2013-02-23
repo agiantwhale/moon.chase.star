@@ -48,33 +48,38 @@ namespace sb
 
 	void Game::initialize( void )
 	{
+		/*
 		Settings gameSettings;
 		gameSettings.fullscreen = false;
+		*/
+
+		bool fullScreen = false;
+		bool vSync = false;
+
 		TiXmlDocument document;
-		if(document.LoadFile("MCS.xml"))
+		if(document.LoadFile("mcs.xml"))
 		{
 			const TiXmlElement* settingsElement = document.FirstChildElement("Settings");
 			if(settingsElement)
 			{
-				settingsElement->QueryBoolAttribute("Fullscreen", &gameSettings.fullscreen);
-				settingsElement->QueryBoolAttribute("VSync", &gameSettings.vSync);
+				settingsElement->QueryBoolAttribute("Fullscreen", &fullScreen);
+				settingsElement->QueryBoolAttribute("VSync", &vSync);
 			}
 		}
 
 		unsigned int screenSettings = sf::Style::Close;
-		if(gameSettings.fullscreen)
+		if(fullScreen)
 		{
 			screenSettings = sf::Style::Close | sf::Style::Fullscreen;
 		}
 		create(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"moon.chase.star",screenSettings);
+		setVerticalSyncEnabled(vSync);
 
-		setVerticalSyncEnabled(gameSettings.vSync);
-
-		GUIManager::getInstance()->setUpGUI();
-		PhysicsManager::getInstance()->setUpPhysics();
-		GraphicsManager::getInstance()->setUpGraphics();
-		SceneManager::getInstance()->setUpScene();
-		InputManager::getInstance()->setUpInput();
+		GUIManager::getInstance()->setUpGUI(document.FirstChildElement("GUI"));
+		PhysicsManager::getInstance()->setUpPhysics(document.FirstChildElement("Physics"));
+		GraphicsManager::getInstance()->setUpGraphics(document.FirstChildElement("Graphics"));
+		SceneManager::getInstance()->setUpScene(document.FirstChildElement("Scene"));
+		InputManager::getInstance()->setUpInput(document.FirstChildElement("Input"));
 
 		Tile::registerTileset("Rect", "Resource/Ogmo/Tiles/Rect.png");
 		Tile::registerTileset("Back", "Resource/Ogmo/Tiles/Back.png");

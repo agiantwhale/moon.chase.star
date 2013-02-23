@@ -13,6 +13,7 @@ namespace sb
 	SINGLETON_CONSTRUCTOR( PhysicsManager ),
 		m_physicsWorld( nullptr ),
 		m_isPhysicsSetUp( false ),
+		m_shouldDrawDebug( false ),
 		m_remainderDT(),
 		m_remainderRatio( 0.0f ),
 		m_debugDraw(nullptr),
@@ -33,7 +34,7 @@ namespace sb
 		delete m_physicsWorld;
 	}
 
-	void PhysicsManager::setUpPhysics( void )
+	void PhysicsManager::setUpPhysics( const TiXmlElement* element )
 	{
 		m_debugDraw = new DebugDraw(*Game::getInstance());
 		m_debugDraw->SetFlags(b2Draw::e_shapeBit);
@@ -44,6 +45,12 @@ namespace sb
 		m_physicsWorld->SetDebugDraw(m_debugDraw);
 
 		m_isPhysicsSetUp = true;
+
+		if(element)
+		{
+			element->QueryBoolAttribute("Debug",&m_shouldDrawDebug);
+		}
+		
 
 		TRI_LOG_STR("Physics initialized.");
 	}
@@ -83,7 +90,10 @@ namespace sb
 
 	void PhysicsManager::renderPhysicsDebug(void)
 	{
-		m_physicsWorld->DrawDebugData();
+		if(m_shouldDrawDebug)
+		{
+			m_physicsWorld->DrawDebugData();
+		}
 	}
 
 	void PhysicsManager::singleStep( void )

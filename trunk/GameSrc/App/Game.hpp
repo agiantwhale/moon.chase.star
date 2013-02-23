@@ -14,13 +14,6 @@
 
 namespace sb
 {
-
-	struct Settings
-	{
-		bool fullscreen;
-		bool vSync;
-	};
-
 	class Game : public Singleton<Game>, public sf::RenderWindow
 	{
 		DEFINE_SINGLETON( Game )

@@ -21,7 +21,7 @@ namespace sb
 		unload();
 	}
 
-	void GraphicsManager::setUpGraphics(void)
+	void GraphicsManager::setUpGraphics( const TiXmlElement* element )
 	{
 		TRI_LOG_STR("Graphics initialized.");
 	}

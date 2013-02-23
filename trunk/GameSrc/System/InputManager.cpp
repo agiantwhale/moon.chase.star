@@ -29,7 +29,7 @@ namespace sb
 		}
 	}
 
-	void InputManager::setUpInput()
+	void InputManager::setUpInput( const TiXmlElement* element )
 	{
 		//Check for Xbox 360 Connection
 		{

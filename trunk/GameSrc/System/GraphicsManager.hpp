@@ -1,6 +1,7 @@
 #ifndef GRAPHICSMANAGER_HPP
 #define GRAPHICSMANAGER_HPP
 
+#include <TinyXML/tinyxml.h>
 #include <list>
 #include <vector>
 #include <string>
@@ -27,7 +28,7 @@ namespace sb
 		void render();
 		void unload();
 
-		void setUpGraphics(void);
+		void setUpGraphics( const TiXmlElement* element );
 
 	private:
 		virtual bool handleEvent( const EventData& newevent );

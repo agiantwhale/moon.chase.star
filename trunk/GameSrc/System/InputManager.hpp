@@ -5,6 +5,7 @@
 #include <Thor/Time/Timer.hpp>
 #include "../Base/Singleton.hpp"
 #include "../Event/EventListener.hpp"
+#include <TinyXML/tinyxml.h>
 
 namespace sb
 {
@@ -13,7 +14,7 @@ namespace sb
 		DEFINE_SINGLETON(InputManager)
 
 	public:
-		void setUpInput(void);
+		void setUpInput( const TiXmlElement* element );
 		void update( sf::Time deltaTime );
 		void feedOutput( float amount, sf::Time duration );
 		bool handleEvent(const EventData& theevent);

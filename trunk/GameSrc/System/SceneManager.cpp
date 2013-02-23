@@ -359,7 +359,7 @@ namespace sb
 		m_sceneLoaded = false;
 	}
 
-	void SceneManager::setUpScene( void )
+	void SceneManager::setUpScene( const TiXmlElement* element )
 	{
 		TiXmlDocument document("Scenes.xml");
 		if(document.LoadFile())

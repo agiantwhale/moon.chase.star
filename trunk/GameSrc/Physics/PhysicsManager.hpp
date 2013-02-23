@@ -6,6 +6,7 @@
 #include <Box2D/Box2D.h>
 #include "../Base/Singleton.hpp"
 #include "../Event/EventListener.hpp"
+#include "TinyXML/tinyxml.h"
 
 using namespace std;
 
@@ -31,7 +32,7 @@ namespace sb
 		void addSimulatable( Simulatable* simulatable );
 		void removeSimulatable( Simulatable* simulatable );
 
-		void setUpPhysics( void );
+		void setUpPhysics( const TiXmlElement* element );
 		void fixedUpdate( sf::Time deltaTime );
 		void renderPhysicsDebug( void );
 
@@ -55,6 +56,7 @@ namespace sb
 		DebugDraw*	m_debugDraw;
 		b2World*	m_physicsWorld;
 		bool		m_isPhysicsSetUp;
+		bool		m_shouldDrawDebug;
 
 		void singleStep( void );
 		void smoothStep( void );

@@ -39,7 +39,7 @@ namespace sb
 		m_gwenCanvas->RenderCanvas();
 	}
 
-	void GUIManager::setUpGUI(void)
+	void GUIManager::setUpGUI( const TiXmlElement* element )
 	{
 		m_gwenRenderer = new Gwen::Renderer::SFML(*Game::getInstance());
 

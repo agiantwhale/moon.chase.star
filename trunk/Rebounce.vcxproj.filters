@@ -318,9 +318,6 @@
     <ClInclude Include="GameSrc\GUI\GUIManager.hpp">
       <Filter>GameSrc\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\Physics\PhysicsManager.hpp">
-      <Filter>GameSrc\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="GameSrc\Physics\Debug\PhysicsDebugDraw.hpp">
       <Filter>GameSrc\Physics\Debug</Filter>
     </ClInclude>
@@ -362,6 +359,9 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Event\GravityChangeEventData.hpp">
       <Filter>GameSrc\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Physics\PhysicsManager.hpp">
+      <Filter>GameSrc\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

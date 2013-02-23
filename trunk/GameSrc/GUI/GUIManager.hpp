@@ -1,6 +1,7 @@
 #ifndef GUIManager_h__
 #define GUIManager_h__
 
+#include <TinyXML/tinyxml.h>
 #include "../Base/Singleton.hpp"
 #include "../Event/EventListener.hpp"
 
@@ -35,7 +36,7 @@ namespace sb
 
 	public:
 		virtual bool handleEvent(const EventData& theevent);
-		void setUpGUI(void);
+		void setUpGUI( const TiXmlElement* element );
 		void render(void);
 
 		Gwen::Controls::Canvas* getCanvas() const { return m_gwenCanvas; }

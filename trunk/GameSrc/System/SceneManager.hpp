@@ -1,6 +1,7 @@
 #ifndef SCENEMANAGER_HPP
 #define SCENEMANAGER_HPP
 
+#include <TinyXML/tinyxml.h>
 #include <list>
 #include <vector>
 #include <string>
@@ -24,7 +25,7 @@ namespace sb
 		DEFINE_SINGLETON( SceneManager );
 
 	public:
-		void setUpScene(void);
+		void setUpScene( const TiXmlElement* element );
 		void saveProgress(void);
 		void loadScene( unsigned int sceneNum );
 		void restartScene(void);
