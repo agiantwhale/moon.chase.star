@@ -3,6 +3,8 @@
 #include "../System/ResourceCache.hpp"
 #include "../Physics/PhysicsManager.hpp"
 
+REGISTER_ENTITY(SharpEntity, "Sharp")
+
 SharpEntity::SharpEntity()
 	:	BaseClass(),
 		m_sharpSprite(),
@@ -13,6 +15,7 @@ SharpEntity::SharpEntity()
 
 SharpEntity::~SharpEntity()
 {
+	sb::GraphicsManager::getInstance()->removeDrawable(m_sharpSprite,2);
 	sb::PhysicsManager::getInstance()->removeSimulatable(&m_sharpBody);
 }
 
@@ -39,7 +42,7 @@ void SharpEntity::initializeEntity( const TiXmlElement *propertyElement /*= NULL
 
 		b2Body* blockBody = sb::PhysicsManager::getInstance()->getPhysicsWorld()->CreateBody(&bodyDefinition);
 
-		b2Vec2 triangle[2];
+		b2Vec2 triangle[3];
 		
 		triangle[0] = b2Vec2(0.f,60.f * UNRATIO);
 		triangle[1] = b2Vec2(-32.f * UNRATIO, 0.f );

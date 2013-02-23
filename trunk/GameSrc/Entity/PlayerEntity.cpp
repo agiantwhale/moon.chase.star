@@ -464,6 +464,13 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 					break;
 				}
 
+			case 'SHRP':
+				{
+					m_shouldBounce = false;
+					kill();
+					break;
+				}
+
 			default:
 			{
 				break;
@@ -736,7 +743,7 @@ void PlayerEntity::kill()
 		gameOverEvent->triggerEvent();
 
 		sb::EventData* eventData = new sb::EventData( Event_RestartLevel );
-		eventData->queueEvent(sf::seconds(0.5f));
+		eventData->queueEvent(sf::seconds(1.5f));
 	}	
 }
 
