@@ -129,11 +129,15 @@ namespace sb
 
 			if(windowEvent.type == sf::Event::LostFocus)
 			{
+				EventData* eventData = new EventData(Event_PauseApp);
+				eventData->triggerEvent();
 				m_isPaused = true;
 			}
 
 			if(windowEvent.type == sf::Event::GainedFocus)
 			{
+				EventData* eventData = new EventData(Event_ResumeApp);
+				eventData->triggerEvent();
 				m_isPaused = false;
 			}
 

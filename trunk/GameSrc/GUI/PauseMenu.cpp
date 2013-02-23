@@ -21,10 +21,6 @@ GWEN_CONTROL_CONSTRUCTOR(PauseMenuControl)
 	lightRectangle->SetBounds(960,0,320,720);
 	lightRectangle->SetColor(Gwen::Color(255,255,255,80));
 
-	Gwen::Controls::ImagePanel* titleImage = new Gwen::Controls::ImagePanel(this);
-	titleImage->SetImage("Resource/Textures/Title.png");
-	titleImage->SetBounds(20,50,640,400);
-
 	Gwen::Controls::Button* resumeButton = new Gwen::Controls::Button(this);
 	resumeButton->SetText(L"resume");
 	resumeButton->SetSize(250,100);

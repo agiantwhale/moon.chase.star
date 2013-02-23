@@ -458,6 +458,12 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 					break;
 				}
 
+			case 'TLXT':
+				{
+					m_shouldBounce = false;
+					break;
+				}
+
 			default:
 			{
 				break;
@@ -659,6 +665,11 @@ void PlayerEntity::bounce( void )
 
 void PlayerEntity::updatePlayerState( void )
 {
+	if(m_moonDead)
+	{
+		return;
+	}
+
 	switch(m_playerState)
 	{
 	case kPlayer_Moving:
@@ -677,7 +688,20 @@ void PlayerEntity::updatePlayerState( void )
 
 	case kPlayer_Thrown:
 		{
-			if( sb::InputManager::getInstance()->getDownInput() /* sf::Keyboard::isKeyPressed(sf::Keyboard::Down) */ )
+			bool shouldFall = false;
+			sb::PhysicsManager::GravityDirection gravDir = sb::PhysicsManager::getInstance()->getGravityDirection();
+
+			if(gravDir == sb::PhysicsManager::Gravity_Down || gravDir == sb::PhysicsManager::Gravity_Up)
+			{
+				shouldFall = (sb::InputManager::getInstance()->getDownInput() || sb::InputManager::getInstance()->getUpInput());
+			}
+			else
+			{
+				shouldFall = (sb::InputManager::getInstance()->getRightInput() || sb::InputManager::getInstance()->getLeftInput());
+			}
+
+
+			if( shouldFall )
 			{
 				fall();
 			}

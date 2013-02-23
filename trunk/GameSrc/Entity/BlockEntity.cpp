@@ -55,7 +55,7 @@ void BlockEntity::initializeEntity( const TiXmlElement *propertyElement /* = NUL
 		b2FixtureDef fixtureDefinition;
 		fixtureDefinition.shape = &boxShape;
 		fixtureDefinition.density = 1.0f;
-		fixtureDefinition.friction = 0.5f;
+		fixtureDefinition.friction = 0.0f;
 		fixtureDefinition.restitution = 0.0f;
 
 		blockBody->CreateFixture(&fixtureDefinition);

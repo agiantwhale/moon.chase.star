@@ -19,12 +19,16 @@ MovingPlatformEntity::MovingPlatformEntity()
 		m_travelSpeed(0.0f),
 		m_moveTimer()
 {
+	addEventListenType(Event_PauseApp);
+	addEventListenType(Event_ResumeApp);
 	addEventListenType(Event_PauseGame);
 	addEventListenType(Event_ResumeGame);
 }
 
 MovingPlatformEntity::~MovingPlatformEntity()
 {
+	removeEventListenType(Event_PauseApp);
+	removeEventListenType(Event_ResumeApp);
 	removeEventListenType(Event_PauseGame);
 	removeEventListenType(Event_ResumeGame);
 
@@ -84,7 +88,7 @@ void MovingPlatformEntity::initializeEntity( const TiXmlElement *propertyElement
 		b2FixtureDef fixtureDefinition;
 		fixtureDefinition.shape = &boxShape;
 		fixtureDefinition.density = 1.0f;
-		fixtureDefinition.friction = 0.5f;
+		fixtureDefinition.friction = 0.0f;
 		fixtureDefinition.restitution = 0.0f;
 
 		platformBody->CreateFixture(&fixtureDefinition);
@@ -139,6 +143,18 @@ bool MovingPlatformEntity::handleEvent( const sb::EventData& theevent )
 {
 	switch (theevent.getEventType())
 	{
+	case Event_PauseApp:
+		{
+			m_moveTimer.stop();
+			break;
+		}
+
+	case Event_ResumeApp:
+		{
+			m_moveTimer.start();
+			break;
+		}
+
 	case Event_PauseGame:
 		{
 			m_moveTimer.stop();

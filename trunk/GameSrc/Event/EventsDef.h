@@ -7,6 +7,8 @@ enum EventType
 
 	//App related,
 	Event_App,
+	Event_PauseApp,
+	Event_ResumeApp,
 
 	//GUI related,
 	Event_GUI,
