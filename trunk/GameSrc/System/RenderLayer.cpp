@@ -3,6 +3,13 @@
 #include "RenderLayer.hpp"
 #include "../Helper/Globals.h"
 #include "../App/Game.hpp"
+#include "../Entity/PlayerEntity.hpp"
+#include "../Entity/StarEntity.hpp"
+#include "../Physics/PhysicsManager.hpp"
+#include "../System/SceneManager.hpp"
+#include "../Helper/Conversion.hpp"
+#include "../Event/ContactEventData.hpp"
+#include "GraphicsManager.hpp"
 
 namespace sb
 {

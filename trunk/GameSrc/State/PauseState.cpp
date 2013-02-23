@@ -47,6 +47,9 @@ namespace sb
 
 			if( controlName == "MainMenuButton")
 			{
+				EventData* eventData = new EventData(Event_GameOver);
+				eventData->triggerEvent();
+
 				Game::getInstance()->setNextStateType(State_Loading);
 				m_endState = true;
 			}

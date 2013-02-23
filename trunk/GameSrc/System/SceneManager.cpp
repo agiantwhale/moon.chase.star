@@ -3,7 +3,9 @@
 #include <TinyXML\tinyxml.h>
 
 #include "SceneManager.hpp"
+#include "../Physics/PhysicsManager.hpp"
 #include "GraphicsManager.hpp"
+#include "RenderLayer.hpp"
 
 #include "../App/Game.hpp"
 #include "../Base/Globals.hpp"
@@ -12,24 +14,37 @@
 #include "../Tile/Tile.hpp"
 #include "../Tile/BackgroundTile.hpp"
 #include "../Entity/ZoneEntity.hpp"
+#include "../Entity/PlayerEntity.hpp"
+#include "../Entity/HullEntity.hpp"
+#include "../Helper/Conversion.hpp"
+#include "../Event/ContactEventData.hpp"
+#include "../Entity/StarEntity.hpp"
 
 namespace sb
 {
 	SINGLETON_CONSTRUCTOR(SceneManager),
 						  EventListener(),
 						  m_levelSize(),
+						  m_gameLost(false),
 						  m_sceneLoaded(false),
 						  m_sceneNum(0),
 						  m_backgroundMusic(nullptr),
 						  m_playerEntity(nullptr),
-						  m_starEntity(nullptr)
+						  m_starEntity(nullptr),
+						  m_zoneBody(nullptr)
 	{
+		addEventListenType(Event_GameOver);
 		addEventListenType(Event_Unload);
+		addEventListenType(Event_Simulate);
+		addEventListenType(Event_EndContact);
 	}
 
 	SINGLETON_DESTRUCTOR(SceneManager)
 	{
+		addEventListenType(Event_GameOver);
 		removeEventListenType(Event_Unload);
+		removeEventListenType(Event_Simulate);
+		removeEventListenType(Event_EndContact);
 	}
 
 	bool SceneManager::handleEvent( const EventData& newevent )
@@ -39,11 +54,65 @@ namespace sb
 			unloadScene();
 		}
 
+		if(newevent.getEventType() == Event_EndContact)
+		{
+			const ContactEventData& contactData = static_cast<const ContactEventData&>(newevent);
+			const b2Contact* contactInfo = contactData.getContact();
+
+			const b2Fixture* target = nullptr;
+
+			bool returnValue = false;
+
+			if(contactInfo->GetFixtureA()->GetBody() == m_zoneBody)
+			{
+				target = contactInfo->GetFixtureB();
+				returnValue = true;
+			}
+			else if(contactInfo->GetFixtureB()->GetBody() == m_zoneBody)
+			{
+				target = contactInfo->GetFixtureA();
+				returnValue = true;
+			}
+
+			if(returnValue)
+			{
+				Entity* targetEntity = getOwnerEntity(target);
+
+				if(targetEntity)
+				{
+					PlayerEntity* playerEntity = entity_cast<PlayerEntity>(targetEntity);
+
+					if( !m_gameLost && playerEntity && m_playerEntity->getPlayerState() != PlayerEntity::kPlayer_Teleport )
+					{
+						//m_shouldKillMoon = true;
+						playerEntity->kill();
+					}
+					else if(targetEntity->getEntityType() != StarEntity::getEntityIdentifier() && targetEntity->getEntityType() != PlayerEntity::getEntityIdentifier() && targetEntity->getEntityType() != HullEntity::getEntityIdentifier())
+					{
+						targetEntity->releaseEntity();
+					}
+				}
+			}
+		}
+
+		if(newevent.getEventType() == Event_Simulate)
+		{
+			m_zoneBody->SetTransform(ToVector(GraphicsManager::getInstance()->getRenderLayer(2)->getCamera().getPosition()),0.f);
+			m_zoneBody->SetAwake(true);
+		}
+
+		if(newevent.getEventType() == Event_GameOver)
+		{
+			m_gameLost = true;
+		}
+
 		return false;
 	}
 
 	void SceneManager::restartScene(void)
 	{
+		m_gameLost = false;
+
 		m_playerEntity = nullptr;
 		m_starEntity = nullptr;
 
@@ -102,6 +171,11 @@ namespace sb
 			}
 		}
 
+		{
+			m_zoneBody->SetTransform(ToVector(GraphicsManager::getInstance()->getRenderLayer(2)->getCamera().getPosition()),0.f);
+			m_zoneBody->SetAwake(true);
+		}
+
 		entityMgr->postLoad();
 
 		TRI_LOG_STR("Load complete.");
@@ -111,6 +185,8 @@ namespace sb
 
 	void SceneManager::loadScene( unsigned int sceneNum )
 	{
+		m_gameLost = false;
+
 		if(sceneNum >= m_sceneFileNameStack.size())
 		{
 			sceneNum = 0;
@@ -229,6 +305,27 @@ namespace sb
 			}
 		}
 
+		{
+			b2BodyDef bodyDefinition;
+			bodyDefinition.userData = nullptr;
+			bodyDefinition.position = ToVector(GraphicsManager::getInstance()->getRenderLayer(2)->getCamera().getPosition());
+			bodyDefinition.angle = 0.0f;
+			bodyDefinition.fixedRotation = true;
+			bodyDefinition.type = b2_dynamicBody;
+			bodyDefinition.gravityScale = 0.f;
+
+			m_zoneBody = PhysicsManager::getInstance()->getPhysicsWorld()->CreateBody(&bodyDefinition);
+
+			b2PolygonShape boxShape;
+			boxShape.SetAsBox( 0.5f * SCREENWIDTH * UNRATIO, 0.5f * SCREENHEIGHT * UNRATIO );
+
+			b2FixtureDef fixtureDef;
+			fixtureDef.isSensor = true;
+			fixtureDef.shape = &boxShape;
+
+			m_zoneBody->CreateFixture(&fixtureDef);
+		}
+
 		entityMgr->postLoad();
 
 		TRI_LOG_STR("Load complete.");
@@ -250,6 +347,9 @@ namespace sb
 		{
 			delete (*iter);
 		}
+
+		PhysicsManager::getInstance()->getPhysicsWorld()->DestroyBody(m_zoneBody);
+		m_zoneBody = nullptr;
 
 		m_tileStack.clear();
 

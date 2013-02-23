@@ -44,7 +44,7 @@ void GravityEntity::initializeEntity( const TiXmlElement *propertyElement /*= NU
 {
 	BaseClass::initializeEntity(propertyElement);
 
-	sf::Vector2f finalGravity = thor::rotatedVector<float>(sf::Vector2f(0,GRAVITY_ACCELERATION), getRotation() * -1.f );
+	sf::Vector2f finalGravity = thor::rotatedVector<float>(sf::Vector2f(0,GRAVITY_ACCELERATION), getRotation() );
 
 	//HACKHACK!!
 	if(std::abs(finalGravity.x) <= 5.0f)
@@ -100,7 +100,7 @@ void GravityEntity::initializeEntity( const TiXmlElement *propertyElement /*= NU
 		b2BodyDef bodyDefinition;
 		bodyDefinition.userData = (Entity*)this;
 		bodyDefinition.position = ToVector(getPosition());
-		bodyDefinition.angle = getRotation() * DEGTORAD;
+		bodyDefinition.angle = getRotation() * DEGTORAD * -1.f;
 		bodyDefinition.type = b2_staticBody;
 
 		b2Body* throwBody = sb::PhysicsManager::getInstance()->getPhysicsWorld()->CreateBody(&bodyDefinition);
@@ -167,23 +167,6 @@ void GravityEntity::simulate()
 	if(m_changeGravity)
 	{
 		m_changeGravity = false;
-
-		/*
-		sf::Vector2f finalGravity = thor::rotatedVector<float>(sf::Vector2f(0,GRAVITY_ACCELERATION), getRotation() * -1.f );
-
-		//HACKHACK!!
-		if(std::abs(finalGravity.x) <= 5.0f)
-		{
-			finalGravity.x = 0.f;
-		}
-
-		if(std::abs(finalGravity.y) <= 5.0f)
-		{
-			finalGravity.y = 0.f;
-		}
-		*/
-
-		//sb::PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(ToVector(finalGravity));
 
 		sb::EventData* eventData = new GravityChangeEventData(m_gravityDirection);
 		eventData->triggerEvent();

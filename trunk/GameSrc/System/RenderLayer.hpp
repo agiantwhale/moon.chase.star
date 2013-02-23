@@ -4,6 +4,8 @@
 #include <list>
 #include <sfml/Graphics/Transformable.hpp>
 #include <SFML/Graphics/Drawable.hpp>
+#include "../Event/EventListener.hpp"
+#include "../Physics/BodyController.hpp"
 
 namespace sb
 {

@@ -26,16 +26,20 @@ const float JUMP_IMPULSE = 18.0f;
 const float MOVE_IMPULSE = 0.5f;
 const float MAX_MOVE_VELOCITY = 9.0f;
 const float JUMP_SLOPE = 0.25f;
+const float JUMP_SLOPE_STRICT = 0.001f;
+const float THROW_VELOCITY = 40.0f;
 
 REGISTER_ENTITY( PlayerEntity, "Ball" )
 
 PlayerEntity::PlayerEntity() : Entity(), m_ballBody(*this), m_ballSprite(),
 	m_ballTranslator(*this),
     m_shouldBounce(false),
+	m_moonDead(false),
     m_playerState(kPlayer_Moving),
 	m_bounceSound(),
 	m_throwSound(),
-	m_zoneEntityList()
+	m_zoneEntityList(),
+	m_teleportTask(nullptr)
 {
 	addEventListenType(Event_BeginContact);
 	addEventListenType(Event_EndContact);
@@ -56,6 +60,7 @@ PlayerEntity::~PlayerEntity()
 
 void PlayerEntity::update(sf::Time deltaTime)
 {
+	/*
 	sf::Transformable* starTransform = sb::SceneManager::getInstance()->getStarEntity();
 	if(starTransform)
 	{
@@ -67,6 +72,7 @@ void PlayerEntity::update(sf::Time deltaTime)
 			kill();
 		}
 	}
+	*/
 
 	m_ballTranslator.translate(m_ballSprite);
 }
@@ -181,6 +187,7 @@ bool PlayerEntity::handleEvent(const sb::EventData& theevent)
 
 	case Event_PreSolve:
 		{
+			/*
 			const sb::PreSolveEventData& eventData = static_cast<const sb::PreSolveEventData&>(theevent);
 			b2Contact* contactInfo = eventData.GetContact();
 
@@ -189,6 +196,7 @@ bool PlayerEntity::handleEvent(const sb::EventData& theevent)
 			{
 				processPreSolve(contactInfo,target);
 			}
+			*/
 			
 			break;
 		}
@@ -208,7 +216,12 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
     b2Vec2 normal = manifold.normal;
     float slope = std::abs(normal.y/normal.x);
 
-    sb::Entity* entity = static_cast<sb::Entity*>(contactFixture->GetBody()->GetUserData());
+    sb::Entity* entity = sb::getOwnerEntity(contactFixture);
+
+	if(entity == nullptr)
+	{
+		return;
+	}
 
 	const sb::PhysicsManager::GravityDirection gravityDirection = sb::PhysicsManager::getInstance()->getGravityDirection();
 
@@ -267,53 +280,60 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 		}
 	}
 
-    if(entity)
-    {
-        switch(entity->getEntityType())
-        {
-        case 'THRW':
-        {
-			m_shouldBounce = false;
-			m_throwSound.play();
+	switch(entity->getEntityType())
+	{
+			case 'THRW':
+			{
+				//m_shouldBounce = false;
+				//m_throwSound.play();
 
-			/*
-            if( (slope < JUMP_SLOPE || getPosition().y < entity->getPosition().y ) && m_playerState == kPlayer_Thrown )
-            {
-                fall();
-            }
-			*/
+				b2Vec2 contactPos = contactFixture->GetBody()->GetLocalPoint(m_ballBody.getBody()->GetPosition());
+				ThrowEntity* throwEntity = sb::entity_cast<ThrowEntity>(entity);
 
-            break;
-        }
+				if( std::abs(normal.x) <= JUMP_SLOPE_STRICT ||
+					(std::abs(normal.y) <= JUMP_SLOPE_STRICT && contactPos.y > 0.f))
+				{
+					m_shouldBounce = false;
+					m_throwSound.play();
+					//contact->SetEnabled(false);
+					sf::Vector2f throwVelocity = ToVector(contactFixture->GetBody()->GetWorldVector(b2Vec2(0,1.0f))) * THROW_VELOCITY;
+					shoot(throwVelocity);
+				}
+				else if( (std::abs(normal.y) <= JUMP_SLOPE_STRICT && contactPos.y < 0.f) )
+				{
+					m_shouldBounce = false;
+					fall();
+				}
 
-        case 'HULL':
-        {
-            if( m_playerState == kPlayer_Thrown )
-            {
-				m_shouldBounce = false;
-                fall();
-            }
+				/*
+				b2Vec2 contactPos = contactFixture->GetBody()->GetLocalPoint(m_ballBody.getBody()->GetPosition());
+				if(contactPos.y > 0.f)
+				{
+					m_shouldBounce = false;
+					m_throwSound.play();
+				}
+				*/
+
+				/*
+				if( (slope < JUMP_SLOPE || getPosition().y < entity->getPosition().y ) && m_playerState == kPlayer_Thrown )
+				{
+					fall();
+				}
+				*/
+
+				break;
+			}
+
+			case 'HULL':
+			{
+				if( m_playerState == kPlayer_Thrown )
+				{
+					m_shouldBounce = false;
+					fall();
+				}
 			
-			/*
-            else if( slope >= JUMP_SLOPE && (getPosition().y > entity->getPosition().y) )
-            {
-                m_shouldBounce = true;
-            }
-			*/
-
-            break;
-        }
-
-		case 'BLCK':
-			{
-				if( m_playerState == kPlayer_Thrown )
-				{
-					m_shouldBounce = false;
-					fall();
-				}
-
 				/*
-				else if( slope >= JUMP_SLOPE )
+				else if( slope >= JUMP_SLOPE && (getPosition().y > entity->getPosition().y) )
 				{
 					m_shouldBounce = true;
 				}
@@ -322,114 +342,144 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 				break;
 			}
 
-		case 'MVPT':
-			{
-				if( m_playerState == kPlayer_Thrown )
+			case 'BLCK':
 				{
-					m_shouldBounce = false;
-					fall();
-				}
+					if( m_playerState == kPlayer_Thrown )
+					{
+						m_shouldBounce = false;
+						fall();
+					}
 
-				/*
-				else if( slope >= JUMP_SLOPE )
-				{
-					m_shouldBounce = true;
-				}
-				*/
-
-				/*
-				else
-				{
-					const sb::PhysicsManager::GravityDirection gravityDirection = sb::PhysicsManager::getInstance()->getGravityDirection();
-
-					if( (gravityDirection == sb::PhysicsManager::Gravity_Up || gravityDirection == sb::PhysicsManager::Gravity_Down) && slope >= JUMP_SLOPE )
+					/*
+					else if( slope >= JUMP_SLOPE )
 					{
 						m_shouldBounce = true;
 					}
+					*/
 
-					if( (gravityDirection == sb::PhysicsManager::Gravity_Left || gravityDirection == sb::PhysicsManager::Gravity_Right) && slope <= 1/JUMP_SLOPE )
+					break;
+				}
+
+			case 'MVPT':
+				{
+					if( m_playerState == kPlayer_Thrown )
+					{
+						m_shouldBounce = false;
+						fall();
+					}
+
+					/*
+					else if( slope >= JUMP_SLOPE )
 					{
 						m_shouldBounce = true;
 					}
-				}
-				*/
+					*/
 
-				break;
-			}
+					/*
+					else
+					{
+						const sb::PhysicsManager::GravityDirection gravityDirection = sb::PhysicsManager::getInstance()->getGravityDirection();
 
-		case 'TLPT':
-			{
-				m_shouldBounce = false;
+						if( (gravityDirection == sb::PhysicsManager::Gravity_Up || gravityDirection == sb::PhysicsManager::Gravity_Down) && slope >= JUMP_SLOPE )
+						{
+							m_shouldBounce = true;
+						}
 
-				if( m_playerState == kPlayer_Thrown )
-				{
-					fall();
-				}
+						if( (gravityDirection == sb::PhysicsManager::Gravity_Left || gravityDirection == sb::PhysicsManager::Gravity_Right) && slope <= 1/JUMP_SLOPE )
+						{
+							m_shouldBounce = true;
+						}
+					}
+					*/
 
-				if(m_playerState != kPlayer_Teleport)
-				{
-					m_playerState = kPlayer_Teleport;
-
-					TeleportEntity* tlptEntity = sb::entity_cast<TeleportEntity>(entity);
-					TeleportTask* tlptTask = new TeleportTask(sf::seconds(1.f), this, tlptEntity);
-					tlptTask->addTask();
+					break;
 				}
 
-				sb::InputManager::getInstance()->feedOutput(0.6f,sf::seconds(.6f));
-
-				break;
-			}
-
-		case 'ZONE':
-			{
-				//implement sort of an interface to keep track of which zone the player entity is in.
-				m_shouldBounce = false;
-				m_zoneEntityList.push_back(sb::entity_cast<ZoneEntity>(entity));
-				break;
-			}
-
-		case 'DEAD':
-			{
-				//implement sort of an interface to keep track of which zone the player entity is in.
-				m_shouldBounce = false;
-				kill();
-				break;
-			}
-
-		case 'GRAV':
-			{
-				GravityEntity* gravityEntity = sb::entity_cast<GravityEntity>(entity);
-
-				if( m_shouldBounce && gravityEntity->getGravityDirection() != sb::PhysicsManager::getInstance()->getGravityDirection() )
+			case 'TLPT':
 				{
 					m_shouldBounce = false;
+
+					if( m_playerState == kPlayer_Thrown )
+					{
+						fall();
+					}
+
+					if(m_playerState != kPlayer_Teleport)
+					{
+						m_playerState = kPlayer_Teleport;
+
+						TeleportEntity* tlptEntity = sb::entity_cast<TeleportEntity>(entity);
+						m_teleportTask = new TeleportTask(sf::seconds(1.f), this, tlptEntity);
+						m_teleportTask->addTask();
+					}
+
+					sb::InputManager::getInstance()->feedOutput(0.6f,sf::seconds(.6f));
+
+					break;
 				}
 
+			case 'ZONE':
+				{
+					//implement sort of an interface to keep track of which zone the player entity is in.
+					m_shouldBounce = false;
+					m_zoneEntityList.push_back(sb::entity_cast<ZoneEntity>(entity));
+					break;
+				}
+
+			case 'DEAD':
+				{
+					//implement sort of an interface to keep track of which zone the player entity is in.
+					m_shouldBounce = false;
+					kill();
+					break;
+				}
+
+			case 'GRAV':
+				{
+					GravityEntity* gravityEntity = sb::entity_cast<GravityEntity>(entity);
+
+					if( m_shouldBounce && gravityEntity->getGravityDirection() != sb::PhysicsManager::getInstance()->getGravityDirection() )
+					{
+						m_shouldBounce = false;
+					}
+
+					break;
+				}
+
+			case 'LVLC':
+				{
+					m_shouldBounce = false;
+					break;
+				}
+
+			case 'STAR':
+				{
+					m_shouldBounce = false;
+					break;
+				}
+
+			default:
+			{
 				break;
 			}
-
-        default:
-        {
-            break;
-        }
-        }
-    }
+	}
 }
 
 void PlayerEntity::processPreSolve( b2Contact* contact,const b2Fixture* target )
 {
-	const float THROW_VELOCITY = 40.0f;
-
 	b2WorldManifold manifold;
 	contact->GetWorldManifold(&manifold);
 
+	b2Vec2 contactPos = target->GetBody()->GetLocalPoint(m_ballBody.getBody()->GetPosition());
 	b2Vec2 normal = manifold.normal;
 	float slope = std::abs(normal.y/normal.x);
+
 
 	sb::Entity* entity = static_cast<sb::Entity*>(target->GetBody()->GetUserData());
 	ThrowEntity* throwEntity = sb::entity_cast<ThrowEntity>(entity);
 
-	if( throwEntity
+	if( throwEntity &&
+		contactPos.y > 0.f
 		//&& slope >= JUMP_SLOPE
 		//&& throwEntity->getPosition().y < getPosition().y
 		/*&& m_playerState == kPlayer_Moving */ )
@@ -493,6 +543,7 @@ void PlayerEntity::fall( void )
 		m_ballBody.getBody()->SetLinearVelocity( ballVelocity );
 	}
 	*/
+	m_ballBody.getBody()->SetAngularVelocity(0.f);
 	m_ballBody.getBody()->SetLinearVelocity(b2Vec2(0.f,0.f));
 }
 
@@ -645,13 +696,24 @@ void PlayerEntity::updatePlayerState( void )
 
 void PlayerEntity::kill()
 {
-	sb::EventManager::getInstance()->abortEvent(Event_NextLevel,true);
+	if(!m_moonDead)
+	{
+		m_moonDead = true;
 
-	sb::EventData* gameOverEvent = new sb::EventData( Event_GameOver );
-	gameOverEvent->queueEvent(sf::seconds(0.5f));
+		if(m_teleportTask)
+		{
+			m_teleportTask->removeTask();
+			m_teleportTask = nullptr;
+		}
 
-	sb::EventData* eventData = new sb::EventData( Event_RestartLevel );
-	eventData->queueEvent(sf::seconds(0.5f));
+		sb::EventManager::getInstance()->abortEvent(Event_NextLevel,true);
+
+		sb::EventData* gameOverEvent = new sb::EventData( Event_GameOver );
+		gameOverEvent->triggerEvent();
+
+		sb::EventData* eventData = new sb::EventData( Event_RestartLevel );
+		eventData->queueEvent(sf::seconds(0.5f));
+	}	
 }
 
 void PlayerEntity::limitGravitationalVelocity( void )

@@ -47,10 +47,9 @@ void TeleportTask::end()
 	sb::Task::end();
 
 	sf::Vector2f exitPos = m_teleportEntity->getExitPosition();
+	m_playerEntity->setTeleportTask(nullptr);
 	m_playerEntity->setScale(1.f,1.f);
 	m_playerEntity->getBallBody()->SetActive(true);
-	m_playerEntity->getBallBody()->SetAngularVelocity(0.0f);
-	m_playerEntity->getBallBody()->SetLinearVelocity(b2Vec2(0.0f,0.0f));
 	m_playerEntity->getBallBody()->SetTransform(ToVector(exitPos),m_playerEntity->getBallBody()->GetAngle());
 	m_playerEntity->getBallBody()->SetAwake(true);
 	m_playerEntity->resetBodyPosition();

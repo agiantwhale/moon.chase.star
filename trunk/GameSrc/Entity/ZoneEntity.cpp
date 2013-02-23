@@ -1,5 +1,6 @@
 #include "ZoneEntity.hpp"
 #include "PlayerEntity.hpp"
+#include "StarEntity.hpp"
 #include "../Helper/Conversion.hpp"
 #include "../Base/Math.hpp"
 #include "../Event/ContactEventData.hpp"
@@ -89,7 +90,11 @@ bool ZoneEntity::handleEvent( const sb::EventData& theevent )
 				if(playerEntity)
 				{
 					m_containsBall = true;
+				}
 
+				StarEntity* starEntity = sb::entity_cast<StarEntity>(entity);
+				if(starEntity)
+				{
 					for(std::list<sb::Task*>::iterator iter = m_taskList.begin(); iter != m_taskList.end(); iter++ )
 					{
 						sb::Task* moveTask = (*iter);

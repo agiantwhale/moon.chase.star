@@ -7,6 +7,7 @@
 #include "Entity.hpp"
 #include "../Physics/BodyController.hpp"
 #include "../Helper/ScreenTranslator.hpp"
+#include "../Task/Task.hpp"
 
 class ZoneEntity;
 
@@ -15,6 +16,13 @@ class PlayerEntity : public sb::Entity
     DEFINE_ENTITY(PlayerEntity,sb::Entity,'BALL')
 
 public:
+	enum PlayerState
+	{
+		kPlayer_Moving,
+		kPlayer_Thrown,
+		kPlayer_Teleport
+	};
+
 	b2Body* getBallBody() const { return m_ballBody.getBody(); }
 
 	void kill(void);
@@ -28,6 +36,11 @@ public:
 		m_ballBody.resetTransform();
 		m_ballBody.updateTransform();
 	}
+
+	sb::Task* getTeleportTask() const { return m_teleportTask; }
+	void setTeleportTask(sb::Task* val) { m_teleportTask = val; }
+
+	PlayerEntity::PlayerState getPlayerState() const { return m_playerState; }
 
 private:
     virtual void initializeEntity( const TiXmlElement *propertyElement );
@@ -46,14 +59,9 @@ private:
 	void processContact(const b2Contact* contact, const b2Fixture* contactFixture );
 	void processPreSolve(b2Contact* contact,const b2Fixture* target);
 
-	enum PlayerState
-	{
-		kPlayer_Moving,
-		kPlayer_Thrown,
-		kPlayer_Teleport
-	} m_playerState;
-
-    bool    m_shouldBounce;
+	PlayerState m_playerState;
+	bool    m_shouldBounce;
+	bool	m_moonDead;
 
 	sb::BodyController m_ballBody;
 	sb::ScreenTranslator	m_ballTranslator;
@@ -63,6 +71,8 @@ private:
 
 	typedef std::list<ZoneEntity*> ZoneEntityList;
 	ZoneEntityList m_zoneEntityList;
+
+	sb::Task* m_teleportTask;
 };
 
 #endif // PlayerEntity_h__
