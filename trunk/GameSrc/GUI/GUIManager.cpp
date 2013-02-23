@@ -45,7 +45,7 @@ namespace sb
 
 		Gwen::Skin::TexturedBase* texturedSkin = new Gwen::Skin::TexturedBase(m_gwenRenderer);
 		texturedSkin->Init( "Resource/Textures/GUISkin.png" );
-		texturedSkin->SetDefaultFont( L"Resource/Fonts/HeumToda.ttf", 20 );
+		texturedSkin->SetDefaultFont( L"Resource/Fonts/Stroke-Bold.otf", 20 );
 		m_gwenSkin = texturedSkin;
 
 		m_gwenCanvas = new Gwen::Controls::Canvas( m_gwenSkin );

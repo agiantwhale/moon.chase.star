@@ -80,6 +80,9 @@ void LevelCompleteEntity::processContact( const b2Contact* contact, const b2Fixt
 	{
 		setActive(false);
 
+		sb::EventData* winEvent = new sb::EventData(Event_GameWon);
+		winEvent->triggerEvent();
+
 		LevelCompleteTask* levelCompleteTask = new LevelCompleteTask(sb::entity_cast<PlayerEntity>(targetEntity),m_endFollowRoute);
 		levelCompleteTask->addTask();
 	}

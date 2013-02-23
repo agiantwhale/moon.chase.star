@@ -26,7 +26,8 @@ enum EventType
 	Event_LevelCompleted,
 	Event_RestartLevel,
 	Event_NextLevel,
-	Event_GameOver,
+	Event_GameWon,
+	Event_GameLost,
 	Event_Unload,
 	Event_ExitGame,
 

@@ -47,7 +47,7 @@ namespace sb
 
 			if( controlName == "MainMenuButton")
 			{
-				EventData* eventData = new EventData(Event_GameOver);
+				EventData* eventData = new EventData(Event_GameLost);
 				eventData->triggerEvent();
 
 				Game::getInstance()->setNextStateType(State_Loading);

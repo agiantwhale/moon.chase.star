@@ -26,6 +26,7 @@ namespace sb
 						  EventListener(),
 						  m_levelSize(),
 						  m_gameLost(false),
+						  m_gameWon(false),
 						  m_sceneLoaded(false),
 						  m_sceneNum(0),
 						  m_backgroundMusic(nullptr),
@@ -33,7 +34,8 @@ namespace sb
 						  m_starEntity(nullptr),
 						  m_zoneBody(nullptr)
 	{
-		addEventListenType(Event_GameOver);
+		addEventListenType(Event_GameWon);
+		addEventListenType(Event_GameLost);
 		addEventListenType(Event_Unload);
 		addEventListenType(Event_Simulate);
 		addEventListenType(Event_EndContact);
@@ -41,7 +43,8 @@ namespace sb
 
 	SINGLETON_DESTRUCTOR(SceneManager)
 	{
-		addEventListenType(Event_GameOver);
+		removeEventListenType(Event_GameWon);
+		removeEventListenType(Event_GameLost);
 		removeEventListenType(Event_Unload);
 		removeEventListenType(Event_Simulate);
 		removeEventListenType(Event_EndContact);
@@ -56,6 +59,8 @@ namespace sb
 
 		if(newevent.getEventType() == Event_EndContact)
 		{
+			if(!m_sceneLoaded) return false;;
+
 			const ContactEventData& contactData = static_cast<const ContactEventData&>(newevent);
 			const b2Contact* contactInfo = contactData.getContact();
 
@@ -82,7 +87,7 @@ namespace sb
 				{
 					PlayerEntity* playerEntity = entity_cast<PlayerEntity>(targetEntity);
 
-					if( !m_gameLost && playerEntity && m_playerEntity->getPlayerState() != PlayerEntity::kPlayer_Teleport )
+					if( !m_gameWon && !m_gameLost && playerEntity && m_playerEntity->getPlayerState() != PlayerEntity::kPlayer_Teleport )
 					{
 						//m_shouldKillMoon = true;
 						playerEntity->kill();
@@ -101,9 +106,14 @@ namespace sb
 			m_zoneBody->SetAwake(true);
 		}
 
-		if(newevent.getEventType() == Event_GameOver)
+		if(newevent.getEventType() == Event_GameLost)
 		{
 			m_gameLost = true;
+		}
+
+		if(newevent.getEventType() == Event_GameWon)
+		{
+			m_gameWon = true;
 		}
 
 		return false;
@@ -112,6 +122,7 @@ namespace sb
 	void SceneManager::restartScene(void)
 	{
 		m_gameLost = false;
+		m_gameWon = false;
 
 		m_playerEntity = nullptr;
 		m_starEntity = nullptr;
@@ -186,6 +197,7 @@ namespace sb
 	void SceneManager::loadScene( unsigned int sceneNum )
 	{
 		m_gameLost = false;
+		m_gameWon = false;
 
 		if(sceneNum >= m_sceneFileNameStack.size())
 		{

@@ -14,37 +14,39 @@ GWEN_CONTROL_CONSTRUCTOR(MainMenuControl)
 {
 	SetBounds(0,0,SCREENWIDTH,SCREENHEIGHT);
 
+	/*
 	Gwen::Controls::Rectangle* lightRectangle = new Gwen::Controls::Rectangle(this);
 	lightRectangle->SetBounds(960,0,320,720);
 	lightRectangle->SetColor(Gwen::Color(255,255,255,80));
+	*/
 
 	Gwen::Controls::ImagePanel* titleImage = new Gwen::Controls::ImagePanel(this);
-	titleImage->SetImage("Resource/Textures/Title.png");
-	titleImage->SetBounds(20,50,640,400);
+	titleImage->SetImage("Resource/Textures/Logo.png");
+	titleImage->SetBounds(SCREENWIDTH/2 - 150,50,300,300);
 
 	Gwen::Controls::Button* newGameButton = new Gwen::Controls::Button(this);
-	newGameButton->SetText(L"New Game");
-	newGameButton->SetSize(250,100);
-	newGameButton->SetPos(960 + 35,250);
+	newGameButton->SetText(L"new game");
+	newGameButton->SetSize(250,50);
+	newGameButton->SetPos(SCREENWIDTH/2 - 125,400);
 	newGameButton->onPress.Add(this,&MainMenuControl::onNewGame);
 
 	Gwen::Controls::Button* continueButton = new Gwen::Controls::Button(this);
-	continueButton->SetText(L"Continue");
-	continueButton->SetSize(250,100);
-	continueButton->SetPos(960 + 35,360);
+	continueButton->SetText(L"continue");
+	continueButton->SetSize(250,50);
+	continueButton->SetPos(SCREENWIDTH/2 - 125,475);
 	continueButton->onPress.Add(this,&MainMenuControl::onContinue);
 
 	Gwen::Controls::Button* creditsButton = new Gwen::Controls::Button(this);
-	creditsButton->SetText(L"Credits");
-	creditsButton->SetSize(250,100);
-	creditsButton->SetPos(960 + 35,470);
+	creditsButton->SetText(L"credits");
+	creditsButton->SetSize(250,50);
+	creditsButton->SetPos(SCREENWIDTH/2 - 125,550);
 	creditsButton->SetName("Credits");
 	creditsButton->onPress.Add(this,&MainMenuControl::onCredits);
 
 	Gwen::Controls::Button* exitButton = new Gwen::Controls::Button(this);
-	exitButton->SetText(L"End Game");
-	exitButton->SetSize(250,100);
-	exitButton->SetPos(960 + 35,580);
+	exitButton->SetText(L"end game");
+	exitButton->SetSize(250,50);
+	exitButton->SetPos(SCREENWIDTH/2 - 125,625);
 	exitButton->onPress.Add(this,&MainMenuControl::onExit);
 }
 

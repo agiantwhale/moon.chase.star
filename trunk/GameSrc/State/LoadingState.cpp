@@ -38,7 +38,7 @@ namespace sb
 
 		Gwen::Controls::Label* label = new Gwen::Controls::Label(center);
 		label->SetTextColor(Gwen::Colors::White);
-		label->SetText(L"Loading...");
+		label->SetText(L"loading...");
 		label->SizeToContents();
 
 		m_screenBase->Hide();

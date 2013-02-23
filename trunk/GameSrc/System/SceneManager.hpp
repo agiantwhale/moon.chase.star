@@ -55,6 +55,7 @@ namespace sb
 		unsigned int m_sceneNum;
 		std::vector<std::string> m_sceneFileNameStack;
 		bool m_gameLost;
+		bool m_gameWon;
 		bool m_sceneLoaded;
 		sf::Vector2i m_levelSize;
 		std::vector<Tile*> m_tileStack;
