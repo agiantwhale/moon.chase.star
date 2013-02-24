@@ -1,5 +1,4 @@
 #include <Gwen/Controls/Rectangle.h>
-#include <Gwen/Controls/Label.h>
 #include <Gwen/Controls/Layout/Position.h>
 #include "../State/LoadingState.hpp"
 #include "../Base/Globals.hpp"
@@ -12,6 +11,7 @@
 #include "../Event/EventManager.hpp"
 #include "../System/GraphicsManager.hpp"
 #include "../Physics/PhysicsManager.hpp"
+#include "../System/InputManager.hpp"
 
 namespace sb
 {
@@ -19,7 +19,11 @@ namespace sb
 		m_sceneNum(0),
 		m_loadType(Load_UNDEFINED),
 		m_screenBase(nullptr),
-		m_frameDrawn(false)
+		m_loadingText(nullptr),
+		m_helperText(nullptr),
+		m_pressEnterText(nullptr),
+		m_frameDrawn(false),
+		m_loadComplete(false)
 	{
 		addEventListenType(Event_NewGame);
 		addEventListenType(Event_RestartLevel);
@@ -36,10 +40,24 @@ namespace sb
 		Gwen::Controls::Layout::Center* center = new Gwen::Controls::Layout::Center(m_screenBase);
 		center->SetBounds(0,0,SCREENWIDTH,SCREENHEIGHT);
 
-		Gwen::Controls::Label* label = new Gwen::Controls::Label(center);
-		label->SetTextColor(Gwen::Colors::White);
-		label->SetText(L"loading...");
-		label->SizeToContents();
+		m_helperText = new Gwen::Controls::Label(center);
+		m_helperText->SetTextColor(Gwen::Colors::White);
+		m_helperText->SetText(L"Helper Text");
+		m_helperText->SizeToContents();
+
+		m_loadingText = new Gwen::Controls::Label(m_screenBase);
+		m_loadingText->SetTextColor(Gwen::Colors::White);
+		m_loadingText->SetText(L"loading...");
+		m_loadingText->SetAlignment(Gwen::Pos::CenterH);
+		m_loadingText->SizeToContents();
+		m_loadingText->SetPos(SCREENWIDTH/2 - m_loadingText->GetSize().x/2, 400 );
+
+		m_pressEnterText = new Gwen::Controls::Label(m_screenBase);
+		m_pressEnterText->SetTextColor(Gwen::Colors::White);
+		m_pressEnterText->SetText(L"press space to continue...");
+		m_pressEnterText->SetAlignment(Gwen::Pos::CenterH);
+		m_pressEnterText->SizeToContents();
+		m_pressEnterText->SetPos(SCREENWIDTH/2 - m_pressEnterText->GetSize().x/2, 400 );
 
 		m_screenBase->Hide();
 	}
@@ -57,53 +75,111 @@ namespace sb
 		GameState::enter();
 
 		m_frameDrawn = false;
+		m_loadComplete = false;
 		m_screenBase->Show();
+
+		m_loadingText->Show();
+		m_pressEnterText->Hide();
+		m_helperText->Hide();
 	}
 
 	bool LoadingState::update( sf::Time deltaTime )
 	{
 		if(m_frameDrawn)
 		{
+			InputManager::getInstance()->update(deltaTime);
+
+			m_loadingText->Hide();
+			m_pressEnterText->Show();
+
+			if(!m_loadComplete)
+			{
+				m_loadComplete = true;
+				
+				switch(m_loadType)
+				{
+				case Load_New:
+					{
+						Game::getInstance()->setNextStateType(State_InGame);
+						SceneManager::getInstance()->loadScene(m_sceneNum);
+
+						break;
+					}
+
+				case Load_Restart:
+					{
+						Game::getInstance()->setNextStateType(State_InGame);
+						SceneManager::getInstance()->restartScene();
+						PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(b2Vec2(0,-GRAVITY_ACCELERATION));
+						break;
+					}
+
+				case Load_Unload:
+					{
+						EventData* unloadEvent = new EventData(Event_Unload);
+						unloadEvent->triggerEvent();
+
+						ResourceCache::destroyInstance();
+						PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(b2Vec2(0,-GRAVITY_ACCELERATION));
+
+						Game::getInstance()->setNextStateType(State_MainMenu);
+						break;
+					}
+
+				case Load_Next:
+					{
+						EventData* unloadEvent = new EventData(Event_Unload);
+						unloadEvent->triggerEvent();
+
+						SceneManager::getInstance()->loadScene(m_sceneNum);
+						Game::getInstance()->setNextStateType(State_InGame);
+						break;
+					}
+
+				default:
+					{
+						break;
+					}
+				}
+			}
+			
+
+			bool returnValue = InputManager::getInstance()->getContinueInput();
+			return returnValue;
+		}
+		else
+		{
 			switch(m_loadType)
 			{
 			case Load_New:
 				{
-					Game::getInstance()->setNextStateType(State_InGame);
-					SceneManager::getInstance()->loadScene(m_sceneNum);
-					return true;
+					m_helperText->Show();
+					m_helperText->SetText(SceneManager::getInstance()->getHelperText(m_sceneNum));
+					m_helperText->SizeToContents();
+
 					break;
 				}
 
 			case Load_Restart:
 				{
-					Game::getInstance()->setNextStateType(State_InGame);
-					SceneManager::getInstance()->restartScene();
-					PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(b2Vec2(0,-GRAVITY_ACCELERATION));
-					return true;
+					m_helperText->Show();
+					m_helperText->SetText(SceneManager::getInstance()->getHelperText(SceneManager::getInstance()->getLoadedSceneNumber()));
+					m_helperText->SizeToContents();
+
 					break;
 				}
 
 			case Load_Unload:
 				{
-					EventData* unloadEvent = new EventData(Event_Unload);
-					unloadEvent->triggerEvent();
-
-					ResourceCache::destroyInstance();
-					PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(b2Vec2(0,-GRAVITY_ACCELERATION));
-
-					Game::getInstance()->setNextStateType(State_MainMenu);
-					return true;
+					m_helperText->Hide();
 					break;
 				}
 
 			case Load_Next:
 				{
-					EventData* unloadEvent = new EventData(Event_Unload);
-					unloadEvent->triggerEvent();
-
-					SceneManager::getInstance()->loadScene(m_sceneNum);
-					Game::getInstance()->setNextStateType(State_InGame);
-					return true;
+					m_helperText->Show();
+					m_helperText->SetText(SceneManager::getInstance()->getHelperText(m_sceneNum));
+					m_helperText->SizeToContents();
 					break;
 				}
 
@@ -128,7 +204,6 @@ namespace sb
 	{
 		GameState::exit();
 
-		m_frameDrawn = false;
 		m_screenBase->Hide();
 	}
 

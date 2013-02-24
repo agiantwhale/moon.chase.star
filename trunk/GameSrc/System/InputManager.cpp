@@ -12,6 +12,7 @@ namespace sb
 		m_rightInput(false),
 		m_downInput(false),
 		m_upInput(false),
+		m_continueInput(false),
 		m_vibrateAmount(0.0f),
 		m_vibrateDuration()
 	{
@@ -50,6 +51,7 @@ namespace sb
 		m_rightInput = false;
 		m_downInput = false;
 		m_upInput = false;
+		m_continueInput = false;
 
 		/*
 		{
@@ -72,6 +74,7 @@ namespace sb
 				m_rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
 				m_downInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
 				m_upInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+				m_continueInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 				break;
 			}
 

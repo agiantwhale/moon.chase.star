@@ -24,9 +24,16 @@ GWEN_CONTROL_CONSTRUCTOR(PauseMenuControl)
 	Gwen::Controls::Button* resumeButton = new Gwen::Controls::Button(this);
 	resumeButton->SetText(L"resume");
 	resumeButton->SetSize(250,100);
-	resumeButton->SetPos(960 + 35,360);
+	resumeButton->SetPos(960 + 35,250);
 	resumeButton->SetName("ResumeButton");
 	resumeButton->onPress.Add(this,&PauseMenuControl::onButtonPressed);
+
+	Gwen::Controls::Button* restartButton = new Gwen::Controls::Button(this);
+	restartButton->SetText(L"restart");
+	restartButton->SetSize(250,100);
+	restartButton->SetPos(960 + 35,360);
+	restartButton->SetName("RestartButton");
+	restartButton->onPress.Add(this,&PauseMenuControl::onButtonPressed);
 
 	Gwen::Controls::Button* mainMenuButton = new Gwen::Controls::Button(this);
 	mainMenuButton->SetText(L"to main menu");

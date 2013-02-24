@@ -34,6 +34,7 @@ namespace sb
 						  m_starEntity(nullptr),
 						  m_zoneBody(nullptr)
 	{
+		addEventListenType(Event_RestartLevel);
 		addEventListenType(Event_GameWon);
 		addEventListenType(Event_GameLost);
 		addEventListenType(Event_Unload);
@@ -43,6 +44,7 @@ namespace sb
 
 	SINGLETON_DESTRUCTOR(SceneManager)
 	{
+		removeEventListenType(Event_RestartLevel);
 		removeEventListenType(Event_GameWon);
 		removeEventListenType(Event_GameLost);
 		removeEventListenType(Event_Unload);
@@ -52,6 +54,11 @@ namespace sb
 
 	bool SceneManager::handleEvent( const EventData& newevent )
 	{
+		if( newevent.getEventType() == Event_RestartLevel )
+		{
+			m_sceneLoaded = false;
+		}
+
 		if( newevent.getEventType() == Event_Unload )
 		{
 			unloadScene();
@@ -384,7 +391,8 @@ namespace sb
 				TiXmlElement* sceneElement = scenesElement->FirstChildElement("Scene");
 				while(sceneElement)
 				{
-					m_sceneFileNameStack.push_back(sceneElement->GetText());
+					m_sceneFileNameStack.push_back(sceneElement->FirstChildElement("File")->GetText());
+					m_helperTextStack.push_back(sceneElement->FirstChildElement("Help")->GetText());
 					sceneElement = sceneElement->NextSiblingElement();
 				}
 			}

@@ -23,6 +23,7 @@ namespace sb
 		bool getRightInput() const { return m_rightInput; }
 		bool getDownInput() const { return m_downInput; }
 		bool getUpInput() const { return m_upInput; }
+		bool getContinueInput() const { return m_continueInput; }
 		float getAffectorRate() const { return m_affectorRate; }
 
 	private:
@@ -42,6 +43,7 @@ namespace sb
 		bool  m_rightInput;
 		bool  m_downInput;
 		bool  m_upInput;
+		bool  m_continueInput;
 
 		float m_vibrateAmount;
 		thor::Timer m_vibrateDuration;

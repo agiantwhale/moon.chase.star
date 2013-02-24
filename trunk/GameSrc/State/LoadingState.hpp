@@ -2,6 +2,7 @@
 #define LoadingState_h__
 
 #include <Gwen/Controls/Base.h>
+#include <Gwen/Controls/Label.h>
 #include "GameState.hpp"
 #include "../Event/EventListener.hpp"
 
@@ -30,7 +31,11 @@ namespace sb
 		} m_loadType;
 		unsigned int m_sceneNum;
 		Gwen::Controls::Base* m_screenBase;
+		Gwen::Controls::Label* m_loadingText;
+		Gwen::Controls::Label* m_helperText;
+		Gwen::Controls::Label* m_pressEnterText;
 		bool m_frameDrawn;
+		bool m_loadComplete;
 	};
 }
 

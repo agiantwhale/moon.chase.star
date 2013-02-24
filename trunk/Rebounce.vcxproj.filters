@@ -99,9 +99,6 @@
     <ClCompile Include="GameSrc\State\MainMenuState.cpp">
       <Filter>GameSrc\State</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\State\PauseState.cpp">
-      <Filter>GameSrc\State</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\State\InGameState.cpp">
       <Filter>GameSrc\State</Filter>
     </ClCompile>
@@ -197,6 +194,9 @@
     </ClCompile>
     <ClCompile Include="GameSrc\Entity\SharpEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\State\PauseState.cpp">
+      <Filter>GameSrc\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -368,6 +368,9 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Entity\SharpEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\State\GameWinState.hpp">
+      <Filter>GameSrc\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,7 @@ namespace sb
 		m_pauseMenuControl(nullptr),
 		m_endState(false)
 	{
+		addEventListenType(Event_RestartLevel);
 		addEventListenType(Event_GUI);
 		addEventListenType(Event_App);
 
@@ -23,12 +24,19 @@ namespace sb
 
 	PauseState::~PauseState()
 	{
+		removeEventListenType(Event_RestartLevel);
 		removeEventListenType(Event_GUI);
 		removeEventListenType(Event_App);
 	}
 
 	bool PauseState::handleEvent( const EventData& theevent )
 	{
+		if( theevent.getEventType() == Event_RestartLevel && isActive() )
+		{
+			Game::getInstance()->setNextStateType(sb::State_Loading);
+			m_endState = true;
+		}
+
 		if( theevent.getEventType() == Event_GUI)
 		{
 			const GUIEventData& eventData = static_cast<const GUIEventData&>(theevent);
@@ -39,6 +47,17 @@ namespace sb
 				Game::getInstance()->setNextStateType(State_InGame);
 
 				EventData* event = new EventData(Event_ResumeGame);
+				event->triggerEvent();
+
+				m_endState = true;
+
+			}
+
+			if( controlName == "RestartButton")
+			{
+				//Game::getInstance()->setNextStateType(State_Loading);
+
+				EventData* event = new EventData(Event_RestartLevel);
 				event->triggerEvent();
 
 				m_endState = true;

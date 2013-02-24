@@ -49,11 +49,17 @@ namespace sb
 		StarEntity* getStarEntity() const { return m_starEntity; }
 		void setStarEntity(StarEntity* val) { m_starEntity = val; }
 
+		const std::string& getHelperText( unsigned int sceneNum )
+		{
+			return m_helperTextStack.at(sceneNum);
+		}
+
 	private:
 		virtual bool handleEvent( const EventData& newevent );
 
 		unsigned int m_sceneNum;
 		std::vector<std::string> m_sceneFileNameStack;
+		std::vector<std::string> m_helperTextStack;
 		bool m_gameLost;
 		bool m_gameWon;
 		bool m_sceneLoaded;

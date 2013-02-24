@@ -167,6 +167,7 @@
     <ClInclude Include="GameSrc\Physics\PhysicsManager.hpp" />
     <ClInclude Include="GameSrc\Physics\Simulatable.hpp" />
     <ClInclude Include="GameSrc\State\GameState.hpp" />
+    <ClInclude Include="GameSrc\State\GameWinState.hpp" />
     <ClInclude Include="GameSrc\State\InGameState.hpp" />
     <ClInclude Include="GameSrc\State\IntroState.hpp" />
     <ClInclude Include="GameSrc\State\LoadingState.hpp" />
