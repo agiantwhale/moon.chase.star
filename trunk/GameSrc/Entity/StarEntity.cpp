@@ -27,7 +27,7 @@ StarEntity::StarEntity()
 		m_starBody(*this),
 		m_arrived(false),
 		m_totalTime(0.f),
-		m_arrivalTimer(),
+		m_arrivalTime(),
 		m_previousPosition(),
 		m_particleVelocity(),
 		m_xSpline(),
@@ -35,15 +35,11 @@ StarEntity::StarEntity()
 		m_emitter(nullptr)
 {
 	addEventListenType(Event_Simulate);
-	addEventListenType(Event_PauseGame);
-	addEventListenType(Event_ResumeGame);
 }
 
 StarEntity::~StarEntity()
 {
 	removeEventListenType(Event_Simulate);
-	removeEventListenType(Event_PauseGame);
-	removeEventListenType(Event_ResumeGame);
 
 	sb::GraphicsManager::getInstance()->removeDrawable(m_starSprite,3);
 	sb::GraphicsManager::getInstance()->removeDrawable(*m_starParticle,3);
@@ -55,8 +51,10 @@ void StarEntity::update( sf::Time deltaTime )
 {
 	BaseClass::update(deltaTime);
 
-	if(m_arrivalTimer.isExpired())
+	if(m_arrivalTime >= sf::Time::Zero)
 	{
+		m_arrivalTime -= deltaTime;
+
 		if(!m_arrived)
 		{
 			m_arrived = true;
@@ -65,11 +63,11 @@ void StarEntity::update( sf::Time deltaTime )
 		}
 
 		setPosition(sf::Vector2f(m_xSpline(m_totalTime),m_ySpline(m_totalTime)));
-		m_emitter->setParticleLifetime(sf::seconds(ARRIVAL_LIFETIME));
+		m_emitter->setEmissionRate(0.f);
 	}
 	else
 	{
-		float passedTime = m_totalTime - m_arrivalTimer.getRemainingTime().asSeconds();
+		float passedTime = m_totalTime - m_arrivalTime.asSeconds();
 		setPosition(sf::Vector2f(m_xSpline(passedTime),m_ySpline(passedTime)));
 
 		sf::Vector2f position = sb::Translate::Position(getPosition());
@@ -167,7 +165,7 @@ void StarEntity::initializeEntity( const TiXmlElement *propertyElement /* = null
 
 				previousPos = currentPos;
 			}
-			m_arrivalTimer.restart(sf::seconds(m_totalTime));
+			m_arrivalTime = (sf::seconds(m_totalTime));
 		}
 
 		{
@@ -187,18 +185,6 @@ bool StarEntity::handleEvent(const sb::EventData& theevent)
 			sf::Vector2f position = getPosition();
 			m_starBody.getBody()->SetTransform(ToVector(position),0);
 			m_starBody.getBody()->SetAwake(true);
-			break;
-		}
-
-	case Event_PauseGame:
-		{
-			m_arrivalTimer.stop();
-			break;
-		}
-
-	case Event_ResumeGame:
-		{
-			m_arrivalTimer.start();
 			break;
 		}
 

@@ -2,7 +2,7 @@
 #define MovingPlatformEntity_h__
 
 #include <SFML/Graphics/Sprite.hpp>
-#include <Thor/Time/Timer.hpp>
+#include <SFML/System/Time.hpp>
 #include "Entity.hpp"
 #include "../Physics/BodyController.hpp"
 #include "../Helper/ScreenTranslator.hpp"
@@ -15,7 +15,6 @@ class MovingPlatformEntity : public sb::Entity
 private:
 	virtual void update(sf::Time deltaTime);
 	virtual void initializeEntity( const TiXmlElement *propertyElement /* = nullptr */ );
-	virtual bool handleEvent(const sb::EventData& theevent);
 
 	//b2Body* getPlatformBody() const { return m_platformBody.getBody(); }
 
@@ -28,7 +27,7 @@ private:
 	std::vector<sf::Vector2f>			m_platformRoute;
 	std::vector<sf::Vector2f>::iterator	m_platformRouteIterator;
 	float								m_travelSpeed;
-	thor::Timer							m_moveTimer;
+	sf::Time							m_moveTime;
 };
 
 #endif // MovingPlatformEntity_h__

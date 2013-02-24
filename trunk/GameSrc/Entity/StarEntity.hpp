@@ -28,7 +28,7 @@ private:
 
 	bool					m_arrived;
 	float					m_totalTime;
-	thor::Timer				m_arrivalTimer;
+	sf::Time				m_arrivalTime;
 	sf::Vector2f			m_previousPosition;
 	sf::Vector2f			m_particleVelocity;
 

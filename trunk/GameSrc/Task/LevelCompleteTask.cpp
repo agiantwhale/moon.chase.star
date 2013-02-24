@@ -67,12 +67,12 @@ bool LevelCompleteTask::doTask( sf::Time deltaTime )
 	{
 	case kLevelComplete_Spline:
 		{
-			if(getTaskTimer().isExpired())
+			if(getRemainingTime() <= sf::Time::Zero)
 			{
 				m_currentState = kLevelComplete_Arrived;
 			}
 
-			m_playerEntity->setPosition( m_xSpline(m_totalTime-getRemainingTime()), m_ySpline(m_totalTime-getRemainingTime()) );
+			m_playerEntity->setPosition( m_xSpline(m_totalTime-getRemainingTime().asSeconds()), m_ySpline(m_totalTime-getRemainingTime().asSeconds()) );
 
 			break;
 		}

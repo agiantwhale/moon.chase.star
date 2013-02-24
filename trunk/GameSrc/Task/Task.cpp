@@ -3,24 +3,20 @@
 
 namespace sb
 {
-	Task::Task( sf::Time taskDuration ) : m_timeRemaining(), m_taskState(kTask_Unregistered)
-	{
-		if(taskDuration > sf::Time::Zero)
-		{
-			m_timeRemaining.reset(taskDuration);
-		}
-		
+	Task::Task( sf::Time taskDuration ) : m_timeRemaining(taskDuration), m_taskState(kTask_Unregistered)
+	{	
 	}
 
 	void Task::start()
 	{
 		m_taskState = kTask_Started;
-		m_timeRemaining.start();
 	}
 
 	bool Task::doTask( sf::Time deltaTime )
 	{
-		return m_timeRemaining.isExpired();
+		m_timeRemaining -= deltaTime;
+
+		return (m_timeRemaining <= sf::Time::Zero);
 	}
 
 	void Task::end()

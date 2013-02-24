@@ -17,33 +17,26 @@ MovingPlatformEntity::MovingPlatformEntity()
 		m_platformRoute(),
 		m_platformRouteIterator(),
 		m_travelSpeed(0.0f),
-		m_moveTimer()
+		m_moveTime()
 {
-	addEventListenType(Event_PauseApp);
-	addEventListenType(Event_ResumeApp);
-	addEventListenType(Event_PauseGame);
-	addEventListenType(Event_ResumeGame);
 }
 
 MovingPlatformEntity::~MovingPlatformEntity()
 {
-	removeEventListenType(Event_PauseApp);
-	removeEventListenType(Event_ResumeApp);
-	removeEventListenType(Event_PauseGame);
-	removeEventListenType(Event_ResumeGame);
-
 	sb::GraphicsManager::getInstance()->removeDrawable(m_platformSprite,2);
 	sb::PhysicsManager::getInstance()->removeSimulatable(&m_platformBody);
 }
 
 void MovingPlatformEntity::update( sf::Time deltaTime )
 {
-	if(m_moveTimer.isExpired())
+	if(m_moveTime >= sf::Time::Zero)
 	{
+		m_moveTime -= deltaTime;
+
 		sf::Vector2f currentDestination = *m_platformRouteIterator;
 		sf::Vector2f nextDestination = getNextPlatformDestination();
 		float travelTime = thor::length<float>(nextDestination - currentDestination) / m_travelSpeed;
-		m_moveTimer.restart(sf::seconds(travelTime));
+		m_moveTime = sf::seconds(travelTime);
 		m_platformBody.getBody()->SetTransform(ToVector(currentDestination),0.f);
 		m_platformBody.getBody()->SetAwake(true);
 	}
@@ -137,41 +130,4 @@ const sf::Vector2f& MovingPlatformEntity::getNextPlatformDestination()
 	}
 
 	return *m_platformRouteIterator;
-}
-
-bool MovingPlatformEntity::handleEvent( const sb::EventData& theevent )
-{
-	switch (theevent.getEventType())
-	{
-	case Event_PauseApp:
-		{
-			m_moveTimer.stop();
-			break;
-		}
-
-	case Event_ResumeApp:
-		{
-			m_moveTimer.start();
-			break;
-		}
-
-	case Event_PauseGame:
-		{
-			m_moveTimer.stop();
-			break;
-		}
-
-	case Event_ResumeGame:
-		{
-			m_moveTimer.start();
-			break;
-		}
-
-	default:
-		{
-			break;
-		}
-	}
-
-	return false;
 }

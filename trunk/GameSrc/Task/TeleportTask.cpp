@@ -34,7 +34,7 @@ bool TeleportTask::doTask( sf::Time deltaTime )
 	if(sb::Task::doTask(deltaTime))
 		return true;
 
-	float scale = std::max<float>(getRemainingTime()/m_totalTime.asSeconds(),0.0f);
+	float scale = std::max<float>(getRemainingTime().asSeconds()/m_totalTime.asSeconds(),0.0f);
 
 	m_playerEntity->setScale(scale,scale);
 	m_playerEntity->setPosition(m_playerEntity->getPosition() + m_movementSpeed * deltaTime.asSeconds());

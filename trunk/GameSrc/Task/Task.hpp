@@ -1,7 +1,6 @@
 #ifndef Task_h__
 #define Task_h__
 
-#include <Thor/Time/Timer.hpp>
 #include <SFML/System/Time.hpp>
 
 namespace sb
@@ -31,11 +30,10 @@ namespace sb
 		virtual void end();
 
 	protected:
-		const thor::Timer& getTaskTimer() const { return m_timeRemaining; }
-		float getRemainingTime() const { return m_timeRemaining.getRemainingTime().asSeconds(); }
+		sf::Time getRemainingTime() const { return m_timeRemaining; }
 
 	private:
-		thor::Timer m_timeRemaining;
+		sf::Time	m_timeRemaining;
 		TaskState	m_taskState;
 
 		friend class TaskManager;
