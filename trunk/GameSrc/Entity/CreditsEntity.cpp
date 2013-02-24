@@ -25,7 +25,7 @@ CreditsEntity::~CreditsEntity()
 {
 	removeEventListenType(Event_BeginContact);
 
-	sb::GraphicsManager::getInstance()->addDrawable(m_text, 6);
+	sb::GraphicsManager::getInstance()->removeDrawable(m_text, 6);
 	sb::PhysicsManager::getInstance()->removeSimulatable(&m_triggerBody);
 }
 

@@ -79,6 +79,7 @@ namespace sb
 		unsigned int m_sceneNum;
 		unsigned int m_clearedSceneNum;
 		std::vector<SceneInfo> m_sceneInfoStack;
+		bool m_loadMusic;
 		bool m_gameLost;
 		bool m_gameWon;
 		bool m_sceneLoaded;

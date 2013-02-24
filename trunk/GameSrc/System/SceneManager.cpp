@@ -26,6 +26,7 @@ namespace sb
 						  EventListener(),
 						  m_sceneName(),
 						  m_levelSize(),
+						  m_loadMusic(false),
 						  m_gameLost(false),
 						  m_gameWon(false),
 						  m_sceneLoaded(false),
@@ -36,6 +37,8 @@ namespace sb
 						  m_starEntity(nullptr),
 						  m_zoneBody(nullptr)
 	{
+		addEventListenType(Event_NewGame);
+		addEventListenType(Event_NextLevel);
 		addEventListenType(Event_RestartLevel);
 		addEventListenType(Event_GameWon);
 		addEventListenType(Event_GameLost);
@@ -46,6 +49,8 @@ namespace sb
 
 	SINGLETON_DESTRUCTOR(SceneManager)
 	{
+		removeEventListenType(Event_NewGame);
+		removeEventListenType(Event_NextLevel);
 		removeEventListenType(Event_RestartLevel);
 		removeEventListenType(Event_GameWon);
 		removeEventListenType(Event_GameLost);
@@ -56,9 +61,20 @@ namespace sb
 
 	bool SceneManager::handleEvent( const EventData& newevent )
 	{
+		if( newevent.getEventType() == Event_NewGame )
+		{
+			m_loadMusic = true;
+		}
+
+		if( newevent.getEventType() == Event_NextLevel )
+		{
+			m_loadMusic = false;
+		}
+
 		if( newevent.getEventType() == Event_RestartLevel )
 		{
 			m_sceneLoaded = false;
+			m_loadMusic = false;
 		}
 
 		if( newevent.getEventType() == Event_Unload )
@@ -260,24 +276,40 @@ namespace sb
 
 			m_sceneName = m_sceneInfoStack.at(sceneNum).sceneName;
 			
+			/*
 			unsigned int sceneNumIter = sceneNum;
-			while(m_sceneInfoStack.at(sceneNumIter).soundName != "NULL" && sceneNumIter >= 0 )
+			while(m_sceneInfoStack.at(sceneNumIter).soundName == "NULL" && sceneNumIter >= 0 )
 			{
 				sceneNumIter--;
 			}
+			*/
 
-			if(m_sceneInfoStack.at(sceneNumIter).soundName != "NULL")
+			if(m_loadMusic)
 			{
-				if(m_backgroundMusic)
+				std::string soundName = "NULL";
+				for(std::vector<SceneInfo>::reverse_iterator iter = m_sceneInfoStack.rbegin() + (m_sceneInfoStack.size() - sceneNum - 1); iter != m_sceneInfoStack.rend(); iter++ )
 				{
-					clearMusic();
+					if( (*iter).soundName != "NULL" )
+					{
+						soundName = (*iter).soundName;
+						break;
+					}
 				}
 
-				m_backgroundMusic = new sf::Music();
-				m_backgroundMusic->openFromFile(m_sceneInfoStack.at(sceneNum).soundName);
-				m_backgroundMusic->setLoop(true);
-				m_backgroundMusic->play();
+				if(soundName != "NULL")
+				{
+					if(m_backgroundMusic)
+					{
+						clearMusic();
+					}
+
+					m_backgroundMusic = new sf::Music();
+					m_backgroundMusic->openFromFile(soundName);
+					m_backgroundMusic->setLoop(true);
+					m_backgroundMusic->play();
+				}
 			}
+			
 
 			//Collision
 			TiXmlElement *collisionElement = levelElement->FirstChildElement("Collision");
