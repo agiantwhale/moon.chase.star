@@ -1,7 +1,7 @@
 #include <SFML/Graphics/View.hpp>
 
 #include "RenderLayer.hpp"
-#include "../Helper/Globals.h"
+#include "../Base/Globals.hpp"
 #include "../App/Game.hpp"
 #include "../Entity/PlayerEntity.hpp"
 #include "../Entity/StarEntity.hpp"

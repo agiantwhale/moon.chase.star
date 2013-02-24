@@ -101,6 +101,7 @@
     <ClCompile Include="GameSrc\Event\EventData.cpp" />
     <ClCompile Include="GameSrc\Event\EventListener.cpp" />
     <ClCompile Include="GameSrc\Event\EventManager.cpp" />
+    <ClCompile Include="GameSrc\GUI\CreditsPage.cpp" />
     <ClCompile Include="GameSrc\GUI\GameWinMenu.cpp" />
     <ClCompile Include="GameSrc\GUI\GUIManager.cpp" />
     <ClCompile Include="GameSrc\GUI\MainMenu.cpp" />
@@ -158,12 +159,12 @@
     <ClInclude Include="GameSrc\Event\GUIEventData.h" />
     <ClInclude Include="GameSrc\Event\NewGameEventData.hpp" />
     <ClInclude Include="GameSrc\Event\SolveEventData.hpp" />
+    <ClInclude Include="GameSrc\GUI\CreditsPage.hpp" />
     <ClInclude Include="GameSrc\GUI\GameWinMenu.hpp" />
     <ClInclude Include="GameSrc\GUI\GUIManager.hpp" />
     <ClInclude Include="GameSrc\GUI\MainMenu.hpp" />
     <ClInclude Include="GameSrc\GUI\PauseMenu.hpp" />
     <ClInclude Include="GameSrc\Helper\Conversion.hpp" />
-    <ClInclude Include="GameSrc\Helper\Globals.h" />
     <ClInclude Include="GameSrc\Helper\ScreenTranslator.hpp" />
     <ClInclude Include="GameSrc\Physics\BodyController.hpp" />
     <ClInclude Include="GameSrc\Physics\Debug\PhysicsDebugDraw.hpp" />
