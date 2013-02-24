@@ -30,6 +30,7 @@ namespace sb
 						  m_gameWon(false),
 						  m_sceneLoaded(false),
 						  m_sceneNum(0),
+						  m_clearedSceneNum(0),
 						  m_backgroundMusic(nullptr),
 						  m_playerEntity(nullptr),
 						  m_starEntity(nullptr),
@@ -122,6 +123,16 @@ namespace sb
 		if(newevent.getEventType() == Event_GameWon)
 		{
 			m_gameWon = true;
+
+			if(m_sceneNum >= m_clearedSceneNum )
+			{
+				m_clearedSceneNum = m_sceneNum + 1;
+
+				if(m_clearedSceneNum > getMaximumSceneNum())
+				{
+					m_clearedSceneNum = getMaximumSceneNum();
+				}
+			}
 		}
 
 		return false;
@@ -386,7 +397,7 @@ namespace sb
 			TiXmlElement* scenesElement = document.FirstChildElement("Scenes");
 			if(scenesElement)
 			{
-				scenesElement->QueryUnsignedAttribute("Continue", &m_sceneNum);
+				scenesElement->QueryUnsignedAttribute("Cleared", &m_clearedSceneNum);
 
 				TiXmlElement* sceneElement = scenesElement->FirstChildElement("Scene");
 				while(sceneElement)
@@ -412,7 +423,7 @@ namespace sb
 			TiXmlElement* scenesElement = document.FirstChildElement("Scenes");
 			if(scenesElement)
 			{
-				scenesElement->SetAttribute("Continue", m_sceneNum);
+				scenesElement->SetAttribute("Cleared", m_clearedSceneNum);
 			}
 
 			document.SaveFile();

@@ -130,6 +130,7 @@
     <ClCompile Include="GameSrc\Tile\BackgroundTile.cpp" />
     <ClCompile Include="GameSrc\Tile\Tile.cpp" />
     <ClCompile Include="Libs\CxxTL\src\tri_logger.cpp" />
+    <ClCompile Include="Libs\GWEN\Renderers\SFML2\SFML2.cpp" />
     <ClCompile Include="Libs\GWEN\Renderers\SFML\SFML.cpp" />
   </ItemGroup>
   <ItemGroup>

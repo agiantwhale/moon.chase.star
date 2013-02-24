@@ -52,12 +52,15 @@ namespace sb
 		unsigned int getLoadedSceneNumber() const { return m_sceneNum; }
 
 		unsigned int getMaximumSceneNum() const { return m_sceneInfoStack.size(); }
+		unsigned int getClearedSceneNum() const { return m_clearedSceneNum; }
 
 		PlayerEntity* getPlayerEntity() const { return m_playerEntity; }
 		void setPlayerEntity(PlayerEntity* val) { m_playerEntity = val; }
 
 		StarEntity* getStarEntity() const { return m_starEntity; }
 		void setStarEntity(StarEntity* val) { m_starEntity = val; }
+
+		const std::vector<SceneInfo>& getSceneInfoStack() const { return m_sceneInfoStack; }
 
 		const std::string& getHelperText( unsigned int sceneNum );
 
@@ -74,6 +77,7 @@ namespace sb
 
 		std::string m_sceneName;
 		unsigned int m_sceneNum;
+		unsigned int m_clearedSceneNum;
 		std::vector<SceneInfo> m_sceneInfoStack;
 		bool m_gameLost;
 		bool m_gameWon;

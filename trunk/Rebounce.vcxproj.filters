@@ -61,6 +61,9 @@
     <Filter Include="GameSrc\Entity">
       <UniqueIdentifier>{97a308a5-8013-4614-8fae-982062a62721}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Libs\GWEN\Renderers\SFML2">
+      <UniqueIdentifier>{8479776a-d5a5-47d5-8759-7bd313ea0648}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameSrc\App\main.cpp">
@@ -209,6 +212,9 @@
     </ClCompile>
     <ClCompile Include="GameSrc\State\IntroState.cpp">
       <Filter>GameSrc\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\GWEN\Renderers\SFML2\SFML2.cpp">
+      <Filter>Libs\GWEN\Renderers\SFML2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

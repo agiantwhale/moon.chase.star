@@ -3,6 +3,7 @@
 #include "../App/Game.hpp"
 
 #include <Gwen/Gwen.h>
+#include <Gwen/Renderers/SFML2.h>
 #include <Gwen/Renderers/SFML.h>
 #include <Gwen/Controls/Canvas.h>
 #include <Gwen/Skins/TexturedBase.h>
@@ -41,11 +42,11 @@ namespace sb
 
 	void GUIManager::setUpGUI( const TiXmlElement* element )
 	{
-		m_gwenRenderer = new Gwen::Renderer::SFML(*Game::getInstance());
+		m_gwenRenderer = new Gwen::Renderer::SFML2(*Game::getInstance());
 
 		Gwen::Skin::TexturedBase* texturedSkin = new Gwen::Skin::TexturedBase(m_gwenRenderer);
 		texturedSkin->Init( "Resource/Textures/GUISkin.png" );
-		texturedSkin->SetDefaultFont( L"Resource/Fonts/Stroke-Bold.otf", 20 );
+		texturedSkin->SetDefaultFont( L"Resource/Fonts/Stroke-Bold.otf", 15 );
 		m_gwenSkin = texturedSkin;
 
 		m_gwenCanvas = new Gwen::Controls::Canvas( m_gwenSkin );

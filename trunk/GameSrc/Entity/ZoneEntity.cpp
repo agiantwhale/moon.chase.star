@@ -111,10 +111,12 @@ bool ZoneEntity::handleEvent( const sb::EventData& theevent )
 						deltaDistance.x = sb::signum<float>(deltaDistance.x) * SCREENWIDTH * UNRATIO;
 						deltaDistance.y = sb::signum<float>(deltaDistance.y) * SCREENHEIGHT * UNRATIO;
 
+						/*
 						if(i==0)
 						{
 							affector = 0.5f;
 						}
+						*/
 
 						CameraMoveTask* cameraTask = new CameraMoveTask(deltaDistance * affector,i,affector);
 						cameraTask->addTask();
