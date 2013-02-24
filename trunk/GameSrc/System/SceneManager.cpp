@@ -259,7 +259,14 @@ namespace sb
 			m_levelSize.y = levelHeight;
 
 			m_sceneName = m_sceneInfoStack.at(sceneNum).sceneName;
-			if(m_sceneInfoStack.at(sceneNum).soundName != "NULL")
+			
+			unsigned int sceneNumIter = sceneNum;
+			while(m_sceneInfoStack.at(sceneNumIter).soundName != "NULL" && sceneNumIter >= 0 )
+			{
+				sceneNumIter--;
+			}
+
+			if(m_sceneInfoStack.at(sceneNumIter).soundName != "NULL")
 			{
 				if(m_backgroundMusic)
 				{

@@ -485,6 +485,12 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 					break;
 				}
 
+			case 'CRDT':
+				{
+					m_shouldBounce = false;
+					break;
+				}
+
 			default:
 			{
 				break;
