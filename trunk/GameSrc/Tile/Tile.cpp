@@ -12,7 +12,7 @@ namespace sb
 		:	sf::Drawable(),
 			m_tileTexture()
 	{
-		m_tileTexture.create( SceneManager::getInstance()->getLevelSize().x, SceneManager::getInstance()->getLevelSize().y );
+		m_tileTexture.create( SceneManager::getInstance()->getSceneSize().x, SceneManager::getInstance()->getSceneSize().y );
 		m_tileTexture.clear( sf::Color::Transparent );
 
 		if(element)

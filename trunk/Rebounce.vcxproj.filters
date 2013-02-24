@@ -198,6 +198,12 @@
     <ClCompile Include="GameSrc\State\PauseState.cpp">
       <Filter>GameSrc\State</Filter>
     </ClCompile>
+    <ClCompile Include="GameSrc\State\GameWinState.cpp">
+      <Filter>GameSrc\State</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\GUI\GameWinMenu.cpp">
+      <Filter>GameSrc\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp">
@@ -371,6 +377,9 @@
     </ClInclude>
     <ClInclude Include="GameSrc\State\GameWinState.hpp">
       <Filter>GameSrc\State</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\GUI\GameWinMenu.hpp">
+      <Filter>GameSrc\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

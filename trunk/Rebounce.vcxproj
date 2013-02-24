@@ -101,6 +101,7 @@
     <ClCompile Include="GameSrc\Event\EventData.cpp" />
     <ClCompile Include="GameSrc\Event\EventListener.cpp" />
     <ClCompile Include="GameSrc\Event\EventManager.cpp" />
+    <ClCompile Include="GameSrc\GUI\GameWinMenu.cpp" />
     <ClCompile Include="GameSrc\GUI\GUIManager.cpp" />
     <ClCompile Include="GameSrc\GUI\MainMenu.cpp" />
     <ClCompile Include="GameSrc\GUI\PauseMenu.cpp" />
@@ -108,6 +109,7 @@
     <ClCompile Include="GameSrc\Physics\Debug\PhysicsDebugDraw.cpp" />
     <ClCompile Include="GameSrc\Physics\PhysicsManager.cpp" />
     <ClCompile Include="GameSrc\State\GameState.cpp" />
+    <ClCompile Include="GameSrc\State\GameWinState.cpp" />
     <ClCompile Include="GameSrc\State\InGameState.cpp" />
     <ClCompile Include="GameSrc\State\IntroState.cpp" />
     <ClCompile Include="GameSrc\State\LoadingState.cpp" />
@@ -156,6 +158,7 @@
     <ClInclude Include="GameSrc\Event\GUIEventData.h" />
     <ClInclude Include="GameSrc\Event\NewGameEventData.hpp" />
     <ClInclude Include="GameSrc\Event\SolveEventData.hpp" />
+    <ClInclude Include="GameSrc\GUI\GameWinMenu.hpp" />
     <ClInclude Include="GameSrc\GUI\GUIManager.hpp" />
     <ClInclude Include="GameSrc\GUI\MainMenu.hpp" />
     <ClInclude Include="GameSrc\GUI\PauseMenu.hpp" />

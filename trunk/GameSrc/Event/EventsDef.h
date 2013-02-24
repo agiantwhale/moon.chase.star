@@ -30,6 +30,8 @@ enum EventType
 	Event_NextLevel,
 	Event_GameWon,
 	Event_GameLost,
+	Event_ShowGameWon,
+	Event_ShowGameLost,
 	Event_Unload,
 	Event_ExitGame,
 

@@ -91,6 +91,6 @@ void LevelCompleteTask::end()
 {
 	sb::Task::end();
 
-	sb::EventData* eventData = new sb::EventData(Event_NextLevel);
-	eventData->queueEvent(sf::seconds(0.5f));
+	sb::EventData* eventData = new sb::EventData(Event_ShowGameWon);
+	eventData->queueEvent(sf::seconds(1.5f));
 }

@@ -16,6 +16,8 @@ namespace sb
 									EventListener(),
 									m_endState(false)
 	{
+		addEventListenType(Event_ShowGameWon);
+		addEventListenType(Event_ShowGameLost);
 		addEventListenType(Event_RestartLevel);
 		addEventListenType(Event_NextLevel);
 		addEventListenType(Event_App);
@@ -23,6 +25,8 @@ namespace sb
 
 	InGameState::~InGameState()
 	{
+		removeEventListenType(Event_ShowGameWon);
+		removeEventListenType(Event_ShowGameLost);
 		removeEventListenType(Event_RestartLevel);
 		removeEventListenType(Event_NextLevel);
 		removeEventListenType(Event_App);
@@ -65,6 +69,12 @@ namespace sb
 
 	bool InGameState::handleEvent( const EventData& theevent )
 	{
+		if(theevent.getEventType() == Event_ShowGameWon && isActive())
+		{
+			Game::getInstance()->setNextStateType(sb::State_GameWin);
+			m_endState = true;
+		}
+
 		if((theevent.getEventType() == Event_NextLevel || theevent.getEventType() == Event_RestartLevel) && isActive())
 		{
 			Game::getInstance()->setNextStateType(sb::State_Loading);

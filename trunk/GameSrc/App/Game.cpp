@@ -20,6 +20,7 @@
 #include "../State/IntroState.hpp"
 #include "../State/MainMenuState.hpp"
 #include "../State/InGameState.hpp"
+#include "../State/GameWinState.hpp"
 #include "../State/LoadingState.hpp"
 #include "../State/PauseState.hpp"
 
@@ -87,6 +88,7 @@ namespace sb
 		m_stateMap.insert(std::make_pair(State_Intro,new IntroState));
 		m_stateMap.insert(std::make_pair(State_MainMenu,new MainMenuState));
 		m_stateMap.insert(std::make_pair(State_InGame,new InGameState));
+		m_stateMap.insert(std::make_pair(State_GameWin,new GameWinState));
 		m_stateMap.insert(std::make_pair(State_Loading,new LoadingState));
 		m_stateMap.insert(std::make_pair(State_Paused,new PauseState));
 

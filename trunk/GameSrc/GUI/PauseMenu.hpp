@@ -1,5 +1,5 @@
-#ifndef PAUSEMENU_HPP
-#define PAUSEMENU_HPP
+#ifndef PauseMenu_h__
+#define PauseMenu_h__
 
 #include <Gwen/Controls/Base.h>
 
@@ -14,4 +14,4 @@ public:
 	void onExit(Gwen::Controls::Base* control);
 };
 
-#endif
+#endif // PauseMenu_h__

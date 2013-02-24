@@ -40,7 +40,7 @@ namespace sb
 			m_tileStack.push_back(tile);
 		}
 
-		const sf::Vector2i& getLevelSize() const { return m_levelSize; }
+		const sf::Vector2i& getSceneSize() const { return m_levelSize; }
 		unsigned int getLoadedSceneNumber() const { return m_sceneNum; }
 
 		PlayerEntity* getPlayerEntity() const { return m_playerEntity; }
@@ -54,9 +54,12 @@ namespace sb
 			return m_helperTextStack.at(sceneNum);
 		}
 
+		const std::string& getSceneName() const { return m_sceneName; }
+
 	private:
 		virtual bool handleEvent( const EventData& newevent );
 
+		std::string m_sceneName;
 		unsigned int m_sceneNum;
 		std::vector<std::string> m_sceneFileNameStack;
 		std::vector<std::string> m_helperTextStack;

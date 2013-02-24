@@ -11,6 +11,7 @@ namespace sb
 		State_Transition,
 		State_Loading,
 		State_InGame,
+		State_GameWin,
 		State_Paused,
 		State_Credits,
 		NUM_STATES

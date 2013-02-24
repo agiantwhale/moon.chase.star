@@ -31,13 +31,7 @@ namespace sb
 
 	bool PauseState::handleEvent( const EventData& theevent )
 	{
-		if( theevent.getEventType() == Event_RestartLevel && isActive() )
-		{
-			Game::getInstance()->setNextStateType(sb::State_Loading);
-			m_endState = true;
-		}
-
-		if( theevent.getEventType() == Event_GUI)
+		if( theevent.getEventType() == Event_GUI && isActive() )
 		{
 			const GUIEventData& eventData = static_cast<const GUIEventData&>(theevent);
 			std::string controlName = eventData.getControl()->GetName();
@@ -55,7 +49,7 @@ namespace sb
 
 			if( controlName == "RestartButton")
 			{
-				//Game::getInstance()->setNextStateType(State_Loading);
+				Game::getInstance()->setNextStateType(State_Loading);
 
 				EventData* event = new EventData(Event_RestartLevel);
 				event->triggerEvent();

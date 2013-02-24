@@ -24,6 +24,7 @@ namespace sb
 {
 	SINGLETON_CONSTRUCTOR(SceneManager),
 						  EventListener(),
+						  m_sceneName(),
 						  m_levelSize(),
 						  m_gameLost(false),
 						  m_gameWon(false),
@@ -245,6 +246,8 @@ namespace sb
 			levelElement->QueryIntAttribute("height",&levelHeight);
 			m_levelSize.x = levelWidth;
 			m_levelSize.y = levelHeight;
+
+			levelElement->QueryStringAttribute("SceneName",&m_sceneName);
 
 			std::string musicFileName;
 			levelElement->QueryStringAttribute("BackgroundMusic", &musicFileName);
