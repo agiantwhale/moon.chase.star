@@ -46,5 +46,7 @@ namespace sb
 	void IntroState::exit(void)
 	{
 		GameState::exit();
+
+		m_introVideo.unload();
 	}
 }
