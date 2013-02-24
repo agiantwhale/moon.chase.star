@@ -247,11 +247,8 @@ namespace sb
 			m_levelSize.x = levelWidth;
 			m_levelSize.y = levelHeight;
 
-			levelElement->QueryStringAttribute("SceneName",&m_sceneName);
-
-			std::string musicFileName;
-			levelElement->QueryStringAttribute("BackgroundMusic", &musicFileName);
-			if(!musicFileName.empty())
+			m_sceneName = m_sceneInfoStack.at(sceneNum).sceneName;
+			if(m_sceneInfoStack.at(sceneNum).soundName != "NULL")
 			{
 				if(m_backgroundMusic)
 				{
@@ -259,7 +256,7 @@ namespace sb
 				}
 
 				m_backgroundMusic = new sf::Music();
-				m_backgroundMusic->openFromFile(musicFileName);
+				m_backgroundMusic->openFromFile(m_sceneInfoStack.at(sceneNum).soundName);
 				m_backgroundMusic->setLoop(true);
 				m_backgroundMusic->play();
 			}
@@ -383,7 +380,7 @@ namespace sb
 
 	void SceneManager::setUpScene( const TiXmlElement* element )
 	{
-		TiXmlDocument document("Scenes.xml");
+		TiXmlDocument document("scenes.xml");
 		if(document.LoadFile())
 		{
 			TiXmlElement* scenesElement = document.FirstChildElement("Scenes");
@@ -395,6 +392,8 @@ namespace sb
 				while(sceneElement)
 				{
 					SceneInfo info;
+					info.sceneName = sceneElement->FirstChildElement("Name")->GetText();
+					info.soundName = sceneElement->FirstChildElement("Sound")->GetText();
 					info.fileName = sceneElement->FirstChildElement("File")->GetText();
 					info.helperText = sceneElement->FirstChildElement("Help")->GetText();
 
@@ -429,6 +428,5 @@ namespace sb
 
 		return m_sceneInfoStack.at(sceneNum).helperText;
 	}
-
 }
 

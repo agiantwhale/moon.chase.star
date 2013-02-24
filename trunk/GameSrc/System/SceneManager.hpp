@@ -22,6 +22,8 @@ namespace sb
 
 	struct SceneInfo
 	{
+		std::string sceneName;
+		std::string soundName;
 		std::string fileName;
 		std::string helperText;
 	};
