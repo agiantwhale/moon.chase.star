@@ -122,6 +122,8 @@ namespace sb
 							m_downInput = true;
 						}
 
+						m_continueInput = state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
+
 						m_affectorRate = std::abs(state.Gamepad.sThumbRX) / 32767.0f;
 					}
 					else

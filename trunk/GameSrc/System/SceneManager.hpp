@@ -54,6 +54,12 @@ namespace sb
 			return m_helperTextStack.at(sceneNum);
 		}
 
+		void clearMusic(void)
+		{
+			delete m_backgroundMusic;
+			m_backgroundMusic = nullptr;
+		}
+
 		const std::string& getSceneName() const { return m_sceneName; }
 
 	private:

@@ -253,6 +253,11 @@ namespace sb
 			levelElement->QueryStringAttribute("BackgroundMusic", &musicFileName);
 			if(!musicFileName.empty())
 			{
+				if(m_backgroundMusic)
+				{
+					clearMusic();
+				}
+
 				m_backgroundMusic = new sf::Music();
 				m_backgroundMusic->openFromFile(musicFileName);
 				m_backgroundMusic->setLoop(true);
@@ -359,12 +364,6 @@ namespace sb
 
 	void SceneManager::unloadScene(void)
 	{
-		if(m_backgroundMusic)
-		{
-			delete m_backgroundMusic;
-			m_backgroundMusic = nullptr;
-		}
-
 		for(std::vector<Tile*>::iterator iter = m_tileStack.begin(); iter != m_tileStack.end(); iter++)
 		{
 			delete (*iter);

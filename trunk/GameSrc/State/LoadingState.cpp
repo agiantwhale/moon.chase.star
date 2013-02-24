@@ -121,6 +121,7 @@ namespace sb
 
 						ResourceCache::destroyInstance();
 						PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(b2Vec2(0,-GRAVITY_ACCELERATION));
+						SceneManager::getInstance()->clearMusic();
 
 						Game::getInstance()->setNextStateType(State_MainMenu);
 						break;

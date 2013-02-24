@@ -68,6 +68,7 @@ private:
 	sf::Sprite	m_ballSprite;
 	sf::Sound	m_bounceSound;
 	sf::Sound	m_throwSound;
+	sf::Sound	m_sharpSound;
 
 	typedef std::list<ZoneEntity*> ZoneEntityList;
 	ZoneEntityList m_zoneEntityList;

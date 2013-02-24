@@ -133,6 +133,13 @@ void PlayerEntity::initializeEntity( const TiXmlElement *propertyElement )
 		m_throwSound.setVolume(50.f);
 	}
 
+	{
+		thor::ResourceKey<sf::SoundBuffer> key = thor::Resources::fromFile<sf::SoundBuffer>("Resource/Sounds/sharp.wav");
+		std::shared_ptr<sf::SoundBuffer> buffer = sb::ResourceCache::getInstance()->acquire<sf::SoundBuffer>(key);
+		m_sharpSound.setBuffer(*buffer);
+		m_sharpSound.setVolume(50.f);
+	}
+
 	sb::SceneManager::getInstance()->setPlayerEntity(this);
 }
 
@@ -210,6 +217,8 @@ bool PlayerEntity::handleEvent(const sb::EventData& theevent)
 
 void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* contactFixture )
 {
+	if(m_moonDead) return;
+
     b2WorldManifold manifold;
     contact->GetWorldManifold(&manifold);
 
@@ -298,6 +307,7 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 					//contact->SetEnabled(false);
 					sf::Vector2f throwVelocity = ToVector(contactFixture->GetBody()->GetWorldVector(b2Vec2(0,1.0f))) * THROW_VELOCITY;
 					shoot(throwVelocity);
+					sb::InputManager::getInstance()->feedOutput(0.6f,sf::milliseconds(322));
 				}
 				else if( (std::abs(normal.y) <= JUMP_SLOPE_STRICT && contactPos.y < 0.f) )
 				{
@@ -413,7 +423,7 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 						m_teleportTask->addTask();
 					}
 
-					sb::InputManager::getInstance()->feedOutput(0.6f,sf::seconds(.6f));
+					sb::InputManager::getInstance()->feedOutput(0.6f,sf::milliseconds(899));
 
 					break;
 				}
@@ -443,6 +453,8 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 						m_shouldBounce = false;
 					}
 
+					sb::InputManager::getInstance()->feedOutput(0.4f,sf::milliseconds(591));
+
 					break;
 				}
 
@@ -467,6 +479,8 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 			case 'SHRP':
 				{
 					m_shouldBounce = false;
+					m_sharpSound.play();
+					sb::InputManager::getInstance()->feedOutput(0.6f,sf::milliseconds(752));
 					kill();
 					break;
 				}
