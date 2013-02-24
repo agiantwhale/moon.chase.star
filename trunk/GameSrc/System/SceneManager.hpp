@@ -20,6 +20,12 @@ namespace sb
 {
 	class Tile;
 
+	struct SceneInfo
+	{
+		std::string fileName;
+		std::string helperText;
+	};
+
 	class SceneManager : public Singleton<SceneManager>, private EventListener
 	{
 		DEFINE_SINGLETON( SceneManager );
@@ -49,10 +55,7 @@ namespace sb
 		StarEntity* getStarEntity() const { return m_starEntity; }
 		void setStarEntity(StarEntity* val) { m_starEntity = val; }
 
-		const std::string& getHelperText( unsigned int sceneNum )
-		{
-			return m_helperTextStack.at(sceneNum);
-		}
+		const std::string& getHelperText( unsigned int sceneNum );
 
 		void clearMusic(void)
 		{
@@ -67,8 +70,7 @@ namespace sb
 
 		std::string m_sceneName;
 		unsigned int m_sceneNum;
-		std::vector<std::string> m_sceneFileNameStack;
-		std::vector<std::string> m_helperTextStack;
+		std::vector<SceneInfo> m_sceneInfoStack;
 		bool m_gameLost;
 		bool m_gameWon;
 		bool m_sceneLoaded;

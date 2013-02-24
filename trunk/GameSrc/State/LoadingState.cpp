@@ -116,6 +116,8 @@ namespace sb
 
 				case Load_Unload:
 					{
+						m_pressEnterText->Hide();
+
 						EventData* unloadEvent = new EventData(Event_Unload);
 						unloadEvent->triggerEvent();
 
@@ -124,6 +126,8 @@ namespace sb
 						SceneManager::getInstance()->clearMusic();
 
 						Game::getInstance()->setNextStateType(State_MainMenu);
+
+						return true;
 						break;
 					}
 
@@ -144,9 +148,7 @@ namespace sb
 				}
 			}
 			
-
-			bool returnValue = InputManager::getInstance()->getContinueInput();
-			return returnValue;
+			return InputManager::getInstance()->getContinueInput();
 		}
 		else
 		{

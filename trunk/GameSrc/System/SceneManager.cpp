@@ -139,7 +139,7 @@ namespace sb
 
 		TiXmlDocument sceneDocument;
 
-		if( !sceneDocument.LoadFile(m_sceneFileNameStack[m_sceneNum]) )
+		if( !sceneDocument.LoadFile(m_sceneInfoStack[m_sceneNum].fileName) )
 		{
 			TRI_LOG_STR("Unable to load scene.");
 			TRI_LOG(m_sceneNum);
@@ -207,11 +207,11 @@ namespace sb
 		m_gameLost = false;
 		m_gameWon = false;
 
-		if(sceneNum >= m_sceneFileNameStack.size())
+		if(sceneNum >= m_sceneInfoStack.size())
 		{
 			sceneNum = 0;
 		}
-		std::string sceneFileName = m_sceneFileNameStack.at(sceneNum);
+		std::string sceneFileName = m_sceneInfoStack.at(sceneNum).fileName;
 
 		Game::getInstance()->pauseFrameTimer();
 
@@ -393,8 +393,11 @@ namespace sb
 				TiXmlElement* sceneElement = scenesElement->FirstChildElement("Scene");
 				while(sceneElement)
 				{
-					m_sceneFileNameStack.push_back(sceneElement->FirstChildElement("File")->GetText());
-					m_helperTextStack.push_back(sceneElement->FirstChildElement("Help")->GetText());
+					SceneInfo info;
+					info.fileName = sceneElement->FirstChildElement("File")->GetText();
+					info.helperText = sceneElement->FirstChildElement("Help")->GetText();
+
+					m_sceneInfoStack.push_back(info);
 					sceneElement = sceneElement->NextSiblingElement();
 				}
 			}
@@ -415,5 +418,16 @@ namespace sb
 			document.SaveFile();
 		}
 	}
+
+	const std::string& SceneManager::getHelperText( unsigned int sceneNum )
+	{
+		if(sceneNum >= m_sceneInfoStack.size())
+		{
+			sceneNum = 0;
+		}
+
+		return m_sceneInfoStack.at(sceneNum).helperText;
+	}
+
 }
 

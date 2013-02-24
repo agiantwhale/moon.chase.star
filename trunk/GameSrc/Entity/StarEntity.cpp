@@ -51,10 +51,10 @@ void StarEntity::update( sf::Time deltaTime )
 {
 	BaseClass::update(deltaTime);
 
-	if(m_arrivalTime >= sf::Time::Zero)
-	{
-		m_arrivalTime -= deltaTime;
+	m_arrivalTime -= deltaTime;
 
+	if(m_arrivalTime <= sf::Time::Zero)
+	{
 		if(!m_arrived)
 		{
 			m_arrived = true;

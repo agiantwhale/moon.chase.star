@@ -29,10 +29,10 @@ MovingPlatformEntity::~MovingPlatformEntity()
 
 void MovingPlatformEntity::update( sf::Time deltaTime )
 {
-	if(m_moveTime >= sf::Time::Zero)
-	{
-		m_moveTime -= deltaTime;
+	m_moveTime -= deltaTime;
 
+	if(m_moveTime <= sf::Time::Zero)
+	{
 		sf::Vector2f currentDestination = *m_platformRouteIterator;
 		sf::Vector2f nextDestination = getNextPlatformDestination();
 		float travelTime = thor::length<float>(nextDestination - currentDestination) / m_travelSpeed;

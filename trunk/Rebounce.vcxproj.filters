@@ -389,6 +389,7 @@
     <None Include="..\..\..\Users\J\Desktop\logo.ico" />
     <None Include="icon1.ico" />
     <None Include="Resource\Logo\logo.ico" />
+    <None Include="Resource\Logo\Updated\GameIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Rebounce.rc" />
