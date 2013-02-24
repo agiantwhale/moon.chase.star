@@ -23,6 +23,7 @@
 #include "../State/GameWinState.hpp"
 #include "../State/LoadingState.hpp"
 #include "../State/PauseState.hpp"
+#include "../State/CreditsState.hpp"
 
 #include <boost/lexical_cast.hpp>
 
@@ -91,6 +92,7 @@ namespace sb
 		m_stateMap.insert(std::make_pair(State_GameWin,new GameWinState));
 		m_stateMap.insert(std::make_pair(State_Loading,new LoadingState));
 		m_stateMap.insert(std::make_pair(State_Paused,new PauseState));
+		m_stateMap.insert(std::make_pair(State_Credits,new CreditsState));
 
 		setNextStateType(State_Intro);
 		m_shouldSwitchState = true;

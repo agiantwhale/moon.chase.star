@@ -1,5 +1,6 @@
 #include "MainMenuState.hpp"
 #include "../App/Game.hpp"
+#include "../System/SceneManager.hpp"
 #include "../GUI/GUIManager.hpp"
 
 namespace sb
@@ -12,11 +13,13 @@ namespace sb
 		m_menuWindow = new MainMenuControl(GUIManager::getInstance()->getCanvas());
 		m_menuWindow->Hide();
 
+		addEventListenType(Event_Credits);
 		addEventListenType(Event_NewGame);
 	}
 
 	MainMenuState::~MainMenuState()
 	{
+		removeEventListenType(Event_Credits);
 		removeEventListenType(Event_NewGame);
 
 		delete m_menuWindow;
@@ -25,6 +28,8 @@ namespace sb
 	void MainMenuState::enter( void )
 	{
 		GameState::enter();
+
+		SceneManager::getInstance()->clearMusic();
 
 		m_menuWindow->Show();
 	}
@@ -51,6 +56,12 @@ namespace sb
 		if(theevent.getEventType() == Event_NewGame)
 		{
 			Game::getInstance()->setNextStateType(State_Loading);
+			m_endState = true;
+		}
+
+		if(theevent.getEventType() == Event_Credits)
+		{
+			Game::getInstance()->setNextStateType(State_Credits);
 			m_endState = true;
 		}
 

@@ -34,6 +34,7 @@ enum EventType
 	Event_ShowGameLost,
 	Event_Unload,
 	Event_ExitGame,
+	Event_Credits,
 
 	//Gameplay related
 	Event_StarArrived,

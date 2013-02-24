@@ -1,4 +1,5 @@
 #include <Gwen/Controls/Label.h>
+#include <Gwen/Controls/Layout/Position.h>
 #include <Gwen/Gwen.h>
 #include "../Base/Globals.hpp"
 #include "CreditsPage.hpp"
@@ -6,6 +7,9 @@
 GWEN_CONTROL_CONSTRUCTOR(CreditsPageControl)
 {
 	SetBounds(0,0,SCREENWIDTH,SCREENHEIGHT);
+
+	Gwen::Controls::Layout::Center* center = new Gwen::Controls::Layout::Center(this);
+	center->SetBounds(0,0,SCREENWIDTH,SCREENHEIGHT);
 
 	Gwen::Controls::Label* completeText = new Gwen::Controls::Label(this);
 	completeText->SetTextColor(Gwen::Colors::White);
@@ -28,7 +32,7 @@ GWEN_CONTROL_CONSTRUCTOR(CreditsPageControl)
 	completeText->SizeToContents();
 	completeText->SetPos(SCREENWIDTH/2 - completeText->GetSize().x/2, 200 );
 
-	completeText = new Gwen::Controls::Label(this);
+	completeText = new Gwen::Controls::Label(center);
 	completeText->SetTextColor(Gwen::Colors::White);
 	completeText->SetText(L"\"moon.chase.star\"");
 	completeText->SetAlignment(Gwen::Pos::CenterH);

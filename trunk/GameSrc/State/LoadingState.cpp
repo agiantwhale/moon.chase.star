@@ -136,6 +136,15 @@ namespace sb
 						EventData* unloadEvent = new EventData(Event_Unload);
 						unloadEvent->triggerEvent();
 
+						if(m_sceneNum >= SceneManager::getInstance()->getMaximumSceneNum())
+						{
+							ResourceCache::destroyInstance();
+							PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(b2Vec2(0,-GRAVITY_ACCELERATION));
+
+							Game::getInstance()->setNextStateType(State_Credits);
+							return true;
+						}
+
 						SceneManager::getInstance()->loadScene(m_sceneNum);
 						Game::getInstance()->setNextStateType(State_InGame);
 						break;

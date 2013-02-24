@@ -49,6 +49,8 @@ namespace sb
 		const sf::Vector2i& getSceneSize() const { return m_levelSize; }
 		unsigned int getLoadedSceneNumber() const { return m_sceneNum; }
 
+		unsigned int getMaximumSceneNum() const { return m_sceneInfoStack.size(); }
+
 		PlayerEntity* getPlayerEntity() const { return m_playerEntity; }
 		void setPlayerEntity(PlayerEntity* val) { m_playerEntity = val; }
 

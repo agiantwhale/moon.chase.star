@@ -109,6 +109,7 @@
     <ClCompile Include="GameSrc\Physics\BodyController.cpp" />
     <ClCompile Include="GameSrc\Physics\Debug\PhysicsDebugDraw.cpp" />
     <ClCompile Include="GameSrc\Physics\PhysicsManager.cpp" />
+    <ClCompile Include="GameSrc\State\CreditsState.cpp" />
     <ClCompile Include="GameSrc\State\GameState.cpp" />
     <ClCompile Include="GameSrc\State\GameWinState.cpp" />
     <ClCompile Include="GameSrc\State\InGameState.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="GameSrc\Physics\Debug\PhysicsDebugDraw.hpp" />
     <ClInclude Include="GameSrc\Physics\PhysicsManager.hpp" />
     <ClInclude Include="GameSrc\Physics\Simulatable.hpp" />
+    <ClInclude Include="GameSrc\State\CreditsState.hpp" />
     <ClInclude Include="GameSrc\State\GameState.hpp" />
     <ClInclude Include="GameSrc\State\GameWinState.hpp" />
     <ClInclude Include="GameSrc\State\InGameState.hpp" />

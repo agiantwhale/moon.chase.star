@@ -102,9 +102,6 @@
     <ClCompile Include="GameSrc\State\InGameState.cpp">
       <Filter>GameSrc\State</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\State\IntroState.cpp">
-      <Filter>GameSrc\State</Filter>
-    </ClCompile>
     <ClCompile Include="GameSrc\Task\Task.cpp">
       <Filter>GameSrc\Task</Filter>
     </ClCompile>
@@ -206,6 +203,12 @@
     </ClCompile>
     <ClCompile Include="GameSrc\GUI\CreditsPage.cpp">
       <Filter>GameSrc\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\State\CreditsState.cpp">
+      <Filter>GameSrc\State</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\State\IntroState.cpp">
+      <Filter>GameSrc\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -383,6 +386,9 @@
     </ClInclude>
     <ClInclude Include="GameSrc\GUI\CreditsPage.hpp">
       <Filter>GameSrc\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\State\CreditsState.hpp">
+      <Filter>GameSrc\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

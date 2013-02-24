@@ -73,4 +73,6 @@ void MainMenuControl::onContinue( Gwen::Controls::Base* control )
 
 void MainMenuControl::onCredits( Gwen::Controls::Base* control )
 {
+	sb::EventData* eventData = new sb::EventData(Event_Credits);
+	eventData->triggerEvent();
 }
