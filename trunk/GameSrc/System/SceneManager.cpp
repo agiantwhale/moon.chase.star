@@ -366,6 +366,7 @@ namespace sb
 	{
 		for(std::vector<Tile*>::iterator iter = m_tileStack.begin(); iter != m_tileStack.end(); iter++)
 		{
+			GraphicsManager::getInstance()->removeDrawable(*(*iter), (*iter)->getLayer());
 			delete (*iter);
 		}
 

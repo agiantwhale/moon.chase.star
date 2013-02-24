@@ -123,7 +123,6 @@ namespace sb
 
 						ResourceCache::destroyInstance();
 						PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(b2Vec2(0,-GRAVITY_ACCELERATION));
-						SceneManager::getInstance()->clearMusic();
 
 						Game::getInstance()->setNextStateType(State_MainMenu);
 
@@ -133,20 +132,26 @@ namespace sb
 
 				case Load_Next:
 					{
+						Game::getInstance()->setNextStateType(State_InGame);
+
 						EventData* unloadEvent = new EventData(Event_Unload);
 						unloadEvent->triggerEvent();
 
+						ResourceCache::destroyInstance();
+						PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(b2Vec2(0,-GRAVITY_ACCELERATION));
+
 						if(m_sceneNum >= SceneManager::getInstance()->getMaximumSceneNum())
 						{
+							/*
 							ResourceCache::destroyInstance();
 							PhysicsManager::getInstance()->getPhysicsWorld()->SetGravity(b2Vec2(0,-GRAVITY_ACCELERATION));
+							*/
 
 							Game::getInstance()->setNextStateType(State_Credits);
 							return true;
 						}
 
 						SceneManager::getInstance()->loadScene(m_sceneNum);
-						Game::getInstance()->setNextStateType(State_InGame);
 						break;
 					}
 
@@ -192,11 +197,6 @@ namespace sb
 					m_helperText->Show();
 					m_helperText->SetText(SceneManager::getInstance()->getHelperText(m_sceneNum));
 					m_helperText->SizeToContents();
-					break;
-				}
-
-			default:
-				{
 					break;
 				}
 			}

@@ -8,9 +8,10 @@ namespace sb
 {
 	std::unordered_map<std::string,std::string> Tile::_tilesetMap;
 
-	Tile::Tile( const TiXmlElement* element, const sf::Vector2i& tileSize )
+	Tile::Tile( const TiXmlElement* element, const sf::Vector2i& tileSize, unsigned int layer )
 		:	sf::Drawable(),
-			m_tileTexture()
+			m_tileTexture(),
+			m_layer(layer)
 	{
 		m_tileTexture.create( SceneManager::getInstance()->getSceneSize().x, SceneManager::getInstance()->getSceneSize().y );
 		m_tileTexture.clear( sf::Color::Transparent );
