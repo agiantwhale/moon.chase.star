@@ -6,6 +6,9 @@
 class CreditsPageControl : public Gwen::Controls::Base
 {
 	GWEN_CONTROL(CreditsPageControl,Gwen::Controls::Base);
+
+private:
+	Gwen::Font* m_creditsFont;
 };
 
 #endif // CreditsPage_h__

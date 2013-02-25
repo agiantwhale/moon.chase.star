@@ -2,6 +2,7 @@
 #include <Gwen/Controls/Layout/Position.h>
 #include <Gwen/Gwen.h>
 #include "../Base/Globals.hpp"
+#include "GUIManager.hpp"
 #include "CreditsPage.hpp"
 
 GWEN_CONTROL_CONSTRUCTOR(CreditsPageControl)
@@ -39,17 +40,21 @@ GWEN_CONTROL_CONSTRUCTOR(CreditsPageControl)
 		"\n	"
 		"\n	"
 		"\n	"
-		"\n	remembering Caleb, a star that'll forever shine in our hearts"
+		"\n	remembering Caleb, forever shining in our hearts"
 		"\n	"
 		"\n	"
 		"\n	"
 		"\n	thanks all for playing, it's been a fun ride."
 		"\n	- 2013.02.25, j & genki from Cranbrook";
+
+	m_creditsFont = new Gwen::Font;
+	m_creditsFont->facename = L"Resource/Fonts/Stroke-Bold.otf";
+	m_creditsFont->size = 20;
 	
 	Gwen::Controls::Label* completeText = new Gwen::Controls::Label(center);
 	completeText->SetTextColor(Gwen::Colors::White);
 	completeText->SetText(creditsText);
-	completeText->GetFont()->size = 15;
+	completeText->SetFont(m_creditsFont);
 	completeText->SetAlignment(Gwen::Pos::CenterH);
 	completeText->SizeToContents();
 	completeText->SetPos(SCREENWIDTH/2 - completeText->GetSize().x/2, 300 );

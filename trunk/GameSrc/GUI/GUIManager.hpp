@@ -40,6 +40,7 @@ namespace sb
 		void render(void);
 
 		Gwen::Controls::Canvas* getCanvas() const { return m_gwenCanvas; }
+		Gwen::Renderer::Base* getRenderer() const { return m_gwenRenderer; }
 
 	private:
 		Gwen::Renderer::Base*		m_gwenRenderer;

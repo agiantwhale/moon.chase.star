@@ -9,6 +9,7 @@
 #include "..\Event\EventManager.hpp"
 #include "..\Entity\EntityManager.hpp"
 #include "..\Task\TaskManager.hpp"
+#include "..\Event\AppEventData.hpp"
 
 sb::GameWinState::GameWinState()
 	: m_endState(false),
@@ -29,6 +30,20 @@ sb::GameWinState::~GameWinState()
 
 bool sb::GameWinState::handleEvent( const EventData& theevent )
 {
+	if( theevent.getEventType() == Event_App && isActive() )
+	{
+		const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
+		if( eventData.getAppEvent().type == sf::Event::KeyReleased && eventData.getAppEvent().key.code == sf::Keyboard::Space )
+		{
+			Game::getInstance()->setNextStateType(State_Loading);
+
+			EventData* event = new EventData(Event_NextLevel);
+			event->triggerEvent();
+
+			m_endState = true;
+		}
+	}
+
 	if( theevent.getEventType() == Event_GUI && isActive() )
 	{
 		const GUIEventData& eventData = static_cast<const GUIEventData&>(theevent);
