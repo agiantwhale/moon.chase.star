@@ -11,30 +11,45 @@ GWEN_CONTROL_CONSTRUCTOR(CreditsPageControl)
 	Gwen::Controls::Layout::Center* center = new Gwen::Controls::Layout::Center(this);
 	center->SetBounds(0,0,SCREENWIDTH,SCREENHEIGHT);
 
-	Gwen::Controls::Label* completeText = new Gwen::Controls::Label(this);
-	completeText->SetTextColor(Gwen::Colors::White);
-	completeText->SetText(L"sinabro presents");
-	completeText->SetAlignment(Gwen::Pos::CenterH);
-	completeText->SizeToContents();
-	completeText->SetPos(SCREENWIDTH/2 - completeText->GetSize().x/2, 100 );
+	/*
+	std::string creditsText =
+		{	" \"moon.chase.star\" ", 
+			"\nj.lee - IL JAE LEE, smashthewindow@gmail.com" };
+	*/
 
-	completeText = new Gwen::Controls::Label(this);
+	std::string creditsText =
+		"	\"moon.chase.star\""
+		"\n	"
+		"\n	"
+		"\n	"
+		"\n	developers:"
+		"\n	lead development / programming - Il Jae Lee (j.lee)"
+		"\n	level design - Clayton Kramp (genki)"
+		"\n	"
+		"\n	"
+		"\n	"
+		"\n	special thanks to:"
+		"\n	whoever wrote that poem about chasing stars on Birmingham Starbucks"
+		"\n	Joe St. Germain, for the beta testing and breaking builds of the game"
+		"\n	Laurent Gomila, for making this awesome rendering library SFML"
+		"\n	Erin Catto, the genius who wrote Box2D"
+		"\n	Kevin MacLeod, for releasing his works under Creative Commons license (incompetech.com)"
+		"\n	Joohee Jin, for listening to my complaints during the development"
+		"\n	... and YOU, for being part of this creative communication"
+		"\n	"
+		"\n	"
+		"\n	"
+		"\n	remembering Caleb, a star that'll forever shine in our hearts"
+		"\n	"
+		"\n	"
+		"\n	"
+		"\n	thanks all for playing, it's been a fun ride."
+		"\n	- 2013.02.25, j & genki from Cranbrook";
+	
+	Gwen::Controls::Label* completeText = new Gwen::Controls::Label(center);
 	completeText->SetTextColor(Gwen::Colors::White);
-	completeText->SetText(L"a game by j.lee");
-	completeText->SetAlignment(Gwen::Pos::CenterH);
-	completeText->SizeToContents();
-	completeText->SetPos(SCREENWIDTH/2 - completeText->GetSize().x/2, 150 );
-
-	completeText = new Gwen::Controls::Label(this);
-	completeText->SetTextColor(Gwen::Colors::White);
-	completeText->SetText(L"in collaboration with genki");
-	completeText->SetAlignment(Gwen::Pos::CenterH);
-	completeText->SizeToContents();
-	completeText->SetPos(SCREENWIDTH/2 - completeText->GetSize().x/2, 200 );
-
-	completeText = new Gwen::Controls::Label(center);
-	completeText->SetTextColor(Gwen::Colors::White);
-	completeText->SetText(L"\"moon.chase.star\"");
+	completeText->SetText(creditsText);
+	completeText->GetFont()->size = 15;
 	completeText->SetAlignment(Gwen::Pos::CenterH);
 	completeText->SizeToContents();
 	completeText->SetPos(SCREENWIDTH/2 - completeText->GetSize().x/2, 300 );

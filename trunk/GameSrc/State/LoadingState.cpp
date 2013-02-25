@@ -80,7 +80,6 @@ namespace sb
 
 		m_loadingText->Show();
 		m_pressEnterText->Hide();
-		m_helperText->Hide();
 	}
 
 	bool LoadingState::update( sf::Time deltaTime )
@@ -164,43 +163,6 @@ namespace sb
 			
 			return InputManager::getInstance()->getContinueInput();
 		}
-		else
-		{
-			switch(m_loadType)
-			{
-			case Load_New:
-				{
-					m_helperText->Show();
-					m_helperText->SetText(SceneManager::getInstance()->getHelperText(m_sceneNum));
-					m_helperText->SizeToContents();
-
-					break;
-				}
-
-			case Load_Restart:
-				{
-					m_helperText->Show();
-					m_helperText->SetText(SceneManager::getInstance()->getHelperText(SceneManager::getInstance()->getLoadedSceneNumber()));
-					m_helperText->SizeToContents();
-
-					break;
-				}
-
-			case Load_Unload:
-				{
-					m_helperText->Hide();
-					break;
-				}
-
-			case Load_Next:
-				{
-					m_helperText->Show();
-					m_helperText->SetText(SceneManager::getInstance()->getHelperText(m_sceneNum));
-					m_helperText->SizeToContents();
-					break;
-				}
-			}
-		}
 
 		return false;
 	}
@@ -226,6 +188,10 @@ namespace sb
 			const NewGameEventData& eventData = static_cast<const NewGameEventData&>(theevent);
 			m_sceneNum = eventData.getSceneNumber();
 
+			m_helperText->Show();
+			m_helperText->SetText(SceneManager::getInstance()->getHelperText(m_sceneNum));
+			m_helperText->SizeToContents();
+
 			m_loadType = Load_New;
 		}
 
@@ -233,11 +199,19 @@ namespace sb
 		{
 			m_sceneNum = SceneManager::getInstance()->getLoadedSceneNumber() + 1;
 
+			m_helperText->Show();
+			m_helperText->SetText(SceneManager::getInstance()->getHelperText(m_sceneNum));
+			m_helperText->SizeToContents();
+
 			m_loadType = Load_Next;
 		}
 
 		if(theevent.getEventType() == Event_RestartLevel)
 		{
+			m_helperText->Show();
+			m_helperText->SetText(SceneManager::getInstance()->getHelperText(SceneManager::getInstance()->getLoadedSceneNumber()));
+			m_helperText->SizeToContents();
+
 			m_loadType = Load_Restart;
 		}
 
@@ -248,6 +222,8 @@ namespace sb
 
 			if( controlName == "MainMenuButton")
 			{
+				m_helperText->Hide();
+
 				m_loadType = Load_Unload;
 			}
 		}
