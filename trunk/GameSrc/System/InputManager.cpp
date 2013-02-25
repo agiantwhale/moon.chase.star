@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <xinput.h>
 #include "InputManager.hpp"
+#include "../Event/AppEventData.hpp"
 
 namespace sb
 {
@@ -12,15 +13,18 @@ namespace sb
 		m_rightInput(false),
 		m_downInput(false),
 		m_upInput(false),
-		m_continueInput(false),
+		m_fallInput(false),
+		m_waitFrame(false),
 		m_vibrateAmount(0.0f),
 		m_vibrateDuration()
 	{
+		addEventListenType(Event_App);
 		addEventListenType(Event_Unload);
 	}
 
 	SINGLETON_DESTRUCTOR(InputManager)
 	{
+		addEventListenType(Event_App);
 		removeEventListenType(Event_Unload);
 
 		if(m_inputType == kInput_Xbox)
@@ -51,7 +55,15 @@ namespace sb
 		m_rightInput = false;
 		m_downInput = false;
 		m_upInput = false;
-		m_continueInput = false;
+
+		if(!m_waitFrame)
+		{
+			m_fallInput = false;
+		}
+		else
+		{
+			m_waitFrame = false;
+		}
 
 		/*
 		{
@@ -74,7 +86,6 @@ namespace sb
 				m_rightInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
 				m_downInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
 				m_upInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
-				m_continueInput = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 				break;
 			}
 
@@ -122,7 +133,7 @@ namespace sb
 							m_downInput = true;
 						}
 
-						m_continueInput = state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
+						m_fallInput = state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
 
 						m_affectorRate = std::abs(state.Gamepad.sThumbRX) / 32767.0f;
 					}
@@ -162,6 +173,16 @@ namespace sb
 		{
 			clearVibration();
 			setVibratationState();
+		}
+
+		if( theevent.getEventType() == Event_App )
+		{
+			const AppEventData& eventData = static_cast<const AppEventData&>(theevent);
+			if( eventData.getAppEvent().type == sf::Event::KeyReleased && eventData.getAppEvent().key.code == sf::Keyboard::Space )
+			{
+				m_fallInput = true;
+				m_waitFrame = true;
+			}
 		}
 
 		return false;

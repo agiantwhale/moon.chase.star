@@ -161,7 +161,7 @@ namespace sb
 				}
 			}
 			
-			return InputManager::getInstance()->getContinueInput();
+			return InputManager::getInstance()->getFallKeyHit();
 		}
 
 		return false;

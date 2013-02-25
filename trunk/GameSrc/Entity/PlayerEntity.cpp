@@ -1,5 +1,6 @@
 #include <cmath>
 #include <Thor/Vectors.hpp>
+#include <Thor/Math.hpp>
 #include "../Base/Math.hpp"
 #include "../Helper/Conversion.hpp"
 #include "PlayerEntity.hpp"
@@ -73,6 +74,11 @@ void PlayerEntity::update(sf::Time deltaTime)
 		}
 	}
 	*/
+
+	if( m_playerState == kPlayer_Thrown && sb::InputManager::getInstance()->getFallKeyHit() )
+	{
+		fall();
+	}
 
 	m_ballTranslator.translate(m_ballSprite);
 }
@@ -305,7 +311,21 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 					m_shouldBounce = false;
 					m_throwSound.play();
 					//contact->SetEnabled(false);
-					sf::Vector2f throwVelocity = ToVector(contactFixture->GetBody()->GetWorldVector(b2Vec2(0,1.0f))) * THROW_VELOCITY;
+					sf::Vector2f throwVelocity = ToVector(contactFixture->GetBody()->GetWorldVector(b2Vec2(0,1.0f)));
+
+					//HACKHACK!!
+					if(std::abs(throwVelocity.x) <= 0.5f)
+					{
+						throwVelocity.x = 0.f;
+					}
+
+					if(std::abs(throwVelocity.y) <= 0.5f)
+					{
+						throwVelocity.y = 0.f;
+					}
+
+					throwVelocity = thor::unitVector<float>(throwVelocity) * THROW_VELOCITY;
+
 					shoot(throwVelocity);
 					sb::InputManager::getInstance()->feedOutput(0.6f,sf::milliseconds(322));
 				}
@@ -500,6 +520,7 @@ void PlayerEntity::processContact(const b2Contact* contact, const b2Fixture* con
 
 void PlayerEntity::processPreSolve( b2Contact* contact,const b2Fixture* target )
 {
+	/*
 	b2WorldManifold manifold;
 	contact->GetWorldManifold(&manifold);
 
@@ -507,21 +528,35 @@ void PlayerEntity::processPreSolve( b2Contact* contact,const b2Fixture* target )
 	b2Vec2 normal = manifold.normal;
 	float slope = std::abs(normal.y/normal.x);
 
-
 	sb::Entity* entity = static_cast<sb::Entity*>(target->GetBody()->GetUserData());
 	ThrowEntity* throwEntity = sb::entity_cast<ThrowEntity>(entity);
 
 	if( throwEntity &&
-		contactPos.y > 0.f
-		//&& slope >= JUMP_SLOPE
-		//&& throwEntity->getPosition().y < getPosition().y
-		/*&& m_playerState == kPlayer_Moving */ )
+		(std::abs(normal.x) <= JUMP_SLOPE_STRICT ||
+		(std::abs(normal.y) <= JUMP_SLOPE_STRICT && contactPos.y > 0.f)) )
 	{
 		m_shouldBounce = false;
-		//contact->SetEnabled(false);
-		sf::Vector2f throwVelocity = ToVector(target->GetBody()->GetWorldVector(b2Vec2(0,1.0f))) * THROW_VELOCITY;
+		m_throwSound.play();
+		contact->SetEnabled(false);
+		sf::Vector2f throwVelocity = ToVector(target->GetBody()->GetWorldVector(b2Vec2(0,1.0f)));
+
+		//HACKHACK!!
+		if(std::abs(throwVelocity.x) <= 0.5f)
+		{
+			throwVelocity.x = 0.f;
+		}
+
+		if(std::abs(throwVelocity.y) <= 0.5f)
+		{
+			throwVelocity.y = 0.f;
+		}
+
+		throwVelocity = thor::unitVector<float>(throwVelocity) * THROW_VELOCITY;
+
 		shoot(throwVelocity);
+		sb::InputManager::getInstance()->feedOutput(0.6f,sf::milliseconds(322));
 	}
+	*/
 }
 
 void PlayerEntity::control( void )
@@ -715,30 +750,8 @@ void PlayerEntity::updatePlayerState( void )
 
 	case kPlayer_Thrown:
 		{
-			bool shouldFall = false;
-			sb::PhysicsManager::GravityDirection gravDir = sb::PhysicsManager::getInstance()->getGravityDirection();
-
-			if(gravDir == sb::PhysicsManager::Gravity_Down || gravDir == sb::PhysicsManager::Gravity_Up)
-			{
-				shouldFall = (sb::InputManager::getInstance()->getDownInput() || sb::InputManager::getInstance()->getUpInput());
-			}
-			else
-			{
-				shouldFall = (sb::InputManager::getInstance()->getRightInput() || sb::InputManager::getInstance()->getLeftInput());
-			}
-
-
-			if( shouldFall )
-			{
-				fall();
-			}
-			else
-			{
-				limitVerticalVelocity();
-				limitHorizontalVelocity();
-			}
-
-			//limitGravitationalVelocity();
+			limitVerticalVelocity();
+			limitHorizontalVelocity();
 
 			break;
 		}
