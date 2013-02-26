@@ -85,7 +85,7 @@
     <ClCompile Include="GameSrc\App\Game.cpp" />
     <ClCompile Include="GameSrc\App\main.cpp" />
     <ClCompile Include="GameSrc\Entity\BlockEntity.cpp" />
-    <ClCompile Include="GameSrc\Entity\CreditsEntity.cpp" />
+    <ClCompile Include="GameSrc\Entity\TextEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\DeadZoneEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\Entity.cpp" />
     <ClCompile Include="GameSrc\Entity\EntityManager.cpp" />
@@ -140,7 +140,7 @@
     <ClInclude Include="GameSrc\Base\Singleton.hpp" />
     <ClInclude Include="GameSrc\Base\Math.hpp" />
     <ClInclude Include="GameSrc\Entity\BlockEntity.hpp" />
-    <ClInclude Include="GameSrc\Entity\CreditsEntity.hpp" />
+    <ClInclude Include="GameSrc\Entity\TextEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\DeadZoneEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\Entity.hpp" />
     <ClInclude Include="GameSrc\Entity\EntityManager.hpp" />

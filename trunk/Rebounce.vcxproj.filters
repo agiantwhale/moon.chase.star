@@ -216,7 +216,7 @@
     <ClCompile Include="Libs\GWEN\Renderers\SFML2\SFML2.cpp">
       <Filter>Libs\GWEN\Renderers\SFML2</Filter>
     </ClCompile>
-    <ClCompile Include="GameSrc\Entity\CreditsEntity.cpp">
+    <ClCompile Include="GameSrc\Entity\TextEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
     </ClCompile>
   </ItemGroup>
@@ -399,7 +399,7 @@
     <ClInclude Include="GameSrc\State\CreditsState.hpp">
       <Filter>GameSrc\State</Filter>
     </ClInclude>
-    <ClInclude Include="GameSrc\Entity\CreditsEntity.hpp">
+    <ClInclude Include="GameSrc\Entity\TextEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
     </ClInclude>
   </ItemGroup>

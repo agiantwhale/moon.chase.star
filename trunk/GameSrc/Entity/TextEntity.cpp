@@ -1,15 +1,15 @@
-#include "CreditsEntity.hpp"
+#include "TextEntity.hpp"
 #include "PlayerEntity.hpp"
 #include "../Physics/PhysicsManager.hpp"
 #include "../System/ResourceCache.hpp"
 #include "../System/GraphicsManager.hpp"
 #include "../Event/ContactEventData.hpp"
 
-REGISTER_ENTITY(CreditsEntity,"Credits")
+REGISTER_ENTITY(TextEntity,"Credits")
 
 const float FADE_TIME = 1.0f;
 
-CreditsEntity::CreditsEntity()
+TextEntity::TextEntity()
 	:	m_textPos(),
 		m_text(),
 		m_triggerBody(*this),
@@ -21,7 +21,7 @@ CreditsEntity::CreditsEntity()
 	addEventListenType(Event_BeginContact);
 }
 
-CreditsEntity::~CreditsEntity()
+TextEntity::~TextEntity()
 {
 	removeEventListenType(Event_BeginContact);
 
@@ -29,7 +29,7 @@ CreditsEntity::~CreditsEntity()
 	sb::PhysicsManager::getInstance()->removeSimulatable(&m_triggerBody);
 }
 
-void CreditsEntity::update( sf::Time deltaTime )
+void TextEntity::update( sf::Time deltaTime )
 {
 	BaseClass::update(deltaTime);
 
@@ -47,7 +47,7 @@ void CreditsEntity::update( sf::Time deltaTime )
 	}
 }
 
-void CreditsEntity::initializeEntity( const TiXmlElement *propertyElement /*= NULL */ )
+void TextEntity::initializeEntity( const TiXmlElement *propertyElement /*= NULL */ )
 {
 	Entity::initializeEntity(propertyElement);
 
@@ -97,12 +97,13 @@ void CreditsEntity::initializeEntity( const TiXmlElement *propertyElement /*= NU
 		{
 			std::string creditsString;
 			propertyElement->QueryStringAttribute("Text", &creditsString);
-			propertyElement->QueryIntAttribute("Size", &m_textSize);
+			propertyElement->QueryUnsignedAttribute("Size", &m_textSize);
 
 			thor::ResourceKey<sf::Font> key = thor::Resources::fromFile<sf::Font>("Resource/Fonts/Stroke-Bold.otf");
 			std::shared_ptr<sf::Font> font = sb::ResourceCache::getInstance()->acquire<sf::Font>(key);
 			m_text.setString(creditsString);
 			m_text.setFont(*font);
+			m_text.setCharacterSize(m_textSize);
 			m_text.setColor(sf::Color::White);
 
 			sb::GraphicsManager::getInstance()->addDrawable(m_text, 6);
@@ -110,7 +111,7 @@ void CreditsEntity::initializeEntity( const TiXmlElement *propertyElement /*= NU
 	}
 }
 
-bool CreditsEntity::handleEvent( const sb::EventData& theevent )
+bool TextEntity::handleEvent( const sb::EventData& theevent )
 {
 	switch (theevent.getEventType())
 	{

@@ -137,9 +137,9 @@ bool ZoneEntity::handleEvent( const sb::EventData& theevent )
 			if(m_zoneBody.checkContact(contactInfo,target))
 			{
 				sb::Entity* entity = sb::getOwnerEntity(target);
-				ZoneEntity* zoneEntity = sb::entity_cast<ZoneEntity>(entity);
+				StarEntity* starEntity = sb::entity_cast<StarEntity>(entity);
 
-				if(zoneEntity)
+				if(starEntity)
 				{
 					m_containsBall = false;
 					releaseEntity();

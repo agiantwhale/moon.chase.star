@@ -1,5 +1,5 @@
-#ifndef CreditsEntity_h__
-#define CreditsEntity_h__
+#ifndef TextEntity_h__
+#define TextEntity_h__
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -7,16 +7,16 @@
 #include "../Physics/BodyController.hpp"
 #include "../Base/Math.hpp"
 
-class CreditsEntity : public sb::Entity
+class TextEntity : public sb::Entity
 {
-	DEFINE_ENTITY(CreditsEntity,sb::Entity,'CRDT')
+	DEFINE_ENTITY(TextEntity,sb::Entity,'TEXT')
 
 private:
 	virtual void initializeEntity( const TiXmlElement *propertyElement = NULL );
 	virtual bool handleEvent( const sb::EventData& theevent );
 	virtual void update( sf::Time deltaTime );
 
-	int			 m_textSize;
+	unsigned int m_textSize;
 	sf::Vector2f m_textPos;
 	sf::Text	 m_text;
 	sb::BodyController	m_triggerBody;
