@@ -41,7 +41,7 @@ StarEntity::~StarEntity()
 {
 	removeEventListenType(Event_Simulate);
 
-	sb::GraphicsManager::getInstance()->removeDrawable(m_starSprite,3);
+	sb::GraphicsManager::getInstance()->removeDrawable(m_starSprite,4);
 	sb::GraphicsManager::getInstance()->removeDrawable(*m_starParticle,3);
 	sb::PhysicsManager::getInstance()->removeSimulatable(&m_starBody);
 	delete m_starParticle;
@@ -120,7 +120,7 @@ void StarEntity::initializeEntity( const TiXmlElement *propertyElement /* = null
 			m_starSprite.setTexture(*texture);
 			m_starSprite.setOrigin(32,32);
 
-			sb::GraphicsManager::getInstance()->addDrawable(m_starSprite,3);
+			sb::GraphicsManager::getInstance()->addDrawable(m_starSprite,4);
 		}
 
 		{

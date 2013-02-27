@@ -5,7 +5,7 @@
 #include "../System/GraphicsManager.hpp"
 #include "../Event/ContactEventData.hpp"
 
-REGISTER_ENTITY(TextEntity,"Credits")
+REGISTER_ENTITY(TextEntity,"Text")
 
 const float FADE_TIME = 1.0f;
 
@@ -14,6 +14,7 @@ TextEntity::TextEntity()
 		m_text(),
 		m_triggerBody(*this),
 		m_triggered(false),
+		m_fadeIn(false),
 		m_variationTime(),
 		m_totalTime(),
 		m_textSize(30)
@@ -43,7 +44,14 @@ void TextEntity::update( sf::Time deltaTime )
 		}
 
 		float alphaLevel = m_variationTime.asSeconds()/m_totalTime.asSeconds();
+
+		if(m_fadeIn)
+		{
+			alphaLevel = 1.f - alphaLevel;
+		}
+
 		m_text.setColor(sf::Color(255,255,255,255 * alphaLevel));
+		//m_text.setColor(sf::Color::White );
 	}
 }
 
@@ -98,13 +106,23 @@ void TextEntity::initializeEntity( const TiXmlElement *propertyElement /*= NULL 
 			std::string creditsString;
 			propertyElement->QueryStringAttribute("Text", &creditsString);
 			propertyElement->QueryUnsignedAttribute("Size", &m_textSize);
+			std::string attributeValue = propertyElement->Attribute("FadeIn");
+			m_fadeIn = (attributeValue == "True");
 
 			thor::ResourceKey<sf::Font> key = thor::Resources::fromFile<sf::Font>("Resource/Fonts/Stroke-Bold.otf");
 			std::shared_ptr<sf::Font> font = sb::ResourceCache::getInstance()->acquire<sf::Font>(key);
 			m_text.setString(creditsString);
 			m_text.setFont(*font);
 			m_text.setCharacterSize(m_textSize);
-			m_text.setColor(sf::Color::White);
+
+			if(m_fadeIn)
+			{
+				m_text.setColor(sf::Color::Transparent);
+			}
+			else
+			{
+				m_text.setColor(sf::Color::White);
+			}
 
 			sb::GraphicsManager::getInstance()->addDrawable(m_text, 6);
 		}

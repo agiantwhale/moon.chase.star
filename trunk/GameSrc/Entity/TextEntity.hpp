@@ -21,6 +21,7 @@ private:
 	sf::Text	 m_text;
 	sb::BodyController	m_triggerBody;
 	bool m_triggered;
+	bool m_fadeIn;
 
 	sf::Time m_variationTime;
 	sf::Time m_totalTime;
