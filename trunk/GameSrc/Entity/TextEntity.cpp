@@ -51,7 +51,6 @@ void TextEntity::update( sf::Time deltaTime )
 		}
 
 		m_text.setColor(sf::Color(255,255,255,255 * alphaLevel));
-		//m_text.setColor(sf::Color::White );
 	}
 }
 
