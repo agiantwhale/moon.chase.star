@@ -25,8 +25,8 @@ GWEN_CONTROL_CONSTRUCTOR(CreditsPageControl)
 		"\n	lead development / programming - Il Jae Lee (j.lee)"
 		"\n	level design - Clayton Kramp (genki)"
 		"\n	Kevin MacLeod, for releasing his works under Creative Commons license (incompetech.com)"
-		"\n "
-		"\n questions? comments? cries of anguish? smashthewindow@gmail.com";
+		"\n	"
+		"\n	questions? comments? cries of anguish? smashthewindow@gmail.com";
 
 	m_creditsFont = new Gwen::Font;
 	m_creditsFont->facename = L"Resource/Fonts/Stroke-Bold.otf";
