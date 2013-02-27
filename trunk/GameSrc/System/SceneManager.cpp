@@ -26,7 +26,7 @@ namespace sb
 						  EventListener(),
 						  m_sceneName(),
 						  m_levelSize(),
-						  m_loadMusic(false),
+						  m_loadNewMusic(false),
 						  m_gameLost(false),
 						  m_gameWon(false),
 						  m_sceneLoaded(false),
@@ -63,18 +63,18 @@ namespace sb
 	{
 		if( newevent.getEventType() == Event_NewGame )
 		{
-			m_loadMusic = true;
+			m_loadNewMusic = true;
 		}
 
 		if( newevent.getEventType() == Event_NextLevel )
 		{
-			m_loadMusic = false;
+			m_loadNewMusic = true;
 		}
 
 		if( newevent.getEventType() == Event_RestartLevel )
 		{
 			m_sceneLoaded = false;
-			m_loadMusic = false;
+			m_loadNewMusic = false;
 		}
 
 		if( newevent.getEventType() == Event_Unload )
@@ -276,15 +276,7 @@ namespace sb
 
 			m_sceneName = m_sceneInfoStack.at(sceneNum).sceneName;
 			
-			/*
-			unsigned int sceneNumIter = sceneNum;
-			while(m_sceneInfoStack.at(sceneNumIter).soundName == "NULL" && sceneNumIter >= 0 )
-			{
-				sceneNumIter--;
-			}
-			*/
-
-			if(m_loadMusic)
+			if(m_loadNewMusic && m_sceneInfoStack.at(sceneNum).soundName == "NULL" )
 			{
 				std::string soundName = "NULL";
 				for(std::vector<SceneInfo>::reverse_iterator iter = m_sceneInfoStack.rbegin() + (m_sceneInfoStack.size() - sceneNum - 1); iter != m_sceneInfoStack.rend(); iter++ )
@@ -308,6 +300,18 @@ namespace sb
 					m_backgroundMusic->setLoop(true);
 					m_backgroundMusic->play();
 				}
+			}
+			else if( m_sceneInfoStack.at(sceneNum).soundName != "NULL" )
+			{
+				if(m_backgroundMusic)
+				{
+					clearMusic();
+				}
+
+				m_backgroundMusic = new sf::Music();
+				m_backgroundMusic->openFromFile(m_sceneInfoStack.at(sceneNum).soundName);
+				m_backgroundMusic->setLoop(true);
+				m_backgroundMusic->play();
 			}
 			
 
