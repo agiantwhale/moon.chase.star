@@ -91,6 +91,8 @@ void sb::GameWinState::enter( void )
 	m_endState = false;
 	m_gameWinMenuControl->setLevelName(SceneManager::getInstance()->getSceneName());
 	m_gameWinMenuControl->Show();
+
+	sb::SceneManager::getInstance()->saveProgress();
 }
 
 bool sb::GameWinState::update( sf::Time deltaTime )

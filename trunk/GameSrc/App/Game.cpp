@@ -94,7 +94,7 @@ namespace sb
 				*/
 
 				CopyFile( L"mcs.xml", szPath, false );
-				loadSucess = m_appDocument.LoadFile("mcs.xml");
+				loadSucess = m_appDocument.LoadFile(ch);
 			}
 
 			/*
