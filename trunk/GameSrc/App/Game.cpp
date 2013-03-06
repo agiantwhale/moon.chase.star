@@ -66,12 +66,11 @@ namespace sb
 		bool vSync = false;
 
 		TCHAR szPath[MAX_PATH];
-		TiXmlDocument document;
 
 		if(SUCCEEDED(
 			
 			SHGetFolderPath(NULL, 
-			CSIDL_PERSONAL|CSIDL_FLAG_CREATE, 
+			CSIDL_LOCAL_APPDATA, 
 			NULL, 
 			0, 
 			szPath))) 
@@ -82,17 +81,32 @@ namespace sb
 			char DefChar = ' ';
 			WideCharToMultiByte(CP_ACP,0,szPath,-1, ch,260,&DefChar, NULL);
 
-			loadSucess = document.LoadFile(ch);
+			loadSucess = m_appDocument.LoadFile(ch);
 			if(!loadSucess)
 			{
+				/*
+				if (CreateDirectory(szPath, NULL) ||
+					ERROR_ALREADY_EXISTS == GetLastError())
+				{
+					CopyFile( L"mcs.xml", szPath, false );
+					loadSucess = m_appDocument.LoadFile("mcs.xml");
+				}
+				*/
+
 				CopyFile( L"mcs.xml", szPath, false );
-				loadSucess = document.LoadFile("mcs.xml");
+				loadSucess = m_appDocument.LoadFile("mcs.xml");
 			}
 
+			/*
+			TCHAR filePath[MAX_PATH];
+			memset(filePath, 0x00, sizeof(filePath));
+			GetModuleFileName(NULL, filePath, MAX_PATH);
+			SetCurrentDirectory(filePath);
+			*/
 
 			if(loadSucess)
 			{
-				const TiXmlElement* settingsElement = document.FirstChildElement("Settings");
+				const TiXmlElement* settingsElement = m_appDocument.FirstChildElement("Settings");
 				if(settingsElement)
 				{
 					settingsElement->QueryBoolAttribute("Fullscreen", &fullScreen);
@@ -113,12 +127,12 @@ namespace sb
 
 		if(loadSucess)
 		{
-			ActivationManager::getInstance()->setUpActivation(document.FirstChildElement("Activation"));
-			GUIManager::getInstance()->setUpGUI(document.FirstChildElement("GUI"));
-			PhysicsManager::getInstance()->setUpPhysics(document.FirstChildElement("Physics"));
-			GraphicsManager::getInstance()->setUpGraphics(document.FirstChildElement("Graphics"));
-			SceneManager::getInstance()->setUpScene(document.FirstChildElement("Scene"));
-			InputManager::getInstance()->setUpInput(document.FirstChildElement("Input"));
+			ActivationManager::getInstance()->setUpActivation(m_appDocument.FirstChildElement("Activation"));
+			GUIManager::getInstance()->setUpGUI(m_appDocument.FirstChildElement("GUI"));
+			PhysicsManager::getInstance()->setUpPhysics(m_appDocument.FirstChildElement("Physics"));
+			GraphicsManager::getInstance()->setUpGraphics(m_appDocument.FirstChildElement("Graphics"));
+			SceneManager::getInstance()->setUpScene(m_appDocument.FirstChildElement("Scene"));
+			InputManager::getInstance()->setUpInput(m_appDocument.FirstChildElement("Input"));
 		}
 
 		Tile::registerTileset("Rect", "Resource/Ogmo/Tiles/Rect.png");

@@ -8,7 +8,8 @@ int main(int argc,char *argv[])
 {
 	sb::Game::getInstance()->initialize();
 	sb::Game::getInstance()->start();
-	sb::SceneManager::getInstance()->saveProgress();
+
+	sb::Game::getInstance()->GetAppDocument().SaveFile();
 
     return 0;
 }

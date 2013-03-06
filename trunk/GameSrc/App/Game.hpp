@@ -8,6 +8,7 @@
 
 #include <Gwen/Controls/Canvas.h>
 #include <Gwen/Input/SFML.h>
+#include <TinyXML/tinyxml.h>
 
 #include "../State/GameState.hpp"
 #include "../Base/Singleton.hpp"
@@ -51,6 +52,8 @@ namespace sb
 			m_frameClock.start();
 		}
 
+		TiXmlDocument& GetAppDocument() { return m_appDocument; }
+
 	private:
 		typedef std::unordered_map<StateType,GameState*> StateMap;
 
@@ -71,6 +74,8 @@ namespace sb
 
 		thor::StopWatch   m_frameClock;
 		sf::Clock		  m_gameClock;
+
+		TiXmlDocument	m_appDocument;
 	};
 
 }

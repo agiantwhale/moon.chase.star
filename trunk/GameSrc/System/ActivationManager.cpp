@@ -7,10 +7,7 @@
 #include <aes.h>        // AES
 #include <modes.h>      // CBC_Mode< >
 #include <filters.h>    // StringSource and
-#include <winerror.h>
-#include <tchar.h>
-#include <shlobj.h>
-#include <shlwapi.h>
+#include "../App/Game.hpp"
 // StreamTransformation
 
 namespace sb
@@ -86,34 +83,10 @@ void sb::ActivationManager::activate( const std::string& activationKey )
 
 void sb::ActivationManager::writeToFile( const std::string& activationKey )
 {
-	TCHAR szPath[MAX_PATH];
-	TiXmlDocument document;
-
-	if(SUCCEEDED(
-
-		SHGetFolderPath(NULL, 
-		CSIDL_PERSONAL|CSIDL_FLAG_CREATE, 
-		NULL, 
-		0, 
-		szPath))) 
+	TiXmlElement* scenesElement = Game::getInstance()->GetAppDocument().FirstChildElement("Activation");
+	if(scenesElement)
 	{
-		PathAppend(szPath, TEXT("mcs.xml"));
-
-		char ch[MAX_PATH];
-		char DefChar = ' ';
-		WideCharToMultiByte(CP_ACP,0,szPath,-1, ch,260,&DefChar, NULL);
-
-		TiXmlDocument document(ch);
-		if(document.LoadFile())
-		{
-			TiXmlElement* scenesElement = document.FirstChildElement("Activation");
-			if(scenesElement)
-			{
-				scenesElement->SetAttribute("Key", activationKey);
-			}
-
-			document.SaveFile();
-		}
+		scenesElement->SetAttribute("Key", activationKey);
 	}
 }
 

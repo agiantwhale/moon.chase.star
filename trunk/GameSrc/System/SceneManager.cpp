@@ -19,9 +19,6 @@
 #include "../Helper/Conversion.hpp"
 #include "../Event/ContactEventData.hpp"
 #include "../Entity/StarEntity.hpp"
-#include <winerror.h>
-#include <shlwapi.h>
-#include <shlobj.h>
 
 namespace sb
 {
@@ -466,34 +463,10 @@ namespace sb
 
 	void SceneManager::saveProgress( void )
 	{
-		TCHAR szPath[MAX_PATH];
-		TiXmlDocument document;
-
-		if(SUCCEEDED(
-
-			SHGetFolderPath(NULL, 
-			CSIDL_PERSONAL|CSIDL_FLAG_CREATE, 
-			NULL, 
-			0, 
-			szPath))) 
+		TiXmlElement* scenesElement = Game::getInstance()->GetAppDocument().FirstChildElement("Scene");
+		if(scenesElement)
 		{
-			PathAppend(szPath, TEXT("mcs.xml"));
-
-			char ch[MAX_PATH];
-			char DefChar = ' ';
-			WideCharToMultiByte(CP_ACP,0,szPath,-1, ch,260,&DefChar, NULL);
-
-			TiXmlDocument document(ch);
-			if(document.LoadFile())
-			{
-				TiXmlElement* scenesElement = document.FirstChildElement("Scene");
-				if(scenesElement)
-				{
-					scenesElement->SetAttribute("Cleared", m_clearedSceneNum);
-				}
-
-				document.SaveFile();
-			}
+			scenesElement->SetAttribute("Cleared", m_clearedSceneNum);
 		}
 	}
 
