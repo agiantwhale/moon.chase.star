@@ -79,7 +79,7 @@ namespace sb
 		// was done offline by passing the TA_SKIP_OFFLINE flag
 		opts.flags = TA_SKIP_OFFLINE;
 
-		hr = IsGenuine(TA_GUID);// , &opts);
+		hr = IsGenuineEx(TA_GUID, &opts);
 
 		if (hr == TA_OK || hr == TA_E_FEATURES_CHANGED || hr == TA_E_INET || hr == TA_E_INET_DELAYED)
 		{

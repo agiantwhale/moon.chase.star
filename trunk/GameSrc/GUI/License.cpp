@@ -3,6 +3,7 @@
 #include "../Base/Globals.hpp"
 #include <TurboActivate.h>
 #include <Gwen/Controls/Label.h>
+#include <boost/algorithm/string.hpp>
 
 // Support Unicode compilation and non-Windows compilation
 #ifdef _WIN32
@@ -38,8 +39,10 @@ GWEN_CONTROL_CONSTRUCTOR(ActivateControl)
 
 void ActivateControl::onSend( Gwen::Controls::Base* control )
 {
-	const wchar_t* key = m_textBox->GetText().GetUnicode().c_str();
-	HRESULT hr = CheckAndSavePKey(key, TA_SYSTEM);
+	Gwen::UnicodeString keyString = m_textBox->GetText().GetUnicode();
+	boost::erase_all(keyString," ");
+	boost::to_upper(keyString);
+	HRESULT hr = CheckAndSavePKey(keyString.c_str(), TA_USER);
 	if (hr == TA_OK)
 	{
 		// try to activate
