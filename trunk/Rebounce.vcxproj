@@ -50,14 +50,14 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>TURBOACTIVATE_STATIC;WIN32;TIXML_USE_STL;FTLOG=Game;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Development\Rebounce\trunk\Libs\TurboActive\include;C:\Development\Rebounce\trunk\Libs\sfTheora\include;C:\Development\Rebounce\trunk\Libs\Thor\include;C:\Development\Rebounce\trunk\Libs\Box2D\include;C:\Development\Rebounce\trunk\Libs\TinyXML\include;C:\Development\Rebounce\trunk\Libs\CxxTL\include;C:\Development\Rebounce\trunk\Libs\SFML\include;C:\Development\Rebounce\trunk\Libs\GWEN\include;C:\Development\Rebounce\trunk\Libs\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;TIXML_USE_STL;FTLOG=Game;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Development\Rebounce\trunk\Libs\Crypto++\cryptopp562;C:\Development\Rebounce\trunk\Libs\sfTheora\include;C:\Development\Rebounce\trunk\Libs\Thor\include;C:\Development\Rebounce\trunk\Libs\Box2D\include;C:\Development\Rebounce\trunk\Libs\TinyXML\include;C:\Development\Rebounce\trunk\Libs\CxxTL\include;C:\Development\Rebounce\trunk\Libs\SFML\include;C:\Development\Rebounce\trunk\Libs\GWEN\include;C:\Development\Rebounce\trunk\Libs\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Development\Rebounce\trunk\Libs\TurboActive\x86-static;C:\Development\Rebounce\trunk\Libs\sfTheora\lib;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;C:\Development\Rebounce\trunk\Libs\Thor\lib;C:\Development\Rebounce\trunk\Libs\Box2D\lib\Debug;C:\Development\Rebounce\trunk\Libs\TinyXML\lib\DebugtinyxmlSTL;C:\Development\Rebounce\trunk\Libs\SFML\lib;C:\Development\Rebounce\trunk\Libs\GWEN\lib\windows\vs2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>TurboActivate-MDd.lib;sfTheora_d.lib;thor-d.lib;Box2D.lib;opengl32.lib;tinyxmlSTL.lib;gwend.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Development\Rebounce\trunk\Libs\Crypto++\cryptopp562\Win32\Output\Debug;C:\Development\Rebounce\trunk\Libs\sfTheora\lib;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;C:\Development\Rebounce\trunk\Libs\Thor\lib;C:\Development\Rebounce\trunk\Libs\Box2D\lib\Debug;C:\Development\Rebounce\trunk\Libs\TinyXML\lib\DebugtinyxmlSTL;C:\Development\Rebounce\trunk\Libs\SFML\lib;C:\Development\Rebounce\trunk\Libs\GWEN\lib\windows\vs2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cryptlib.lib;Shlwapi.lib;sfTheora_d.lib;thor-d.lib;Box2D.lib;opengl32.lib;tinyxmlSTL.lib;gwend.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -68,22 +68,23 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>TURBOACTIVATE_STATIC;CLEANTLOG;WIN32;TIXML_USE_STL;FTLOG=Game;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Development\Rebounce\trunk\Libs\TurboActive\include;C:\Development\Rebounce\trunk\Libs\sfTheora\include;C:\Development\Rebounce\trunk\Libs\Thor\include;C:\Development\Rebounce\trunk\Libs\Box2D\include;C:\Development\Rebounce\trunk\Libs\TinyXML\include;C:\Development\Rebounce\trunk\Libs\SFML\include;C:\Development\Rebounce\trunk\Libs\GWEN\include;C:\Development\Rebounce\trunk\Libs\CxxTL\include;C:\Development\Rebounce\trunk\Libs\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CLEANTLOG;WIN32;TIXML_USE_STL;FTLOG=Game;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Development\Rebounce\trunk\Libs\Crypto++\cryptopp562;C:\Development\Rebounce\trunk\Libs\sfTheora\include;C:\Development\Rebounce\trunk\Libs\Thor\include;C:\Development\Rebounce\trunk\Libs\Box2D\include;C:\Development\Rebounce\trunk\Libs\TinyXML\include;C:\Development\Rebounce\trunk\Libs\SFML\include;C:\Development\Rebounce\trunk\Libs\GWEN\include;C:\Development\Rebounce\trunk\Libs\CxxTL\include;C:\Development\Rebounce\trunk\Libs\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Development\Rebounce\trunk\Libs\TurboActive\x86-static;C:\Development\Rebounce\trunk\Libs\sfTheora\lib;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;C:\Development\Rebounce\trunk\Libs\Thor\lib;C:\Development\Rebounce\trunk\Libs\Box2D\lib\Release;C:\Development\Rebounce\trunk\Libs\TinyXML\lib\ReleasetinyxmlSTL;C:\Development\Rebounce\trunk\Libs\SFML\lib;C:\Development\Rebounce\trunk\Libs\GWEN\lib\windows\vs2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>TurboActivate-MD.lib;sfTheora.lib;thor.lib;Box2D.lib;opengl32.lib;tinyxmlSTL.lib;gwen.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Development\Rebounce\trunk\Libs\Crypto++\cryptopp562\Win32\Output\Release;C:\Development\Rebounce\trunk\Libs\sfTheora\lib;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;C:\Development\Rebounce\trunk\Libs\Thor\lib;C:\Development\Rebounce\trunk\Libs\Box2D\lib\Release;C:\Development\Rebounce\trunk\Libs\TinyXML\lib\ReleasetinyxmlSTL;C:\Development\Rebounce\trunk\Libs\SFML\lib;C:\Development\Rebounce\trunk\Libs\GWEN\lib\windows\vs2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cryptlib.lib;Shlwapi.lib;sfTheora.lib;thor.lib;Box2D.lib;opengl32.lib;tinyxmlSTL.lib;gwen.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameSrc\App\Game.cpp" />
     <ClCompile Include="GameSrc\App\main.cpp" />
+    <ClCompile Include="GameSrc\Base\XStr.cpp" />
     <ClCompile Include="GameSrc\Entity\BlockEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\TextEntity.cpp" />
     <ClCompile Include="GameSrc\Entity\DeadZoneEntity.cpp" />
@@ -119,6 +120,7 @@
     <ClCompile Include="GameSrc\State\LoadingState.cpp" />
     <ClCompile Include="GameSrc\State\MainMenuState.cpp" />
     <ClCompile Include="GameSrc\State\PauseState.cpp" />
+    <ClCompile Include="GameSrc\System\ActivationManager.cpp" />
     <ClCompile Include="GameSrc\System\GraphicsManager.cpp" />
     <ClCompile Include="GameSrc\System\InputManager.cpp" />
     <ClCompile Include="GameSrc\System\RenderLayer.cpp" />
@@ -140,6 +142,7 @@
     <ClInclude Include="GameSrc\Base\Globals.hpp" />
     <ClInclude Include="GameSrc\Base\Singleton.hpp" />
     <ClInclude Include="GameSrc\Base\Math.hpp" />
+    <ClInclude Include="GameSrc\Base\XStr.hpp" />
     <ClInclude Include="GameSrc\Entity\BlockEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\TextEntity.hpp" />
     <ClInclude Include="GameSrc\Entity\DeadZoneEntity.hpp" />
@@ -185,6 +188,7 @@
     <ClInclude Include="GameSrc\State\MainMenuState.hpp" />
     <ClInclude Include="GameSrc\State\PauseState.hpp" />
     <ClInclude Include="GameSrc\State\StatesDef.h" />
+    <ClInclude Include="GameSrc\System\ActivationManager.hpp" />
     <ClInclude Include="GameSrc\System\GraphicsManager.hpp" />
     <ClInclude Include="GameSrc\System\InputManager.hpp" />
     <ClInclude Include="GameSrc\System\RenderLayer.hpp" />

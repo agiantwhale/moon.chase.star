@@ -1,17 +1,9 @@
 #include "License.hpp"
 #include "../App/Game.hpp"
 #include "../Base/Globals.hpp"
-#include <TurboActivate.h>
-#include <Gwen/Controls/Label.h>
-#include <boost/algorithm/string.hpp>
-
-// Support Unicode compilation and non-Windows compilation
-#ifdef _WIN32
-#include <tchar.h>
-#else
-#define _T(x) x
-typedef char    TCHAR;
-#endif
+#include "../System/ActivationManager.hpp"
+#include "boost/algorithm/string/erase.hpp"
+#include "boost/algorithm/string/case_conv.hpp"
 
 GWEN_CONTROL_CONSTRUCTOR(ActivateControl)
 {
@@ -39,28 +31,21 @@ GWEN_CONTROL_CONSTRUCTOR(ActivateControl)
 
 void ActivateControl::onSend( Gwen::Controls::Base* control )
 {
-	Gwen::UnicodeString keyString = m_textBox->GetText().GetUnicode();
-	boost::erase_all(keyString," ");
-	boost::to_upper(keyString);
-	HRESULT hr = CheckAndSavePKey(keyString.c_str(), TA_USER);
-	if (hr == TA_OK)
-	{
-		// try to activate
-		hr = Activate();
+	std::string key = m_textBox->GetText().Get();
+	boost::erase_all(key," ");
+	boost::to_upper(key);
 
-		if (hr == TA_OK)
-		{
-			DestroyModal();
-			Hide();
-		}
-		else
-		{
-			m_textBox->SetText("activation error!");
-		}
+	sb::ActivationManager::getInstance()->activate(key);
+
+	if( sb::ActivationManager::getInstance()->isGenuine() )
+	{
+		sb::ActivationManager::getInstance()->writeToFile(key);
+		DestroyModal();
+		Hide();
 	}
 	else
 	{
-		m_textBox->SetText("an unknown error!");
+		m_textBox->SetText("activation error!");
 	}
 }
 

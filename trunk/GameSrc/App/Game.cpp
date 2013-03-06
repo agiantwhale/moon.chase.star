@@ -1,5 +1,7 @@
 #include "../App/Game.hpp"
 
+#include <Windows.h>
+
 #include <TinyXML/tinyxml.h>
 #include <time.h>
 
@@ -12,6 +14,7 @@
 #include "../GUI/GUIManager.hpp"
 #include "../System/SceneManager.hpp"
 #include "../system/InputManager.hpp"
+#include "../System/ActivationManager.hpp"
 
 //Tile
 #include "../Tile/Tile.hpp"
@@ -26,6 +29,9 @@
 #include "../State/CreditsState.hpp"
 
 #include <boost/lexical_cast.hpp>
+#include <shlobj.h>
+#include <shlwapi.h>
+#include <winerror.h>
 
 namespace sb
 {
@@ -55,18 +61,46 @@ namespace sb
 		gameSettings.fullscreen = false;
 		*/
 
+		bool loadSucess = false;
 		bool fullScreen = false;
 		bool vSync = false;
 
+		TCHAR szPath[MAX_PATH];
 		TiXmlDocument document;
-		if(document.LoadFile("mcs.xml"))
+
+		if(SUCCEEDED(
+			
+			SHGetFolderPath(NULL, 
+			CSIDL_PERSONAL|CSIDL_FLAG_CREATE, 
+			NULL, 
+			0, 
+			szPath))) 
 		{
-			const TiXmlElement* settingsElement = document.FirstChildElement("Settings");
-			if(settingsElement)
+			PathAppend(szPath, TEXT("mcs.xml"));
+
+			char ch[MAX_PATH];
+			char DefChar = ' ';
+			WideCharToMultiByte(CP_ACP,0,szPath,-1, ch,260,&DefChar, NULL);
+
+			loadSucess = document.LoadFile(ch);
+			if(!loadSucess)
 			{
-				settingsElement->QueryBoolAttribute("Fullscreen", &fullScreen);
-				settingsElement->QueryBoolAttribute("VSync", &vSync);
+				CopyFile( L"mcs.xml", szPath, false );
+				loadSucess = document.LoadFile("mcs.xml");
 			}
+
+
+			if(loadSucess)
+			{
+				const TiXmlElement* settingsElement = document.FirstChildElement("Settings");
+				if(settingsElement)
+				{
+					settingsElement->QueryBoolAttribute("Fullscreen", &fullScreen);
+					settingsElement->QueryBoolAttribute("VSync", &vSync);
+				}
+			}
+
+
 		}
 
 		unsigned int screenSettings = sf::Style::Close;
@@ -77,11 +111,15 @@ namespace sb
 		create(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT),"moon.chase.star",screenSettings);
 		setVerticalSyncEnabled(vSync);
 
-		GUIManager::getInstance()->setUpGUI(document.FirstChildElement("GUI"));
-		PhysicsManager::getInstance()->setUpPhysics(document.FirstChildElement("Physics"));
-		GraphicsManager::getInstance()->setUpGraphics(document.FirstChildElement("Graphics"));
-		SceneManager::getInstance()->setUpScene(document.FirstChildElement("Scene"));
-		InputManager::getInstance()->setUpInput(document.FirstChildElement("Input"));
+		if(loadSucess)
+		{
+			ActivationManager::getInstance()->setUpActivation(document.FirstChildElement("Activation"));
+			GUIManager::getInstance()->setUpGUI(document.FirstChildElement("GUI"));
+			PhysicsManager::getInstance()->setUpPhysics(document.FirstChildElement("Physics"));
+			GraphicsManager::getInstance()->setUpGraphics(document.FirstChildElement("Graphics"));
+			SceneManager::getInstance()->setUpScene(document.FirstChildElement("Scene"));
+			InputManager::getInstance()->setUpInput(document.FirstChildElement("Input"));
+		}
 
 		Tile::registerTileset("Rect", "Resource/Ogmo/Tiles/Rect.png");
 		Tile::registerTileset("Back", "Resource/Ogmo/Tiles/Back.png");

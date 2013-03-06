@@ -222,6 +222,12 @@
     <ClCompile Include="GameSrc\GUI\License.cpp">
       <Filter>GameSrc\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="GameSrc\System\ActivationManager.cpp">
+      <Filter>GameSrc\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSrc\Base\XStr.cpp">
+      <Filter>GameSrc\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp">
@@ -407,6 +413,12 @@
     </ClInclude>
     <ClInclude Include="GameSrc\GUI\License.hpp">
       <Filter>GameSrc\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\System\ActivationManager.hpp">
+      <Filter>GameSrc\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\Base\XStr.hpp">
+      <Filter>GameSrc\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

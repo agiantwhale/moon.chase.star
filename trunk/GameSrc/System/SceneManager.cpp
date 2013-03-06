@@ -19,6 +19,9 @@
 #include "../Helper/Conversion.hpp"
 #include "../Event/ContactEventData.hpp"
 #include "../Entity/StarEntity.hpp"
+#include <winerror.h>
+#include <shlwapi.h>
+#include <shlobj.h>
 
 namespace sb
 {
@@ -434,14 +437,17 @@ namespace sb
 
 	void SceneManager::setUpScene( const TiXmlElement* element )
 	{
+		if(element)
+		{
+			element->QueryUnsignedAttribute("Cleared", &m_clearedSceneNum);
+		}
+
 		TiXmlDocument document("scenes.xml");
 		if(document.LoadFile())
 		{
 			TiXmlElement* scenesElement = document.FirstChildElement("Scenes");
 			if(scenesElement)
 			{
-				scenesElement->QueryUnsignedAttribute("Cleared", &m_clearedSceneNum);
-
 				TiXmlElement* sceneElement = scenesElement->FirstChildElement("Scene");
 				while(sceneElement)
 				{
@@ -460,16 +466,34 @@ namespace sb
 
 	void SceneManager::saveProgress( void )
 	{
-		TiXmlDocument document("Scenes.xml");
-		if(document.LoadFile())
-		{
-			TiXmlElement* scenesElement = document.FirstChildElement("Scenes");
-			if(scenesElement)
-			{
-				scenesElement->SetAttribute("Cleared", m_clearedSceneNum);
-			}
+		TCHAR szPath[MAX_PATH];
+		TiXmlDocument document;
 
-			document.SaveFile();
+		if(SUCCEEDED(
+
+			SHGetFolderPath(NULL, 
+			CSIDL_PERSONAL|CSIDL_FLAG_CREATE, 
+			NULL, 
+			0, 
+			szPath))) 
+		{
+			PathAppend(szPath, TEXT("mcs.xml"));
+
+			char ch[MAX_PATH];
+			char DefChar = ' ';
+			WideCharToMultiByte(CP_ACP,0,szPath,-1, ch,260,&DefChar, NULL);
+
+			TiXmlDocument document(ch);
+			if(document.LoadFile())
+			{
+				TiXmlElement* scenesElement = document.FirstChildElement("Scene");
+				if(scenesElement)
+				{
+					scenesElement->SetAttribute("Cleared", m_clearedSceneNum);
+				}
+
+				document.SaveFile();
+			}
 		}
 	}
 
