@@ -108,7 +108,7 @@ GWEN_CONTROL_CONSTRUCTOR(LevelSelectMenuControl)
 	positioner->Dock(Gwen::Pos::Fill);
 
 	m_levelListBox = new Gwen::Controls::ListBox(listBoxControl);
-	m_levelListBox->SetMargin(Gwen::Margin(4,4,4,4));
+	m_levelListBox->SetMargin(Gwen::Margin(0,4,0,4));
 	m_levelListBox->Dock(Gwen::Pos::Fill);
 	m_levelListBox->SetAllowMultiSelect(false);
 	updateListing();
@@ -116,13 +116,13 @@ GWEN_CONTROL_CONSTRUCTOR(LevelSelectMenuControl)
 	Gwen::Controls::Button* startButton = new Gwen::Controls::Button(positioner);
 	startButton->SetText(L"start journey");
 	startButton->Dock(Gwen::Pos::Left | Gwen::Pos::CenterV);
-	startButton->SetMargin(Gwen::Margin(4,4,4,4));
+	startButton->SetMargin(Gwen::Margin(0,4,0,4));
 	startButton->onPress.Add(this,&LevelSelectMenuControl::onStart);
 
 	Gwen::Controls::Button* backButton = new Gwen::Controls::Button(positioner);
 	backButton->SetText(L"back");
 	backButton->Dock(Gwen::Pos::Right | Gwen::Pos::CenterV);
-	backButton->SetMargin(Gwen::Margin(4,4,4,4));
+	backButton->SetMargin(Gwen::Margin(0,4,0,4));
 	backButton->onPress.Add(this,&LevelSelectMenuControl::onBack);
 
 	//crossSplitter->SetPanel(0,startButton);

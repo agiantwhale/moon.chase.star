@@ -219,6 +219,9 @@
     <ClCompile Include="GameSrc\Entity\TextEntity.cpp">
       <Filter>GameSrc\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="GameSrc\GUI\License.cpp">
+      <Filter>GameSrc\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSrc\App\Game.hpp">
@@ -401,6 +404,9 @@
     </ClInclude>
     <ClInclude Include="GameSrc\Entity\TextEntity.hpp">
       <Filter>GameSrc\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSrc\GUI\License.hpp">
+      <Filter>GameSrc\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
